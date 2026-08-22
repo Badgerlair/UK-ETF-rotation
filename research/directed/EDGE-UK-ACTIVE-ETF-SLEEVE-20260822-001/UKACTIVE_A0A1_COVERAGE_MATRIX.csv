@@ -1,0 +1,5 @@
+coverage_dimension,research_purpose,economic_family_count,unique_isin_count,listing_count,verified_investable_isin_count,core_family_count,extended_family_count,experimental_family_count,coverage_assessment,warning
+GEOGRAPHIC_OPPORTUNITIES,Future regional/country leadership breadth,36,127,201,22,15,19,2,CURRENT_MASTER_ONLY_NO_POINT_IN_TIME_INFERENCE,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+SECTOR_INDUSTRY_OPPORTUNITIES,Conventional sector and useful industry breadth,30,55,94,2,18,9,3,CURRENT_MASTER_ONLY_NO_POINT_IN_TIME_INFERENCE,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+THEMATIC_OPPORTUNITIES,"Coherent investable themes, separately classified",20,69,123,2,0,10,10,CURRENT_MASTER_ONLY_NO_POINT_IN_TIME_INFERENCE,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+DEFENSIVE_DIVERSIFIERS,"Bonds, cash-like assets, commodities and diversifiers",13,45,60,6,6,5,2,CURRENT_MASTER_ONLY_NO_POINT_IN_TIME_INFERENCE,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY

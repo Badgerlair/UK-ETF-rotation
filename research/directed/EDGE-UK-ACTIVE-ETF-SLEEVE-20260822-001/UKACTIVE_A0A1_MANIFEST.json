@@ -1,0 +1,1310 @@
+{
+  "automated_test_results": [
+    {
+      "detail": "listing_id is a deterministic hash of ISIN+MIC+ticker+price unit; ticker is descriptive only",
+      "requirement": "Ticker is not treated as globally unique",
+      "status": "PASS",
+      "test_id": "QC-001",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "share_classes=296",
+      "requirement": "Canonical share classes have ISIN or documented exception",
+      "status": "PASS",
+      "test_id": "QC-002",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "unique_isins=296",
+      "requirement": "Same-ISIN listings do not become multiple economic opportunities",
+      "status": "PASS",
+      "test_id": "QC-003",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "multi-price-unit ISINs tested=179",
+      "requirement": "Unhedged GBP/USD listings remain one exposure",
+      "status": "PASS",
+      "test_id": "QC-004",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "families_with_pair=UK_GILTS_SHORT;GLOBAL_ALL_WORLD;GLOBAL_INFRASTRUCTURE;UK_LARGE_CAP;EUROZONE;US_BROAD_LARGE_CAP;GLOBAL_CLEAN_ENERGY;ASIA_PACIFIC_EX_JAPAN;GLOBAL_CORPORATE_IG_GBP_HEDGED;EMERGING_MARKETS;SOUTH_KOREA;GLOBAL_DEVELOPED_WORLD;US_AI;JAPAN",
+      "requirement": "Accumulating/distributing versions are distinct share classes",
+      "status": "PASS",
+      "test_id": "QC-005",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "hedge_pairs=[('GLOBAL_DEVELOPED_WORLD', 'GLOBAL_DEVELOPED_WORLD_GBP_HEDGED'), ('US_BROAD_LARGE_CAP', 'US_BROAD_LARGE_CAP_GBP_HEDGED'), ('US_TOTAL_MARKET', 'US_TOTAL_MARKET_GBP_HEDGED'), ('JAPAN', 'JAPAN_GBP_HEDGED')]",
+      "requirement": "Hedged and unhedged exposures are not collapsed",
+      "status": "PASS",
+      "test_id": "QC-006",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "GBX maps to GBP at 0.01; GBP maps at 1",
+      "requirement": "GBP and GBX are explicit and correctly scaled",
+      "status": "PASS",
+      "test_id": "QC-007",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "allowed evidence bases enforced",
+      "requirement": "UCITS is never inferred from name",
+      "status": "PASS",
+      "test_id": "QC-008",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "all broker states deliberately NOT_CHECKED",
+      "requirement": "Broker status is not inferred from price data",
+      "status": "PASS",
+      "test_id": "QC-009",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY",
+      "requirement": "Current eligibility is not converted into historical eligibility",
+      "status": "PASS",
+      "test_id": "QC-010",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "canonical_isins=296; structural_exclusions=403",
+      "requirement": "Leveraged/inverse/path-dependent instruments cannot enter canonical tiers",
+      "status": "PASS",
+      "test_id": "QC-011",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "unleveraged gold ETC candidate retained and structurally assessed",
+      "requirement": "ETCs are assessed rather than blanket-excluded",
+      "status": "PASS",
+      "test_id": "QC-012",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "confirmed_label_count=31",
+      "requirement": "DeepVue themes are never invented",
+      "status": "PASS",
+      "test_id": "QC-013",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "explicit negative mappings checked, including growth-biased Nasdaq-100",
+      "requirement": "Non-thematic broad and bond products are not forced into DeepVue",
+      "status": "PASS",
+      "test_id": "QC-014",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "separate columns and differing values observed",
+      "requirement": "Sector and theme remain separate dimensions",
+      "status": "PASS",
+      "test_id": "QC-015",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "Japan GBP/GBX listings=6",
+      "requirement": "Geography is not inferred from listing currency",
+      "status": "PASS",
+      "test_id": "QC-016",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "one row per family despite multi-provider implementations",
+      "requirement": "Provider duplication creates no additional opportunity rows",
+      "status": "PASS",
+      "test_id": "QC-017",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "fund→share class→listing foreign keys resolve",
+      "requirement": "Identity references are valid",
+      "status": "PASS",
+      "test_id": "QC-018",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "all canonical families have exactly one permitted tier",
+      "requirement": "Tiers are exhaustive and permitted",
+      "status": "PASS",
+      "test_id": "QC-019",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "audited=20/20",
+      "requirement": "Manual audit suite covers all required cases",
+      "status": "PASS",
+      "test_id": "QC-020",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "listings=4359; unique_isins=2821; families=99",
+      "requirement": "Discovery universe is substantial",
+      "status": "PASS",
+      "test_id": "QC-021",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "builder contains no price-return, signal, rank, portfolio, order, or backtest calculation",
+      "requirement": "No strategy/backtest output exists",
+      "status": "PASS",
+      "test_id": "QC-022",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "direct_gold_share_classes=6",
+      "requirement": "Direct gold cannot contain gold-mining equity products",
+      "status": "PASS",
+      "test_id": "QC-023",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "daily_short_negative_controls=31",
+      "requirement": "Abbreviated daily-short products are excluded",
+      "status": "PASS",
+      "test_id": "QC-024",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "gbp_cash_share_classes=3",
+      "requirement": "GBP overnight family has explicit sterling-rate evidence",
+      "status": "PASS",
+      "test_id": "QC-025",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "verified_listing_rows=51",
+      "requirement": "Verified current investability requires product-specific retail evidence",
+      "status": "PASS",
+      "test_id": "QC-026",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "detail": "listing_rows=478",
+      "requirement": "Every canonical listing has a dated current status source",
+      "status": "PASS",
+      "test_id": "QC-027",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    }
+  ],
+  "broker_check_date": "NOT_CHECKED",
+  "broker_check_method": "NOT_CHECKED_NO_SAFE_EXACT_LSE_ISIN_READ_ONLY_ROUTE",
+  "classification_and_listing_control_hashes": [
+    {
+      "path": "config/current_listing_supplements.csv",
+      "sha256": "ab440e9099f4142508031508246e6633103c08adae7a86e962cf4396524d153b",
+      "size_bytes": 1961
+    }
+  ],
+  "classification_rule_version": "UKACTIVE-CLASSIFICATION-v1.0.0",
+  "command_lines": [
+    "python \"D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a0a1.py\" --programme-root \"D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\" --local-symbol-inventory \"D:\\Codex\\market_data_manager\\outputs\\archive_summary\\discovered_all_symbols.csv\"",
+    "internal run_quality_controls() executed by builder"
+  ],
+  "completed_at": "2026-08-22T16:15:37Z",
+  "counts": {
+    "broker_confirmed_isins": 0,
+    "core_families": 39,
+    "current_candidate_unverified_isins": 264,
+    "currently_verified_investable_isins": 32,
+    "deepvue_exact_mapped_families": 32,
+    "defensive_diversifier_opportunities": 13,
+    "evidence_ledger_entries": 153,
+    "excluded_isins": 692,
+    "experimental_families": 17,
+    "extended_families": 43,
+    "families": 99,
+    "fund_entities": 34,
+    "geographic_opportunities": 36,
+    "raw_isins": 2821,
+    "raw_listings": 4359,
+    "sector_industry_opportunities": 30,
+    "selected_isins": 296,
+    "selected_listings": 478,
+    "selected_share_classes": 296,
+    "structurally_not_eligible_isins": 403,
+    "thematic_opportunities": 20
+  },
+  "decision": "UKACTIVE_A0A1_PASS_WITH_OPEN_ITEMS",
+  "duplicate_rule_version": "UKACTIVE-DUPLICATE-v1.0.0",
+  "evidence_counts": {
+    "by_source_tier": {
+      "LOCAL_SECONDARY": 1,
+      "PRIMARY": 150,
+      "PRIMARY_SOURCE_TRANSCRIPTION": 1,
+      "USER_CONFIRMED": 1
+    },
+    "by_type": {
+      "CURRENT_EXCHANGE_CATALOGUE": 52,
+      "CURRENT_RETAIL_DOCUMENT": 32,
+      "ISSUER_PRODUCT_CATALOGUE": 1,
+      "ISSUER_PRODUCT_PAGE": 57,
+      "LOCAL_DISCOVERY_INVENTORY": 1,
+      "PRODUCT_SPECIFIC_EXCHANGE_PAGE": 3,
+      "REGULATORY_OR_TAXONOMY_POLICY": 5,
+      "RESEARCH_CONTROL_WITH_PRIMARY_SOURCE_CITATIONS": 1,
+      "USER_SUPPLIED_REFERENCE": 1
+    },
+    "total": 153
+  },
+  "git": {
+    "commit": "NOT_APPLICABLE",
+    "complete_diff": "NOT_APPLICABLE",
+    "status": "NOT_A_GIT_WORKTREE",
+    "worktree_state": "NOT_APPLICABLE"
+  },
+  "input_and_source_capture_hashes": [
+    {
+      "path": "evidence/sources/ishares_products/IE0001ZFMLN7.json",
+      "sha256": "0be1088789b482bc946c4b66126eb70afb534ba7d8f85681a348cd2891b8b166",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0002FCUS29.json",
+      "sha256": "5af2fe265ad04f89da7c824f5662789b12cd1c5bc191ebb676e39dfe2812dc45",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0002W8NB38.json",
+      "sha256": "89d2218f9c08505d2dd0ac54e479a8efc56d0dddae12efa37a5425a78aa1e904",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0005042456.json",
+      "sha256": "d614f7891dba622075bd115f4d7fe588095ee872d9e26e098f7f68f91afde8df",
+      "size_bytes": 4097
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00069Q7MY9.json",
+      "sha256": "40b488deb9888590728bbae95ff85b3f9d3dede0cfce93ca5ae2e66770714d03",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0006H7HTU4.json",
+      "sha256": "17f045f7c8569fa21163aa8e06fd0c593da81d0c3c2ea43e51863fc9888fa6b8",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0007O06KL9.json",
+      "sha256": "bfa4bde4aca2b91d8a5d5d60d87cc6ce3450e781fafed8430b2aa944cf10badd",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000C6ITGC8.json",
+      "sha256": "c1b8d87e690a2eff706421d12e90d143e7c73af1602ddb2677b897c9b1cf8b96",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000IAXNM41.json",
+      "sha256": "a4c64d882c9dc8e5d8f47c4bdc965a3413c05f977a3b7fb712e5521a69e37ccf",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000J4DNAA7.json",
+      "sha256": "6dc0de46545edcdaba8da5ceffd96fb8b43e5fc16e5b06450c2acf4774c9af92",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000NFR7C63.json",
+      "sha256": "010a970e7dbc46eab85ad38a3a24219b75108fba56bc7b23381c88b7228c0b26",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000OL3XN92.json",
+      "sha256": "417aa5a87c14d790b4f5b656e5b497eedc3811b8048ef34feed25c4ef8b3eebb",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000PTMIE90.json",
+      "sha256": "735f2d431822a4a89ebc825429569db29ed16f27c73eab1f486132f1ba55dbc3",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000PYHMXV4.json",
+      "sha256": "119707dd3e61afe8a77f13e03c03f4bfc8ce47c3bda9c1ab966af286a6218c85",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000Q9W2IR3.json",
+      "sha256": "754eb19647ad76d756fb3171e91dba3da5c630ff5d545bc65a8fa35e7453fac9",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000RCMNFR9.json",
+      "sha256": "8bdfa7facb65e3a39c1049f037854c889d670aa9a75982460d6f0769b5da34a6",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000TCZMZM8.json",
+      "sha256": "1b7d90fdbf0180893993819e591f59cde5306eef0fcd609cb2a67fdc1688a9cf",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000U58J0M1.json",
+      "sha256": "9f2d2bfa0cd67f35a6486db3280cdef4eeba0acedcba5cf5f95c7671ea028a79",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE000U9ODG19.json",
+      "sha256": "6697e3d892b5f2ba629390abef57e33923df441045391c65c7ca44c50df4d883",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE0031442068.json",
+      "sha256": "47f992822344aa7c568efb3a496280796622a6c4498730e74e40262d484f4c15",
+      "size_bytes": 3891
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B00FV011.json",
+      "sha256": "843cd3313b098da0be42f09acadf7b1899ba6b71abe3907cf2cda99962a37e5f",
+      "size_bytes": 2776
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B00FV128.json",
+      "sha256": "f30a18e2e0d670482be353e8db522e5705dd3c997ebd5c641e5595b2a467d2f1",
+      "size_bytes": 2721
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B02KXH56.json",
+      "sha256": "b5e8174fe3c5819a8a5280fdde66a2b8bf623b4a5082070bddc0332d8c64c581",
+      "size_bytes": 3544
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B0M63391.json",
+      "sha256": "40971275c6b791959a6aa4172ea6198b6cce9e9caead492bafc1a95a0eceb577",
+      "size_bytes": 3317
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B0M63623.json",
+      "sha256": "d3dcd2b6ed2ecf80b0ef08a2b938a82fe413cc5ad5c1c98e9f640145e7d5d93a",
+      "size_bytes": 3676
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B1FZSB30.json",
+      "sha256": "a57629cd46fcf75b84f1806fb2cc2a9fff5aba137d8c324ea847b3d8470377d6",
+      "size_bytes": 3244
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B1FZSD53.json",
+      "sha256": "267e3896d3931a74431b74db29629a052b9546252250198a358815d33fd3115a",
+      "size_bytes": 2780
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B1TXK627.json",
+      "sha256": "5fc8287df770804cac3d17e3287e31dd2ac5ce068c0ea6615bae0f800028db47",
+      "size_bytes": 3737
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B3VWLG82.json",
+      "sha256": "88250f5162baf5dfca8b8eb985cb90ae4e18665e46d00c2ccea0eda2c6e3366b",
+      "size_bytes": 2970
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B3Y8X563.json",
+      "sha256": "975d42c8ff08ac69df2f3d40a8b167b09ec481d49285f27d8bf9a9d77216c333",
+      "size_bytes": 2356
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B3ZW0K18.json",
+      "sha256": "f31302113da76c353d847b586940431553799fa83e7a70673b502948e3c7aa0c",
+      "size_bytes": 3275
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B42YS929.json",
+      "sha256": "4677fadf659a33fbfea62d579d9af07f1fbe4bc86663faaafcc03ee078cc8a12",
+      "size_bytes": 2362
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B42Z5J44.json",
+      "sha256": "1f02f9293547a234fddc4a8cb54974dc8aa097348fe203221ad75ca1e6c03c67",
+      "size_bytes": 3276
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B441G979.json",
+      "sha256": "bd931540e290a14623155cf91589d9df5e5a4b6da742ad0dc53b9cdd86175a85",
+      "size_bytes": 3282
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4K48X80.json",
+      "sha256": "3ec26efb74f4d2e240487135b2bda517d706884158df59b30be6ada8d3c5bb99",
+      "size_bytes": 3862
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4L5Y983.json",
+      "sha256": "a8d5b42577f114f69d299ed025dedb5f545eae4fc3034fc5bab828125be9fd92",
+      "size_bytes": 4310
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4L60H17.json",
+      "sha256": "0538e4336ac16664591651ab1acc8fe8061213a2a49ed970cac2a81760472c34",
+      "size_bytes": 2796
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4ND3602.json",
+      "sha256": "e234f6ae24f33962e3c72245fe2f9279da5681e4645b2ae623dcf710318742ea",
+      "size_bytes": 3508
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4WXJD03.json",
+      "sha256": "42503767fd4c2a90c8dcbeb26055afc3a709de2f20484e4499da547cf46776fb",
+      "size_bytes": 3232
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B4WXJK79.json",
+      "sha256": "45f5344aeb92517be09e4d1543cae931c9736943a37068057fe1dbaee1dc687b",
+      "size_bytes": 3008
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B52SF786.json",
+      "sha256": "3de298b77f398a4ec8e0a8d0b0c9cc7db54946b3630be4d6e9348e925f01b6e0",
+      "size_bytes": 3877
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B539F030.json",
+      "sha256": "4b470b433536aa04f01bdff8b1db2542c5e65cacc6c85ae01632795a23cfb7db",
+      "size_bytes": 3171
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B53L3W79.json",
+      "sha256": "2425537fbefeb19e5335c3672673cdf7f945e6d1ee7aa5f148f0005fa3abd2a9",
+      "size_bytes": 4601
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B5BMR087.json",
+      "sha256": "2753324bf6fb56c844a01234e6a01a00f676fb7601a49c37c05a1ab02087f27d",
+      "size_bytes": 4584
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B5L8K969.json",
+      "sha256": "59f8a8d5606522d0eda2424656bbd7bc0a6819ebaaf3d4c95c713ead8a9aae48",
+      "size_bytes": 4347
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B6R51Z18.json",
+      "sha256": "fdde1923e7b8a91cb2e7279b115f9f9144145e930647ec0f656a9de5af1e6a69",
+      "size_bytes": 3713
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B6R52036.json",
+      "sha256": "76cbbf5e0984e3d3171ae8240e833c4f68f3edbed9e8a403da242ba504494c03",
+      "size_bytes": 3878
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B6R52143.json",
+      "sha256": "ea3d64bcc76afb85734c8c987b5e62672c8e8db19add266cbceef84b061fa167",
+      "size_bytes": 3665
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00B7XYN974.json",
+      "sha256": "521a250b29133ed3a20c3592b4b126a6aaecff35cf5066d78c70bd9439214759",
+      "size_bytes": 2369
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BD3V0B10.json",
+      "sha256": "30cf3ddc39ab8d1839482fa93f14df2cba7acb2080b8be067cd027200effbc9e",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BD45KH83.json",
+      "sha256": "d43680242c0a1029845ac19ac7780a349b9c62d46eff50eed2c19cddbfb7ab21",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BF540Y54.json",
+      "sha256": "3f3033e53325c12b4fd6461f0bf97e8f3ad552b95db21eab200769b66c8f6378",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BWZN1T31.json",
+      "sha256": "43fdf31edad92bb76537206fd5bf3e6558ec586cd61468a591a6de593c99da08",
+      "size_bytes": 2854
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BYZK4552.json",
+      "sha256": "31500d25990cf0db572262a37c2ac6b0214042d046251f585d83108b7be97f56",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BYZK4776.json",
+      "sha256": "360c7e3de49403912f4d39e45b505a422cbccba15c3b86f8cea9d552122a0ab6",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BYZK4883.json",
+      "sha256": "8b3daa33174bea14170ee8f50b0eec4092d9f1d7ed301c82fce6cbfbb9735de8",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_products/IE00BZCQB185.json",
+      "sha256": "8968527c3b35eb2584c335eb57217599849689776937dd0c024cd49782a2b4bd",
+      "size_bytes": 438
+    },
+    {
+      "path": "evidence/sources/ishares_uk_product_catalog.json",
+      "sha256": "263d34fd22966fae919eac762a3940ab1d57b30e03e812646056bbdf8e8a19bd",
+      "size_bytes": 3890919
+    },
+    {
+      "path": "evidence/sources/lse_etc_page_1.json",
+      "sha256": "13f2e8ce63e608ec034945cbd37db3e218e7cd4b6503b3d6625b84c040fac320",
+      "size_bytes": 89534
+    },
+    {
+      "path": "evidence/sources/lse_etc_page_2.json",
+      "sha256": "d0d5882d27049dfab8e3d8e1139bf985abfe069f9adf2c8781eac74925367a01",
+      "size_bytes": 92257
+    },
+    {
+      "path": "evidence/sources/lse_etc_page_3.json",
+      "sha256": "81e8a38701e9392e6222b333d56cc83d69d8d1bce4340e5b8bdc6b7f4ed78aeb",
+      "size_bytes": 46086
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_1.json",
+      "sha256": "00b9d67f44c186a1225933fdc6c01f3d9c2797f0d3b9c4f4ac2bb7960a4f32fb",
+      "size_bytes": 93201
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_10.json",
+      "sha256": "b3c0f37d5a2e28e6f318c294a4dea3bf0f37cb5c2e47893096fb76b96da10a11",
+      "size_bytes": 92556
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_11.json",
+      "sha256": "ddb1a5477a5d13b6a61e8415d6ffdb9b6807bbe4997e7307bb8a87bbdcde04ec",
+      "size_bytes": 92774
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_12.json",
+      "sha256": "f765268e3be01f39c99929e7ac67a8f5b719114152007163dfdd1182cda5d2fd",
+      "size_bytes": 93068
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_13.json",
+      "sha256": "6cef4ba1968e4746ca6410af2263ab1d0fff5621b1e4bc6e66833a50f063ac98",
+      "size_bytes": 92918
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_14.json",
+      "sha256": "3fcce4198863a68728c2e2f4a13c90e1352709f1acfa73d0b324a6d98494966d",
+      "size_bytes": 92585
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_15.json",
+      "sha256": "8e80e50289f44c31f7c8e456c69d4d6502905cb23360fab9f4edac500d4e30a5",
+      "size_bytes": 91684
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_16.json",
+      "sha256": "c3cf2b7e8bbfe2efa3aafb86b7973677d90e35898275122d2b8cd39531f23cbd",
+      "size_bytes": 92464
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_17.json",
+      "sha256": "aa83f3d8a4a7790c5b62d1b35fd78ad0ddb71623ca476e9cc83207da365d5148",
+      "size_bytes": 92164
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_18.json",
+      "sha256": "ddefb654624439f5977cfb8d0bb6e6f87e0fc3c6f5b138b6ce5a01fb13cacf59",
+      "size_bytes": 92254
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_19.json",
+      "sha256": "959dd3a9671be96a806ae2d17ee306db9b6c3408df06daa7966696e73497c804",
+      "size_bytes": 95016
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_2.json",
+      "sha256": "c7cf86ee688a49490a0dd8f202a922418eb9b4bc54f0967017beebe3242e869a",
+      "size_bytes": 91317
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_20.json",
+      "sha256": "cffc2b35960bda1dd43c583f683f8004bacdb47765cdee9e194805b994bd4a4b",
+      "size_bytes": 95399
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_21.json",
+      "sha256": "e99c1c78d2d21486fc2e289569f6a00032175dface376426a0c3b6da39f5ef19",
+      "size_bytes": 95800
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_22.json",
+      "sha256": "8ef535029be9ac9a1e4601ee02c88021d0cdb4a8d54f478caa7f954615988987",
+      "size_bytes": 94137
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_23.json",
+      "sha256": "c6681e5a4abffa75a4c48290677a9cae8da12170983f59af7ac31ddf151b43cc",
+      "size_bytes": 93155
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_24.json",
+      "sha256": "c3bfd59506ed8a3deff3c8f4fa5d393c86e2f1439153912699314136bf7436a6",
+      "size_bytes": 92761
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_25.json",
+      "sha256": "dd1c013d7109cfaafbd443d7cf1490adfcb906542e741647edd5d165dcb0e677",
+      "size_bytes": 94482
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_26.json",
+      "sha256": "805ff701d8d6b3f4257af3ad0f3a1b9934a705e1cea7dbec05eeb9f02a0f4282",
+      "size_bytes": 92147
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_27.json",
+      "sha256": "809a61c717f8d73c375fe4a4cb9f42668801d245d9b999274e30ee51e89aee18",
+      "size_bytes": 92106
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_28.json",
+      "sha256": "bb2c94a7e878f8a540fa63b69557110fef5218a826fb846d079a87dbc712cdd7",
+      "size_bytes": 91937
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_29.json",
+      "sha256": "77503f2331a69ec14dfe3d2528b9001061f8657ac5d46aaffdc912a6b3ca4ee5",
+      "size_bytes": 91837
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_3.json",
+      "sha256": "0968f58e8a2329bd9b0804359fde978febbfd627e4f6cabdf4fa54d9451f8af9",
+      "size_bytes": 93140
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_30.json",
+      "sha256": "d0e68783dffc7c5e77c6eb28f4c8b4393d060aff8d3ef362459968036850f6a9",
+      "size_bytes": 91703
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_31.json",
+      "sha256": "473d67b7ca4c9c5c4a7d8d753dbdffb7fdbe50903df9e00881cf6604abb3636a",
+      "size_bytes": 90490
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_32.json",
+      "sha256": "ef3fa3d930174641c6422f3fbe878faa659a49f0823c75f7453af4f62c692fac",
+      "size_bytes": 89965
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_33.json",
+      "sha256": "101bf94fbd10380c0547b465551af7b3eb69d6522cd3372376c13192edfd823d",
+      "size_bytes": 90580
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_34.json",
+      "sha256": "1553736e2532a8b09dfef36f574f2cb7ec206435cc045a216d8d7d3df3790cab",
+      "size_bytes": 89258
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_35.json",
+      "sha256": "54eebfcc68771a36e311b68a542803a5c4f4caae9af41fb112b30af2e5389692",
+      "size_bytes": 93063
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_36.json",
+      "sha256": "758ced944da48efba0e8a7fa289fadfd7a4a0a4672e2f0a34c55b8afeedc470b",
+      "size_bytes": 92201
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_37.json",
+      "sha256": "658d70716d6ece916cf1b302ecbec9bc5b383edd98ce8d2660e68dc9f8c37b7b",
+      "size_bytes": 91084
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_38.json",
+      "sha256": "3284b776b124f0ed64ebcb380c8b61d91545a14336164573b9a75bd7fc2d541c",
+      "size_bytes": 92280
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_39.json",
+      "sha256": "e0611c3cb25dad82fc2d1d88e1d9ce0fef49fcb9442d418c804bd6a0bab257c2",
+      "size_bytes": 92018
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_4.json",
+      "sha256": "7b8beb46d6195b0d118995d544936495f5b9f6acf8d2511b8f608cbeaaed6e99",
+      "size_bytes": 93438
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_40.json",
+      "sha256": "6ba750ebf30b9410f097d911d53ea50bca88a34468ca9245dfa8bb14b2d57566",
+      "size_bytes": 92138
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_41.json",
+      "sha256": "7b47f3a95f761904e2ff76a531ba5d6ae86894675b91c9d4a957e8a88a280f6e",
+      "size_bytes": 43337
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_5.json",
+      "sha256": "95d4a63741a9b40474f7e6bd5bcc31310a8e09c8ad4be149759886d2dd5a0d14",
+      "size_bytes": 93662
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_6.json",
+      "sha256": "3fae9aeac25a7a7053c117356e540ba7920feb96a153c05b4a12fe89be6c4e6a",
+      "size_bytes": 93101
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_7.json",
+      "sha256": "9bd13596d212008d07834f295d5e3b3af599e1a3ee6a65918e870fe369f5973a",
+      "size_bytes": 90172
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_8.json",
+      "sha256": "d0b592932d7a24be1e5b60efe1d828231e14833bd530d854b921268b285ad055",
+      "size_bytes": 90866
+    },
+    {
+      "path": "evidence/sources/lse_etf_page_9.json",
+      "sha256": "66dbe3a06fc97348d5af367fc21b0f60be0e2502dcea84c00da361548345adc6",
+      "size_bytes": 92379
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_1.json",
+      "sha256": "80716da851c18f1503422ecd39fee44521a24a8669b1ba728aa73fa347d5e0a6",
+      "size_bytes": 91854
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_2.json",
+      "sha256": "84c3ad6ccb32640a57fa6b0132b9af31c14d29cbe073a4fd4f7b6869b7896466",
+      "size_bytes": 92253
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_3.json",
+      "sha256": "08b294f9a042d997d1331ca0a17fc7441a123a81d57262dfd0f63d82fe8416fc",
+      "size_bytes": 92702
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_4.json",
+      "sha256": "cd34a86b6bb5d44b2eb1401afc1de89e86822936dda2f5506301ac673d5fd7da",
+      "size_bytes": 92121
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_5.json",
+      "sha256": "8b01b42224e274a29d3846fcc090e0cf47382d8fbb1d223032d161f3f56799b7",
+      "size_bytes": 92633
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_6.json",
+      "sha256": "e9c9a7aa7430aa101aba27d189b7ce0019cd2a2db4893e7b128333fbf3b58bac",
+      "size_bytes": 92502
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_7.json",
+      "sha256": "f346203c085485985665b97056748712e335f2fcfe777060b3ce5c866f0fb78a",
+      "size_bytes": 93021
+    },
+    {
+      "path": "evidence/sources/lse_etn_page_8.json",
+      "sha256": "dc30c33df8763f4d63826ab41d01222120f80536d97c3b4ac695db0f182e3a39",
+      "size_bytes": 73684
+    },
+    {
+      "path": "evidence/sources/lse_instrument_EGLN.html",
+      "sha256": "c082660492d1bfb06ac164700d1187ed1d47dc1e940d356ff9f622546ef03d25",
+      "size_bytes": 54995
+    },
+    {
+      "path": "evidence/sources/lse_instrument_IGLN.html",
+      "sha256": "c082660492d1bfb06ac164700d1187ed1d47dc1e940d356ff9f622546ef03d25",
+      "size_bytes": 54995
+    },
+    {
+      "path": "evidence/sources/lse_instrument_SGLN.html",
+      "sha256": "c082660492d1bfb06ac164700d1187ed1d47dc1e940d356ff9f622546ef03d25",
+      "size_bytes": 54995
+    },
+    {
+      "path": "evidence/sources/source_metadata_4912000dae85.json",
+      "sha256": "fd19801c72dac1bc4a83d06a91af3f2b8beabd4a03f862c8edd1fba862dbac03",
+      "size_bytes": 453
+    },
+    {
+      "path": "evidence/sources/source_metadata_5d10c4d90fff.json",
+      "sha256": "fc32ab9698a1e1623380a45959d2c81dae175f0ec56026d390d67cd7f9f0c5b9",
+      "size_bytes": 532
+    },
+    {
+      "path": "evidence/sources/source_metadata_8bdf4229ee70.json",
+      "sha256": "2c23f556eba4e40134c6a7543b6ccb32a845b53dfecdba7c42382a98573059d6",
+      "size_bytes": 460
+    },
+    {
+      "path": "evidence/sources/source_metadata_91f1f2a86d1a.json",
+      "sha256": "894f9902b3c5b40f1e8be313fa15a9a52b041fd7f64300c2ab75f14a8329b843",
+      "size_bytes": 663
+    },
+    {
+      "path": "evidence/sources/source_metadata_c0fd32f331cc.json",
+      "sha256": "a45ef58664c1c79bd76cd53669378889cf148755ee8f299fcf28f02facb36560",
+      "size_bytes": 506
+    },
+    {
+      "path": "evidence/sources/UKACTIVE_A0A1_SOURCE_RETRIEVAL_SUMMARY.json",
+      "sha256": "80e88304bfc3da4f8fc7fbe7d0479b79d4d9bf121a81ee8f34d7ee0e1b4408a6",
+      "size_bytes": 37000
+    }
+  ],
+  "legacy_programme_policy": "LEGACY_REFERENCE_ONLY_DEFECTS_REVIEWED_NO_STRATEGY_OR_UNIVERSE_INHERITED",
+  "local_input": {
+    "notes": "Price-history existence is not eligibility or broker evidence.",
+    "path": "D:\\Codex\\market_data_manager\\outputs\\archive_summary\\discovered_all_symbols.csv",
+    "row_count": 20861,
+    "sha256": "aea13f0e91a1351f5b3a022ae401c83c9c6f4a3bb465aeb7377c3907c36e522d",
+    "status": "READ_ONLY_DISCOVERY_SOURCE_USED"
+  },
+  "manifest_self_hash_policy": "NOT_SELF_REFERENTIAL; hash the delivered manifest externally if needed",
+  "observation_date": "2026-08-22",
+  "output_hashes_excluding_manifest_itself": [
+    {
+      "path": "evidence/UKACTIVE_A0A1_EVIDENCE_LEDGER.jsonl",
+      "sha256": "8cdac0fdbd091bde9ed167ec4e34ccaf852f6306b99dab201b2c4579953094ee",
+      "size_bytes": 142030
+    },
+    {
+      "path": "UKACTIVE_A0A1_AUTOMATED_TEST_RESULTS.csv",
+      "sha256": "fdc76387cc8d2a7f55dc76b109caf62bbadfa9f1eb4902a7b036ff21b9a66459",
+      "size_bytes": 4869
+    },
+    {
+      "path": "UKACTIVE_A0A1_CORE_UNIVERSE.csv",
+      "sha256": "945128120ada098c20041bb5c0bec46e7346a18b180ab43b8f427743f997c598",
+      "size_bytes": 27029
+    },
+    {
+      "path": "UKACTIVE_A0A1_COVERAGE_MATRIX.csv",
+      "sha256": "1acf47338f3a6d1393c9d5b25669b3dfd26261c325716de436173006b5f3667d",
+      "size_bytes": 1020
+    },
+    {
+      "path": "UKACTIVE_A0A1_CURRENT_INVESTABILITY.csv",
+      "sha256": "e8b96be1913d07fc010a797f2908a912be94de67f73a3a29bb904b6d741f841d",
+      "size_bytes": 224905
+    },
+    {
+      "path": "UKACTIVE_A0A1_DATA_QUALITY_REPORT.md",
+      "sha256": "4c293757e4bbd4c5f24151d4b5e7e5addee685c88bc5a473ac1022d50fc7c117",
+      "size_bytes": 4350
+    },
+    {
+      "path": "UKACTIVE_A0A1_DATA_SOURCE_AUDIT.md",
+      "sha256": "50458c3b8f23ab2739fade7830cdb6793c9d4dedf53b5f8cdf707cd8482d1064",
+      "size_bytes": 5312
+    },
+    {
+      "path": "UKACTIVE_A0A1_DECISION.json",
+      "sha256": "f96c01e680c7853ea183fa8c7a245a8e828a9573208b47fda25168dcf21d522b",
+      "size_bytes": 2947
+    },
+    {
+      "path": "UKACTIVE_A0A1_DEEPVUE_THEME_CROSSWALK.csv",
+      "sha256": "37560d61d42f27404da250fe26b2d67d69f4cf88df6821c0dcd689493d003733",
+      "size_bytes": 7614
+    },
+    {
+      "path": "UKACTIVE_A0A1_DISCOVERY_REGISTRY.csv",
+      "sha256": "6510a208100c80727550dad53b73f3671d1de755f26d0da16df263778228a542",
+      "size_bytes": 2832834
+    },
+    {
+      "path": "UKACTIVE_A0A1_DUPLICATE_GROUPS.csv",
+      "sha256": "403f0059a0b23bc083da087ad57ab14aefe2ddacf0d49d54c61ef61534c7fa19",
+      "size_bytes": 49853
+    },
+    {
+      "path": "UKACTIVE_A0A1_ECONOMIC_EXPOSURE_MASTER.csv",
+      "sha256": "8ce2fb94af67d0dcf1fbdb6ad63967a07f4977d08947595efec2b56f10e22b20",
+      "size_bytes": 67397
+    },
+    {
+      "path": "UKACTIVE_A0A1_EXCLUSIONS.csv",
+      "sha256": "8e81e45389798aaea532828ebbffb9c9d9502d9f8ce8f9538c2f33a64b63dbf7",
+      "size_bytes": 214203
+    },
+    {
+      "path": "UKACTIVE_A0A1_EXPERIMENTAL_UNIVERSE.csv",
+      "sha256": "85cd5b2636b260998bd576a541d34c347f1669721761df4895f2e9c9163f3886",
+      "size_bytes": 12058
+    },
+    {
+      "path": "UKACTIVE_A0A1_EXTENDED_UNIVERSE.csv",
+      "sha256": "71816d8964e87e0f686728b4a50a1f20c6aaf186cbc52b88ba489432fdb06ea7",
+      "size_bytes": 29688
+    },
+    {
+      "path": "UKACTIVE_A0A1_FUND_MASTER.csv",
+      "sha256": "08d3e49e0c671d750202ad36aa8e95ab0c12e6778191e1e232d6034c5e7aaeac",
+      "size_bytes": 6757
+    },
+    {
+      "path": "UKACTIVE_A0A1_GEOGRAPHIC_TAXONOMY.csv",
+      "sha256": "69cde8fd14b075baf47b63e3c3e8bf40b00fc9d003be2fcac0878bb846d59549",
+      "size_bytes": 6294
+    },
+    {
+      "path": "UKACTIVE_A0A1_IMPLEMENTATION_CANDIDATES.csv",
+      "sha256": "3f2eb46795b9bdc9d980dd52c863e175a45d074e9acd0395448db1ff13d4731e",
+      "size_bytes": 160668
+    },
+    {
+      "path": "UKACTIVE_A0A1_LISTING_MASTER.csv",
+      "sha256": "02a0f2f9f69c3943def3d68d790b5ce3b8f543bf9c44400915664190056ae75e",
+      "size_bytes": 189354
+    },
+    {
+      "path": "UKACTIVE_A0A1_MANUAL_AUDIT_CASES.md",
+      "sha256": "78b61e363f236e526d469e358070a2d454c76edf702145fcdf66e844098366ce",
+      "size_bytes": 10917
+    },
+    {
+      "path": "UKACTIVE_A0A1_NEXT_STAGE_DESIGN.md",
+      "sha256": "59f893126833091e8fc22c7dab4f3526c2b68a8379569d9fa6b0de8e1dc3763b",
+      "size_bytes": 1855
+    },
+    {
+      "path": "UKACTIVE_A0A1_SCOPE_AND_METHOD.md",
+      "sha256": "ed61b642d8fd2ee37a7d023e4b91cf3d4ea3e111c10439e07c1d32b78ae7893f",
+      "size_bytes": 4479
+    },
+    {
+      "path": "UKACTIVE_A0A1_SECTOR_INDUSTRY_TAXONOMY.csv",
+      "sha256": "f28625f35c1103e156e514a4659e20f4e5cfeef001d01414c73b2ce98db03f35",
+      "size_bytes": 8685
+    },
+    {
+      "path": "UKACTIVE_A0A1_SHARE_CLASS_MASTER.csv",
+      "sha256": "737cf0b4582572a09574fbd6a3cb4d88133d5a7cab0a1a5b96c5d715a2641ed0",
+      "size_bytes": 195697
+    },
+    {
+      "path": "UKACTIVE_A0A1_SOURCE_AND_EVIDENCE_POLICY.md",
+      "sha256": "9fe132198e9b1eb01dde548b5209510d5c8bd2c594b1c8075520ff4d2d2d0d15",
+      "size_bytes": 3748
+    },
+    {
+      "path": "UKACTIVE_A0A1_THEME_TAXONOMY.csv",
+      "sha256": "c7c27c09679c9e7bd92e75621b362d93bff5ded60e979eca158b2d31f1f44424",
+      "size_bytes": 5676
+    },
+    {
+      "path": "UKACTIVE_A0A1_UNIVERSE_SCHEMA.md",
+      "sha256": "3d0b935c407c76d8507a71337938a81f52bc6ee5ecc0a581e0a0e30ab9e181a1",
+      "size_bytes": 5699
+    },
+    {
+      "path": "UKACTIVE_A0A1_UNRESOLVED_ITEMS.csv",
+      "sha256": "0ae370c7ce8e5fd8a83804126ed415a8ead42c4be2e015543d2c6181f18fb37b",
+      "size_bytes": 3293
+    }
+  ],
+  "parquet_outputs": "NOT_CREATED: largest table is modest and CSV plus exact source captures maximises standard-library reproducibility",
+  "prior_generated_artifacts_replaced_on_rerun": 148,
+  "programme_id": "EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "programme_root": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "reproducibility_assessment": "PASS_WITH_NON_GIT_LIMITATION: executed source, exact source captures, parsed issuer facts, command, and hashes are retained; the containing platform is not a Git worktree so commit and diff are not applicable.",
+  "run_id": "UKACTIVE-A0A1-20260822-001",
+  "runtime": {
+    "external_runtime_packages_used": [],
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "standard_library_only_builder": true
+  },
+  "source_code_hashes": [
+    {
+      "path": "code/build_ukactive_a0a1.py",
+      "sha256": "aa531d44680299ab7ca9f52eab503d3a46e3d842cf81d309c96c7e73a6355539",
+      "size_bytes": 174215
+    }
+  ],
+  "source_retrieval_dates": [
+    "2026-08-22"
+  ],
+  "source_urls": [
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D10%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D11%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D12%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D13%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D14%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D15%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D16%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D17%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D18%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D19%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D20%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D21%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D22%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D23%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D24%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D25%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D26%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D27%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D28%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D29%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D30%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D31%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D32%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D33%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D34%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D35%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D36%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D37%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D38%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D39%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D4%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D40%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D41%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D5%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D6%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D7%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D8%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D9%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D4%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D5%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D6%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D7%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D8%26size%3D100",
+    "https://docs.deepvue.com/articles/theme-tracker-app",
+    "https://handbook.fca.org.uk/handbook/disctp2",
+    "https://www.fca.org.uk/publications/policy-statements/ps25-20-supporting-informed-decision-making-final-rules-consumer-composite-investments",
+    "https://www.gov.uk/guidance/stocks-and-shares-investments-for-isa-managers",
+    "https://www.gov.uk/hmrc-internal-manuals/pensions-tax-manual/ptm121000",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-agribusiness-ucits-etf-usd-acc-gb-ie00b6r52143-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-corp-bond-ucits-etf-gbp-dist-gb-ie00b00fv011-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-euro-stoxx-50-ucits-etf-eur-acc-gb-ie00b53l3w79-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-ftse-100-ucits-etf-gbp-dist-gb-ie0005042456-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-msci-europe-ucits-etf-eur-acc-gb-ie00b4k48x80-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-msci-world-ucits-etf-gb-ie00b4l5y983-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-sp-500-ucits-etf-usd-acc-gb-ie00b5bmr087-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-sp-500-ucits-etf-usd-dist-gb-ie0031442068-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-core-uk-gilts-ucits-etf-gbp-dist-gb-ie00b1fzsb30-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-corp-bond-ex-financials-ucits-etf-gbp-dist-gb-ie00b4l60h17-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-ftse-250-ucits-etf-gbp-dist-gb-ie00b00fv128-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-global-water-ucits-etf-usd-dist-gb-ie00b1txk627-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-gold-producers-ucits-etf-usd-acc-gb-ie00b6r52036-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-index-linked-gilts-ucits-etf-gbp-dist-gb-ie00b1fzsd53-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-canada-ucits-etf-usd-acc-gb-ie00b52sf786-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-em-asia-ucits-etf-usd-acc-gb-ie00b5l8k969-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-emu-usd-hedged-ucits-etf-acc-gb-ie00bwzn1t31-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-japan-eur-hedged-ucits-etf-acc-gb-ie00b42z5j44-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-japan-gbp-hedged-ucits-etf-acc-gb-ie00b7xyn974-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-japan-ucits-etf-dist-gb-ie00b02kxh56-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-korea-ucits-etf-dist-gb-ie00b0m63391-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-pacific-ex-japan-ucits-etf-usd-dist-gb-ie00b4wxjd03-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-taiwan-ucits-etf-usd-dist-gb-ie00b0m63623-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-uk-small-cap-ucits-etf-gbp-acc-gb-ie00b3vwlg82-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-uk-ucits-etf-gbp-acc-gb-ie00b539f030-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-world-eur-hedged-ucits-etf-acc-gb-ie00b441g979-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-msci-world-gbp-hedged-ucits-etf-acc-gb-ie00b42ys929-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-oil-gas-exploration-production-ucits-etf-usd-acc-gb-ie00b6r51z18-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-sp-500-eur-hedged-ucits-etf-acc-gb-ie00b3zw0k18-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-sp-500-gbp-hedged-ucits-etf-acc-gb-ie00b3y8x563-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/ucits_kiid-ishares-uk-gilts-0-5yr-ucits-etf-gbp-dist-gb-ie00b4wxjk79-en.pdf",
+    "https://www.ishares.com/gls-download/literature/kiid/uk_priips-ishares-physical-gold-etc-gb-ie00b4nd3602-en.pdf",
+    "https://www.ishares.com/uk/individual/en/products/251707/ishares-agribusiness-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251717/ishares-indexlinked-gilts-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251795/ishares-ftse-100-ucits-etf-inc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251796/ishares-ftse-250-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251804/ishares-uk-gilts-05yr-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251806/ishares-uk-gilts-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251839/ishares-corporate-bond-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251841/ishares-corporate-bond-exfinancials-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251861/ishares-msci-europe-ucits-etf-acc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251866/ishares-msci-japan-ucits-etf-inc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251868/ishares-msci-japan-eur-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251869/ishares-msci-japan-gbp-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251871/ishares-msci-korea-ucits-etf-inc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251874/ishares-msci-pacific-exjapan-ucits-etf-inc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251878/ishares-msci-taiwan-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251882/ishares-msci-world-ucits-etf-acc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251891/ishares-msci-world-eur-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251892/ishares-msci-world-gbp-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251900/ishares-sp-500-ucits-etf-inc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251903/ishares-sp-500-eur-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251904/ishares-sp-500-gbp-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251908/ishares-gold-producers-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251909/ishares-oil-gas-exploration-production-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/251913/ishares-global-water-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253474/ishares-msci-uk-small-cap-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253712/ishares-euro-stoxx-50-b-ucits-etf-acc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253721/ishares-msci-canada-b-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253723/ishares-msci-em-asia-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253739/ishares-msci-uk-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/258441/ishares-physical-gold-etc-fund?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/275765/ishares-msci-emu-usd-hedged-ucits-etf?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/284216/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/284217/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/284219/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/291771/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/295689/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/297140/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/297617/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/320429/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/326325/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/329501/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/331973/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/334464/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/338197/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/338199/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/338787/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/339851/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/343289/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/344524/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/345953/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/346443/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/346447/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/349409/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/351160/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/351240/?siteEntryPassthrough=true",
+    "https://www.ishares.com/uk/individual/en/products/351882/?siteEntryPassthrough=true",
+    "https://www.ishares.com/varnish-api/blk-product-screener-server/api/v1/product-screener/product-data?country=gb&language=en&siteName=ishares-uk&userType=individual",
+    "https://www.londonstockexchange.com/stock/EGLN/ishares/company-page",
+    "https://www.londonstockexchange.com/stock/IGLN/ishares/company-page",
+    "https://www.londonstockexchange.com/stock/SGLN/ishares/company-page"
+  ],
+  "stage_id": "UKACTIVE-A0A1",
+  "started_at": "2026-08-22T16:13:12Z",
+  "strategy_or_performance_outputs": "NONE",
+  "unresolved_items": [
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "BROKER",
+      "control_or_next_action": "All broker statuses remain NOT_CHECKED; no orders or permission changes attempted.",
+      "description": "IBKR account-specific availability was not checked because no safe exact-LSE-ISIN read-only route was available.",
+      "item_id": "URI-001",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A2_OR_SEPARATE_READ_ONLY_BROKER_ADAPTER",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "ELIGIBILITY",
+      "control_or_next_action": "They remain CURRENT_CANDIDATE_UNVERIFIED and cannot be promoted silently.",
+      "description": "Non-iShares share classes lack product-specific current KID/ISA/SIPP verification.",
+      "item_id": "URI-002",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A0A1_MAINTENANCE",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "LISTING_STATUS",
+      "control_or_next_action": "Use licensed/reference exchange status data for point-in-time reconstruction.",
+      "description": "Current LSE catalogue presence is not a full suspension/delisting-status legal feed.",
+      "item_id": "URI-003",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A2",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "HISTORY",
+      "control_or_next_action": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY",
+      "description": "No historical eligibility or delisted ETF universe has been reconstructed.",
+      "item_id": "URI-004",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A2",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "TOTAL_RETURN",
+      "control_or_next_action": "No strategy or return research is authorised in A0A1.",
+      "description": "Adjusted prices, distributions, corporate actions and GBP total returns have not been validated.",
+      "item_id": "URI-005",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A2",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "LIQUIDITY",
+      "control_or_next_action": "Do not select an implementation from ticker count or price-data presence.",
+      "description": "Comparable bid/ask spreads, turnover, AUM and creation/redemption liquidity are incomplete across providers.",
+      "item_id": "URI-006",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A2_IMPLEMENTATION_DATA",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "ETC_STRUCTURE",
+      "control_or_next_action": "Only structurally evidenced unleveraged candidates can be promoted.",
+      "description": "Non-iShares ETC collateral, security, counterparty and maturity terms require product-level prospectus review.",
+      "item_id": "URI-007",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A0A1_MAINTENANCE",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "DEEPVUE",
+      "control_or_next_action": "Only the 31 user-confirmed exact labels are admitted; gaps do not block stage pass.",
+      "description": "No complete current official/public DeepVue Theme Tracker label export was found.",
+      "item_id": "URI-008",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "USER_EXPORT_OR_FUTURE_REFRESH",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "CLASSIFICATION",
+      "control_or_next_action": "Use index methodology and holdings review before promoting ambiguous narrow themes.",
+      "description": "Some issuer descriptions are insufficient to distinguish near-neighbour indices or exact holdings screens.",
+      "item_id": "URI-009",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "A0A1_MAINTENANCE",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "REPRODUCIBILITY",
+      "control_or_next_action": "Executed source and captures are hashed and retained, but Git commit/diff are not applicable.",
+      "description": "The research platform directory is not a Git worktree.",
+      "item_id": "URI-010",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "PLATFORM_GOVERNANCE",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    },
+    {
+      "blocks_a0a1_pass": "NO",
+      "category": "ACCOUNT_ELIGIBILITY",
+      "control_or_next_action": "Product-level issuer evidence is not a guarantee of availability at every retail platform.",
+      "description": "ISA and SIPP availability can vary by scheme/provider even where issuer pages indicate eligibility.",
+      "item_id": "URI-011",
+      "observation_date": "2026-08-22",
+      "required_resolution_stage": "BROKER_PLATFORM_CONFIRMATION",
+      "status": "OPEN",
+      "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+    }
+  ],
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+}

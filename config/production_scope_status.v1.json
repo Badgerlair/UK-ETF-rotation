@@ -1,0 +1,7 @@
+{
+  "schema_version": "edge.production_scope_status.v1",
+  "status": "NO_APPROVED_SCOPE",
+  "approved_production_scopes": [],
+  "reason": "The Mandatory MDM capability audit is blocked and the population/time contract is unratified.",
+  "effect": "Every production build fails closed before transformation."
+}

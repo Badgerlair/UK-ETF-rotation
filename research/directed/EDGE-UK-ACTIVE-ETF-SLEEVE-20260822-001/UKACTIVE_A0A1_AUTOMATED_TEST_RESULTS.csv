@@ -1,0 +1,28 @@
+test_id,requirement,status,detail,warning
+QC-001,Ticker is not treated as globally unique,PASS,listing_id is a deterministic hash of ISIN+MIC+ticker+price unit; ticker is descriptive only,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-002,Canonical share classes have ISIN or documented exception,PASS,share_classes=296,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-003,Same-ISIN listings do not become multiple economic opportunities,PASS,unique_isins=296,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-004,Unhedged GBP/USD listings remain one exposure,PASS,multi-price-unit ISINs tested=179,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-005,Accumulating/distributing versions are distinct share classes,PASS,families_with_pair=UK_GILTS_SHORT;GLOBAL_ALL_WORLD;GLOBAL_INFRASTRUCTURE;UK_LARGE_CAP;EUROZONE;US_BROAD_LARGE_CAP;GLOBAL_CLEAN_ENERGY;ASIA_PACIFIC_EX_JAPAN;GLOBAL_CORPORATE_IG_GBP_HEDGED;EMERGING_MARKETS;SOUTH_KOREA;GLOBAL_DEVELOPED_WORLD;US_AI;JAPAN,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-006,Hedged and unhedged exposures are not collapsed,PASS,"hedge_pairs=[('GLOBAL_DEVELOPED_WORLD', 'GLOBAL_DEVELOPED_WORLD_GBP_HEDGED'), ('US_BROAD_LARGE_CAP', 'US_BROAD_LARGE_CAP_GBP_HEDGED'), ('US_TOTAL_MARKET', 'US_TOTAL_MARKET_GBP_HEDGED'), ('JAPAN', 'JAPAN_GBP_HEDGED')]",CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-007,GBP and GBX are explicit and correctly scaled,PASS,GBX maps to GBP at 0.01; GBP maps at 1,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-008,UCITS is never inferred from name,PASS,allowed evidence bases enforced,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-009,Broker status is not inferred from price data,PASS,all broker states deliberately NOT_CHECKED,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-010,Current eligibility is not converted into historical eligibility,PASS,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-011,Leveraged/inverse/path-dependent instruments cannot enter canonical tiers,PASS,canonical_isins=296; structural_exclusions=403,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-012,ETCs are assessed rather than blanket-excluded,PASS,unleveraged gold ETC candidate retained and structurally assessed,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-013,DeepVue themes are never invented,PASS,confirmed_label_count=31,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-014,Non-thematic broad and bond products are not forced into DeepVue,PASS,"explicit negative mappings checked, including growth-biased Nasdaq-100",CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-015,Sector and theme remain separate dimensions,PASS,separate columns and differing values observed,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-016,Geography is not inferred from listing currency,PASS,Japan GBP/GBX listings=6,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-017,Provider duplication creates no additional opportunity rows,PASS,one row per family despite multi-provider implementations,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-018,Identity references are valid,PASS,fund→share class→listing foreign keys resolve,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-019,Tiers are exhaustive and permitted,PASS,all canonical families have exactly one permitted tier,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-020,Manual audit suite covers all required cases,PASS,audited=20/20,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-021,Discovery universe is substantial,PASS,listings=4359; unique_isins=2821; families=99,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-022,No strategy/backtest output exists,PASS,"builder contains no price-return, signal, rank, portfolio, order, or backtest calculation",CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-023,Direct gold cannot contain gold-mining equity products,PASS,direct_gold_share_classes=6,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-024,Abbreviated daily-short products are excluded,PASS,daily_short_negative_controls=31,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-025,GBP overnight family has explicit sterling-rate evidence,PASS,gbp_cash_share_classes=3,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-026,Verified current investability requires product-specific retail evidence,PASS,verified_listing_rows=51,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY
+QC-027,Every canonical listing has a dated current status source,PASS,listing_rows=478,CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY

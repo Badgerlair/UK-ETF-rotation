@@ -1,0 +1,36 @@
+﻿test_id,category,critical,description,expected,observed,status
+SYN-01,SYNTHETIC_FAILURE_FIXTURE,True,date-T signal cannot receive date-T return,FAILURE_CAUGHT,"[0.20000000000000004, -0.1, 0.049999999999999996, nan]",PASS
+SYN-02,SYNTHETIC_FAILURE_FIXTURE,True,future family availability cannot change an earlier rank,FAILURE_CAUGHT,"[[0.5, 1.0, nan], [0.3333333333333333, 0.6666666666666666, 1.0]]",PASS
+SYN-03,SYNTHETIC_FAILURE_FIXTURE,True,missing exposure is excluded rather than filled with zero,FAILURE_CAUGHT,"[[0.5, nan, 1.0]]",PASS
+SYN-04,SYNTHETIC_FAILURE_FIXTURE,True,duplicate implementations cannot become two ranking units,FAILURE_CAUGHT,"[{'family': 'F1', 'listing': 'L1'}, {'family': 'F1', 'listing': 'L2'}]",PASS
+SYN-05,SYNTHETIC_FAILURE_FIXTURE,True,invalid A2 observations remain invalid,FAILURE_CAUGHT,"[0.01, nan]",PASS
+SYN-06,SYNTHETIC_FAILURE_FIXTURE,True,EXPERIMENTAL values cannot alter primary ranks,FAILURE_CAUGHT,"{'before': [1.0], 'after': [1.0]}",PASS
+SYN-07,SYNTHETIC_FAILURE_FIXTURE,True,cross-sectional normalisation uses no future date,FAILURE_CAUGHT,"{'before': [-1.2247448713915892, 0.0, 1.2247448713915892], 'after': [-1.2247448713915892, 0.0, 1.2247448713915892]}",PASS
+SYN-08,SYNTHETIC_FAILURE_FIXTURE,True,subperiod membership is contemporaneous,FAILURE_CAUGHT,['OLD'],PASS
+SYN-09,SYNTHETIC_FAILURE_FIXTURE,True,forward horizon compounds exactly t+1 through t+h,FAILURE_CAUGHT,"[0.08000000000000002, -0.05499999999999998, nan, nan]",PASS
+SYN-10,SYNTHETIC_FAILURE_FIXTURE,True,12-1 excludes the most recent 21 sessions,FAILURE_CAUGHT,"{'observed': np.float64(0.2597138310354411), 'expected': 0.259713831035409}",PASS
+SYN-11,SYNTHETIC_FAILURE_FIXTURE,True,lookback warm-up is enforced,FAILURE_CAUGHT,"[nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, 0.021211336005403383, 0.021211336005403383, 0.021211336005403383, 0.021211336005403383, 0.021211336005403383]",PASS
+SYN-12,SYNTHETIC_FAILURE_FIXTURE,True,proxy history cannot enter,FAILURE_CAUGHT,True,PASS
+SYN-13,SYNTHETIC_FAILURE_FIXTURE,True,cash comparison is tied to A2 cash series,FAILURE_CAUGHT,6676,PASS
+SYN-14,SYNTHETIC_FAILURE_FIXTURE,True,executed registry exactly matches predeclared registry,FAILURE_CAUGHT,"['MOM_21', 'MOM_63', 'MOM_126', 'MOM_252', 'MOM_12_1', 'MULTI_Z_21_63_126', 'MULTI_Z_63_126_252', 'ABS_POS_126', 'ABS_POS_252', 'ABOVE_GBP_CASH_126', 'ABOVE_GBP_CASH_252', 'TREND_MA_252', 'RISK_ADJ_MOM_126_VOL63', 'RISK_ADJ_MOM_252_VOL63', 'MOM_105', 'MOM_147', 'MOM_210', 'MOM_294', 'ABS_POS_210', 'ABS_POS_294', 'ABOVE_GBP_CASH_210', 'ABOVE_GBP_CASH_294', 'TREND_MA_210', 'TREND_MA_294']",PASS
+REAL-01,REAL,True,date-T signals receive first return from strictly t+1,PASS,5.551115123125783e-17,PASS
+REAL-02,REAL,True,ranking unit is unique economic exposure family/date,PASS,0,PASS
+REAL-03,REAL,True,missing/invalid current observations cannot produce a 21-session signal,PASS,0,PASS
+REAL-04,REAL,True,ticker/ISIN/listing cannot enter the ranking output as an observation key,PASS,[],PASS
+REAL-05,REAL,True,invalid A2 observations are masked before calculation,PASS,0,PASS
+REAL-06,REAL,True,EXPERIMENTAL inclusion cannot alter stored CORE+EXTENDED results,PASS,0.0,PASS
+REAL-07,REAL,True,all composite normalisation is date-level and peer-local,PASS,DATE_LEVEL_WITHIN_PEER_5_95_WINSORISED_ZSCORE,PASS
+REAL-08,REAL,True,subperiod outputs use only predeclared contemporaneous labels,PASS,"['2010_2014', '2015_2019', '2020_2022', 'FROM_2020', 'FROM_2023', 'FULL', 'PRE_2020', 'RECENT_3Y', 'RECENT_5Y']",PASS
+REAL-09,REAL,True,forward-return horizons are exactly aligned,PASS,2.498001805406602e-16,PASS
+REAL-10,REAL,True,12-1 excludes the most recent 21 canonical sessions,PASS,2.498001805406602e-16,PASS
+REAL-11,REAL,True,252-session warm-up is respected,PASS,"{'pre_warmup_valid': 0, 'first_finite_row': 624}",PASS
+REAL-12,REAL,True,no proxy history enters,PASS,0,PASS
+REAL-13,REAL,True,cash comparison uses the hashed authoritative A2 cash series,PASS,"{'actual': '491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a', 'manifest': '491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a'}",PASS
+REAL-14,REAL,True,executed signal registry exactly matches policy order and definitions,PASS,"['MOM_21', 'MOM_63', 'MOM_126', 'MOM_252', 'MOM_12_1', 'MULTI_Z_21_63_126', 'MULTI_Z_63_126_252', 'ABS_POS_126', 'ABS_POS_252', 'ABOVE_GBP_CASH_126', 'ABOVE_GBP_CASH_252', 'TREND_MA_252', 'RISK_ADJ_MOM_126_VOL63', 'RISK_ADJ_MOM_252_VOL63', 'MOM_105', 'MOM_147', 'MOM_210', 'MOM_294', 'ABS_POS_210', 'ABS_POS_294', 'ABOVE_GBP_CASH_210', 'ABOVE_GBP_CASH_294', 'TREND_MA_210', 'TREND_MA_294']",PASS
+REAL-15,REAL,True,DeepVue metadata has zero signal/ranking effect,PASS,[],PASS
+REAL-16,REAL,True,authorised family and tier counts match A2,PASS,"{'families': 86, 'tiers': {'CORE': 38, 'EXTENDED': 34, 'EXPERIMENTAL': 14}}",PASS
+REAL-17,REAL,True,every predeclared evaluation cell appears in the multiple-testing ledger,PASS,"{'observed': 8064, 'expected': 8064}",PASS
+REAL-18,REAL,True,all evaluation rows reference a registered signal,PASS,[],PASS
+REAL-19,REAL,True,A2 next-eligible-session mapping is preserved,PASS,0,PASS
+REAL-20,REAL,True,no portfolio-performance or construction field is produced,PASS,[],PASS
+REAL-21,REAL,True,EXPERIMENTAL families cannot determine primary signal classification,PASS,"{'assessment_primary_only': True, 'experimental_primary_affected': False}",PASS

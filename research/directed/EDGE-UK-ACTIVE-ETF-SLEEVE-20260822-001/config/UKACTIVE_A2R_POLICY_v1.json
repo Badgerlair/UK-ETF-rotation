@@ -1,0 +1,90 @@
+{
+  "policy_id": "UKACTIVE-A2R-POLICY-v1.0.0",
+  "stage_id": "UKACTIVE-A2R",
+  "run_id": "UKACTIVE-A2R-20260822-001",
+  "declared_at": "2026-08-22T22:00:00+01:00",
+  "observation_date": "2026-08-22",
+  "purpose": "Economic-lineage remediation and conventional Europe/global sector-grid repair only; no signal, strategy, portfolio or performance research",
+  "authoritative_prior_family_count": 99,
+  "blocking_families": [
+    "AUSTRALIA",
+    "CHINA_BROAD",
+    "EUROPE_ENERGY",
+    "EUROPE_FINANCIALS",
+    "EUROPE_HEALTHCARE",
+    "EUROPE_INDUSTRIALS",
+    "EUROPE_MATERIALS",
+    "EUROPE_TECHNOLOGY",
+    "EUROPE_UTILITIES",
+    "GLOBAL_BANKS",
+    "GLOBAL_HEALTHCARE",
+    "GLOBAL_INFRASTRUCTURE",
+    "GLOBAL_TECHNOLOGY",
+    "US_AEROSPACE_DEFENCE"
+  ],
+  "dynamic_admission": {
+    "rule_id": "SIGNAL_SPECIFIC_DYNAMIC_ADMISSION-v1.1.0",
+    "signal_sessions": [21, 42, 63, 126, 252],
+    "history_gate_504_removed": true,
+    "valid_observation_rule": "L cumulative canonical observations with data_valid=true, stale_flag=false, missing_flag=false, proxy_flag=false and a semantically valid implementation objective",
+    "current_eligibility_back_projection_allowed": false,
+    "proxy_splicing_allowed": false
+  },
+  "semantic_lineage": {
+    "rule_version": "UKACTIVE-ECONOMIC-FINGERPRINT-v1.0.0",
+    "fingerprint_dimensions": [
+      "GEOGRAPHY",
+      "SECTOR_OR_INDUSTRY",
+      "INDEX_OR_EXPOSURE_OBJECTIVE",
+      "HEDGED_OR_UNHEDGED",
+      "BREADTH_LEVEL"
+    ],
+    "ticker_identity_sufficient": false,
+    "different_isin_splicing_allowed": false,
+    "objective_change_back_projection_allowed": false,
+    "proxy_may_be_labelled_implementation": false
+  },
+  "sector_grid_additions_from_original_registry": [
+    "EUROPE_CONSUMER_DISCRETIONARY",
+    "EUROPE_COMMUNICATION_SERVICES",
+    "EUROPE_REAL_ESTATE",
+    "GLOBAL_CONSUMER_DISCRETIONARY",
+    "GLOBAL_CONSUMER_STAPLES",
+    "GLOBAL_COMMUNICATION_SERVICES"
+  ],
+  "external_product_admissions": [
+    {
+      "economic_exposure_family_id": "GLOBAL_INFRASTRUCTURE",
+      "isin": "IE00B1FZS467",
+      "reason": "A0A1 missed the long-running LSE INFR/IDIN share class; A2R requires issuer, LSE, disclosure, exact-ISIN vendor and A2 return validation before admission",
+      "automatic_admission": false
+    }
+  ],
+  "family_outcomes_expected": {
+    "AUSTRALIA": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "CHINA_BROAD": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_ENERGY": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_FINANCIALS": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_HEALTHCARE": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_INDUSTRIALS": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_MATERIALS": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_TECHNOLOGY": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "EUROPE_UTILITIES": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "GLOBAL_BANKS": "NO_VALID_IMPLEMENTATION_HISTORY",
+    "GLOBAL_HEALTHCARE": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "GLOBAL_INFRASTRUCTURE": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "GLOBAL_TECHNOLOGY": "CORRECTED_IMPLEMENTATION_HISTORY",
+    "US_AEROSPACE_DEFENCE": "VALID_ONLY_FROM_LATER_DATE"
+  },
+  "us_defence": {
+    "strategy_change_effective_date": "2026-07-15",
+    "first_return_eligible_date": "2026-07-16",
+    "old_objective": "ETC Group Web 3.0 / Global Metaverse",
+    "new_objective": "VettaFi American Future of Defence Index",
+    "old_isin_reused": "IE000KDY10O3"
+  },
+  "a2_engine_policy": "UKACTIVE_A2_POLICY_v1.json",
+  "classification_rule_version": "UKACTIVE-CLASSIFICATION-A2R-v1.0.0",
+  "duplicate_rule_version": "UKACTIVE-DUPLICATE-v1.0.0",
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "edge.daily_slice_policy.test.v1",
+  "classification": "TEST_ONLY_NON_PRODUCTION",
+  "request_id": "EDGE-M3-TEST-001",
+  "universe_id": "EDGE-PRIMARY-EQUITY",
+  "exchange_ids": ["XEQ"],
+  "security_types": ["COMMON_STOCK"],
+  "currencies": ["USD"],
+  "start_session": "2024-03-08",
+  "end_session": "2024-03-18",
+  "observation_clock": "POST_CLOSE_CUTOFF",
+  "primary_listings_only": true,
+  "use_mode": "TEST_ONLY_VALIDATION",
+  "policy_versions": {
+    "population_time": "PTC-TEST-001",
+    "calendar": "CAL-TEST-001",
+    "universe": "UNIV-TEST-001",
+    "corporate_action": "CA-TEST-001",
+    "point_in_time_join": "PIT-TEST-001"
+  }
+}

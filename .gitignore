@@ -1,0 +1,81 @@
+# Python build/runtime state
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# Local test and scratch workspaces
+tests/.pytest_tmp/
+.pytest_tmp*/
+.pytest-*/
+.pt-*/
+tmp/
+temp/
+*.tmp
+*.log
+
+# Credentials and local authentication material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*cookies*.json
+*auth*.json
+*token*.json
+
+# Large/reproducible research data and binary caches.  Exact UKACTIVE inputs
+# are retained in the committed local-data inventory with path, size and hash.
+*.parquet
+*.feather
+*.arrow
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.sqlite
+*.sqlite3
+*.db
+*.bin
+*.bin.gz
+*.zip
+*.7z
+*.tar
+*.tar.gz
+research/**/evidence/sources/
+research/**/UKACTIVE_*_SUBPERIOD_RESULTS.csv
+research/**/UKACTIVE_*_QUANTILE_FORWARD_RETURNS.csv
+research/**/UKACTIVE_*_TIME_SERIES.csv
+
+# Platform-local bulk research stores.  This repository checkpoints source and
+# reproducibility controls; these byte stores remain local and hash-inventoried.
+artifacts/
+evidence/
+observations/
+
+# Existing directed programmes are outside this checkpoint, except the
+# explicitly authorised UKACTIVE programme.
+research/*
+!research/directed/
+research/directed/*
+!research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/
+
+# OS/editor state
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

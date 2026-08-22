@@ -1,0 +1,4 @@
+economic_exposure_family_id,provider_issuer,accumulating_share_class_id,accumulating_ticker,distributing_share_class_id,distributing_ticker,overlap_observations,median_absolute_daily_total_return_difference,p95_absolute_daily_total_return_difference,validation_status,note
+ASIA_PACIFIC_EX_JAPAN,AMUNDI,SC-93B5C19A4B73C9B2,AEJL,SC-A079FEAF635058CC,PAXG,0,,,WARNING,"Separate share-class price identities retained; comparison is a total-return coherence diagnostic, not a performance test."
+UK_GILTS_SHORT,ISHARES,SC-0094B800ED9B8E0E,IGL5,SC-C08D34CCD7465C09,IGLS,0,,,WARNING,"Separate share-class price identities retained; comparison is a total-return coherence diagnostic, not a performance test."
+US_BROAD_LARGE_CAP,ISHARES,SC-EE3CB4B3BCEF6337,CSP1,SC-0A5B1D8BDF44932C,IUSA,3444,0.00036647762473196455,0.0023791449820676435,PASS,"Separate share-class price identities retained; comparison is a total-return coherence diagnostic, not a performance test."

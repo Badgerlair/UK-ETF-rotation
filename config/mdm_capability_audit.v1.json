@@ -1,0 +1,84 @@
+{
+  "schema_version": "edge.mdm_capability_audit.v1",
+  "audit_id": "EDGE-MDM-AUDIT-2026-08-03-001",
+  "audit_date": "2026-08-03",
+  "source_authority": "MDM",
+  "audited_mdm_repository": "D:\\codex\\market_data_manager",
+  "audited_mdm_commit": "e7c9b63b2a05b7b356bc3af044ed756b4acf57a7",
+  "production_gate": "BLOCKED",
+  "capabilities": [
+    {
+      "capability": "raw_daily_ohlcv",
+      "priority": "Mandatory",
+      "status": "PARTIAL",
+      "evidence": "MDM daily stock Parquet contains date, ticker, OHLCV, VWAP, transactions and ingestion fields, but has no immutable cross-dataset snapshot binding or row-level raw/adjusted declaration.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "stable_security_issuer_listing_identity",
+      "priority": "Mandatory",
+      "status": "UNAVAILABLE",
+      "evidence": "Available reference snapshots do not provide a complete adjudicated stable security/listing history, ticker-reuse history, or successor/predecessor chain.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "historical_survivor_complete_universe",
+      "priority": "Mandatory",
+      "status": "PARTIAL_LOCKED",
+      "evidence": "Monthly reference exports are explicitly partial/review-required and locked pending approval.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "authoritative_equity_trading_calendar_and_cutoffs",
+      "priority": "Mandatory",
+      "status": "UNAVAILABLE",
+      "evidence": "No MDM-authoritative equity session spine with timezone, holidays, early closes and research cutoffs was found.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "splits",
+      "priority": "Mandatory",
+      "status": "PARTIAL",
+      "evidence": "Split records exist, but a complete revision/cancellation and atomic snapshot contract is absent.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "cash_distributions",
+      "priority": "Mandatory",
+      "status": "UNAVAILABLE",
+      "evidence": "No complete authorised cash-distribution history was found.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "delistings_and_terminal_outcomes",
+      "priority": "Mandatory",
+      "status": "UNAVAILABLE",
+      "evidence": "No complete terminal-consideration and delisting-outcome history was found.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "immutable_atomic_snapshot_and_exact_replay",
+      "priority": "Mandatory",
+      "status": "UNAVAILABLE",
+      "evidence": "No MDM-wide immutable snapshot ID, common consistency token, source-file checksum manifest, or exact correction/replay contract was found.",
+      "production_effect": "BLOCK"
+    },
+    {
+      "capability": "point_in_time_sector_industry",
+      "priority": "Important_Mandatory_When_Used",
+      "status": "UNAVAILABLE_FOR_EDGE",
+      "evidence": "The available proxy is tied to prior research and is prohibited for this independent project.",
+      "production_effect": "BLOCK_SECTOR_DEPENDENT_RESEARCH"
+    }
+  ],
+  "mandatory_blockers": [
+    "RATIFIED_POPULATION_TIME_CONTRACT_MISSING",
+    "STABLE_IDENTITY_HISTORY_MISSING",
+    "AUTHORITATIVE_EQUITY_CALENDAR_MISSING",
+    "CASH_DISTRIBUTIONS_MISSING",
+    "TERMINAL_OUTCOMES_MISSING",
+    "SURVIVOR_COMPLETE_UNIVERSE_NOT_APPROVED",
+    "ATOMIC_IMMUTABLE_MDM_SNAPSHOT_AND_REPLAY_MISSING"
+  ],
+  "decision": "No production Project EDGE feature-ready snapshot may be admitted from the audited MDM state. Synthetic safety evidence may exercise the implementation but may not enter research."
+}

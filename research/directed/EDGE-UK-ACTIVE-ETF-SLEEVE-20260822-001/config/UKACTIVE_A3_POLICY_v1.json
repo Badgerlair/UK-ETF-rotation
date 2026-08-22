@@ -1,0 +1,197 @@
+{
+  "stage_id": "UKACTIVE-A3",
+  "run_id": "UKACTIVE-A3-20260822-001",
+  "policy_id": "UKACTIVE-A3-POLICY-v1.1.0",
+  "declared_at": "2026-08-22T18:45:01+01:00",
+  "revised_at": "2026-08-22T19:11:49+01:00",
+  "revision_note": "v1.1 was declared after the initial diagnostic pass and before the final executed run. It adds direct 210/294-session neighbourhood variants for the three 252-session qualification definitions that triggered robustness testing. These variants are SECONDARY_TRIGGERED_NEIGHBOURHOOD, do not enter the 84-test primary FDR family, and cannot replace their central specification.",
+  "research_boundary": {
+    "signal_discovery_only": true,
+    "portfolio_construction_allowed": false,
+    "strategy_backtest_allowed": false,
+    "deployment_claim_allowed": false,
+    "historically_verified_eligibility_claim_allowed": false,
+    "warning": "HISTORICAL ELIGIBILITY REMAINS UNRESOLVED"
+  },
+  "authoritative_inputs": {
+    "a2_panel": "UKACTIVE_A2_TOTAL_RETURN_PANEL_GBP.parquet",
+    "a2_exposure_history": "UKACTIVE_A2_EXPOSURE_HISTORY_MASTER.parquet",
+    "a2_point_in_time_eligibility": "UKACTIVE_A2_POINT_IN_TIME_ELIGIBILITY.parquet",
+    "a2_canonical_implementation": "UKACTIVE_A2_CANONICAL_IMPLEMENTATION_HISTORY.parquet",
+    "a2_cash": "UKACTIVE_A2_CASH_SERIES.parquet",
+    "a2_manifest": "UKACTIVE_A2_MANIFEST.json",
+    "a2_readiness": "UKACTIVE_A2_FAMILY_COVERAGE_AND_READINESS.csv",
+    "a0a1_classification": "UKACTIVE_A0A1_ECONOMIC_EXPOSURE_MASTER.csv"
+  },
+  "admission": {
+    "a2_a3_ready_required": true,
+    "data_valid_required": true,
+    "proxy_flag_must_be_false": true,
+    "missing_return_is_not_zero": true,
+    "invalid_return_is_never_reintroduced": true,
+    "unit_of_analysis": "economic_exposure_family_id",
+    "authorised_family_count": 86,
+    "authorised_tier_counts": {
+      "CORE": 38,
+      "EXTENDED": 34,
+      "EXPERIMENTAL": 14
+    }
+  },
+  "universe_scopes": [
+    {"universe_id": "CORE", "tiers": ["CORE"], "primary_decision": true},
+    {"universe_id": "CORE_EXTENDED", "tiers": ["CORE", "EXTENDED"], "primary_decision": true},
+    {"universe_id": "EXPERIMENTAL", "tiers": ["EXPERIMENTAL"], "primary_decision": false},
+    {"universe_id": "ALL_A3_READY", "tiers": ["CORE", "EXTENDED", "EXPERIMENTAL"], "primary_decision": false}
+  ],
+  "cohorts": [
+    {"cohort_id": "GLOBAL", "rule": "ALL_FAMILIES_IN_UNIVERSE", "ranking_mode": "GLOBAL"},
+    {"cohort_id": "GLOBAL_CATEGORY_NEUTRAL", "rule": "ALL_FAMILIES_IN_UNIVERSE", "ranking_mode": "WITHIN_OPPORTUNITY_TYPE"},
+    {"cohort_id": "GEOGRAPHY", "rule": "opportunity_type == GEOGRAPHY", "ranking_mode": "WITHIN_COHORT"},
+    {"cohort_id": "SECTOR_INDUSTRY", "rule": "opportunity_type == SECTOR_INDUSTRY", "ranking_mode": "WITHIN_COHORT"},
+    {"cohort_id": "THEMATIC", "rule": "opportunity_type == THEMATIC", "ranking_mode": "WITHIN_COHORT"},
+    {"cohort_id": "DEFENSIVE_DIVERSIFIER", "rule": "opportunity_type == DEFENSIVE_DIVERSIFIER", "ranking_mode": "WITHIN_COHORT", "interpretation": "HETEROGENEOUS_DIAGNOSTIC_ONLY"},
+    {"cohort_id": "DEFENSIVE_FIXED_INCOME_CASH", "rule": "opportunity_type == DEFENSIVE_DIVERSIFIER AND asset_class IN [GOVERNMENT_BOND,CORPORATE_BOND,AGGREGATE_BOND,CASH_LIKE]", "ranking_mode": "WITHIN_COHORT"}
+  ],
+  "observation_frequencies": [
+    {
+      "frequency_id": "WEEKLY_WEDNESDAY",
+      "primary": true,
+      "rule": "CLOSEST_CANONICAL_XLON_SESSION_TO_WEDNESDAY_WITHIN_ISO_WEEK_TIE_PRIOR"
+    },
+    {
+      "frequency_id": "MONTH_END",
+      "primary": true,
+      "rule": "LAST_CANONICAL_XLON_RESEARCH_SESSION_OF_CALENDAR_MONTH"
+    }
+  ],
+  "weekday_perturbations": [
+    {"frequency_id": "WEEKLY_TUESDAY", "rule": "CLOSEST_CANONICAL_XLON_SESSION_TO_TUESDAY_WITHIN_ISO_WEEK_TIE_PRIOR"},
+    {"frequency_id": "WEEKLY_THURSDAY", "rule": "CLOSEST_CANONICAL_XLON_SESSION_TO_THURSDAY_WITHIN_ISO_WEEK_TIE_PRIOR"}
+  ],
+  "forward_horizons_sessions": [1, 5, 21, 42, 63, 126],
+  "primary_inference_horizons_sessions": [21, 42, 63],
+  "signal_definitions": [
+    {"signal_id": "MOM_21", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 21, "formula": "TR(t-21,t)"},
+    {"signal_id": "MOM_63", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 63, "formula": "TR(t-63,t)"},
+    {"signal_id": "MOM_126", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 126, "formula": "TR(t-126,t)"},
+    {"signal_id": "MOM_252", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 252, "formula": "TR(t-252,t)"},
+    {"signal_id": "MOM_12_1", "signal_family": "TWELVE_MINUS_ONE_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 252, "skip_sessions": 21, "formula": "TR(t-252,t-21); all 252 sessions must be valid"},
+    {"signal_id": "MULTI_Z_21_63_126", "signal_family": "MULTI_HORIZON_RELATIVE_STRENGTH", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "components": ["MOM_21", "MOM_63", "MOM_126"], "formula": "equal mean of date-level within-peer winsorised z-scores"},
+    {"signal_id": "MULTI_Z_63_126_252", "signal_family": "MULTI_HORIZON_RELATIVE_STRENGTH", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "components": ["MOM_63", "MOM_126", "MOM_252"], "formula": "equal mean of date-level within-peer winsorised z-scores"},
+    {"signal_id": "ABS_POS_126", "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "PRIMARY", "lookback_sessions": 126, "formula": "1 if MOM_126 > 0 else 0"},
+    {"signal_id": "ABS_POS_252", "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "PRIMARY", "lookback_sessions": 252, "formula": "1 if MOM_252 > 0 else 0"},
+    {"signal_id": "ABOVE_GBP_CASH_126", "signal_family": "CASH_RELATIVE_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "PRIMARY", "lookback_sessions": 126, "formula": "1 if MOM_126 exceeds contemporaneous 126-session A2 actual-GBP-cash return else 0"},
+    {"signal_id": "ABOVE_GBP_CASH_252", "signal_family": "CASH_RELATIVE_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "PRIMARY", "lookback_sessions": 252, "formula": "1 if MOM_252 exceeds contemporaneous 252-session A2 actual-GBP-cash return else 0"},
+    {"signal_id": "TREND_MA_252", "signal_family": "TOTAL_RETURN_TREND_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "PRIMARY", "lookback_sessions": 252, "formula": "1 if total-return wealth index exceeds its trailing 252-session simple moving average else 0"},
+    {"signal_id": "RISK_ADJ_MOM_126_VOL63", "signal_family": "RISK_ADJUSTED_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 126, "volatility_window_sessions": 63, "formula": "MOM_126 divided by annualised 63-session realised volatility"},
+    {"signal_id": "RISK_ADJ_MOM_252_VOL63", "signal_family": "RISK_ADJUSTED_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "PRIMARY", "lookback_sessions": 252, "volatility_window_sessions": 63, "formula": "MOM_252 divided by annualised 63-session realised volatility"},
+    {"signal_id": "MOM_105", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "SECONDARY_NEIGHBOURHOOD", "central_signal_id": "MOM_126", "lookback_sessions": 105, "formula": "TR(t-105,t)"},
+    {"signal_id": "MOM_147", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "SECONDARY_NEIGHBOURHOOD", "central_signal_id": "MOM_126", "lookback_sessions": 147, "formula": "TR(t-147,t)"},
+    {"signal_id": "MOM_210", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "SECONDARY_NEIGHBOURHOOD", "central_signal_id": "MOM_252", "lookback_sessions": 210, "formula": "TR(t-210,t)"},
+    {"signal_id": "MOM_294", "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM", "role": "CONTINUOUS_RANK", "registry_class": "SECONDARY_NEIGHBOURHOOD", "central_signal_id": "MOM_252", "lookback_sessions": 294, "formula": "TR(t-294,t)"},
+    {"signal_id": "ABS_POS_210", "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "ABS_POS_252", "lookback_sessions": 210, "formula": "1 if MOM_210 > 0 else 0"},
+    {"signal_id": "ABS_POS_294", "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "ABS_POS_252", "lookback_sessions": 294, "formula": "1 if MOM_294 > 0 else 0"},
+    {"signal_id": "ABOVE_GBP_CASH_210", "signal_family": "CASH_RELATIVE_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "ABOVE_GBP_CASH_252", "lookback_sessions": 210, "formula": "1 if MOM_210 exceeds contemporaneous 210-session A2 actual-GBP-cash return else 0"},
+    {"signal_id": "ABOVE_GBP_CASH_294", "signal_family": "CASH_RELATIVE_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "ABOVE_GBP_CASH_252", "lookback_sessions": 294, "formula": "1 if MOM_294 exceeds contemporaneous 294-session A2 actual-GBP-cash return else 0"},
+    {"signal_id": "TREND_MA_210", "signal_family": "TOTAL_RETURN_TREND_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "TREND_MA_252", "lookback_sessions": 210, "formula": "1 if total-return wealth index exceeds its trailing 210-session simple moving average else 0"},
+    {"signal_id": "TREND_MA_294", "signal_family": "TOTAL_RETURN_TREND_QUALIFICATION", "role": "BINARY_QUALIFICATION", "registry_class": "SECONDARY_TRIGGERED_NEIGHBOURHOOD", "central_signal_id": "TREND_MA_252", "lookback_sessions": 294, "formula": "1 if total-return wealth index exceeds its trailing 294-session simple moving average else 0"}
+  ],
+  "cross_section": {
+    "minimum_families_for_ic": 5,
+    "minimum_families_per_category_neutral_peer_group": 3,
+    "minimum_date_observations_for_formal_inference": 24,
+    "quintile_minimum_families": 15,
+    "tercile_minimum_families": 6,
+    "below_tercile_minimum": "IC_ONLY",
+    "continuous_normalisation": "DATE_LEVEL_WITHIN_PEER_5_95_WINSORISED_ZSCORE",
+    "bucket_tie_method": "AVERAGE_RANK",
+    "binary_bucket_method": "QUALIFIED_VERSUS_NOT_QUALIFIED",
+    "missing_signal_policy": "EXCLUDE_NOT_ZERO",
+    "missing_forward_return_policy": "EXCLUDE_NOT_ZERO"
+  },
+  "timing": {
+    "signal_information": "AFTER_DATE_T_XLON_CLOSE",
+    "first_forward_return": "STRICTLY_NEXT_CANONICAL_RESEARCH_SESSION",
+    "date_t_return_may_enter_forward_return": false,
+    "lookback_requires_all_canonical_session_returns_valid": true,
+    "forward_horizon_requires_all_canonical_session_returns_valid": true
+  },
+  "inference": {
+    "primary_series": "DATE_LEVEL_CROSS_SECTIONAL_AGGREGATE",
+    "hac_kernel": "BARTLETT_NEWEY_WEST",
+    "hac_lag_rule": "max(1,ceil(forward_horizon/median_observation_spacing)-1)",
+    "confidence_level": 0.95,
+    "block_bootstrap": {
+      "replications": 2000,
+      "seed": 20260822,
+      "block_length_rule": "max(5,hac_lag+1)",
+      "scope": "PRIMARY_CANDIDATE_HEADLINE_CELLS"
+    },
+    "false_discovery_control": {
+      "method": "BENJAMINI_HOCHBERG",
+      "family": "ALL_PREDECLARED_PRIMARY_SIGNAL_HEADLINE_IC_TESTS",
+      "q_threshold": 0.10
+    },
+    "naive_iid_only_inference_forbidden": true
+  },
+  "subperiods": [
+    {"subperiod_id": "FULL", "start": null, "end": null},
+    {"subperiod_id": "PRE_2020", "start": null, "end": "2019-12-31"},
+    {"subperiod_id": "FROM_2020", "start": "2020-01-01", "end": null},
+    {"subperiod_id": "RECENT_5Y", "start_relative_years": 5, "end": null},
+    {"subperiod_id": "RECENT_3Y", "start_relative_years": 3, "end": null},
+    {"subperiod_id": "2010_2014", "start": "2010-01-01", "end": "2014-12-31"},
+    {"subperiod_id": "2015_2019", "start": "2015-01-01", "end": "2019-12-31"},
+    {"subperiod_id": "2020_2022", "start": "2020-01-01", "end": "2022-12-31"},
+    {"subperiod_id": "FROM_2023", "start": "2023-01-01", "end": null}
+  ],
+  "regimes": {
+    "equity_trend": "GLOBAL_ALL_WORLD 252-session return positive versus non-positive",
+    "market_volatility": "GLOBAL_ALL_WORLD trailing 63-session volatility above versus below its prior expanding median",
+    "rates": "A2 SONIA fixing above versus below its value 63 canonical sessions earlier",
+    "dispersion": "cross-sectional standard deviation of 21-session returns above versus below its prior expanding median",
+    "us_leadership": "US_BROAD_LARGE_CAP 63-session return above versus below median non-US GEOGRAPHY return"
+  },
+  "dependency_tests": {
+    "ex_us_technology_semiconductors": "exclude US_NASDAQ_100 plus authoritative US-technology and semiconductor-industry families",
+    "ex_best_full_period_family": "ex-post diagnostic only; rank families by annualised geometric mean of valid daily returns",
+    "ex_top_five_full_period_families": "ex-post diagnostic only; rank families by annualised geometric mean of valid daily returns",
+    "ex_recent_inception": "exclude family/date observations with fewer than 756 accrued valid returns",
+    "ex_high_volatility": "exclude contemporaneous top quintile of 63-session realised volatility",
+    "controlled_cross_sectional_regression": ["US_EXPOSURE", "TECHNOLOGY_OR_SEMICONDUCTOR", "EQUITY", "VOLATILITY_PERCENTILE", "RECENT_INCEPTION", "THEMATIC"]
+  },
+  "candidate_assessment": {
+    "headline_universe": "CORE_EXTENDED",
+    "headline_cohort": "GLOBAL",
+    "headline_frequencies": ["WEEKLY_WEDNESDAY", "MONTH_END"],
+    "headline_horizons": [21, 42, 63],
+    "criteria": [
+      "positive mean IC in at least four of six headline cells",
+      "positive median IC in at least four of six headline cells",
+      "average headline mean IC greater than 0.01",
+      "at least one headline HAC p-value survives BH FDR at q <= 0.10",
+      "positive top-minus-bottom spread in at least four of six headline cells",
+      "at least one headline spread has HAC p <= 0.10",
+      "average quantile monotonicity score at least 0.50",
+      "CORE-only mean IC positive in at least four of six matched cells",
+      "category-neutral mean IC positive in at least four of six matched cells",
+      "positive 42-session mean IC in at least three of FULL, PRE_2020, FROM_2020, RECENT_5Y and RECENT_3Y",
+      "mean IC remains positive after both US-technology and top-five-winner exclusions",
+      "21-session rank autocorrelation is at least 0.25 or leader-above-median persistence is at least 0.55",
+      "parameter-neighbourhood evidence is directionally stable where the signal has a declared central lookback; otherwise this criterion is NOT_APPLICABLE and excluded from the denominator"
+    ],
+    "classification_rule": {
+      "RESEARCH_CANDIDATE": "at least 75 percent of applicable criteria, including FDR survival, with no critical timing/data failure",
+      "SECONDARY": "at least 58 percent but less than 75 percent of applicable criteria, or at least 75 percent without FDR survival",
+      "WEAK": "at least 42 percent but less than 58 percent of applicable criteria",
+      "REJECTED": "less than 42 percent of applicable criteria or wrong economic direction"
+    },
+    "diagnostic_target_rule": "Run regime, dispersion, dependency, bootstrap and weekday-perturbation diagnostics for every RESEARCH_CANDIDATE; if none qualify, use the three highest-scoring non-rejected primary signals without promoting them."
+  },
+  "decision_rule": {
+    "UKACTIVE_A3_SIGNAL_FOUND": "at least one RESEARCH_CANDIDATE",
+    "UKACTIVE_A3_WEAK_OR_REGIME_DEPENDENT_SIGNAL": "no RESEARCH_CANDIDATE and at least one SECONDARY or WEAK signal with coherent conditional evidence",
+    "UKACTIVE_A3_NO_ROBUST_SIGNAL": "all primary signals REJECTED or effects are isolated/unstable",
+    "UKACTIVE_A3_FAIL_DATA_OR_METHOD": "critical correctness failure or insufficient valid cross-section"
+  }
+}

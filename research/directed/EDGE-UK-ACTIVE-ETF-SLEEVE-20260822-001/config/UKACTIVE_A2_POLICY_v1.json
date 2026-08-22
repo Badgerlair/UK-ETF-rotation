@@ -1,0 +1,108 @@
+{
+  "policy_id": "UKACTIVE-A2-POLICY-v1.2.0",
+  "declared_at": "2026-08-22T00:00:00+01:00",
+  "revision_note": "v1.2 was declared before the final panel build. v1.1 resolved vendor dividend-unit ambiguity after a failed dry run. v1.2 uses same-date ECB reference rates because they are normally published around 16:00 CET before the 16:30 Europe/London LSE close; TARGET-holiday gaps use the latest prior rate.",
+  "research_observation_date": "2026-08-22",
+  "history_start": "2000-01-01",
+  "history_end": "2026-08-21",
+  "identity_admission": {
+    "active_listing_rule": "A0A1 ticker AND A0A1 ISIN must exactly match one current EODHD LSE catalogue row",
+    "historical_listing_rule": "An EODHD delisted LSE catalogue row may extend A0A1 lineage only when its ISIN exactly matches an A0A1 share class; it receives a distinct A2 historical listing ID",
+    "ticker_only_match_allowed": false,
+    "current_eligibility_back_projection_allowed": false
+  },
+  "historical_state": {
+    "verified": "HISTORICALLY_VERIFIED_INVESTABLE requires dated contemporaneous retail/account evidence",
+    "probable": "HISTORICALLY_PROBABLE requires an exact identity route, a contemporaneous LSE price observation and an A0A1 long-only structural classification; retail and account eligibility remain unknown",
+    "uncertain": "HISTORICALLY_UNCERTAIN is used when existence or eligibility evidence is incomplete",
+    "not_existing": "NOT_YET_EXISTING is used only before an evidenced inception/listing date",
+    "known_not_eligible": "KNOWN_NOT_ELIGIBLE is used only with affirmative dated evidence"
+  },
+  "implementation_selection": {
+    "information_lag_sessions": 1,
+    "selection_for_return_date": "Select on the immediately prior canonical XLON research session; never use return-date information",
+    "candidate_requirements_as_of_information_date": [
+      "share class and listing existence not known false",
+      "exact ticker+ISIN source identity",
+      "at least two valid observations available through the information date",
+      "not known historically ineligible"
+    ],
+    "ordered_tie_break": [
+      "GBP/GBX listing before foreign-currency listing",
+      "greater count of valid observations accrued only through the information date",
+      "fewer stale or missing observations accrued only through the information date",
+      "earlier first observed listing date",
+      "lexicographically lower share_class_id",
+      "lexicographically lower listing_id"
+    ],
+    "forbidden_inputs": [
+      "future returns",
+      "current AUM applied historically",
+      "current liquidity applied historically",
+      "future eligibility",
+      "provider popularity",
+      "legacy ETF strategy rules"
+    ]
+  },
+  "total_return": {
+    "authoritative_price_field": "EODHD adjusted_close only after vendor-semantics, distribution-event and corporate-action validation",
+    "vendor_documented_semantics": "adjusted_close incorporates splits and dividends; raw OHLC does not",
+    "distribution_handling": "Distributions are retained as event data and used for independent reconstruction only; they are not added again to adjusted-close returns",
+    "manual_event_formula": "(split_adjusted_raw_close_t + distribution_in_price_units_t) / raw_close_t_minus_1 - 1",
+    "distribution_event_unit_resolution": "For a GBP price series with an event labelled GBP, retain GBP units unless event/prior raw close exceeds 20% and event*0.01/prior raw close is at most 20%; only then interpret the vendor numeric event as pence. Record every such resolution. This is a plausibility bound, not best-fit optimisation.",
+    "missing_event_date_rule": "If the event date or immediately prior XLON session lacks an observed price, mark UNRESOLVED and do not shift the event or fail the listing solely for that absence.",
+    "event_pass_absolute_error": 0.001,
+    "event_warning_absolute_error": 0.005,
+    "event_fail_absolute_error": 0.005,
+    "large_daily_return_threshold": 0.35
+  },
+  "gbp_accounting": {
+    "portfolio_currency": "GBP",
+    "GBX_to_GBP_multiplier": 0.01,
+    "GBP_or_GBX_listing": "No FX conversion; the LSE quote already embeds translation",
+    "foreign_currency_listing": "Multiply local adjusted wealth by the ECB GBP-per-local-currency reference rate published by the XLON close; use the same-date rate when present and the latest prior rate only across an ECB/TARGET observation gap",
+    "fx_information_lag_business_days": 0,
+    "fx_publication_timing_evidence": "ECB reference rates are normally updated around 16:00 CET each working day, before the 16:30 Europe/London LSE close; the rates are informational valuation references, not transaction prices",
+    "double_fx_forbidden": true,
+    "economic_currency_inference_from_listing_currency_forbidden": true
+  },
+  "cash": {
+    "research_asset_id": "ACTUAL_GBP_CASH",
+    "implementation_vehicle": "NOT_AN_ETF",
+    "primary_series": "Bank of England IUDSOIA daily SONIA rate mirrored by FRED",
+    "validation_series": "Bank of England IUDZOS2 SONIA Compounded Index mirrored by FRED",
+    "method": "Prior published SONIA fixing compounded ACT/365 over calendar days between canonical XLON sessions",
+    "fee_or_haircut_bps": 0,
+    "broker_cash_equivalence_claimed": false
+  },
+  "calendar": {
+    "mic": "XLON",
+    "timezone": "Europe/London",
+    "historical_session_rule": "Union of valid observations from exact-identity LSE listings, requiring at least one anchor observation; current EODHD exchange holiday data are corroborative only",
+    "signal_information_date": "canonical session close",
+    "execution_eligible_date": "strictly next canonical session",
+    "same_close_execution_allowed": false
+  },
+  "missing_and_stale": {
+    "forward_fill_prices": false,
+    "forward_fill_returns": false,
+    "normal_zero_return_requires_observed_price": true,
+    "stale_suspect_rule": "unchanged adjusted price on at least two consecutive canonical sessions and zero/missing volume, or unchanged price on at least three consecutive sessions regardless of volume",
+    "post_stale_catchup_valid": false,
+    "missing_session_return_valid": false
+  },
+  "warmups": [21, 63, 126, 189, 252, 504],
+  "proxy": {
+    "silent_splicing_allowed": false,
+    "implementation_label": "LIVE_IMPLEMENTATION_HISTORY",
+    "proxy_label": "ECONOMIC_EXPOSURE_PROXY",
+    "proxy_backtest_may_be_called_investable": false
+  },
+  "a3_readiness": {
+    "minimum_valid_observations": 504,
+    "requires_total_return_validation": true,
+    "requires_no_critical_fx_or_price_unit_failure": true,
+    "historical_broker_confirmation_required": false,
+    "deployment_broker_confirmation_required": true
+  }
+}

@@ -1,0 +1,28 @@
+﻿test_id,category,description,critical,expected,observed,status
+A2R-REAL-001,A2_REGRESSION,No corrected instrument return is valid before evidenced inception,YES,PASS,0,PASS
+A2R-REAL-002,GBP_GBX,Every GBX route uses a 0.01 multiplier,YES,PASS,0.01,PASS
+A2R-REAL-003,FX,Foreign-currency valid returns always have an FX observation,YES,PASS,0,PASS
+A2R-REAL-004,FX,GBP wealth applies foreign FX exactly once,YES,PASS,0.0,PASS
+A2R-REAL-005,STALE_MISSING,Stale observations never become valid returns,YES,PASS,0,PASS
+A2R-REAL-006,HISTORICAL_ELIGIBILITY,Current eligibility labels are not back-projected historically,YES,PASS,HISTORICALLY_UNCERTAIN;KNOWN_NOT_ELIGIBLE_FOR_THIS_ECONOMIC_FAMILY;NOT_YET_EXISTING,PASS
+A2R-REAL-007,LOOKAHEAD,Canonical implementation selection uses strictly prior-session information,YES,PASS,49804,PASS
+A2R-REAL-008,DUPLICATION,Corrected panel has one economic-family observation per date,YES,PASS,0,PASS
+A2R-REAL-009,PROXY,No proxy history enters corrected implementation panel,YES,PASS,0,PASS
+A2R-REAL-010,OBJECTIVE_DATE,US defence history is not valid before the dated strategy change,YES,PASS,0,PASS
+A2R-REAL-011,SEMANTIC_LINEAGE,Global banks has no silently retained regional or bond history,YES,PASS,0,PASS
+A2R-REAL-012,A2_VALIDATION,Failed A2 validation routes cannot be selected,YES,PASS,NOT_APPLICABLE,PASS
+A2R-REAL-013,REGRESSION,All unaffected economic histories are return-identical,YES,PASS,{'RETURN_IDENTICAL': 85},PASS
+A2R-REAL-014,A2_REGRESSION,All original A2 critical correctness tests remain passed,YES,PASS,{'PASS': 46},PASS
+A2R-REAL-015,SEMANTIC_LINEAGE,Every admitted remediation route matches its frozen semantic fingerprint,YES,PASS,{'PASS': 31},PASS
+A2R-REAL-016,IDENTITY,Every canonical row preserves explicit share-class and listing identity,YES,PASS,49804,PASS
+A2R-REAL-017,DYNAMIC_ADMISSION,Dynamic admission does not impose a 504-session gate on 21-session research,YES,PASS,4,PASS
+A2R-REAL-W21,DYNAMIC_ADMISSION,No family is admitted before 21 valid observations,YES,PASS,95,PASS
+A2R-REAL-W42,DYNAMIC_ADMISSION,No family is admitted before 42 valid observations,YES,PASS,94,PASS
+A2R-REAL-W63,DYNAMIC_ADMISSION,No family is admitted before 63 valid observations,YES,PASS,94,PASS
+A2R-REAL-W126,DYNAMIC_ADMISSION,No family is admitted before 126 valid observations,YES,PASS,94,PASS
+A2R-REAL-W252,DYNAMIC_ADMISSION,No family is admitted before 252 valid observations,YES,PASS,93,PASS
+A2R-REAL-018,MANUAL_VALIDATION,All 14 manual cases are complete and pass,YES,PASS,{'PASS': 14},PASS
+A2R-REAL-019,BROKER,Broker availability remains NOT_CHECKED,NO,PASS,{'NOT_CHECKED': 31},PASS
+A2R-REAL-020,STRUCTURE,Long-only structural exclusions cannot enter corrected routes,YES,PASS,0,PASS
+A2R-REAL-021,DISTRIBUTIONS,No selected distribution route has a failed explicit reconstruction,YES,PASS,0,PASS
+A2R-REAL-022,TOTAL_RETURN,All valid corrected returns are finite,YES,PASS,282164,PASS

@@ -1,0 +1,148 @@
+{
+  "schema_version": "project_edge.research_capability_registry.v1",
+  "as_of_date": "2026-08-22",
+  "authority": "Quant Platform research-principal decision",
+  "principles": {
+    "frozen_experiments_are_immutable": true,
+    "platform_capabilities_are_extensible": true,
+    "applies_to": "new experiments only",
+    "historical_lineage_retroactively_changed": false
+  },
+  "decision_policy": {
+    "FATAL_SCIENTIFIC_DEFECT": {
+      "examples": [
+        "actual lookahead",
+        "actual survivorship contamination",
+        "future universe information",
+        "impossible execution",
+        "material corrupted price data"
+      ],
+      "result": "BLOCK"
+    },
+    "METHODOLOGICAL_DIFFERENCE": {
+      "examples": [
+        "canonical platform universe differs from source paper",
+        "different research period",
+        "different liquidity convention",
+        "different disclosed cost model"
+      ],
+      "result": "RUN_AND_DISCLOSE"
+    },
+    "LEGACY_SCOPE_OR_GOVERNANCE_DIFFERENCE": {
+      "examples": [
+        "capability absent from an older frozen foundation",
+        "older experiment disabled next-open execution",
+        "preferred wrapper absent",
+        "strategy source used a different universe"
+      ],
+      "result": "VALIDATE_ONCE_REGISTER_AND_REUSE",
+      "automatic_block": false
+    }
+  },
+  "capabilities": {
+    "CANONICAL_US_EQUITY_PIT_TOP500": {
+      "status": "AUTHORISED",
+      "interface": "read-only MDM CSV interface; data are not copied into the Quant Platform",
+      "locations": [
+        "D:\\Codex\\market_data_manager\\outputs\\reference_pit\\connors_liquidity_2008_2015\\pit_liquid_top500_monthly.csv",
+        "D:\\Codex\\market_data_manager\\outputs\\reference_pit\\connors_liquidity_2016_2026\\pit_liquid_top500_monthly.csv"
+      ],
+      "source_sha256": [
+        "e0d723a6439170f8db9d7b5babcf189a5a4166c2b2ccaa75857bf367201e1b56",
+        "617486cf4ea686038619cd0959568dda6889e6e43f6cb5a9b31dfb512cbace56"
+      ],
+      "properties": {
+        "membership_rows": 109002,
+        "monthly_snapshots": 219,
+        "historical_tickers": 1981,
+        "snapshot_range": "2008-01-02/2026-06-01",
+        "liquidity_dates_strictly_precede_snapshots": true
+      },
+      "validation_evidence": "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/authorised_pit_universe_evidence.json",
+      "known_limitations": "Lagged-liquidity PIT Top-500 is the authorised platform universe; it is not historical S&P 500 membership and does not need to be."
+    },
+    "CLOSE_OBSERVED_NEXT_OPEN": {
+      "status": "VALIDATED",
+      "semantics": "Use information available through Close(t), queue after close, persist over the session boundary, and fill at raw Open(t+1); apply each executed-leg cost once.",
+      "supports": [
+        "entry",
+        "exit",
+        "weekend and missing-observation next-available-session handling",
+        "causal open-time sizing",
+        "ten-slot portfolio capacity"
+      ],
+      "implementation": "src/edge_research/daily_portfolio.py",
+      "implementation_sha256": "910e578c07b1ba3583ce3551b0244dd93ca50fecc9c95e112f94e97fc6106083",
+      "edge_research_package_source_fingerprint": "c6656cd782dc7ed629f907e37fb7db3884a84756a6b6d91e2dba4e0d155b13c8",
+      "validation_evidence": [
+        "tests/test_edge_research_next_open.py",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/smoke_parity.json",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/parity_summary.json"
+      ],
+      "known_limitations": "Admission applies prospectively; older frozen strategies keep their historical execution modes."
+    },
+    "SPLIT_CONTINUOUS_SIGNAL_RAW_OPEN_EXECUTION": {
+      "status": "VALIDATED",
+      "semantics": "Compute signals on split-continuous adjusted OHLC, execute at raw opens, and apply split/reverse-split changes to the shared position lifecycle.",
+      "implementation": [
+        "src/edge_research/corporate_actions.py",
+        "src/edge_research/trade_lifecycle.py",
+        "src/edge_research/daily_portfolio.py"
+      ],
+      "implementation_sha256": {
+        "corporate_actions.py": "e36690a9f3b1acaac1f191492218002bc6bc47e6d11085d288736b52fdfd4cef",
+        "daily_portfolio.py": "910e578c07b1ba3583ce3551b0244dd93ca50fecc9c95e112f94e97fc6106083",
+        "trade_lifecycle.py": "7d9750d511b98977168cb49e8bb647ad281013d65224f113bbfdbc68f287cc50"
+      },
+      "edge_research_package_source_fingerprint": "c6656cd782dc7ed629f907e37fb7db3884a84756a6b6d91e2dba4e0d155b13c8",
+      "validation_evidence": [
+        "tests/test_edge_research_corporate_actions.py",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/corporate_action_bridge_diagnostics.csv",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/raw_open_fill_audit_summary.json",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-QP-P1_QUANT_PLATFORM_PARITY_20260822_V1/parity_summary.json"
+      ],
+      "input_data_qualification": "The execution mechanism is validated. MR-RESID-A1R source-bound corrections replace the HBI effective date, add the WLL reverse split, and model the required HTZ/LB component transitions without changing frozen strategy rules.",
+      "input_data_qualification_evidence": [
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1_SOURCE_REPLICATION_20260822_V2_INVALID_DATA_EXECUTION",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/targeted_replay_validation.json",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/identity_corporate_action_validity_gate.json"
+      ],
+      "known_limitations": "Price-only. No dividend cash accounting, governed merger/acquisition lifecycle, governed delisting-proceeds archive, or stable security identifier on all historical bars is admitted. The mechanism's VALIDATED status does not certify every upstream corporate-action record."
+    },
+    "STABLE_HISTORICAL_SECURITY_IDENTITY": {
+      "status": "VALIDATED",
+      "semantics": "A ticker is a dated security attribute, not permanent identity. Resolve raw observations to an existing PIT issuer ID where unambiguous; otherwise use a deterministic ticker plus bounded continuous listing interval. More than 20 unexplained missing sessions or a sourced security boundary starts a new key. Cross-ticker continuity requires an explicit source-bound override.",
+      "supports": [
+        "stable PIT issuer/CIK evidence where available",
+        "time-bounded ticker-lifetime fallback",
+        "later ticker-reuse isolation",
+        "source-bound cross-ticker continuity",
+        "source-bound complex successor baskets",
+        "terminal or identity-event detection without unbounded forward scanning"
+      ],
+      "implementation": [
+        "src/edge_research/security_identity.py",
+        "src/edge_research/monthly_long_short.py"
+      ],
+      "implementation_sha256": {
+        "security_identity.py": "9e6102b1224fd4b20770688c085ab640c369a64eb2dddf199c831e33ad750b3d",
+        "monthly_long_short.py": "6fc492f30987566b9a04055445b439d2bee3dd4bbdb47f4caa1095d17378c94b"
+      },
+      "edge_research_package_source_fingerprint": "c6656cd782dc7ed629f907e37fb7db3884a84756a6b6d91e2dba4e0d155b13c8",
+      "validation_evidence": [
+        "tests/test_edge_research_security_identity.py",
+        "tests/test_edge_research_monthly_long_short.py",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/targeted_replay_validation.json",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/remediation_31_selected_holdings.csv",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/identity_corporate_action_validity_gate.json",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/outputs/MR-RESID-A1R_TARGETED_REMEDIATION_20260822_V1/selected_multi_issuer_interval_assessment.csv"
+      ],
+      "source_bound_overrides": [
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/sources/remediation/MR-RESID-A1R_IDENTITY_CONTINUITY_OVERRIDES.csv",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/sources/remediation/MR-RESID-A1R_FORCED_IDENTITY_BOUNDARIES.csv",
+        "research/directed/EDGE-MEAN-REVERSION-20260822-001/sources/remediation/MR-RESID-A1R_COMPLEX_TRANSITIONS.json"
+      ],
+      "known_limitations": "Raw bars do not expose a universal vendor security ID. The admitted fallback prevents ticker reuse but does not fabricate identifier history. Multiple PIT issuer IDs within one gap-free bounded ticker interval are disclosed metadata changes and require concrete causal-discontinuity evidence before blocking. Missing governed terminal proceeds use the separately disclosed last-valid-close bound; that bound is research-only, not production economics."
+    }
+  }
+}

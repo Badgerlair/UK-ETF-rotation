@@ -1,0 +1,39 @@
+﻿test_id,test_type,failure_mode,status,detail
+A3R0-T001,SYNTHETIC_FAILURE_FIXTURE,same-ISIN listings become separate opportunities,PASS,Two tickers collapse to one family identity
+A3R0-T002,SYNTHETIC_FAILURE_FIXTURE,ticker replaces family ranking identity,PASS,Ticker remains an implementation attribute
+A3R0-T003,SYNTHETIC_FAILURE_FIXTURE,parent and child labelled duplicates solely due to overlap,PASS,Parent and child retain distinct duplicate groups
+A3R0-T004,SYNTHETIC_FAILURE_FIXTURE,defensive assets enter primary equity pool,PASS,Defensive reference is excluded
+A3R0-T005,SYNTHETIC_FAILURE_FIXTURE,current eligibility back-projected historically,PASS,Historical state remains uncertain
+A3R0-T006,SYNTHETIC_FAILURE_FIXTURE,21-session model requires 504 sessions,PASS,Thirty valid observations admit a 21-session signal
+A3R0-T007,SYNTHETIC_FAILURE_FIXTURE,exposure admitted before sufficient warm-up,PASS,Thirty observations do not admit 42 sessions
+A3R0-T008,SYNTHETIC_FAILURE_FIXTURE,missing or stale observations treated as valid,PASS,"The invalid observation is excluded, leaving only 40 valid observations"
+A3R0-T009,SYNTHETIC_FAILURE_FIXTURE,DeepVue determines quantitative competition,PASS,Role function has no DeepVue input
+A3R0-T010,SYNTHETIC_FAILURE_FIXTURE,ISA eligibility inferred from LSE listing,PASS,Listing is not an input to ISA mapping
+A3R0-T011,SYNTHETIC_FAILURE_FIXTURE,IBKR availability inferred from local prices,PASS,IBKR default is assigned independently as NOT_CHECKED
+A3R0-T012,SYNTHETIC_FAILURE_FIXTURE,public eligibility labelled account-specific IBKR confirmation,PASS,Public and broker states are separate
+A3R0-T013,SYNTHETIC_FAILURE_FIXTURE,new internet product enters without identity/evidence lineage,PASS,Unlineaged internet product is audit-only
+A3R0-T014,SYNTHETIC_FAILURE_FIXTURE,same-close information contaminates admission,PASS,A3R0 carries A2 next-session execution mapping and does not calculate returns
+A3R0-T015,SYNTHETIC_FAILURE_FIXTURE,proxy history enters implementation admission,PASS,Dynamic validity explicitly requires proxy_flag=false
+A3R0-T016,OBSERVED_DATA_ASSERTION,existing family count changes,PASS,Retained families=99
+A3R0-T017,OBSERVED_DATA_ASSERTION,family IDs deleted or renumbered,PASS,Exact A0A1 ID set retained
+A3R0-T018,OBSERVED_DATA_ASSERTION,dynamic table omits family,PASS,Dynamic rows=99
+A3R0-T019,OBSERVED_DATA_ASSERTION,defensive enters primary equity tournament,PASS,No defensive family is in primary equity competition
+A3R0-T020,OBSERVED_DATA_ASSERTION,materially misclassified A2 history admitted,PASS,All 14 material mismatches are blocked
+A3R0-T021,OBSERVED_DATA_ASSERTION,known lineage failures omitted,PASS,Fourteen material failures recorded
+A3R0-T022,OBSERVED_DATA_ASSERTION,504 gate retained,PASS,Recovered families all have under 504 observations
+A3R0-T023,OBSERVED_DATA_ASSERTION,21-session warm-up violated,PASS,All admitted 21-session families have enough valid returns
+A3R0-T024,OBSERVED_DATA_ASSERTION,zero-history family admitted,PASS,No zero-history family admitted
+A3R0-T025,OBSERVED_DATA_ASSERTION,IBKR inferred from public/local data,PASS,All contract statuses remain NOT_CHECKED
+A3R0-T026,OBSERVED_DATA_ASSERTION,public eligibility becomes IBKR ISA confirmation,PASS,All ISA purchase statuses remain NOT_CHECKED
+A3R0-T027,OBSERVED_DATA_ASSERTION,ISA inferred only from LSE listing,PASS,Undetermined A0 ISA evidence remains uncertain
+A3R0-T028,OBSERVED_DATA_ASSERTION,DeepVue controls competition,PASS,DeepVue is descriptive only
+A3R0-T029,OBSERVED_DATA_ASSERTION,parent/child collapsed as duplicate,PASS,All relationships remain economic hierarchy
+A3R0-T030,OBSERVED_DATA_ASSERTION,unvalidated global benchmark selected,PASS,Global benchmark has clean A2 lineage
+A3R0-T031,OBSERVED_DATA_ASSERTION,research-ready family lacks preferred current line,PASS,Missing preferred=NOT_AVAILABLE
+A3R0-T032,OBSERVED_DATA_ASSERTION,misclassified current line enters verification queue,PASS,Every queued line passes A3R0 family-lineage filter
+A3R0-T033,OBSERVED_DATA_ASSERTION,queue row lacks ISIN,PASS,Every queue row has ISIN
+A3R0-T034,OBSERVED_DATA_ASSERTION,current eligibility warning omitted,PASS,Warning is present on all families
+A3R0-T035,OBSERVED_DATA_ASSERTION,targeted audit rebuilds registry,PASS,"Original 4,359-row registry was read without replacement"
+A3R0-T036,OBSERVED_DATA_ASSERTION,internet product enters without full lineage,PASS,No internet-discovered product added to master
+A3R0-T037,OBSERVED_DATA_ASSERTION,proxy history enters admission,PASS,A2 panel contains no proxy rows
+A3R0-T038,OBSERVED_DATA_ASSERTION,duplicate structure loses a family,PASS,Duplicate groups cover all retained families

@@ -1,0 +1,304 @@
+{
+  "stage_id": "UKACTIVE-A3",
+  "run_id": "UKACTIVE-A3-20260822-001",
+  "decision": "UKACTIVE_A3_WEAK_OR_REGIME_DEPENDENT_SIGNAL",
+  "best_supported_signal": "ABOVE_GBP_CASH_252",
+  "best_supported_signal_classification": "SECONDARY",
+  "specifications": {
+    "signal_definitions_tested": 24,
+    "predeclared_primary_signal_definitions": 14,
+    "secondary_neighbourhood_signal_definitions": 10,
+    "evaluation_cells_tested_or_retained_as_insufficient": 8064,
+    "evaluation_cells_formally_tested": 3760,
+    "evaluation_cells_insufficient": 4304
+  },
+  "signal_families_tested": [
+    "ABSOLUTE_MOMENTUM_QUALIFICATION",
+    "CASH_RELATIVE_QUALIFICATION",
+    "MULTI_HORIZON_RELATIVE_STRENGTH",
+    "RISK_ADJUSTED_MOMENTUM",
+    "SIMPLE_TOTAL_RETURN_MOMENTUM",
+    "TOTAL_RETURN_TREND_QUALIFICATION",
+    "TWELVE_MINUS_ONE_MOMENTUM"
+  ],
+  "best_signal_headline": {
+    "signal_id": "ABOVE_GBP_CASH_252",
+    "headline_cell_count": 6,
+    "mean_ic_across_headline_cells": 0.08812329656493499,
+    "median_ic_across_headline_cells": 0.06197201150412505,
+    "strongest_forward_horizon_sessions": 63,
+    "strongest_horizon_mean_ic": 0.10577534991584807,
+    "mean_top_minus_bottom_spread": 0.012910599372870342,
+    "mean_quantile_monotonicity": 0.5649590765634921,
+    "headline_fdr_survivor_count": 0,
+    "headline_hac_positive_p_0_10_count": 1,
+    "by_horizon": [
+      {
+        "forward_horizon_sessions": 21,
+        "mean_ic": 0.061771072175341626,
+        "median_ic": 0.0028644491659750373
+      },
+      {
+        "forward_horizon_sessions": 42,
+        "mean_ic": 0.09682346760361524,
+        "median_ic": 0.07645783615149704
+      },
+      {
+        "forward_horizon_sessions": 63,
+        "mean_ic": 0.10577534991584807,
+        "median_ic": 0.10659374919490307
+      }
+    ]
+  },
+  "core_vs_core_extended": {
+    "CORE": {
+      "mean_ic": 0.09782900967842782,
+      "positive_cell_count": 6,
+      "cell_count": 6
+    },
+    "CORE_EXTENDED": {
+      "mean_ic": 0.08812329656493499,
+      "positive_cell_count": 6,
+      "cell_count": 6
+    }
+  },
+  "category_results_at_best_horizon": {
+    "GEOGRAPHY": {
+      "mean_ic": -0.07991169062463602,
+      "mean_top_bottom_spread": -0.0021404267035978813,
+      "mean_monotonicity": 0.5253577788036669,
+      "tested_cells": 2
+    },
+    "SECTOR_INDUSTRY": {
+      "mean_ic": -0.03357338080844234,
+      "mean_top_bottom_spread": 0.0359202211404665,
+      "mean_monotonicity": 0.5824780058651027,
+      "tested_cells": 1
+    },
+    "THEMATIC": {
+      "mean_ic": NaN,
+      "mean_top_bottom_spread": NaN,
+      "mean_monotonicity": NaN,
+      "tested_cells": 0
+    },
+    "DEFENSIVE_DIVERSIFIER": {
+      "mean_ic": NaN,
+      "mean_top_bottom_spread": 0.02031587636375992,
+      "mean_monotonicity": 0.6125,
+      "tested_cells": 0
+    },
+    "DEFENSIVE_FIXED_INCOME_CASH": {
+      "mean_ic": NaN,
+      "mean_top_bottom_spread": -0.016711794707120718,
+      "mean_monotonicity": 0.375,
+      "tested_cells": 0
+    }
+  },
+  "best_diagnostic_by_category": {
+    "GEOGRAPHY": {
+      "signal_id": "ABS_POS_126",
+      "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION",
+      "tested_cells": 6,
+      "mean_ic": 0.028374959362266455,
+      "positive_ic_cells": 5,
+      "mean_top_bottom_spread": 0.002677251879964235,
+      "mean_monotonicity": 0.5640151026866347,
+      "minimum_hac_p_value": 0.1615814412222103,
+      "interpretation": "DESCRIPTIVE_COHORT_DIAGNOSTIC_NOT_A_PRIMARY_PROMOTION_TEST"
+    },
+    "SECTOR_INDUSTRY": {
+      "signal_id": "ABS_POS_126",
+      "signal_family": "ABSOLUTE_MOMENTUM_QUALIFICATION",
+      "tested_cells": 6,
+      "mean_ic": 0.06660395577565544,
+      "positive_ic_cells": 6,
+      "mean_top_bottom_spread": 0.04263320702212623,
+      "mean_monotonicity": 0.6105456558215999,
+      "minimum_hac_p_value": 0.20288207075703157,
+      "interpretation": "DESCRIPTIVE_COHORT_DIAGNOSTIC_NOT_A_PRIMARY_PROMOTION_TEST"
+    },
+    "THEMATIC": {
+      "signal_id": "MOM_21",
+      "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM",
+      "tested_cells": 4,
+      "mean_ic": 0.000610955118668044,
+      "positive_ic_cells": 3,
+      "mean_top_bottom_spread": 0.004630532696000926,
+      "mean_monotonicity": 0.5024678830539767,
+      "minimum_hac_p_value": 0.4288210447554138,
+      "interpretation": "DESCRIPTIVE_COHORT_DIAGNOSTIC_NOT_A_PRIMARY_PROMOTION_TEST"
+    },
+    "DEFENSIVE_DIVERSIFIER": {
+      "signal_id": "MOM_21",
+      "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM",
+      "tested_cells": 6,
+      "mean_ic": 0.060134527202043174,
+      "positive_ic_cells": 5,
+      "mean_top_bottom_spread": 0.006910464765729523,
+      "mean_monotonicity": 0.5484807562460242,
+      "minimum_hac_p_value": 0.08899180360898748,
+      "interpretation": "DESCRIPTIVE_COHORT_DIAGNOSTIC_NOT_A_PRIMARY_PROMOTION_TEST"
+    },
+    "DEFENSIVE_FIXED_INCOME_CASH": {
+      "signal_id": "MOM_21",
+      "signal_family": "SIMPLE_TOTAL_RETURN_MOMENTUM",
+      "tested_cells": 6,
+      "mean_ic": -0.02363777890257769,
+      "positive_ic_cells": 1,
+      "mean_top_bottom_spread": -0.006442549683855828,
+      "mean_monotonicity": 0.4295829130356412,
+      "minimum_hac_p_value": 0.3041321490282022,
+      "interpretation": "DESCRIPTIVE_COHORT_DIAGNOSTIC_NOT_A_PRIMARY_PROMOTION_TEST"
+    }
+  },
+  "subperiod_stability": {
+    "2010_2014": {
+      "mean_ic": 0.16299067201975698,
+      "mean_spread": 0.0388223303121345,
+      "available_frequency_count": 2
+    },
+    "2015_2019": {
+      "mean_ic": 0.013549162169722927,
+      "mean_spread": 0.0027247872867880133,
+      "available_frequency_count": 2
+    },
+    "2020_2022": {
+      "mean_ic": NaN,
+      "mean_spread": NaN,
+      "available_frequency_count": 0
+    },
+    "FROM_2020": {
+      "mean_ic": NaN,
+      "mean_spread": NaN,
+      "available_frequency_count": 0
+    },
+    "FROM_2023": {
+      "mean_ic": NaN,
+      "mean_spread": NaN,
+      "available_frequency_count": 0
+    },
+    "FULL": {
+      "mean_ic": 0.10577534991584807,
+      "mean_spread": 0.019083593574997445,
+      "available_frequency_count": 2
+    },
+    "PRE_2020": {
+      "mean_ic": 0.10577534991584807,
+      "mean_spread": 0.019083593574997445,
+      "available_frequency_count": 2
+    },
+    "RECENT_3Y": {
+      "mean_ic": NaN,
+      "mean_spread": NaN,
+      "available_frequency_count": 0
+    },
+    "RECENT_5Y": {
+      "mean_ic": NaN,
+      "mean_spread": NaN,
+      "available_frequency_count": 0
+    }
+  },
+  "parameter_neighbourhood_stability": {
+    "declared_central_signal": "ABOVE_GBP_CASH_252",
+    "lookback_tested_rows": 24,
+    "lookback_directionally_stable_ic_fraction": 0.9166666666666666,
+    "lookback_directionally_stable_spread_fraction": 0.9166666666666666,
+    "weekday_perturbation_tested_rows": 6,
+    "weekday_directionally_stable_ic_fraction": 1.0,
+    "weekday_directionally_stable_spread_fraction": 1.0
+  },
+  "dependency_findings": {
+    "EX_US_TECHNOLOGY_SEMICONDUCTORS": {
+      "mean_ic": 0.08348723660291585,
+      "mean_spread": 0.011931566853238174,
+      "tested_cells": 6
+    },
+    "EX_SINGLE_BEST_FULL_PERIOD_FAMILY": {
+      "mean_ic": 0.08812329656493499,
+      "mean_spread": 0.012910599372870342,
+      "tested_cells": 6
+    },
+    "EX_TOP_FIVE_FULL_PERIOD_FAMILIES": {
+      "mean_ic": 0.08348874761054421,
+      "mean_spread": 0.011931566853238177,
+      "tested_cells": 6
+    },
+    "CONTROLLED_CROSS_SECTIONAL_REGRESSION": {
+      "mean_signal_rank_coefficient": 0.016945357870421836,
+      "positive_coefficient_cells": 6,
+      "tested_cells": 6,
+      "minimum_hac_p_value": 0.3489458828794494
+    }
+  },
+  "excluded_dependency_families": {
+    "us_technology_semiconductors": [
+      "GLOBAL_SEMICONDUCTORS",
+      "US_NASDAQ_100"
+    ],
+    "best_full_period_family": [
+      "GLOBAL_SILVER_MINERS"
+    ],
+    "top_five_full_period_families": [
+      "GLOBAL_SILVER_MINERS",
+      "GLOBAL_SEMICONDUCTORS",
+      "EUROPE_TECHNOLOGY",
+      "US_NASDAQ_100",
+      "GLOBAL_SOFTWARE"
+    ],
+    "full_period_ranking_method": "ANNUALISED_GEOMETRIC_MEAN_OF_VALID_DAILY_IMPLEMENTATION_RETURNS_EX_POST_DIAGNOSTIC_ONLY"
+  },
+  "experimental_universe_sensitivity": {
+    "effect_counts": {
+      "STRENGTHENS": 6
+    },
+    "average_ic_change": 0.0229218766542474,
+    "primary_decision_affected": false
+  },
+  "statistical_inference": {
+    "headline_test_count": 84,
+    "headline_fdr_survivor_count_all_signals": 0,
+    "block_bootstrap_rows": 36,
+    "best_signal_positive_bootstrap_intervals": 2,
+    "method": "DATE_LEVEL_SPEARMAN_IC_WITH_NEWEY_WEST_HAC_AND_CIRCULAR_BLOCK_BOOTSTRAP_FOR_DIAGNOSTIC_TARGETS"
+  },
+  "research_candidates": [],
+  "secondary_signals": [
+    "ABOVE_GBP_CASH_252",
+    "ABS_POS_252",
+    "TREND_MA_252"
+  ],
+  "weak_signals": [
+    "RISK_ADJ_MOM_252_VOL63",
+    "MULTI_Z_63_126_252",
+    "MOM_12_1"
+  ],
+  "rejected_signals": [
+    "ABS_POS_126",
+    "ABOVE_GBP_CASH_126",
+    "RISK_ADJ_MOM_126_VOL63",
+    "MOM_126",
+    "MOM_63",
+    "MOM_252",
+    "MULTI_Z_21_63_126",
+    "MOM_21"
+  ],
+  "automated_tests": {
+    "passed": 35,
+    "failed": 0,
+    "critical_failures": 0
+  },
+  "data_and_method_warnings": [
+    "HISTORICAL ELIGIBILITY REMAINS UNRESOLVED",
+    "A3 is signal discovery, not a historically verified UK-investable backtest.",
+    "A2 broker status remains NOT_CHECKED.",
+    "Forward-return observations overlap at multi-session horizons; HAC and block-bootstrap inference is used.",
+    "The 14 EXPERIMENTAL families cannot determine the primary decision.",
+    "No proxy history was created or spliced."
+  ],
+  "a4_portfolio_architecture_research_recommended": false,
+  "a4_authorisation_scope": "NOT_AUTHORISED_FROM_A3",
+  "strategy_backtest_executed": false,
+  "portfolio_constructed": false,
+  "strategy_performance_statistics_produced": false,
+  "warning": "HISTORICAL ELIGIBILITY REMAINS UNRESOLVED"
+}

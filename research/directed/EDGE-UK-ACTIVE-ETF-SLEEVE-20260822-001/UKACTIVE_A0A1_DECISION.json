@@ -1,0 +1,61 @@
+{
+  "a2_executed": false,
+  "a3_executed": false,
+  "automated_tests": {
+    "failed": 0,
+    "failed_ids": [],
+    "passed": 27
+  },
+  "broker_check_method": "NOT_CHECKED_NO_SAFE_EXACT_LSE_ISIN_READ_ONLY_ROUTE",
+  "count_definitions": {
+    "broker_confirmed_isins": "distinct curated ISINs with exact account-specific broker confirmation; zero because broker was not checked",
+    "current_candidate_unverified_isins": "distinct curated ISINs not meeting full verification; not assumed eligible or ineligible",
+    "currently_verified_investable_isins": "distinct curated ISINs meeting this stage's conservative current issuer/KID/ISA/structure/LSE evidence rule",
+    "deepvue_exact_mapped_families": "economic families carrying one of the 31 exact user-confirmed labels",
+    "economic_and_tier_counts": "one row per economic exposure family, never per ticker",
+    "raw_isins": "distinct nonblank ISINs in the raw current LSE snapshot",
+    "raw_listings": "LSE listing lines from Price Explorer with islse=true plus visible product-specific LSE/issuer supplements for catalogue omissions"
+  },
+  "counts": {
+    "broker_confirmed_isins": 0,
+    "core_families": 39,
+    "current_candidate_unverified_isins": 264,
+    "currently_verified_investable_isins": 32,
+    "deepvue_exact_mapped_families": 32,
+    "defensive_diversifier_opportunities": 13,
+    "evidence_ledger_entries": 153,
+    "excluded_isins": 692,
+    "experimental_families": 17,
+    "extended_families": 43,
+    "families": 99,
+    "fund_entities": 34,
+    "geographic_opportunities": 36,
+    "raw_isins": 2821,
+    "raw_listings": 4359,
+    "sector_industry_opportunities": 30,
+    "selected_isins": 296,
+    "selected_listings": 478,
+    "selected_share_classes": 296,
+    "structurally_not_eligible_isins": 403,
+    "thematic_opportunities": 20
+  },
+  "decision": "UKACTIVE_A0A1_PASS_WITH_OPEN_ITEMS",
+  "decision_basis": "All correctness tests passed; substantial current discovery and an independently classified duplicate-controlled master exist. Open items remain for broker confirmation, cross-provider product-level eligibility, point-in-time history, liquidity, and total-return validation.",
+  "decision_date": "2026-08-22",
+  "key_exclusion_reason_counts": {
+    "CRYPTO_DIRECT_ETP": 3,
+    "INVERSE": 33,
+    "LEVERAGED": 347,
+    "SINGLE_STOCK_ETP": 213,
+    "STYLE_VARIANT_OUTSIDE_INITIAL_ROTATION_TAXONOMY": 289,
+    "UNSECURED_OR_NOTE_STRUCTURE_NOT_APPROVED": 24,
+    "VOLATILITY_LINKED": 1
+  },
+  "programme_id": "EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "ready_for_ukactive_a2": true,
+  "recommended_next_stage": "UKACTIVE-A2 — POINT-IN-TIME UNIVERSE AND TOTAL-RETURN DATA CONSTRUCTION",
+  "run_id": "UKACTIVE-A0A1-20260822-001",
+  "stage_id": "UKACTIVE-A0A1",
+  "strategy_or_performance_research_executed": false,
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+}

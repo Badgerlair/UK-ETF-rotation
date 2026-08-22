@@ -1,0 +1,250 @@
+{
+  "schema_version": "edge.project.canonical_equity_research_foundation.v1",
+  "foundation_id": "PROJECT_EDGE_CANONICAL_EQUITY_RESEARCH_FOUNDATION_V1",
+  "status": "DESIGNATED_METADATA_ONLY",
+  "designated_at_utc": "2026-08-15T04:13:06Z",
+  "designation_scope": "COMPATIBLE_US_EQUITY_RESEARCH",
+  "repository_roots": {
+    "foundation_repository": ".",
+    "research_source_repository": "C:/Users/paulh/Documents/Codex/2026-08-11/project-edge-qullamaggie-breakout-research-programme"
+  },
+  "designation_method": {
+    "metadata_promotion_of_validated_existing_artifacts": true,
+    "empirical_rebuild_performed": false,
+    "full_data_reaudit_performed": false,
+    "wave2_reopened": false,
+    "market_outcome_payload_read_for_designation": false,
+    "new_approval_gate_created": false,
+    "new_empirical_release_created": false
+  },
+  "inheritance_contract": {
+    "default_for_compatible_us_equity_research": true,
+    "rule": "INHERIT_THE_FOUNDATION_VALIDATE_ONLY_THE_DELTA",
+    "delta_validation_scope": [
+      "new_input",
+      "new_field",
+      "new_semantics",
+      "new_clock",
+      "new_population_extension",
+      "new_anchor_or_horizon_extension",
+      "new_transformation",
+      "new_estimand"
+    ],
+    "full_foundation_reaudit_requires": [
+      "concrete_hash_or_integrity_failure",
+      "documented_failure_mechanism_affecting_the_successor_estimand",
+      "upstream_source_revision",
+      "genuinely_new_data_requirement"
+    ],
+    "scientific_hypothesis_change_alone_invalidates_foundation": false,
+    "scope_preserving_rule": "A sidecar is reusable only when its grain, dates, population, clock, identity and action rules, anchor, and horizon support the successor estimand; otherwise build the smallest additive delta from retained canonical history or price spine."
+  },
+  "documented_neutral_scope": [
+    "MDM_MARKET_DATA_AUTHORITY",
+    "PIT_HISTORICAL_POPULATION_METHODOLOGY",
+    "SURVIVOR_DEAD_INACTIVE_TREATMENT",
+    "LISTING_SECURITY_EPISODES",
+    "IDENTITY_LIFECYCLE_HANDLING",
+    "SESSION_CALENDAR_SPINE",
+    "SPLIT_CORPORATE_ACTION_NORMALIZATION",
+    "CONFLICT_QUARANTINE_METHODOLOGY",
+    "NORMALIZED_CAUSAL_DAILY_HISTORY",
+    "POPULATION_DENOMINATORS",
+    "NEUTRAL_DAILY_PATH_INFRASTRUCTURE",
+    "ENDPOINT_OUTCOME_INFRASTRUCTURE",
+    "DENSE_PATH_INFRASTRUCTURE",
+    "TERMINAL_SCENARIO_METHODOLOGY",
+    "ADMITTED_VOLUME_PRIMITIVES",
+    "ADMITTED_BENCHMARK_PATHS",
+    "PROVENANCE_AND_HASHES",
+    "REUSABLE_VECTORIZED_REDUCERS",
+    "CONTRIBUTOR_AND_TAIL_MACHINERY",
+    "DOCUMENTED_LIMITATIONS"
+  ],
+  "authorities": {
+    "governing_documents": [
+      {
+        "relative_path": "PROJECT_EDGE_FOUNDATION_DOCUMENT_V1.1.md",
+        "bytes": 209980,
+        "sha256": "F96D0B88BD6DCE18FAA92B3C7C111A743C365870814143EE0F23CF3077E14291"
+      },
+      {
+        "relative_path": "PROJECT_EDGE_MILESTONE_2_MDM_DATA_FOUNDATION_SPECIFICATION.md",
+        "bytes": 90466,
+        "sha256": "AD811F11DE8856CA217EAF857117D5ECB37FD2D974ECC578589AA5F50CFBB942"
+      }
+    ],
+    "population_and_data_authority": [
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/e1_data/releases/EDGE-QB-E1-DATA-BROAD-CS-PIT-201607-202604-V1/manifests/E1_MINIMUM_ENTRY_MANIFEST_V3.json",
+        "bytes": 1081017,
+        "sha256": "39A9EC4FE66D55F43C8BCFF585C3C01817F4CA9F7FB179E15BBA24A38988DCBF"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/e1_data/releases/EDGE-QB-E1-DATA-BROAD-CS-PIT-201607-202604-V1/manifests/E1_EMPIRICAL_INPUT_ALLOWLIST_V1.json",
+        "bytes": 1030811,
+        "sha256": "D92EBE610979FD15504820EE598780D1C884C15EDF4F86171C75E51C89A74B1D",
+        "aggregate_root_sha256": "7339DD33A2014AA0F3C346728C6C9ED65443ED43584A05CEEF5CAE891FEF0072"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/e1_daily_population/releases/EDGE-QB-E1-DATA-DAILY-PIT-CF-201607-202604-V1/manifests/daily_carry_qualification_manifest.v1.json",
+        "bytes": 71275,
+        "sha256": "92051CE3512C028FB6B7B73930348804024A4A4AEBD5DBD74C954E85A33D6DB4",
+        "aggregate_root_sha256": "9A2D2CBE54F18D58245FB99B885EC6AA079B96295ED0D31C09E0CA76500D997A"
+      }
+    ],
+    "canonical_daily_and_path_backbone": [
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-DAILY-ACTION-CORRECTED-V2/corrected_state.complete/checkpoint.json",
+        "bytes": 1324,
+        "sha256": "FAC6AC706112E1B15D73D168E418927C7EEC40167BB350ED26449D3F8E0E8224",
+        "artifact_root_sha256": "373BFE9333E3C7094A84BAA39C51E31B46DDBA920EFF5E603A026A28D735B216",
+        "rows": 25399263,
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/canonical_event_ohlcv.complete/checkpoint.json",
+        "bytes": 4467,
+        "sha256": "79BCEB7F290E068C8B156F0466D1930F8F4658A0109389871F31A26CCE1D4F96",
+        "artifact_root_sha256": "62E4A85CB8995780933CA14ADBAF8A2823C008D6D8A75E752166527F397C6BE8",
+        "rows": 25399263,
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_outcome_price_spine.complete/checkpoint.json",
+        "bytes": 946,
+        "sha256": "C34CD60C0C18340400663187742A63F030AA47B6AAAD58CDB448B9F472356012",
+        "artifact_root_sha256": "047C2CAA880F88DB64252EE402187B2CB3331A4900076467E8BA50F6FC87E34A",
+        "rows": 25399263,
+        "required_status": "COMPLETE"
+      }
+    ],
+    "outcome_and_path_infrastructure": [
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_outcomes.complete/checkpoint.json",
+        "bytes": 5250,
+        "sha256": "490CC8C48DE33D40C02C13E08B105126117E478E21ED8AF67ACEC7F65920D07E",
+        "artifact_root_sha256": "1750A4E22ABFA6A2517C1554C4B1C667721BA05772ED45AEA03E75F27BB708CB",
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_outcomes.complete/endpoint.complete/checkpoint.json",
+        "bytes": 3287,
+        "sha256": "2A2B5B39CE85269CD160E57731B6AEB18BBC3E626312B0559884F84AD6273026",
+        "artifact_root_sha256": "E64D8F69A1139CD4A6C12F92AAB58B2900F60EC155C27796F520DAF4FF44DBE7",
+        "rows": 59603256,
+        "horizons": [1, 2, 3, 5, 10, 20, 40, 60],
+        "terminal_scenario_count": 4,
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_outcomes.complete/dense.complete/checkpoint.json",
+        "bytes": 2933,
+        "sha256": "AA46B452BEC20C77D590286C2F9EDBD62D55BE164D2156558A702440DE06E125",
+        "artifact_root_sha256": "1245C524589AA7A2002F38EBABDE3BE8460BF1012C6C70B378CD46045CAE91EE",
+        "rows": 94485300,
+        "event_count": 1574755,
+        "scope_rule": "ANY_NON_00_UPSIDE_OR_DIRECTION_AGNOSTIC_CELL",
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_outcomes.complete/volume.complete/checkpoint.json",
+        "bytes": 1088,
+        "sha256": "97DB9E7063BF1059E202942FEAEBA93B81CF7EEAD5A1E83034ACFEAEA44786EF",
+        "artifact_root_sha256": "D7CF664E48362F85A4430D028745B9878EDF8CD334F1F1121F2D4A1F1B053D84",
+        "rows": 7450407,
+        "required_status": "COMPLETE"
+      }
+    ],
+    "reusable_reducer_implementation": [
+      {
+        "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_analysis_v11_production.complete/checkpoint.json",
+        "bytes": 4041,
+        "sha256": "2C5DE2E381717A01759CE3C0E1DF8D3BB5A49E5FCDA5234A6EA622D037E4C83A",
+        "artifact_root_sha256": "5E8C184FF0C1B35472AAE7740298BC547A89E042183356CCBE4C8B770CF10150",
+        "required_status": "COMPLETE"
+      },
+      {
+        "relative_path": "research_source_repository/research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/wave2_event_analysis/scripts/analyze_bf_wave2_event_transition_v11.py",
+        "bytes": 380867,
+        "sha256": "91940BD9BE3F836683BB3E8149C6574F614D357CC3B952EE4D3EAC335BB8A8E1"
+      },
+      {
+        "relative_path": "research_source_repository/research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/wave2_event_analysis/tests/test_analyze_bf_wave2_event_transition_v11.py",
+        "bytes": 224031,
+        "sha256": "2AA488C41CE8FFA01B9EF912CDAF9E0D9DD46B857348551C945D5F66D15DAD9C"
+      },
+      {
+        "relative_path": "research_source_repository/research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/wave2_event_analysis/config/stage_bf_wave2_event_analysis_runtime.v11.json",
+        "bytes": 26168,
+        "sha256": "ACA8A549CAB7F4BFA7DB6004333501AC120BC4763F91618D99A5FA2F5167581C"
+      }
+    ]
+  },
+  "exposed_developmental_ancestry": {
+    "classification": "EXPOSED_E1_DEVELOPMENTAL_ANCESTRY_NO_E3_CONFIRMATION",
+    "wave2_status": "ACCEPTED_COMPLETED_E1_DAILY_BREAKOUT_EVENT_RESULT_DO_NOT_REOPEN",
+    "stage_a_orchestration_manifest": {
+      "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-A-LEADERSHIP-SHAPE-DISC-001/outputs/EDGE-QB-E1-A-LEADERSHIP-SHAPE-DISC-001-RUN-001/stage_a_run_orchestration_manifest.json",
+      "bytes": 7660,
+      "sha256": "8707F715053887AB1968E0A78B08D8C574B02BEFDDA97DE5025D2111FABE23A5"
+    },
+    "wave1_final_corrected_release": {
+      "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-001/analysis/wave1_analysis_tail_breadth_fix.complete/bf_wave1_analysis_release_manifest.v1.json",
+      "bytes": 6484,
+      "sha256": "6A60BB4E114F58C8C5079905BEF57F526FFE90B4FAE1785C403BC8F847C5D777",
+      "artifact_root_sha256": "EE7A503004A61EEE9A52D80A97D77499B9FAF5253E7DC61A82CED265C35A49E4"
+    },
+    "wave1_final_corrected_predictor_freeze": {
+      "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-001/analysis/predictor_freeze_tail_breadth_fix.complete/bf_wave1_predictor_freeze_manifest.v1.json",
+      "bytes": 3068,
+      "sha256": "22ED008356E277E339416FC327328CB01A868D87FC0A5244606C3CAAA0BD48BC",
+      "artifact_root_sha256": "A4F248231632AB7283CC192A6CA8BDF812DC0439701AB749BD398F4C9E9811C5"
+    },
+    "wave2_interpretation": {
+      "relative_path": "research/directed/EDGE-QB-CBRP-20260811-001/experiments/EDGE-QB-E1-BF-PREBREAKOUT-STATE-DISC-001/outputs/EDGE-QB-E1-BF-WAVE-002-EVENT-TRANSITION/event_analysis_v11_interpretation_pack.complete/checkpoint.json",
+      "bytes": 3156,
+      "sha256": "0B43C7548886DDF1FA57C13ACE28C352F04DB92A8C063C8B3A713AEA3FE22238",
+      "artifact_root_sha256": "C23207A11932A331191C068387421E433F08F3238EE170DA958E4CDB48CE4980"
+    },
+    "carry_forward_findings": [
+      "LONG_HORIZON_STRUCTURAL_LEADERSHIP_HAS_MODEST_USEFUL_INFORMATION",
+      "EXTREME_RECENT_ABSOLUTE_MOMENTUM_AND_ACCELERATION_ASSOCIATE_WITH_EXHAUSTION",
+      "MODERATE_STRUCTURAL_AND_LIMITED_RETRACEMENT_FORMER_LEADERS_OUTPERFORM_CURRENT_EXTREMES",
+      "CONSOLIDATION_DURATION_AND_STRONGEST_CONTRACTION_OR_FINAL_TIGHTNESS_DO_NOT_ESTABLISH_STANDALONE_EDGE",
+      "RETAINED_STRENGTH_IS_MORE_USEFUL_AS_FAILURE_DISCRIMINATOR_THAN_UNIVERSAL_ALPHA",
+      "DEEP_POST_IMPULSE_RETRACEMENT_IS_STRONGLY_NEGATIVE",
+      "GENERIC_LONG_DIGESTION_CONTRACTION_RETENTION_COMPOSITE_REJECTED_IN_WAVE1",
+      "GENERIC_DAILY_LEVEL_BREAKOUT_DOES_NOT_IMPROVE_ORDINARY_EXPECTANCY",
+      "RANGE_EXPANSION_DOES_NOT_IMPROVE_ORDINARY_OUTCOMES",
+      "STRONGER_EXPANSION_INCREASES_UPPER_TAIL_PARTICIPATION_WHILE_WORSENING_DISTRIBUTION_BODY",
+      "BREAKOUT_EVENTS_IMPROVE_SOME_FAILURE_AND_FAVOURABLE_EXCURSION_CHARACTERISTICS_WITHOUT_IMPROVING_ORDINARY_EXPECTANCY",
+      "SUCCESSFUL_BREAKOUT_PATHS_TEND_TO_SHOW_FAVOURABLE_EXCURSION_EARLY",
+      "FORMAL_BREAKOUT_FAILURE_IS_NOT_EQUIVALENT_TO_ORDINARY_ADVERSE_EXCURSION",
+      "DAILY_VOLUME_ADDS_ONLY_SMALL_DESCRIPTIVE_INCREMENTAL_INFORMATION"
+    ],
+    "central_interpretation": "A_GENERIC_DAILY_BREAKOUT_EVENT_IS_NOT_BY_ITSELF_A_SUFFICIENT_POSITIVE_EXPECTANCY_FILTER"
+  },
+  "wave_specific_not_canonical": [
+    "leadership_definition",
+    "breakout_definition",
+    "market_regime_definition",
+    "peer_group_definition",
+    "volume_threshold",
+    "intraday_confirmation_definition",
+    "scanner_or_grade",
+    "wave1_or_wave2_cell_membership",
+    "preferred_threshold_or_model"
+  ],
+  "limitations": [
+    "DENSE_PATHS_COVER_THE_FROZEN_SCOPED_POPULATION_NOT_ALL_WAVE2_EVENTS",
+    "ENDPOINT_OUTCOMES_ARE_WAVE2_ANCHOR_SPECIFIC_AND_NEW_ANCHORS_REQUIRE_ADDITIVE_OUTCOMES",
+    "SPY_QQQ_AND_IWM_DAILY_ROWS_EXIST_BUT_BENCHMARK_IDENTITY_CONTINUITY_AND_REGIME_TRANSFORMS_ARE_WAVE3_DELTAS",
+    "PIT_SECTOR_INDUSTRY_CLASSIFICATIONS_AND_PEER_GROUPS_REQUIRE_SEPARATE_DELTA_ADMISSION",
+    "INTRADAY_DATA_AND_TIMESTAMP_SEMANTICS_ARE_NOT_ADMITTED",
+    "NO_TOTAL_RETURN_DIVIDEND_TRANSACTION_COST_EXECUTION_CAPACITY_POSITION_SIZING_OR_STRATEGY_VALIDITY_CLAIM",
+    "NO_E3_UNTOUCHED_CONFIRMATION_CLAIM",
+    "NO_SUCCESSOR_PERIOD_STITCH",
+    "BM_SHARED_CAUSAL_LAYER_IS_A_STATIC_SYNTHETIC_CONTRACT_CANDIDATE_NOT_A_PRODUCTION_RELEASE"
+  ]
+}

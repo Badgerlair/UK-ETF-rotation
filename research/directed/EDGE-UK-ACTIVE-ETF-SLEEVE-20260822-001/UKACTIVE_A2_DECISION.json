@@ -1,0 +1,68 @@
+{
+  "stage_id": "UKACTIVE-A2",
+  "run_id": "UKACTIVE-A2-20260822-001",
+  "decision": "UKACTIVE_A2_PASS_WITH_OPEN_ITEMS",
+  "a3_signal_discovery_authorised": true,
+  "authorisation_scope": "RESEARCH_ONLY_A3_READY_FAMILIES_NO_DEPLOYMENT_CLAIM",
+  "counts": {
+    "economic_exposure_families_with_usable_histories": 90,
+    "families_with_at_least_1_year": 89,
+    "families_with_at_least_3_years": 86,
+    "families_with_at_least_5_years": 77,
+    "families_with_at_least_10_years": 59,
+    "families_with_validated_actual_implementation_histories": 90,
+    "families_requiring_proxy_histories": 13,
+    "families_with_unresolved_historical_eligibility": 99,
+    "a3_ready_family_count": 86,
+    "exact_identity_active_listing_routes": 367,
+    "historical_delisted_listing_extensions": 4,
+    "validated_listing_histories": 357,
+    "panel_rows": 667700
+  },
+  "total_return_validation_results": {
+    "listing_status_counts": {
+      "PASS_VENDOR_SEMANTICS_NO_EVENT_AVAILABLE": 140,
+      "PASS_VENDOR_SEMANTICS_AND_ZERO_REPORTED_DISTRIBUTIONS": 97,
+      "PASS_EXPLICIT_DISTRIBUTION_RECONCILIATION": 91,
+      "PASS_PRICE_RETURN_ETC_VENDOR_SEMANTICS_NO_DISTRIBUTION": 20,
+      "FAIL_DISTRIBUTION_RECONCILIATION": 13,
+      "PASS_WITH_OPEN_EVENT_TOLERANCE_ITEMS": 8,
+      "PASS_WITH_OPEN_EVENT_ALIGNMENT_ITEMS": 1,
+      "FAIL_SAME_ISIN_GBP_FX_COHERENCE": 1
+    },
+    "distribution_event_status_counts": {
+      "PASS": 3135,
+      "UNRESOLVED_NO_PRICE_ON_EVENT_DATE": 121,
+      "FAIL": 78,
+      "WARNING": 57,
+      "UNRESOLVED_NO_PRIOR_PRICE": 44
+    },
+    "overlap_source_status_counts": {
+      "PASS": 18,
+      "FAIL": 1,
+      "WARNING": 1
+    }
+  },
+  "fx_gbp_validation_results": {
+    "WARNING": 120,
+    "PASS": 8,
+    "UNRESOLVED_NO_COMMON_VALID_DATES": 6,
+    "FAIL": 1
+  },
+  "cash_validation": {
+    "overlap_observations": 2076,
+    "median_absolute_error": 2.0478083284647397e-07,
+    "p95_absolute_error": 7.0528131542735295e-06,
+    "max_absolute_error": 1.760198931921586e-05,
+    "status": "PASS",
+    "method": "SONIA rate ACT/365 between XLON sessions; independently compared with official SONIA Compounded Index"
+  },
+  "automated_tests": {
+    "passed": 46,
+    "failed": 0,
+    "critical_failures": 0
+  },
+  "open_item_count": 19,
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY",
+  "strategy_results_produced": false
+}

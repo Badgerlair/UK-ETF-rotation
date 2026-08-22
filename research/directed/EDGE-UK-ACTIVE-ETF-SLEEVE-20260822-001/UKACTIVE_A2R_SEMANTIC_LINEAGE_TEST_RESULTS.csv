@@ -1,0 +1,18 @@
+﻿test_id,category,description,critical,expected,observed,status
+A2R-SYN-001,SYNTHETIC_FAILURE_FIXTURE,US-specific family rejects global history,YES,PASS,True,PASS
+A2R-SYN-002,SYNTHETIC_FAILURE_FIXTURE,European family rejects global history,YES,PASS,True,PASS
+A2R-SYN-003,SYNTHETIC_FAILURE_FIXTURE,Broad China rejects China Internet,YES,PASS,True,PASS
+A2R-SYN-004,SYNTHETIC_FAILURE_FIXTURE,Unhedged family rejects GBP-hedged history,YES,PASS,True,PASS
+A2R-SYN-005,SYNTHETIC_FAILURE_FIXTURE,Same ticker text alone is never an identity fingerprint,YES,PASS,True,PASS
+A2R-SYN-006,SYNTHETIC_FAILURE_FIXTURE,Different ISIN rows remain separate implementation identities,YES,PASS,True,PASS
+A2R-SYN-007,SYNTHETIC_FAILURE_FIXTURE,Proxy and implementation labels are distinguishable,YES,PASS,True,PASS
+A2R-SEM-001,REAL_SEMANTIC,US-specific family uses only United States objective history,YES,PASS,UNITED_STATES × AEROSPACE_AND_DEFENCE × VETTAFI_AMERICAN_FUTURE_OF_DEFENCE × UNHEDGED × INDUSTRY,PASS
+A2R-SEM-002,REAL_SEMANTIC,European sector routes use only Europe fingerprints,YES,PASS,14,PASS
+A2R-SEM-003,REAL_SEMANTIC,Global sector/theme routes use only global fingerprints,YES,PASS,11,PASS
+A2R-SEM-004,REAL_SEMANTIC,Broad China is neither China Internet nor China A-shares,YES,PASS,CHINA × BROAD_MARKET × MSCI_CHINA × UNHEDGED × BROAD_COUNTRY,PASS
+A2R-SEM-005,REAL_SEMANTIC,Australia route is broad Australia and unhedged,YES,PASS,AUSTRALIA × BROAD_MARKET × MSCI_AUSTRALIA × UNHEDGED × BROAD_COUNTRY,PASS
+A2R-SEM-006,REAL_SEMANTIC,All admitted routes pass complete five-dimensional fingerprint matching,YES,PASS,{'PASS': 31},PASS
+A2R-SEM-007,REAL_SEMANTIC,Different ISIN implementation histories retain explicit listing identities,YES,PASS,193,PASS
+A2R-SEM-008,REAL_SEMANTIC,No corrected row is labelled proxy history,YES,PASS,0,PASS
+A2R-SEM-009,REAL_SEMANTIC,Known invalid old family/ISIN mappings are absent from corrected remediation routes,YES,PASS,NOT_APPLICABLE,PASS
+A2R-SEM-010,REAL_SEMANTIC,Corrected family never retains its own old invalid fingerprint,YES,PASS,NOT_APPLICABLE,PASS

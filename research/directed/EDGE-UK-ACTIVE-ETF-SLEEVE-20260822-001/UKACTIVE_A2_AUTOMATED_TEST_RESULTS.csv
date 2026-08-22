@@ -1,0 +1,47 @@
+test_id,category,description,critical,expected,observed,status
+SYN-01,SYNTHETIC_FAILURE_FIXTURE,instrument before fund/share inception,True,PASS,Pre-inception row rejected,PASS
+SYN-02,SYNTHETIC_FAILURE_FIXTURE,listing before listing inception,True,PASS,Pre-listing row rejected,PASS
+SYN-03,SYNTHETIC_FAILURE_FIXTURE,current eligibility back-projected,True,PASS,Current label is not a historical label,PASS
+SYN-04,SYNTHETIC_FAILURE_FIXTURE,unvalidated adjusted close,True,PASS,Route must carry validation=true,PASS
+SYN-05,SYNTHETIC_FAILURE_FIXTURE,distribution double counted,True,PASS,Adjusted return plus dividend rejected,PASS
+SYN-06,SYNTHETIC_FAILURE_FIXTURE,distribution omitted,True,PASS,Raw price return without dividend rejected,PASS
+SYN-07,SYNTHETIC_FAILURE_FIXTURE,GBX interpreted as GBP,True,PASS,100 GBX = 1 GBP,PASS
+SYN-08,SYNTHETIC_FAILURE_FIXTURE,FX applied twice,True,PASS,Second conversion rejected,PASS
+SYN-09,SYNTHETIC_FAILURE_FIXTURE,necessary FX omitted,True,PASS,Foreign listing needs GBP-per-local conversion,PASS
+SYN-10,SYNTHETIC_FAILURE_FIXTURE,stale observation treated as normal zero,True,PASS,Synthetic unchanged zero-volume run is flagged stale,PASS
+SYN-11,SYNTHETIC_FAILURE_FIXTURE,future eligibility leaks backwards,True,PASS,Evidence effective date enforced,PASS
+SYN-12,SYNTHETIC_FAILURE_FIXTURE,future canonical knowledge leaks backwards,True,PASS,Only as-of cumulative fields used,PASS
+SYN-13,SYNTHETIC_FAILURE_FIXTURE,delisted history disappears,True,PASS,Historical registry retains closed line,PASS
+SYN-14,SYNTHETIC_FAILURE_FIXTURE,proxy labelled investable,True,PASS,Proxy and implementation labels are disjoint,PASS
+SYN-15,SYNTHETIC_FAILURE_FIXTURE,accumulating/distributing share classes collapsed,True,PASS,Separate share-class IDs required,PASS
+SYN-16,SYNTHETIC_FAILURE_FIXTURE,same-close signal/execution,True,PASS,Execution date strictly follows information date,PASS
+SYN-17,SYNTHETIC_FAILURE_FIXTURE,duplicate provider creates extra economic histories,True,PASS,One family/date row retained,PASS
+REAL-01,REAL,No valid instrument return before evidenced inception,True,PASS,0,PASS
+REAL-02,REAL,No canonical selection uses a listing before existence,True,PASS,"{'HISTORICALLY_UNCERTAIN': 177652, 'HISTORICALLY_PROBABLE': 92292}",PASS
+REAL-03,REAL,Current eligibility is not assigned as a historical label,True,PASS,"['HISTORICALLY_PROBABLE', 'HISTORICALLY_UNCERTAIN', 'NOT_YET_EXISTING']",PASS
+REAL-04,REAL,Unvalidated adjusted-close histories are not selected,True,PASS,[],PASS
+REAL-05,REAL,Authoritative distribution method does not add distributions twice,True,PASS,Distributions are retained as event data and used for independent reconstruction only; they are not added again to adjusted-close returns,PASS
+REAL-06,REAL,Selected distributing histories have no failed explicit event reconstruction,True,PASS,0,PASS
+REAL-07,REAL,Every GBX line uses exactly 0.01 GBP multiplier,True,PASS,[0.01],PASS
+REAL-08,REAL,Foreign listing price is converted to GBP exactly once,True,PASS,0.0,PASS
+REAL-09,REAL,Foreign listings cannot be valid without FX,True,PASS,0,PASS
+REAL-10,REAL,Stale observations are not valid returns,True,PASS,0,PASS
+REAL-11,REAL,Historical eligibility confidence explicitly says current state was not back-projected,True,PASS,"{'LOW_CURRENT_STATE_NOT_BACK_PROJECTED': 2277812, 'HIGH_IF_DATED_INCEPTION': 199355}",PASS
+REAL-12,REAL,Canonical selection uses strictly prior-session information,True,PASS,269944,PASS
+REAL-13,REAL,Delisted exact-ISIN histories are retained,True,PASS,4,PASS
+REAL-14,REAL,Proxy labels cannot enter live implementation rows,True,PASS,0,PASS
+REAL-15,REAL,Accumulating and distributing classes retain distinct share-class identities,True,PASS,1,PASS
+REAL-16,REAL,Same-close signal/execution is impossible in panel mapping,True,PASS,667600,PASS
+REAL-17,REAL,Provider duplication cannot create multiple family/date rows,True,PASS,0,PASS
+REAL-18,REAL,Broker status remains NOT_CHECKED,False,PASS,{'NOT_CHECKED': 667700},PASS
+REAL-19,REAL,A0A1 GBP/GBX conflicts are corrected through explicit lineage,True,PASS,84,PASS
+REAL-20,REAL,Current investability status never appears in research panel eligible_state,True,PASS,"{'NO_IMPLEMENTATION_AVAILABLE_AS_OF_PRIOR_SESSION': 391079, 'HISTORICALLY_UNCERTAIN': 177652, 'HISTORICALLY_PROBABLE': 92292, 'RESEARCH_CASH_PROXY_NOT_BROKER_ACCOUNT_RATE': 6677}",PASS
+REAL-21,REAL,"Same-ISIN lines remain implementation alternatives, not extra economic rows",True,PASS,100,PASS
+REAL-22,REAL,Hedged and unhedged exposures are not collapsed by share-class identity,True,PASS,hedged=8 unhedged=84,PASS
+REAL-23,REAL,All valid authoritative returns are finite,True,PASS,268012,PASS
+REAL-24,REAL,Actual GBP cash route reconciles with SONIA Compounded Index,True,PASS,"{'overlap_observations': 2076, 'median_absolute_error': 2.0478083284647397e-07, 'p95_absolute_error': 7.0528131542735295e-06, 'max_absolute_error': 1.760198931921586e-05, 'status': 'PASS', 'method': 'SONIA rate ACT/365 between XLON sessions; independently compared with official SONIA Compounded Index'}",PASS
+REAL-25,REAL,Representative same-ISIN GBP/foreign lines are validated and failed routes are excluded,True,PASS,"{'resolved_pairs': 128, 'failed_targets': 1, 'selected_failed_targets': []}",PASS
+REAL-26,REAL,Overlapping secondary price source materially corroborates primary histories,True,PASS,"{'resolved': 19, 'failures': 1}",PASS
+REAL-27,REAL,Historical state table includes all required separated state fields,True,PASS,"['account_eligibility_known', 'broker_status', 'cum_bad_observations', 'cum_valid_observations', 'data_valid', 'date', 'economic_exposure_family_id', 'fund_entity_id', 'fund_exists', 'historical_investability_confidence', 'historical_investability_state', 'listing_active', 'listing_exists', 'listing_id', 'missing_flag', 'price_available', 'return_data_available', 'share_class_exists', 'share_class_id', 'signal_warmup_available', 'source_evidence', 'stale_flag', 'structurally_eligible', 'total_return_validation_status', 'uk_retail_status_known', 'warmup_126', 'warmup_189', 'warmup_21', 'warmup_252', 'warmup_504', 'warmup_63']",PASS
+REAL-28,REAL,Leveraged/daily-reset/path-dependent structures do not enter canonical selection,True,PASS,0,PASS
+REAL-29,REAL,FX reference observations are available no later than the XLON valuation date,True,PASS,363403,PASS

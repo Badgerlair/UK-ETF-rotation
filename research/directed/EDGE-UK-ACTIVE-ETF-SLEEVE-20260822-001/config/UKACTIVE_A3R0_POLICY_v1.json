@@ -1,0 +1,115 @@
+{
+  "policy_id": "UKACTIVE-A3R0-POLICY-v1.0.0",
+  "stage_id": "UKACTIVE-A3R0",
+  "run_id": "UKACTIVE-A3R0-20260822-001",
+  "declared_at": "2026-08-22T20:00:00+01:00",
+  "observation_date": "2026-08-22",
+  "purpose": "Rotation-universe validation and competition mapping only; no strategy or performance research",
+  "authoritative_family_count": 99,
+  "identity_unit": "economic_exposure_family_id",
+  "dynamic_admission": {
+    "rule_id": "SIGNAL_SPECIFIC_DYNAMIC_ADMISSION-v1.0.0",
+    "signal_sessions": [21, 42, 63, 126, 252],
+    "valid_observation_rule": "Each family is admitted after L cumulative valid canonical A2 observations with data_valid=true, stale_flag=false, missing_flag=false and proxy_flag=false; invalid rows never count, and A3R1 must still validate the complete inputs for each actual signal date",
+    "history_gate_504_removed": true,
+    "current_eligibility_back_projection_allowed": false,
+    "material_identity_or_scope_mismatch_admitted": false,
+    "proxy_splicing_allowed": false
+  },
+  "research_maturity": {
+    "MATURE_min_valid_observations": 1260,
+    "DEVELOPING_min_valid_observations": 504,
+    "NEW_min_valid_observations": 1,
+    "zero_history_label": "NOT_APPLICABLE_NO_USABLE_HISTORY"
+  },
+  "global_benchmark": {
+    "research_family_id": "GLOBAL_DEVELOPED_WORLD",
+    "reason": "Longest clean validated broad-global-equity implementation history in A2 while retaining GBP total-return lineage",
+    "recognisable_live_comparator_family_id": "GLOBAL_ALL_WORLD",
+    "frozen_for_A3R1": true
+  },
+  "primary_equity_pool_excludes": [
+    "DEFENSIVE_REFERENCE",
+    "BENCHMARK_REFERENCE",
+    "STRUCTURALLY_EXCLUDED",
+    "INSUFFICIENT_DATA"
+  ],
+  "public_verification": {
+    "LSE_current_status_values": ["CONFIRMED", "NOT_CONFIRMED", "NOT_APPLICABLE", "CONFLICT"],
+    "UK_retail_disclosure_status_values": ["CURRENT_DISCLOSURE_CONFIRMED", "DISCLOSURE_NOT_FOUND", "NOT_REQUIRED", "UNCERTAIN"],
+    "public_ISA_rules_status_values": ["RULES_ELIGIBLE", "RULES_NOT_ELIGIBLE", "UNCERTAIN"],
+    "IBKR_default": "NOT_CHECKED",
+    "LSE_listing_alone_proves_ISA_eligibility": false,
+    "price_data_proves_broker_availability": false,
+    "IBKR_contract_recognition_proves_ISA_purchase": false
+  },
+  "current_implementation_selection": {
+    "candidate_must_have_A0A1_fund_share_class_listing_lineage": true,
+    "candidate_must_match_economic_family": true,
+    "ordered_preference": [
+      "A0A1 CURRENTLY_INVESTABLE before CURRENT_CANDIDATE_UNVERIFIED",
+      "active XLON listing",
+      "GBP or GBX line before foreign-currency line",
+      "higher A0A1 implementation evidence confidence",
+      "lower A0A1 implementation evidence order",
+      "stable listing_id tie-break"
+    ],
+    "alternate_rule": "Next economically valid implementation; prefer an alternate listing of the preferred ISIN before a different share class or provider"
+  },
+  "material_A2_lineage_failures": {
+    "AUSTRALIA": "A2 canonical history is almost entirely a GBP-hedged share class although A0A1 family is unhedged",
+    "CHINA_BROAD": "A2 canonical history is overwhelmingly China A-shares and duplicates CHINA_A_SHARES rather than broad China",
+    "EUROPE_ENERGY": "A2 history uses an MSCI World Energy fund",
+    "EUROPE_FINANCIALS": "A2 history switches from Europe Financials to MSCI World Financials",
+    "EUROPE_HEALTHCARE": "A2 history switches from Europe Healthcare to MSCI World Health Care",
+    "EUROPE_INDUSTRIALS": "A2 history uses an MSCI World Industrials fund",
+    "EUROPE_MATERIALS": "A2 history uses an MSCI World Materials fund",
+    "EUROPE_TECHNOLOGY": "A2 history uses an MSCI World Technology fund",
+    "EUROPE_UTILITIES": "A2 history uses an MSCI World Utilities fund",
+    "GLOBAL_BANKS": "A2 history is principally Europe banks and contains a development-bank bond observation",
+    "GLOBAL_HEALTHCARE": "A2 history changes from a broad world-healthcare fund to healthcare-innovation implementations",
+    "GLOBAL_INFRASTRUCTURE": "A2 history uses US infrastructure and briefly Europe infrastructure rather than a stable global infrastructure implementation",
+    "GLOBAL_TECHNOLOGY": "A2 history uses a digitalisation thematic fund rather than a broad global technology sector fund",
+    "US_AEROSPACE_DEFENCE": "A2 history uses a global aerospace-and-defence fund rather than the available US-defence implementation"
+  },
+  "scope_limited_but_retained": {
+    "DEVELOPED_ASIA_PACIFIC": "Implementation is developed Pacific ex-Japan; effective scope must be displayed explicitly",
+    "GLOBAL_AI": "History uses an AI/metaverse/blockchain composite; treat as broad AI-theme implementation with scope warning",
+    "GLOBAL_BIOTECHNOLOGY": "Implementations are US-dominant Nasdaq/NYSE Arca biotechnology exposures despite GLOBAL label",
+    "GLOBAL_RETAIL": "Implementation is e-commerce rather than the full retail industry",
+    "GLOBAL_SOFTWARE": "Implementation is cloud computing rather than the full software industry",
+    "GLOBAL_TRANSPORTATION": "Implementation is e-commerce logistics rather than the full transportation industry",
+    "US_TOTAL_MARKET": "Two isolated implementation selections use a screened US-equity line; retained with a minor-lineage warning"
+  },
+  "family_candidate_exclusions": {
+    "ASIA_PACIFIC_EX_JAPAN": ["LU1291106356", "LU1220245556"],
+    "AUSTRALIA": ["IE00BXDZNQ90"],
+    "CHINA_BROAD": ["IE000NFR7C63", "IE00BKFB6K94", "FR0011720911"],
+    "EUROPE_ENERGY": ["IE00BYTRR863"],
+    "EUROPE_FINANCIALS": ["IE00BYTRR970"],
+    "EUROPE_HEALTHCARE": ["IE00BYTRRB94"],
+    "EUROPE_INDUSTRIALS": ["IE00BYTRRC02"],
+    "EUROPE_MATERIALS": ["IE00BYTRRF33"],
+    "EUROPE_TECHNOLOGY": ["IE00BYTRRD19"],
+    "EUROPE_UTILITIES": ["IE00BYTRRH56"],
+    "GLOBAL_BANKS": ["LU3065096839", "IE00B5MTWD60", "LU1852212965", "LU1852212023"],
+    "GLOBAL_HEALTHCARE": ["IE00BYZK4776", "IE00BK5BC677"],
+    "GLOBAL_INFRASTRUCTURE": ["IE00BLCHJ641", "IE0008LRGGP4", "IE000AFVONT7"],
+    "GLOBAL_TECHNOLOGY": ["IE00BYZK4883"],
+    "GLOBAL_AI": ["IE000IM4K4K2"],
+    "GLOBAL_AEROSPACE_DEFENCE": ["IE000017NMH7", "IE000C7EUDG1"],
+    "GLOBAL_GOLD_MINERS": ["IE00BQQP9G91"],
+    "GBP_CORPORATE_IG": ["IE00B4L60H17", "IE00BCBJF711"],
+    "US_AEROSPACE_DEFENCE": ["IE000U9ODG19"]
+  },
+  "preferred_current_isin_overrides": {
+    "ASIA_PACIFIC_EX_JAPAN": "IE00B7WK2W23",
+    "GBP_CORPORATE_IG": "IE00B00FV011",
+    "GLOBAL_AEROSPACE_DEFENCE": "IE000NVDQXE1"
+  },
+  "classification_rule_version": "UKACTIVE-ROTATION-CLASSIFICATION-v1.0.0",
+  "competition_pool_rule_version": "UKACTIVE-ROTATION-POOLS-v1.0.0",
+  "overlap_rule_version": "UKACTIVE-OVERLAP-v1.0.0",
+  "benchmark_map_rule_version": "UKACTIVE-BENCHMARK-MAP-v1.0.0",
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+}

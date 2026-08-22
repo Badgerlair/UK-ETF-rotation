@@ -1,0 +1,705 @@
+{
+  "programme_id": "EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "programme_root": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "stage_id": "UKACTIVE-A3R0",
+  "run_id": "UKACTIVE-A3R0-20260822-001",
+  "started_at_utc": "2026-08-22T20:17:49+00:00",
+  "completed_at_utc": "2026-08-22T20:17:53+00:00",
+  "decision": "UKACTIVE_A3R0_FAIL",
+  "git": {
+    "commit": "NOT_AVAILABLE_NOT_A_GIT_WORKTREE",
+    "worktree_state": "NOT_APPLICABLE_NOT_A_GIT_WORKTREE",
+    "complete_patch_if_dirty": "NOT_APPLICABLE_NOT_A_GIT_WORKTREE"
+  },
+  "reproducibility_status": "PASS_COMPLETE_EXECUTED_SOURCE_SNAPSHOT_NON_GIT",
+  "executed_command_line": [
+    "C:\\Python312\\python.exe",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a3r0.py"
+  ],
+  "input_hashes": {
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_ECONOMIC_EXPOSURE_MASTER.csv": "8ce2fb94af67d0dcf1fbdb6ad63967a07f4977d08947595efec2b56f10e22b20",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_DISCOVERY_REGISTRY.csv": "6510a208100c80727550dad53b73f3671d1de755f26d0da16df263778228a542",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_IMPLEMENTATION_CANDIDATES.csv": "3f2eb46795b9bdc9d980dd52c863e175a45d074e9acd0395448db1ff13d4731e",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_CURRENT_INVESTABILITY.csv": "e8b96be1913d07fc010a797f2908a912be94de67f73a3a29bb904b6d741f841d",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_LISTING_MASTER.csv": "02a0f2f9f69c3943def3d68d790b5ce3b8f543bf9c44400915664190056ae75e",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_SHARE_CLASS_MASTER.csv": "737cf0b4582572a09574fbd6a3cb4d88133d5a7cab0a1a5b96c5d715a2641ed0",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_DUPLICATE_GROUPS.csv": "403f0059a0b23bc083da087ad57ab14aefe2ddacf0d49d54c61ef61534c7fa19",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_DEEPVUE_THEME_CROSSWALK.csv": "37560d61d42f27404da250fe26b2d67d69f4cf88df6821c0dcd689493d003733",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_THEME_TAXONOMY.csv": "c7c27c09679c9e7bd92e75621b362d93bff5ded60e979eca158b2d31f1f44424",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_MANIFEST.json": "c5a09ec30aef7f1b11ebd8473d53424f51e47c06d2e314796715c8157b68493e",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_TOTAL_RETURN_PANEL_GBP.parquet": "02421cd80f63bbc1d543df94b8e0f0a3eaec6d0449400a70d4130843ca9c25d6",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_EXPOSURE_HISTORY_MASTER.parquet": "01d0f7a129f04d7482e763dde15d26a668e5f287d0572b6f0a0a1f96e87c164a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_CANONICAL_IMPLEMENTATION_HISTORY.parquet": "b693ef86ca90da3be28bdbfcf9ea3a5d9c0a4410f266f728256bc0e6b41764d7",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_FAMILY_COVERAGE_AND_READINESS.csv": "26bb2cf80f0a77e6f85aed500699c78040f2bc73740c350ee758e1eb82d4ee66",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_MANIFEST.json": "d7834fa6ff83bbdfe4557aa92ba7535708cf88d95e621b54606aa33da6942b9a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_DATA_QUALITY_REPORT.md": "f23c3fc2025a3dfe016260c50bd7a456ce3c650874d3197d32a6975d1c059072",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_A3_READINESS_REPORT.md": "4a50b4dc7be33cf422157f828e30728ef87c28444cb85b36a19dcf5b88b54c66",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\UKACTIVE_A0A1_EVIDENCE_LEDGER.jsonl": "8cdac0fdbd091bde9ed167ec4e34ccaf852f6306b99dab201b2c4579953094ee",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A3R0_POLICY_v1.json": "a96547ca9bd4d664f391a366eea881744ef9c0f438bc8c5057055d3605a06e59"
+  },
+  "source_code_and_policy_hashes": {
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a3r0.py": "f6f506ea91d8553446edeea55bb0ed23600e096db63ef943afe720b9744e5e59",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\ukactive_a3r0_core.py": "584824647d14518f4d8b86c26ee81d61cccced2012c41a239a01a09ad4f1d06a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A3R0_POLICY_v1.json": "a96547ca9bd4d664f391a366eea881744ef9c0f438bc8c5057055d3605a06e59"
+  },
+  "executed_source_snapshot_paths": [
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\build_ukactive_a3r0.py",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\ukactive_a3r0_core.py",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\UKACTIVE_A3R0_POLICY_v1.json"
+  ],
+  "executed_source_snapshot_hashes": {
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\build_ukactive_a3r0.py": "f6f506ea91d8553446edeea55bb0ed23600e096db63ef943afe720b9744e5e59",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\ukactive_a3r0_core.py": "584824647d14518f4d8b86c26ee81d61cccced2012c41a239a01a09ad4f1d06a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\sources\\a3r0\\executed_source\\UKACTIVE_A3R0_POLICY_v1.json": "a96547ca9bd4d664f391a366eea881744ef9c0f438bc8c5057055d3605a06e59"
+  },
+  "output_hashes_excluding_manifest_itself": {
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\UKACTIVE_A3R0_EVIDENCE_LEDGER.jsonl": "5fa04ca4b2962366265148e183d7f8f3cef5a84dca3fe1d8ddc49121595e77b7",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_A3R1_READINESS_REPORT.md": "645ad392d7baf37d95e122c728fdd6d0af88a84e4de1e8a0d47865d87230980a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_AUTOMATED_TEST_RESULTS.csv": "1d74b97cba28c7213adb79f75d0122a5362a8746699fc7c74f4231676d615ea7",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_CHATGPT_IBKR_VERIFICATION_QUEUE.csv": "89128cdc171256e3cfff35924d9418385d3c6f021a56d9576c1ea2085806b9e5",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_CLASSIFICATION_CORRECTIONS.csv": "4eebcd0277c32ad9dba267d4ec7441ad3c7664c44f19b0f8c7cf230f05ecbfa6",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_COMPETITION_POOLS.csv": "8b0857b58e1b3dd7540c2450239f76bf5e68e6d14f691c88edc79c69d2fde75d",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_CURRENT_IMPLEMENTATION_LINES.csv": "a01d9c795fa429606a811dddc4bfecd4285c6ef5d897ddf1350279c358bcb586",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_CURRENT_IMPLEMENTATION_LINES.parquet": "16c32324a079136fd12dfef9635057758a6bf21ae618bc1bc1c3b4cc04613350",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_DATA_QUALITY_REPORT.md": "6237f0da95059c5844355731c412aea536a19fe6e53be2154e266984d3dce62b",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_DECISION.json": "4cde8d79242275a6f7999340d4f5b9de2cec29bf595f87e95db2387685c61b5d",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_DYNAMIC_SIGNAL_ELIGIBILITY.csv": "a49b5c4891b53da16fb7b6008edeb1907f8cfc41d0b7e9fa2e806391a4c10324",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_DYNAMIC_SIGNAL_ELIGIBILITY.parquet": "47290c1304af5f718725115add63a811f5ee535da466391e95416b589e6d60a4",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_GLOBAL_BENCHMARK_MAP.csv": "58d9cc775309e26621f4b85cbfba2f909847f1b645f33ffa35bba24533097ebc",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_OVERLAP_CLUSTERS.csv": "87433c49ba6219e03048cee451dae9e4957a5acb5f92090add030aed934d6188",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_PARENT_BENCHMARK_MAP.csv": "fee56962d97d7e93e89d4911c4d3a9a48a242f2416ddd96442eeae4c34b865cc",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_PARENT_CHILD_MAP.csv": "f4a05bfedb9f2a6a6d69428329b2a7711aa276c02ce8391f3da570f12928dcf0",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_PUBLIC_UK_ELIGIBILITY.csv": "7005ba26f1843d3728435d55e0e2533988f7283a0631a1332b3f8e9d118ce0ef",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_ROTATION_ROLE_MASTER.csv": "9f3fd0cbebd66d77d39a528441301bd1111981e25be5b2d49388970da37094ef",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_ROTATION_ROLE_MASTER.parquet": "7ca51338de93d9a589d629700685b8a75bb19aa9d4acc6ab8689a580f26a7aa6",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_SCOPE_AND_METHOD.md": "3b469313cbb9b0b9e29cfa82aed7e36fa3a533cad2ead5201df8a512acee9203",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_SELECTABLE_ECONOMIC_UNIVERSE.csv": "5e1c4d7395a72b0cf5e741061134e5f2186a29c8caaa302798e9019ccf0687c2",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_SELECTABLE_ECONOMIC_UNIVERSE.parquet": "d697542818ddb62de1d243aecc47e77d517a7954929b334da3a7000351706ceb",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_THEME_COVERAGE_AUDIT.csv": "ffb0655343dfe40e17dc9ee72d4a4de3e0ff1d6ae7e11c22bd9ed4cc3a7a22b2",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_THEME_COVERAGE_GAPS.md": "c1118963a9f4773128927c8e1d55d3bc514a58382309d01af985e61e98337f9a",
+    "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_UNRESOLVED_ITEMS.csv": "fc536f7e4d2a7ffe88a40bbc16c5936b389d1322e27bdde77c6d8c8a6397b6c0"
+  },
+  "source_urls": {
+    "FCA_CCI_TRANSITION": "https://handbook.fca.org.uk/handbook/disctp2",
+    "HMRC_ISA_QUALIFYING_INVESTMENTS": "https://www.gov.uk/guidance/stocks-and-shares-investments-for-isa-managers",
+    "HMRC_ISA_2026_AMENDMENT": "https://www.gov.uk/government/publications/amendment-to-individual-savings-account-regulations-2026/individual-savings-account-amendment-regulation-2026",
+    "LSE_TRIP_CURRENT": "https://www.londonstockexchange.com/stock/TRIP/hanetf/company-page",
+    "LSE_TELE_CURRENT": "https://www.londonstockexchange.com/stock/TELE/street-global-advisors",
+    "LSE_SOCIAL_MEDIA_XLOM": "https://www.londonstockexchange.com/market-stock/0IX3/global-x-social-media-etf/overview"
+  },
+  "source_retrieval_timestamps": {
+    "FCA_CCI_TRANSITION": "2026-08-22T20:17:49+00:00",
+    "HMRC_ISA_QUALIFYING_INVESTMENTS": "2026-08-22T20:17:50+00:00",
+    "HMRC_ISA_2026_AMENDMENT": "2026-08-22T20:17:50+00:00",
+    "LSE_TRIP_CURRENT": "2026-08-22T20:17:50+00:00",
+    "LSE_TELE_CURRENT": "2026-08-22T20:17:50+00:00",
+    "LSE_SOCIAL_MEDIA_XLOM": "2026-08-22T20:17:51+00:00"
+  },
+  "evidence_counts": {
+    "A3R0_ledger_records": 6,
+    "A0A1_registry_records_used": 4359,
+    "classification_corrections": 45,
+    "public_implementation_lines": 142
+  },
+  "broker_check_method": "NOT_CHECKED_QUEUE_CREATED_FOR_LATER_READ_ONLY_CHATGPT_IBKR_PASS",
+  "package_versions": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "requests": "2.34.2"
+  },
+  "policy": {
+    "policy_id": "UKACTIVE-A3R0-POLICY-v1.0.0",
+    "stage_id": "UKACTIVE-A3R0",
+    "run_id": "UKACTIVE-A3R0-20260822-001",
+    "declared_at": "2026-08-22T20:00:00+01:00",
+    "observation_date": "2026-08-22",
+    "purpose": "Rotation-universe validation and competition mapping only; no strategy or performance research",
+    "authoritative_family_count": 99,
+    "identity_unit": "economic_exposure_family_id",
+    "dynamic_admission": {
+      "rule_id": "SIGNAL_SPECIFIC_DYNAMIC_ADMISSION-v1.0.0",
+      "signal_sessions": [
+        21,
+        42,
+        63,
+        126,
+        252
+      ],
+      "valid_observation_rule": "Each family is admitted after L cumulative valid canonical A2 observations with data_valid=true, stale_flag=false, missing_flag=false and proxy_flag=false; invalid rows never count, and A3R1 must still validate the complete inputs for each actual signal date",
+      "history_gate_504_removed": true,
+      "current_eligibility_back_projection_allowed": false,
+      "material_identity_or_scope_mismatch_admitted": false,
+      "proxy_splicing_allowed": false
+    },
+    "research_maturity": {
+      "MATURE_min_valid_observations": 1260,
+      "DEVELOPING_min_valid_observations": 504,
+      "NEW_min_valid_observations": 1,
+      "zero_history_label": "NOT_APPLICABLE_NO_USABLE_HISTORY"
+    },
+    "global_benchmark": {
+      "research_family_id": "GLOBAL_DEVELOPED_WORLD",
+      "reason": "Longest clean validated broad-global-equity implementation history in A2 while retaining GBP total-return lineage",
+      "recognisable_live_comparator_family_id": "GLOBAL_ALL_WORLD",
+      "frozen_for_A3R1": true
+    },
+    "primary_equity_pool_excludes": [
+      "DEFENSIVE_REFERENCE",
+      "BENCHMARK_REFERENCE",
+      "STRUCTURALLY_EXCLUDED",
+      "INSUFFICIENT_DATA"
+    ],
+    "public_verification": {
+      "LSE_current_status_values": [
+        "CONFIRMED",
+        "NOT_CONFIRMED",
+        "NOT_APPLICABLE",
+        "CONFLICT"
+      ],
+      "UK_retail_disclosure_status_values": [
+        "CURRENT_DISCLOSURE_CONFIRMED",
+        "DISCLOSURE_NOT_FOUND",
+        "NOT_REQUIRED",
+        "UNCERTAIN"
+      ],
+      "public_ISA_rules_status_values": [
+        "RULES_ELIGIBLE",
+        "RULES_NOT_ELIGIBLE",
+        "UNCERTAIN"
+      ],
+      "IBKR_default": "NOT_CHECKED",
+      "LSE_listing_alone_proves_ISA_eligibility": false,
+      "price_data_proves_broker_availability": false,
+      "IBKR_contract_recognition_proves_ISA_purchase": false
+    },
+    "current_implementation_selection": {
+      "candidate_must_have_A0A1_fund_share_class_listing_lineage": true,
+      "candidate_must_match_economic_family": true,
+      "ordered_preference": [
+        "A0A1 CURRENTLY_INVESTABLE before CURRENT_CANDIDATE_UNVERIFIED",
+        "active XLON listing",
+        "GBP or GBX line before foreign-currency line",
+        "higher A0A1 implementation evidence confidence",
+        "lower A0A1 implementation evidence order",
+        "stable listing_id tie-break"
+      ],
+      "alternate_rule": "Next economically valid implementation; prefer an alternate listing of the preferred ISIN before a different share class or provider"
+    },
+    "material_A2_lineage_failures": {
+      "AUSTRALIA": "A2 canonical history is almost entirely a GBP-hedged share class although A0A1 family is unhedged",
+      "CHINA_BROAD": "A2 canonical history is overwhelmingly China A-shares and duplicates CHINA_A_SHARES rather than broad China",
+      "EUROPE_ENERGY": "A2 history uses an MSCI World Energy fund",
+      "EUROPE_FINANCIALS": "A2 history switches from Europe Financials to MSCI World Financials",
+      "EUROPE_HEALTHCARE": "A2 history switches from Europe Healthcare to MSCI World Health Care",
+      "EUROPE_INDUSTRIALS": "A2 history uses an MSCI World Industrials fund",
+      "EUROPE_MATERIALS": "A2 history uses an MSCI World Materials fund",
+      "EUROPE_TECHNOLOGY": "A2 history uses an MSCI World Technology fund",
+      "EUROPE_UTILITIES": "A2 history uses an MSCI World Utilities fund",
+      "GLOBAL_BANKS": "A2 history is principally Europe banks and contains a development-bank bond observation",
+      "GLOBAL_HEALTHCARE": "A2 history changes from a broad world-healthcare fund to healthcare-innovation implementations",
+      "GLOBAL_INFRASTRUCTURE": "A2 history uses US infrastructure and briefly Europe infrastructure rather than a stable global infrastructure implementation",
+      "GLOBAL_TECHNOLOGY": "A2 history uses a digitalisation thematic fund rather than a broad global technology sector fund",
+      "US_AEROSPACE_DEFENCE": "A2 history uses a global aerospace-and-defence fund rather than the available US-defence implementation"
+    },
+    "scope_limited_but_retained": {
+      "DEVELOPED_ASIA_PACIFIC": "Implementation is developed Pacific ex-Japan; effective scope must be displayed explicitly",
+      "GLOBAL_AI": "History uses an AI/metaverse/blockchain composite; treat as broad AI-theme implementation with scope warning",
+      "GLOBAL_BIOTECHNOLOGY": "Implementations are US-dominant Nasdaq/NYSE Arca biotechnology exposures despite GLOBAL label",
+      "GLOBAL_RETAIL": "Implementation is e-commerce rather than the full retail industry",
+      "GLOBAL_SOFTWARE": "Implementation is cloud computing rather than the full software industry",
+      "GLOBAL_TRANSPORTATION": "Implementation is e-commerce logistics rather than the full transportation industry",
+      "US_TOTAL_MARKET": "Two isolated implementation selections use a screened US-equity line; retained with a minor-lineage warning"
+    },
+    "family_candidate_exclusions": {
+      "ASIA_PACIFIC_EX_JAPAN": [
+        "LU1291106356",
+        "LU1220245556"
+      ],
+      "AUSTRALIA": [
+        "IE00BXDZNQ90"
+      ],
+      "CHINA_BROAD": [
+        "IE000NFR7C63",
+        "IE00BKFB6K94",
+        "FR0011720911"
+      ],
+      "EUROPE_ENERGY": [
+        "IE00BYTRR863"
+      ],
+      "EUROPE_FINANCIALS": [
+        "IE00BYTRR970"
+      ],
+      "EUROPE_HEALTHCARE": [
+        "IE00BYTRRB94"
+      ],
+      "EUROPE_INDUSTRIALS": [
+        "IE00BYTRRC02"
+      ],
+      "EUROPE_MATERIALS": [
+        "IE00BYTRRF33"
+      ],
+      "EUROPE_TECHNOLOGY": [
+        "IE00BYTRRD19"
+      ],
+      "EUROPE_UTILITIES": [
+        "IE00BYTRRH56"
+      ],
+      "GLOBAL_BANKS": [
+        "LU3065096839",
+        "IE00B5MTWD60",
+        "LU1852212965",
+        "LU1852212023"
+      ],
+      "GLOBAL_HEALTHCARE": [
+        "IE00BYZK4776",
+        "IE00BK5BC677"
+      ],
+      "GLOBAL_INFRASTRUCTURE": [
+        "IE00BLCHJ641",
+        "IE0008LRGGP4",
+        "IE000AFVONT7"
+      ],
+      "GLOBAL_TECHNOLOGY": [
+        "IE00BYZK4883"
+      ],
+      "GLOBAL_AI": [
+        "IE000IM4K4K2"
+      ],
+      "GLOBAL_AEROSPACE_DEFENCE": [
+        "IE000017NMH7",
+        "IE000C7EUDG1"
+      ],
+      "GLOBAL_GOLD_MINERS": [
+        "IE00BQQP9G91"
+      ],
+      "GBP_CORPORATE_IG": [
+        "IE00B4L60H17",
+        "IE00BCBJF711"
+      ],
+      "US_AEROSPACE_DEFENCE": [
+        "IE000U9ODG19"
+      ]
+    },
+    "preferred_current_isin_overrides": {
+      "ASIA_PACIFIC_EX_JAPAN": "IE00B7WK2W23",
+      "GBP_CORPORATE_IG": "IE00B00FV011",
+      "GLOBAL_AEROSPACE_DEFENCE": "IE000NVDQXE1"
+    },
+    "classification_rule_version": "UKACTIVE-ROTATION-CLASSIFICATION-v1.0.0",
+    "competition_pool_rule_version": "UKACTIVE-ROTATION-POOLS-v1.0.0",
+    "overlap_rule_version": "UKACTIVE-OVERLAP-v1.0.0",
+    "benchmark_map_rule_version": "UKACTIVE-BENCHMARK-MAP-v1.0.0",
+    "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+  },
+  "classification_rule_version": "UKACTIVE-ROTATION-CLASSIFICATION-v1.0.0",
+  "competition_pool_rule_version": "UKACTIVE-ROTATION-POOLS-v1.0.0",
+  "overlap_rule_version": "UKACTIVE-OVERLAP-v1.0.0",
+  "benchmark_map_rule_version": "UKACTIVE-BENCHMARK-MAP-v1.0.0",
+  "coverage_statistics": {
+    "families_retained": 99,
+    "research_data_ready": 76,
+    "selectable": 72,
+    "dynamic_eligible": {
+      "21": 76,
+      "42": 76,
+      "63": 76,
+      "126": 76,
+      "252": 75
+    },
+    "maturity": {
+      "DEVELOPING": 9,
+      "MATURE": 77,
+      "NEW": 4,
+      "NOT_APPLICABLE_NO_USABLE_HISTORY": 9
+    },
+    "material_lineage_failures": 14,
+    "no_usable_history": 9
+  },
+  "automated_test_results": [
+    {
+      "test_id": "A3R0-T001",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "same-ISIN listings become separate opportunities",
+      "status": "PASS",
+      "detail": "Two tickers collapse to one family identity"
+    },
+    {
+      "test_id": "A3R0-T002",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "ticker replaces family ranking identity",
+      "status": "PASS",
+      "detail": "Ticker remains an implementation attribute"
+    },
+    {
+      "test_id": "A3R0-T003",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "parent and child labelled duplicates solely due to overlap",
+      "status": "PASS",
+      "detail": "Parent and child retain distinct duplicate groups"
+    },
+    {
+      "test_id": "A3R0-T004",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "defensive assets enter primary equity pool",
+      "status": "PASS",
+      "detail": "Defensive reference is excluded"
+    },
+    {
+      "test_id": "A3R0-T005",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "current eligibility back-projected historically",
+      "status": "PASS",
+      "detail": "Historical state remains uncertain"
+    },
+    {
+      "test_id": "A3R0-T006",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "21-session model requires 504 sessions",
+      "status": "PASS",
+      "detail": "Thirty valid observations admit a 21-session signal"
+    },
+    {
+      "test_id": "A3R0-T007",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "exposure admitted before sufficient warm-up",
+      "status": "PASS",
+      "detail": "Thirty observations do not admit 42 sessions"
+    },
+    {
+      "test_id": "A3R0-T008",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "missing or stale observations treated as valid",
+      "status": "PASS",
+      "detail": "The invalid observation is excluded, leaving only 40 valid observations"
+    },
+    {
+      "test_id": "A3R0-T009",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "DeepVue determines quantitative competition",
+      "status": "PASS",
+      "detail": "Role function has no DeepVue input"
+    },
+    {
+      "test_id": "A3R0-T010",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "ISA eligibility inferred from LSE listing",
+      "status": "PASS",
+      "detail": "Listing is not an input to ISA mapping"
+    },
+    {
+      "test_id": "A3R0-T011",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "IBKR availability inferred from local prices",
+      "status": "PASS",
+      "detail": "IBKR default is assigned independently as NOT_CHECKED"
+    },
+    {
+      "test_id": "A3R0-T012",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "public eligibility labelled account-specific IBKR confirmation",
+      "status": "PASS",
+      "detail": "Public and broker states are separate"
+    },
+    {
+      "test_id": "A3R0-T013",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "new internet product enters without identity/evidence lineage",
+      "status": "PASS",
+      "detail": "Unlineaged internet product is audit-only"
+    },
+    {
+      "test_id": "A3R0-T014",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "same-close information contaminates admission",
+      "status": "PASS",
+      "detail": "A3R0 carries A2 next-session execution mapping and does not calculate returns"
+    },
+    {
+      "test_id": "A3R0-T015",
+      "test_type": "SYNTHETIC_FAILURE_FIXTURE",
+      "failure_mode": "proxy history enters implementation admission",
+      "status": "PASS",
+      "detail": "Dynamic validity explicitly requires proxy_flag=false"
+    },
+    {
+      "test_id": "A3R0-T016",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "existing family count changes",
+      "status": "PASS",
+      "detail": "Retained families=99"
+    },
+    {
+      "test_id": "A3R0-T017",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "family IDs deleted or renumbered",
+      "status": "PASS",
+      "detail": "Exact A0A1 ID set retained"
+    },
+    {
+      "test_id": "A3R0-T018",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "dynamic table omits family",
+      "status": "PASS",
+      "detail": "Dynamic rows=99"
+    },
+    {
+      "test_id": "A3R0-T019",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "defensive enters primary equity tournament",
+      "status": "PASS",
+      "detail": "No defensive family is in primary equity competition"
+    },
+    {
+      "test_id": "A3R0-T020",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "materially misclassified A2 history admitted",
+      "status": "PASS",
+      "detail": "All 14 material mismatches are blocked"
+    },
+    {
+      "test_id": "A3R0-T021",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "known lineage failures omitted",
+      "status": "PASS",
+      "detail": "Fourteen material failures recorded"
+    },
+    {
+      "test_id": "A3R0-T022",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "504 gate retained",
+      "status": "PASS",
+      "detail": "Recovered families all have under 504 observations"
+    },
+    {
+      "test_id": "A3R0-T023",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "21-session warm-up violated",
+      "status": "PASS",
+      "detail": "All admitted 21-session families have enough valid returns"
+    },
+    {
+      "test_id": "A3R0-T024",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "zero-history family admitted",
+      "status": "PASS",
+      "detail": "No zero-history family admitted"
+    },
+    {
+      "test_id": "A3R0-T025",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "IBKR inferred from public/local data",
+      "status": "PASS",
+      "detail": "All contract statuses remain NOT_CHECKED"
+    },
+    {
+      "test_id": "A3R0-T026",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "public eligibility becomes IBKR ISA confirmation",
+      "status": "PASS",
+      "detail": "All ISA purchase statuses remain NOT_CHECKED"
+    },
+    {
+      "test_id": "A3R0-T027",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "ISA inferred only from LSE listing",
+      "status": "PASS",
+      "detail": "Undetermined A0 ISA evidence remains uncertain"
+    },
+    {
+      "test_id": "A3R0-T028",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "DeepVue controls competition",
+      "status": "PASS",
+      "detail": "DeepVue is descriptive only"
+    },
+    {
+      "test_id": "A3R0-T029",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "parent/child collapsed as duplicate",
+      "status": "PASS",
+      "detail": "All relationships remain economic hierarchy"
+    },
+    {
+      "test_id": "A3R0-T030",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "unvalidated global benchmark selected",
+      "status": "PASS",
+      "detail": "Global benchmark has clean A2 lineage"
+    },
+    {
+      "test_id": "A3R0-T031",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "research-ready family lacks preferred current line",
+      "status": "PASS",
+      "detail": "Missing preferred=NOT_AVAILABLE"
+    },
+    {
+      "test_id": "A3R0-T032",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "misclassified current line enters verification queue",
+      "status": "PASS",
+      "detail": "Every queued line passes A3R0 family-lineage filter"
+    },
+    {
+      "test_id": "A3R0-T033",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "queue row lacks ISIN",
+      "status": "PASS",
+      "detail": "Every queue row has ISIN"
+    },
+    {
+      "test_id": "A3R0-T034",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "current eligibility warning omitted",
+      "status": "PASS",
+      "detail": "Warning is present on all families"
+    },
+    {
+      "test_id": "A3R0-T035",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "targeted audit rebuilds registry",
+      "status": "PASS",
+      "detail": "Original 4,359-row registry was read without replacement"
+    },
+    {
+      "test_id": "A3R0-T036",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "internet product enters without full lineage",
+      "status": "PASS",
+      "detail": "No internet-discovered product added to master"
+    },
+    {
+      "test_id": "A3R0-T037",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "proxy history enters admission",
+      "status": "PASS",
+      "detail": "A2 panel contains no proxy rows"
+    },
+    {
+      "test_id": "A3R0-T038",
+      "test_type": "OBSERVED_DATA_ASSERTION",
+      "failure_mode": "duplicate structure loses a family",
+      "status": "PASS",
+      "detail": "Duplicate groups cover all retained families"
+    }
+  ],
+  "unresolved_items": [
+    {
+      "item_id": "A3R0-OPEN-001",
+      "severity": "BLOCKING",
+      "category": "A2_ECONOMIC_LINEAGE",
+      "affected_count": 14,
+      "affected_ids": "AUSTRALIA;CHINA_BROAD;EUROPE_ENERGY;EUROPE_FINANCIALS;EUROPE_HEALTHCARE;EUROPE_INDUSTRIALS;EUROPE_MATERIALS;EUROPE_TECHNOLOGY;EUROPE_UTILITIES;GLOBAL_BANKS;GLOBAL_HEALTHCARE;GLOBAL_INFRASTRUCTURE;GLOBAL_TECHNOLOGY;US_AEROSPACE_DEFENCE",
+      "issue": "Material family/implementation mismatches invalidate those canonical histories for rotation research",
+      "required_action": "Repair A0A1 listing-family assignments and rebuild/validate the affected A2 canonical histories",
+      "blocks_A3R1": "YES",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-002",
+      "severity": "HIGH",
+      "category": "NO_USABLE_HISTORY",
+      "affected_count": 9,
+      "affected_ids": "CHINA_BROAD_USD_HEDGED;GBP_OVERNIGHT_CASH;GLOBAL_CORPORATE_IG_GBP_HEDGED;GLOBAL_SPACE;LATIN_AMERICA;UK_GILTS_LONG;UK_INDEX_LINKED_GILTS;US_AI;US_TOTAL_MARKET_GBP_HEDGED",
+      "issue": "Nine retained families still have no usable implementation history",
+      "required_action": "Find properly evidenced live implementation data or keep them unavailable; do not splice proxies",
+      "blocks_A3R1": "NO_FOR_OTHER_FAMILIES",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-003",
+      "severity": "BLOCKING",
+      "category": "SECTOR_GRID",
+      "affected_count": 1,
+      "affected_ids": "POOL_GLOBAL_BROAD_SECTORS;POOL_EUROPE_BROAD_SECTORS;POOL_US_BROAD_SECTORS",
+      "issue": "The conventional sector grid is incomplete and several Europe/global sector histories are mislabelled",
+      "required_action": "Create corrected sector families/lineage from products already in the registry and rebuild A2 histories before a full sector tournament",
+      "blocks_A3R1": "YES",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-004",
+      "severity": "MEDIUM",
+      "category": "PUBLIC_DISCLOSURE",
+      "affected_count": 98,
+      "affected_ids": "ASIA_PACIFIC_EX_JAPAN;BROAD_COMMODITIES;CHINA_A_SHARES;CHINA_INTERNET;EMERGING_MARKETS;EUROPE_AEROSPACE_DEFENCE;EUROPE_BANKS;EUROPE_BROAD;EUROPE_CONSUMER_STAPLES;EUROPE_EX_UK;EUROPE_INFRASTRUCTURE;EUR_OVERNIGHT_CASH;GBP_CORPORATE_IG;GLOBAL_AEROSPACE_DEFENCE;GLOBAL_AGGREGATE_BONDS_GBP_HEDGED;GLOBAL_AI;GLOBAL_ALL_WORLD;GLOBAL_BATTERY_EV;GLOBAL_BIOTECHNOLOGY;GLOBAL_CLEAN_ENERGY;GLOBAL_CYBERSECURITY;GLOBAL_ENERGY;GLOBAL_FINANCIALS;GLOBAL_GENOMICS;GLOBAL_INDUSTRIALS;GLOBAL_MATERIALS;GLOBAL_QUANTUM_COMPUTING;GLOBAL_REAL_ESTATE;GLOBAL_RETAIL;GLOBAL_ROBOTICS_AUTOMATION;GLOBAL_SEMICONDUCTORS;GLOBAL_SILVER_MINERS;GLOBAL_SMALL_CAP;GLOBAL_SOFTWARE;GLOBAL_SOLAR;GLOBAL_TRANSPORTATION;GLOBAL_URANIUM_NUCLEAR;GLOBAL_UTILITIES;INDIA;SILVER_PHYSICAL;UK_BROAD_MARKET;UK_GILTS_ALL;UK_GILTS_SHORT;UK_MID_CAP;USD_OVERNIGHT_CASH;US_BANKS;US_COMMUNICATION_SERVICES;US_CONSUMER_STAPLES;US_FINANCIALS;US_HEALTHCARE;US_NASDAQ_100;US_SMALL_CAP;US_TOTAL_MARKET",
+      "issue": "Current public retail disclosure remains unverified for many queued lines",
+      "required_action": "Use issuer product summary/KID/KIID evidence under the 2026 CCI transition",
+      "blocks_A3R1": "NO_RESEARCH_ONLY",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-005",
+      "severity": "MEDIUM",
+      "category": "PUBLIC_ISA_RULES",
+      "affected_count": 98,
+      "affected_ids": "ASIA_PACIFIC_EX_JAPAN;BROAD_COMMODITIES;CHINA_A_SHARES;CHINA_INTERNET;EMERGING_MARKETS;EUROPE_AEROSPACE_DEFENCE;EUROPE_BANKS;EUROPE_BROAD;EUROPE_CONSUMER_STAPLES;EUROPE_EX_UK;EUROPE_INFRASTRUCTURE;EUR_OVERNIGHT_CASH;GBP_CORPORATE_IG;GLOBAL_AEROSPACE_DEFENCE;GLOBAL_AGGREGATE_BONDS_GBP_HEDGED;GLOBAL_AI;GLOBAL_ALL_WORLD;GLOBAL_BATTERY_EV;GLOBAL_BIOTECHNOLOGY;GLOBAL_CLEAN_ENERGY;GLOBAL_CYBERSECURITY;GLOBAL_ENERGY;GLOBAL_FINANCIALS;GLOBAL_GENOMICS;GLOBAL_INDUSTRIALS;GLOBAL_MATERIALS;GLOBAL_QUANTUM_COMPUTING;GLOBAL_REAL_ESTATE;GLOBAL_RETAIL;GLOBAL_ROBOTICS_AUTOMATION;GLOBAL_SEMICONDUCTORS;GLOBAL_SILVER_MINERS;GLOBAL_SMALL_CAP;GLOBAL_SOFTWARE;GLOBAL_SOLAR;GLOBAL_TRANSPORTATION;GLOBAL_URANIUM_NUCLEAR;GLOBAL_UTILITIES;INDIA;SILVER_PHYSICAL;UK_BROAD_MARKET;UK_GILTS_ALL;UK_GILTS_SHORT;UK_MID_CAP;USD_OVERNIGHT_CASH;US_BANKS;US_COMMUNICATION_SERVICES;US_CONSUMER_STAPLES;US_FINANCIALS;US_HEALTHCARE;US_NASDAQ_100;US_SMALL_CAP;US_TOTAL_MARKET",
+      "issue": "Public ISA-rules status remains uncertain where A0A1 did not establish recognised-fund/security structure",
+      "required_action": "Verify product recognition/structure under current HMRC rules; do not infer from LSE listing",
+      "blocks_A3R1": "NO_RESEARCH_ONLY",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-006",
+      "severity": "MEDIUM",
+      "category": "BROKER",
+      "affected_count": 142,
+      "affected_ids": "ALL_QUEUE_ROWS",
+      "issue": "IBKR contract, LSE listing and quote checks have not been performed",
+      "required_action": "Upload UKACTIVE_A3R0_CHATGPT_IBKR_VERIFICATION_QUEUE.csv for a read-only ChatGPT/IBKR verification pass",
+      "blocks_A3R1": "NO_RESEARCH_ONLY",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-007",
+      "severity": "LOW",
+      "category": "OVERLAP",
+      "affected_count": 22,
+      "affected_ids": "OVL_BROAD_COMMODITIES;OVL_CASH_AND_SHORT_RATES;OVL_CHINA_EQUITY;OVL_CONSUMER_AND_RETAIL;OVL_EMERGING_ASIA_EQUITY;OVL_ENERGY_AND_TRANSITION;OVL_EUROPE_BROAD_EQUITY;OVL_FINANCIALS_AND_BANKS;OVL_GLOBAL_BROAD_EQUITY;OVL_HEALTHCARE_INNOVATION;OVL_INDUSTRIAL_DEFENCE_INFRA;OVL_JAPAN_EQUITY;OVL_MATERIALS_AND_MINERS;OVL_OTHER_EQUITY;OVL_PRECIOUS_METALS;OVL_REAL_ESTATE;OVL_STERLING_FIXED_INCOME;OVL_TECHNOLOGY_INNOVATION;OVL_TRANSPORT_LOGISTICS;OVL_UK_BROAD_EQUITY;OVL_US_BROAD_EQUITY;OVL_UTILITIES_AND_WATER",
+      "issue": "Overlap clusters are economic classifications; exact holdings-overlap percentages are not yet measured",
+      "required_action": "Collect point-in-time holdings only if later concentration research requires it",
+      "blocks_A3R1": "NO",
+      "status": "OPEN"
+    },
+    {
+      "item_id": "A3R0-OPEN-008",
+      "severity": "MEDIUM",
+      "category": "THEME_COVERAGE",
+      "affected_count": 10,
+      "affected_ids": "Airlines;Bitcoin;Bitcoin Miners;Growth Stocks;Home Construction;Medical;SPACE;Social Media;Steel;Telecom",
+      "issue": "Several DeepVue/theme/sector labels are absent, structurally unsuitable, unlineaged, or lack usable history",
+      "required_action": "Resolve only economically distinct gaps; do not add products solely to mirror labels",
+      "blocks_A3R1": "NO_FOR_CLEAN_EXISTING_POOLS",
+      "status": "OPEN"
+    }
+  ],
+  "required_outputs": [
+    "UKACTIVE_A3R0_SCOPE_AND_METHOD.md",
+    "UKACTIVE_A3R0_ROTATION_ROLE_MASTER.csv",
+    "UKACTIVE_A3R0_COMPETITION_POOLS.csv",
+    "UKACTIVE_A3R0_PARENT_CHILD_MAP.csv",
+    "UKACTIVE_A3R0_OVERLAP_CLUSTERS.csv",
+    "UKACTIVE_A3R0_GLOBAL_BENCHMARK_MAP.csv",
+    "UKACTIVE_A3R0_PARENT_BENCHMARK_MAP.csv",
+    "UKACTIVE_A3R0_DYNAMIC_SIGNAL_ELIGIBILITY.parquet",
+    "UKACTIVE_A3R0_THEME_COVERAGE_AUDIT.csv",
+    "UKACTIVE_A3R0_THEME_COVERAGE_GAPS.md",
+    "UKACTIVE_A3R0_SELECTABLE_ECONOMIC_UNIVERSE.csv",
+    "UKACTIVE_A3R0_CURRENT_IMPLEMENTATION_LINES.csv",
+    "UKACTIVE_A3R0_PUBLIC_UK_ELIGIBILITY.csv",
+    "UKACTIVE_A3R0_CHATGPT_IBKR_VERIFICATION_QUEUE.csv",
+    "UKACTIVE_A3R0_CLASSIFICATION_CORRECTIONS.csv",
+    "UKACTIVE_A3R0_DATA_QUALITY_REPORT.md",
+    "UKACTIVE_A3R0_AUTOMATED_TEST_RESULTS.csv",
+    "UKACTIVE_A3R0_UNRESOLVED_ITEMS.csv",
+    "UKACTIVE_A3R0_A3R1_READINESS_REPORT.md",
+    "UKACTIVE_A3R0_DECISION.json",
+    "UKACTIVE_A3R0_MANIFEST.json"
+  ],
+  "strategy_results_produced": false,
+  "A3R1_executed": false,
+  "warning": "CURRENT ELIGIBILITY MUST NOT BE BACK-PROJECTED HISTORICALLY"
+}

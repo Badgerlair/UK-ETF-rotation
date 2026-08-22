@@ -1,0 +1,20 @@
+{
+  "schema_version": "edge.population_time_contract.v1",
+  "contract_version": "EDGE-PTC-V1-UNRATIFIED",
+  "status": "UNRATIFIED",
+  "production_use_permitted": false,
+  "unresolved_mandatory_decisions": [
+    "geographic_market_and_exchange",
+    "eligible_security_types",
+    "primary_and_secondary_listing_policy",
+    "security_versus_issuer_unit",
+    "multiple_share_class_treatment",
+    "IPO_suspension_relisting_acquisition_bankruptcy_delisting_rules",
+    "base_currency_and_conversion_policy",
+    "official_exchange_research_cutoff",
+    "raw_price_return_and_total_return_conventions",
+    "research_start_and_minimum_coverage",
+    "MDM_snapshot_retention_replay_and_licensing"
+  ],
+  "effect": "PRODUCTION_BUILD_BLOCKED_UNTIL_RATIFIED"
+}
