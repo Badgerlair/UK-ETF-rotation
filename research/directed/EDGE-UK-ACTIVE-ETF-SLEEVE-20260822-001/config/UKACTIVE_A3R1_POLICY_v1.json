@@ -1,0 +1,217 @@
+{
+  "stage_id": "UKACTIVE-A3R1",
+  "run_id": "UKACTIVE-A3R1-20260823-001",
+  "policy_id": "UKACTIVE-A3R1-POLICY-v1.0.0",
+  "declared_at": "2026-08-23T00:37:35+01:00",
+  "pre_a3r1_checkpoint_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+  "pre_a3r1_checkpoint_tag": "ukactive-a3r1-preflight-20260823",
+  "research_boundary": {
+    "signal_discovery_only": true,
+    "strategy_backtest_allowed": false,
+    "portfolio_construction_allowed": false,
+    "portfolio_weight_optimisation_allowed": false,
+    "historical_eligibility_claim_allowed": false,
+    "deployment_claim_allowed": false,
+    "a3r2_execution_allowed": false,
+    "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+  },
+  "authoritative_inputs": {
+    "corrected_panel": "UKACTIVE_A2R_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+    "dynamic_eligibility": "UKACTIVE_A2R_A3R0_DYNAMIC_SIGNAL_ELIGIBILITY_POST_A2R.parquet",
+    "role_master": "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+    "competition_pools": "UKACTIVE_A2R_A3R0_COMPETITION_POOLS_POST_A2R.csv",
+    "parent_map": "UKACTIVE_A2R_A3R0_PARENT_CHILD_MAP_POST_A2R.csv",
+    "overlap_map": "UKACTIVE_A2R_A3R0_OVERLAP_CLUSTERS_POST_A2R.csv",
+    "global_benchmark_map": "UKACTIVE_A2R_A3R0_GLOBAL_BENCHMARK_MAP_POST_A2R.csv",
+    "parent_benchmark_map": "UKACTIVE_A2R_A3R0_PARENT_BENCHMARK_MAP_POST_A2R.csv",
+    "selectable_universe": "UKACTIVE_A2R_A3R0_SELECTABLE_ECONOMIC_UNIVERSE_POST_A2R.csv",
+    "calendar": "UKACTIVE_A2_XLON_RESEARCH_CALENDAR.csv",
+    "a2r_manifest": "UKACTIVE_A2R_MANIFEST.json",
+    "a2r_readiness": "UKACTIVE_A2R_A3R1_READINESS_REPORT.md"
+  },
+  "admission": {
+    "unit_of_analysis": "economic_exposure_family_id",
+    "data_valid_required": true,
+    "stale_flag_must_be_false": true,
+    "missing_flag_must_be_false": true,
+    "proxy_flag_must_be_false": true,
+    "listing_identity_may_not_rank": true,
+    "signal_specific_dynamic_admission": true,
+    "universal_504_session_gate": false,
+    "missing_signal_policy": "EXCLUDE_NOT_ZERO",
+    "missing_return_policy": "EXCLUDE_NOT_ZERO",
+    "global_banks_admitted": false,
+    "us_aerospace_defence_earliest_valid_return": "2026-07-20",
+    "historical_current_eligibility_back_projection": false
+  },
+  "calendar_and_timing": {
+    "observation_frequency": "WEEKLY_LAST_ELIGIBLE_XLON_SESSION",
+    "observation_rule": "LAST_CANONICAL_XLON_RESEARCH_SESSION_OF_CALENDAR_WEEK",
+    "signal_information_time": "AFTER_DATE_T_CLOSE",
+    "first_forward_return": "DATE_T_PLUS_1_ELIGIBLE_XLON_SESSION",
+    "date_t_return_in_forward_return": false,
+    "required_contiguous_valid_formation_returns": true,
+    "required_contiguous_valid_forward_returns": true
+  },
+  "benchmarks": {
+    "global_research_benchmark_family_id": "GLOBAL_DEVELOPED_WORLD",
+    "recognisable_live_comparator_family_id": "GLOBAL_ALL_WORLD",
+    "same_horizon_common_benchmark_order_invariance": true,
+    "parent_benchmark_policy": "USE_FROZEN_A2R_PARENT_MAP_WHEN BOTH FAMILY AND PARENT HAVE VALID CONTEMPORANEOUS HISTORY; OTHERWISE GLOBAL FALLBACK"
+  },
+  "research_groups": [
+    {"group_id": "GEOGRAPHY", "primary_rotation_role": "BROAD_GEOGRAPHY_ROTATION", "primary": true},
+    {"group_id": "COUNTRY", "primary_rotation_role": "COUNTRY_ROTATION", "primary": true},
+    {"group_id": "SECTOR", "primary_rotation_role": "SECTOR_ROTATION", "primary": true},
+    {"group_id": "INDUSTRY", "primary_rotation_role": "INDUSTRY_ROTATION", "primary": true},
+    {"group_id": "THEME", "primary_rotation_role": "THEME_ROTATION", "primary": true},
+    {"group_id": "ALL_EQUITY_OPPORTUNITIES", "primary_rotation_role": "ALL_PRIMARY_EQUITY_ROTATION_ROLES", "primary": false}
+  ],
+  "fine_pool_policy": "REPORT EVERY A2R PRIMARY_COMPETITION_POOL_ID; POOLS WITH FEWER THAN 3 CONTEMPORANEOUS MEMBERS ARE COVERAGE-ONLY",
+  "cumulative_horizons_sessions": [21, 42, 63, 126, 252],
+  "non_overlapping_segments": [
+    {"segment_id": "REL_SEG_0_1M", "start_lag_exclusive": 0, "end_lag_inclusive": 21},
+    {"segment_id": "REL_SEG_1_2M", "start_lag_exclusive": 21, "end_lag_inclusive": 42},
+    {"segment_id": "REL_SEG_2_3M", "start_lag_exclusive": 42, "end_lag_inclusive": 63},
+    {"segment_id": "REL_SEG_3_6M", "start_lag_exclusive": 63, "end_lag_inclusive": 126},
+    {"segment_id": "REL_SEG_6_12M", "start_lag_exclusive": 126, "end_lag_inclusive": 252}
+  ],
+  "multi_horizon_weights": {
+    "MH_LEVEL_EQ": {"RS_21": 0.20, "RS_42": 0.20, "RS_63": 0.20, "RS_126": 0.20, "RS_252": 0.20},
+    "MH_LEVEL_RECENCY_TILT": {"RS_21": 0.30, "RS_42": 0.25, "RS_63": 0.20, "RS_126": 0.15, "RS_252": 0.10},
+    "MH_LEVEL_60D_CENTERED": {"RS_21": 0.10, "RS_42": 0.25, "RS_63": 0.35, "RS_126": 0.20, "RS_252": 0.10},
+    "MH_LEVEL_3_6_12_REFERENCE": {"RS_21": 0.00, "RS_42": 0.00, "RS_63": 0.3333333333333333, "RS_126": 0.3333333333333333, "RS_252": 0.3333333333333333}
+  },
+  "signal_definitions": [
+    {"signal_id": "MH_LEVEL_EQ", "signal_family": "MULTI_HORIZON_LEVEL", "registry_class": "PRIMARY_PREDECLARED", "formula": "weighted mean of contemporaneous within-pool RS percentile ranks using MH_LEVEL_EQ weights", "minimum_formation_sessions": 252},
+    {"signal_id": "MH_LEVEL_RECENCY_TILT", "signal_family": "MULTI_HORIZON_LEVEL", "registry_class": "PRIMARY_PREDECLARED", "formula": "weighted mean of contemporaneous within-pool RS percentile ranks using recency weights 30/25/20/15/10 percent", "minimum_formation_sessions": 252},
+    {"signal_id": "MH_LEVEL_60D_CENTERED", "signal_family": "MULTI_HORIZON_LEVEL", "registry_class": "PRIMARY_PREDECLARED", "formula": "weighted mean of contemporaneous within-pool RS percentile ranks using 10/25/35/20/10 percent", "minimum_formation_sessions": 252},
+    {"signal_id": "MH_LEVEL_3_6_12_REFERENCE", "signal_family": "MULTI_HORIZON_LEVEL", "registry_class": "PRIMARY_PREDECLARED", "formula": "equal mean of RS percentile ranks at 63/126/252 sessions", "minimum_formation_sessions": 252},
+    {"signal_id": "ACCEL_FAST_COMPOSITE", "signal_family": "RELATIVE_STRENGTH_ACCELERATION", "registry_class": "PRIMARY_PREDECLARED", "formula": "equal mean of date-level percentiles of FAST_LEVEL rank change over 21 and 42 sessions and relative-line latest-21 versus prior-21 slope change", "minimum_formation_sessions": 105},
+    {"signal_id": "SHORT_MINUS_LONG_RS", "signal_family": "RELATIVE_STRENGTH_ACCELERATION", "registry_class": "PRIMARY_PREDECLARED", "formula": "mean(RANK_RS_21,RANK_RS_42,RANK_RS_63)-mean(RANK_RS_126,RANK_RS_252)", "minimum_formation_sessions": 252},
+    {"signal_id": "DISCRETE_RECENT_CONSISTENCY", "signal_family": "DISCRETE_PERIOD_CONSISTENCY", "registry_class": "PRIMARY_PREDECLARED", "formula": "positive relative segment count for 0-1m,1-2m,2-3m with RS_63 percentile tie-break", "minimum_formation_sessions": 63},
+    {"signal_id": "PAIRWISE_MAJORITY_5H", "signal_family": "PAIRWISE_RELATIVE_STRENGTH", "registry_class": "PRIMARY_PREDECLARED", "formula": "fraction of valid within-pool competitors beaten in at least 3 of 5 cumulative horizons", "minimum_formation_sessions": 252},
+    {"signal_id": "RRG_TRANSPARENT_LEVEL", "signal_family": "TRANSPARENT_RRG_LIKE_STATE", "registry_class": "PRIMARY_PREDECLARED", "formula": "mean within-pool percentile rank of RS_63 and RS_126", "minimum_formation_sessions": 126},
+    {"signal_id": "RRG_TRANSPARENT_MOMENTUM", "signal_family": "TRANSPARENT_RRG_LIKE_STATE", "registry_class": "SECONDARY_PREDECLARED", "formula": "21-session change in RRG_TRANSPARENT_LEVEL", "minimum_formation_sessions": 147},
+    {"signal_id": "RS_21", "signal_family": "SINGLE_HORIZON_RELATIVE_STRENGTH", "registry_class": "SECONDARY_PREDECLARED", "formula": "((1+R_i_21)/(1+R_global_21))-1", "minimum_formation_sessions": 21},
+    {"signal_id": "RS_42", "signal_family": "SINGLE_HORIZON_RELATIVE_STRENGTH", "registry_class": "SECONDARY_PREDECLARED", "formula": "((1+R_i_42)/(1+R_global_42))-1", "minimum_formation_sessions": 42},
+    {"signal_id": "RS_63", "signal_family": "SINGLE_HORIZON_RELATIVE_STRENGTH", "registry_class": "SECONDARY_PREDECLARED", "formula": "((1+R_i_63)/(1+R_global_63))-1", "minimum_formation_sessions": 63},
+    {"signal_id": "RS_126", "signal_family": "SINGLE_HORIZON_RELATIVE_STRENGTH", "registry_class": "SECONDARY_PREDECLARED", "formula": "((1+R_i_126)/(1+R_global_126))-1", "minimum_formation_sessions": 126},
+    {"signal_id": "RS_252", "signal_family": "SINGLE_HORIZON_RELATIVE_STRENGTH", "registry_class": "SECONDARY_PREDECLARED", "formula": "((1+R_i_252)/(1+R_global_252))-1", "minimum_formation_sessions": 252}
+  ],
+  "rotation_state": {
+    "level": "cross-sectional z-score of RRG_TRANSPARENT_LEVEL within research group/date",
+    "momentum": "cross-sectional z-score of 21-session change in RRG_TRANSPARENT_LEVEL within research group/date",
+    "LEADING": "level >= 0 and momentum >= 0",
+    "WEAKENING": "level >= 0 and momentum < 0",
+    "IMPROVING": "level < 0 and momentum >= 0",
+    "LAGGING": "level < 0 and momentum < 0",
+    "transition_interval": "ONE_WEEKLY_OBSERVATION"
+  },
+  "relative_line_features": {
+    "slope_windows_sessions": [21, 42, 63],
+    "r_squared_windows_sessions": [21, 42, 63],
+    "moving_average_windows_sessions": [21, 50],
+    "recent_high_window_sessions": 63,
+    "slope_change": "OLS log-relative-line slope latest 21 sessions minus preceding non-overlapping 21 sessions"
+  },
+  "top_tail": {
+    "definitions": ["RANK_1", "TOP_2", "TOP_3", "TOP_5", "TOP_10_PERCENT", "TOP_QUINTILE"],
+    "top_quintile_minimum_contemporaneous_count": 10,
+    "top_10_percent_minimum_contemporaneous_count": 10,
+    "aggregation": "EQUAL_WEIGHT_SIGNAL_DIAGNOSTIC_ONLY",
+    "comparators": ["MEDIAN_ELIGIBLE", "EQUAL_WEIGHT_ELIGIBLE_POOL", "GLOBAL_DEVELOPED_WORLD", "PARENT_PEER_BENCHMARK"],
+    "portfolio_weighting_optimised": false
+  },
+  "forward_horizons_sessions": [5, 10, 21, 42, 63, 126],
+  "central_rotation_forward_horizons_sessions": [10, 21, 42, 63],
+  "maturity_scopes": {
+    "FULL_DYNAMIC": ["MATURE", "DEVELOPING", "NEW"],
+    "MATURE_DEVELOPING": ["MATURE", "DEVELOPING"],
+    "MATURE_ONLY": ["MATURE"]
+  },
+  "minimum_cross_section": {
+    "rank_and_top_tail": 3,
+    "spearman_ic": 5,
+    "formal_date_observations": 24,
+    "fine_pool_inference": 3
+  },
+  "subperiods": [
+    {"subperiod_id": "FULL", "start": null, "end": null},
+    {"subperiod_id": "PRE_2020", "start": null, "end": "2019-12-31"},
+    {"subperiod_id": "FROM_2020", "start": "2020-01-01", "end": null},
+    {"subperiod_id": "LATEST_5Y", "start_relative_years": 5, "end": null},
+    {"subperiod_id": "LATEST_3Y", "start_relative_years": 3, "end": null},
+    {"subperiod_id": "2010_2014", "start": "2010-01-01", "end": "2014-12-31"},
+    {"subperiod_id": "2015_2019", "start": "2015-01-01", "end": "2019-12-31"},
+    {"subperiod_id": "2020_2022", "start": "2020-01-01", "end": "2022-12-31"},
+    {"subperiod_id": "FROM_2023", "start": "2023-01-01", "end": null}
+  ],
+  "inference": {
+    "primary_unit": "DATE_LEVEL_TOP_TAIL_AGGREGATE",
+    "hac_kernel": "BARTLETT_NEWEY_WEST",
+    "hac_lag_rule": "max(1,ceil(forward_horizon_sessions/5)-1)",
+    "block_bootstrap_replications": 2000,
+    "block_bootstrap_seed": 20260823,
+    "block_length_rule": "max(5,hac_lag+1)",
+    "confidence_level": 0.95,
+    "false_discovery_method": "BENJAMINI_HOCHBERG",
+    "false_discovery_q": 0.10,
+    "primary_fdr_family": "PRIMARY_PREDECLARED SIGNALS x FIVE PRIMARY ROLE GROUPS x TOP_3 x CENTRAL 10/21/42/63 HORIZONS vs GLOBAL BENCHMARK",
+    "naive_iid_only_inference_forbidden": true
+  },
+  "breadth_regimes": {
+    "NARROW": "fraction positive global RS_63 < 0.3333333333",
+    "MEDIUM": "fraction positive global RS_63 >= 0.3333333333 and < 0.6666666667",
+    "BROAD": "fraction positive global RS_63 >= 0.6666666667",
+    "no_timing_rule": true
+  },
+  "dependency_tests": [
+    "EXCLUDE_US_TECHNOLOGY",
+    "EXCLUDE_SEMICONDUCTORS",
+    "EXCLUDE_STRONGEST_FULL_PERIOD_WINNER",
+    "EXCLUDE_TOP_FIVE_FULL_PERIOD_WINNERS",
+    "MATURE_ONLY",
+    "GEOGRAPHY_ONLY",
+    "SECTOR_ONLY",
+    "INDUSTRY_ONLY",
+    "THEME_ONLY"
+  ],
+  "parameter_robustness": [
+    {"robustness_id": "RS42_NEIGHBOURHOOD", "horizons": [32, 42, 52]},
+    {"robustness_id": "RS63_NEIGHBOURHOOD", "horizons": [50, 63, 75]},
+    {"robustness_id": "MH_STRUCTURE_FAST_NEIGHBOUR", "horizons": [21, 32, 50, 126, 252], "weights": [0.30, 0.25, 0.20, 0.15, 0.10]},
+    {"robustness_id": "MH_STRUCTURE_60D_NEIGHBOUR", "horizons": [21, 52, 75, 126, 252], "weights": [0.10, 0.25, 0.35, 0.20, 0.10]}
+  ],
+  "candidate_rule": {
+    "classification": "A3R1_RESEARCH_CANDIDATE",
+    "criteria": [
+      "positive TOP_3 global-benchmark-relative mean at at least 3 of 4 central forward horizons in at least one primary group",
+      "positive TOP_5 global-benchmark-relative mean at at least 3 of 4 central forward horizons in the same group",
+      "at least one central TOP_3 HAC p-value <= 0.10 or block-bootstrap 95 percent interval excludes zero",
+      "effect direction survives an economically neighbouring signal specification",
+      "positive evidence occurs in at least two substantive subperiods or has coherent stated regime dependence",
+      "effect remains positive after strongest-winner and US-technology dependency diagnostics",
+      "MATURE-only direction is non-negative where sample size permits",
+      "median top-3 leadership duration is at least two weekly observations or top-3 persistence is at least 0.40",
+      "data/timing/lineage correctness tests all pass"
+    ],
+    "research_candidate_threshold": "at least 7 of 9 criteria with correctness mandatory",
+    "weak_threshold": "4 to 6 criteria with coherent economic direction",
+    "rejected_threshold": "fewer than 4 criteria or materially wrong direction"
+  },
+  "stage_decision_rule": {
+    "UKACTIVE_A3R1_STRONG_ROTATION_SIGNAL": "at least two independent signal families are research candidates in multiple primary groups with FDR-aware evidence",
+    "UKACTIVE_A3R1_RESEARCH_CANDIDATE_FOUND": "at least one signal family is A3R1_RESEARCH_CANDIDATE",
+    "UKACTIVE_A3R1_WEAK_OR_REGIME_DEPENDENT": "no research candidate, but at least one coherent weak or conditional signal remains",
+    "UKACTIVE_A3R1_NO_USEFUL_ROTATION_SIGNAL": "all signal families rejected",
+    "UKACTIVE_A3R1_FAIL_DATA_OR_METHOD": "critical correctness failure or insufficient valid research cross-section"
+  },
+  "trend_quality": {
+    "formation_window_sessions": 63,
+    "quality_features": ["log_price_slope", "trend_r_squared", "relative_line_r_squared", "realised_volatility", "maximum_pullback", "largest_1_day_return_share", "largest_3_day_return_share", "distance_from_recent_high"],
+    "comparison": "TERCILES WITHIN TOP-QUINTILE RELATIVE-STRENGTH LEADERS",
+    "primary_score_component": false
+  },
+  "random_seed": 20260823
+}

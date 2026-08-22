@@ -1,0 +1,24 @@
+signal_id,signal_family,registry_class,score_type,formation_requirement_sessions,components_or_formula,primary_top_tail_test,portfolio_signal,notes
+MH_LEVEL_EQ,MULTI_HORIZON_LEVEL,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"mean of within-date/pool RS percentile ranks at 21/42/63/126/252 with 20/20/20/20/20 weights",YES,NO,Equal horizon weights are baseline only
+MH_LEVEL_RECENCY_TILT,MULTI_HORIZON_LEVEL,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"mean of within-date/pool RS percentile ranks at 21/42/63/126/252 with 30/25/20/15/10 weights",YES,NO,One frozen monotonic recency tilt
+MH_LEVEL_60D_CENTERED,MULTI_HORIZON_LEVEL,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"mean of within-date/pool RS percentile ranks at 21/42/63/126/252 with 10/25/35/20/10 weights",YES,NO,One frozen 42-63-session-centred structure
+MH_LEVEL_3_6_12_REFERENCE,MULTI_HORIZON_LEVEL,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"equal mean of within-date/pool RS percentile ranks at 63/126/252",YES,NO,Slower reference comparator
+ACCEL_FAST_COMPOSITE,RELATIVE_STRENGTH_ACCELERATION,PRIMARY_PREDECLARED,CONTINUOUS_RANK,105,"equal mean of cross-sectional percentiles for fast-level changes over 21/42 sessions and latest-21 versus prior-21 relative-line slope change",YES,NO,Responsive acceleration model
+SHORT_MINUS_LONG_RS,RELATIVE_STRENGTH_ACCELERATION,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"mean rank RS21/42/63 minus mean rank RS126/252",YES,NO,Emerging versus established leadership diagnostic
+DISCRETE_RECENT_CONSISTENCY,DISCRETE_PERIOD_CONSISTENCY,PRIMARY_PREDECLARED,ORDINAL_RANK,63,"count positive benchmark-relative non-overlapping monthly segments 0-1m/1-2m/2-3m; RS63 percentile tie-break",YES,NO,No Boolean grid search
+PAIRWISE_MAJORITY_5H,PAIRWISE_RELATIVE_STRENGTH,PRIMARY_PREDECLARED,CONTINUOUS_RANK,252,"within-pool win rate where an exposure beats a competitor in at least three of five cumulative horizons",YES,NO,Independent transparent head-to-head rule
+RRG_TRANSPARENT_LEVEL,TRANSPARENT_RRG_LIKE_STATE,PRIMARY_PREDECLARED,CONTINUOUS_RANK,126,"mean within-pool percentile of RS63 and RS126",YES,NO,Continuous level is retained with state label
+RRG_TRANSPARENT_MOMENTUM,TRANSPARENT_RRG_LIKE_STATE,SECONDARY_PREDECLARED,CONTINUOUS_RANK,147,"21-session change in transparent relative-strength level",NO,NO,Used with level to assign independent quadrants
+RS_21,SINGLE_HORIZON_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CONTINUOUS_RANK,21,"((1+R_i_21)/(1+R_global_21))-1",NO,NO,Dynamic short-history diagnostic
+RS_42,SINGLE_HORIZON_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CONTINUOUS_RANK,42,"((1+R_i_42)/(1+R_global_42))-1",NO,NO,Dynamic short-history diagnostic
+RS_63,SINGLE_HORIZON_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CONTINUOUS_RANK,63,"((1+R_i_63)/(1+R_global_63))-1",NO,NO,Dynamic short-history diagnostic
+RS_126,SINGLE_HORIZON_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CONTINUOUS_RANK,126,"((1+R_i_126)/(1+R_global_126))-1",NO,NO,Intermediate context diagnostic
+RS_252,SINGLE_HORIZON_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CONTINUOUS_RANK,252,"((1+R_i_252)/(1+R_global_252))-1",NO,NO,Long context diagnostic
+RELATIVE_LINE_FEATURE_SET,RELATIVE_PRICE_LINE,EXPLORATORY,DIAGNOSTIC,63,"log relative-line slopes/R-squared at 21/42/63; distance from relative MA21/MA50; distance from 63-session high; slope change",NO,NO,No dense moving-average search
+GLOBAL_PARENT_RS_AGREEMENT,PARENT_RELATIVE_STRENGTH,SECONDARY_PREDECLARED,CATEGORICAL,126,"positive/negative global and frozen parent RS combinations",NO,NO,Parent used only when contemporaneously valid
+RRG_STATE_TRANSITIONS,TRANSPARENT_RRG_LIKE_STATE,SECONDARY_PREDECLARED,CATEGORICAL,147,"IMPROVING/LEADING/WEAKENING/LAGGING and one-week transitions",NO,NO,State duration and transition returns are diagnostics
+TREND_QUALITY_TERCILES,TREND_QUALITY,EXPLORATORY,DIAGNOSTIC,63,"terciles of slope/R-squared/volatility/pullback/jump concentration/distance-high among top-quintile leaders",NO,NO,Never enters primary score
+RS42_NEIGHBOURHOOD,PARAMETER_ROBUSTNESS,ROBUSTNESS,CONTINUOUS_RANK,52,"compare 32/42/52-session single-horizon relative strength",NO,NO,Neighbourhood not optimisation grid
+RS63_NEIGHBOURHOOD,PARAMETER_ROBUSTNESS,ROBUSTNESS,CONTINUOUS_RANK,75,"compare 50/63/75-session single-horizon relative strength",NO,NO,Neighbourhood not optimisation grid
+MH_STRUCTURE_FAST_NEIGHBOUR,PARAMETER_ROBUSTNESS,ROBUSTNESS,CONTINUOUS_RANK,252,"recency weights on 21/32/50/126/252",NO,NO,Whole-structure perturbation
+MH_STRUCTURE_60D_NEIGHBOUR,PARAMETER_ROBUSTNESS,ROBUSTNESS,CONTINUOUS_RANK,252,"60-day-centred weights on 21/52/75/126/252",NO,NO,Whole-structure perturbation
