@@ -1,0 +1,332 @@
+{
+  "stage_id": "UKACTIVE-A4C",
+  "run_id": "UKACTIVE-A4C-20260823-001",
+  "decision": "UKACTIVE_A4C_CORE_SATELLITE_CANDIDATE_FOUND",
+  "generated_utc": "2026-08-23T14:35:43.998558+00:00",
+  "repository_root": "D:\\Codex\\equity_quant_research_platform",
+  "branch": "research/ukactive-a4c",
+  "build_parent_commit": "164d84522081ee84c6347aab508b43740035e25c",
+  "preflight_tag": "ukactive-a4c-preflight-20260823",
+  "preflight_commit": "d18fef020bb0082ac199b7a202f90882e23b1bbd",
+  "preregistration_commit": "f344677ff506f87e9b3f99592823d73d17c3b29f",
+  "engine_freeze_commit": "6bffdadc78e49517606a48b10f853ec7ab6941f3",
+  "early_rotation_commit": "aa448860e6044f5b9e38e745db345832c2c8c3e0",
+  "risk_control_commit": "7112302367e8dc6d47b054a10d76be2951573aa7",
+  "core_satellite_commit": "164d84522081ee84c6347aab508b43740035e25c",
+  "final_result_commit": "PENDING_POST_OUTPUT_COMMIT",
+  "git_remote": "https://github.com/Badgerlair/UK-ETF-rotation.git",
+  "git_status_at_generation": "M research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2Q_QUERY_GUIDE.md\n M research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_GIT_EXCLUDED_DATA_INVENTORY.csv\n M research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/code/query_ukactive_rotation.py\n M research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/code/ukactive_a4c_core.py\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_ABLATION_RESULTS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_COMBINED_ARCHITECTURES.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_CORRECTNESS_TEST_RESULTS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_COST_STRESS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_DATA_QUALITY_REPORT.md\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_DECISION.json\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_DEPENDENCY_TESTS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_DRAWDOWN_COMPARISON.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_DRAWDOWN_STATE_TRACE.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_MANIFEST.json\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_MODULE_DECISIONS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_RESEARCH_DIRECTOR_REVIEW.md\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_RIGHT_TAIL_RETENTION.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_ROLLING_RESULTS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_UNRESOLVED_ITEMS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_YEAR_BY_YEAR_RESULTS.csv\n?? research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/code/finalize_ukactive_a4c.py",
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "mechanism_evidence_level": "E1_EXPLORATORY",
+  "independent_confirmation": false,
+  "input_hashes": {
+    "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "UKACTIVE_A4_TOP1_TOP2_TOP3_COMPARISON.csv": "a84c63316a696dd6372be2fa258512c75e005d50b6871eadc2be8fba240d4ae9",
+    "UKACTIVE_A4B_DECISION.json": "2345e6cff62e08a9a0dbbf1e9723b738461845108c96fb1a342511b319ade0d5",
+    "config\\UKACTIVE_A4C_POLICY_v1.json": "4c999d2d94d8bdcc72a0a0709734c06d06fa614f2bd01c62ffe0c510d588b7fc"
+  },
+  "code_hashes": {
+    "code\\build_ukactive_a4c_core_satellite.py": "ca7ebc650f477e7c87f3981dc0b6f9c037b25016e0f6aef9a61938b19ad51398",
+    "code\\build_ukactive_a4c_early.py": "c4407ef60374d6f5d0dfcab5c58c379c5b456842de9ffa59c29116ba79dc0a92",
+    "code\\build_ukactive_a4c_risk.py": "96351b7dd70f25d6abd9408e51ca7f76979a705dedf1e0ea209804763c02ebd3",
+    "code\\finalize_ukactive_a4c.py": "88393b64f0731c87c5c0d78e7d68e525cda036fdbe1934a4a2813b4c831e1b67",
+    "code\\ukactive_a4c_core.py": "e108b7fde070adee8f506b819b291b5d20aa3e75d005751f72a42a118c91d1f3",
+    "code\\query_ukactive_rotation.py": "77522061a2a2961293526f6add3ce6eb087aa6289428433ca6fd238a29c5c580"
+  },
+  "output_hashes": {
+    "UKACTIVE_A4C_BASELINE_REPRODUCTION.csv": "adce6ad8420bd5b9b829a2bdcb3e85f208535cc66b467acfc572c253de457ec8",
+    "UKACTIVE_A4C_DAILY_TECHNICAL_FEATURES.parquet": "f33071f5f549e82b989f86237658b2be18f0b88d804ef3b386c5555765fb4288",
+    "UKACTIVE_A4C_DRAWDOWN_EPISODES.csv": "f28dcfcd8f33df649635fcfb6ee254db9eeb3d0f62417ecf2627e5fd1df78c22",
+    "UKACTIVE_A4C_DRAWDOWN_ROOT_CAUSE.csv": "fa2a731364f91e4d56190ab427e7b20c0cff39847feb63b76e023526d5816719",
+    "UKACTIVE_A4C_WARNING_LEAD_TIMES.csv": "ea5b18b798f3ae20b9a564fa6c52af6f36f8239e82befa403c7f2a17df55ecb6",
+    "UKACTIVE_A4C_DRAWDOWN_FORENSIC_REPORT.md": "f96b1f180a772a5c2ef837d932d60d3318633da10745a6d6a3c769ab708e5892",
+    "UKACTIVE_A4C_DRAWDOWN_STATE_TRACE.csv": "94ade3b22902f77a1444b73426185ec1654f39081b0f5cd899568d4788a0e9dd",
+    "UKACTIVE_A4C_FAST_TO_SLOW_MIGRATION.parquet": "fb430d6f9584644efdbfc39b2d90f64b2c6898757806bc92c1c15b6ae7750c33",
+    "UKACTIVE_A4C_PRE_LEADER_TRAJECTORIES.csv": "9ccda49af1a6af2519fb8e5fe95a7e2c005bff1b884e1b7fb41c835d44005a54",
+    "UKACTIVE_A4C_CONVERSION_PROBABILITIES.csv": "fe20dda4d23951b24bbba2ec0bac35cdf2313a6d5c32acc3f628f54c25df6031",
+    "UKACTIVE_A4C_FAST_CROSSOVER_RESULTS.csv": "5e8043a4fb77f9ecc9030f846e2e5a7643b8bad5b839eb4b0e940ec6bc18eae8",
+    "UKACTIVE_A4C_FAST_PERSISTENCE_RESULTS.csv": "4ecc05d84eb32fcd9fa90f314eaabf57f358267f21d4b7292ddb3a1abae75aff",
+    "UKACTIVE_A4C_EARLY_PARTICIPATION_RESULTS.csv": "90d58ab9b823158cd2e82e0c0687b957f2df2082740f9e8b06a3a93f211d2061",
+    "UKACTIVE_A4C_SCOUT_EPISODES.csv": "9463f75c5a4289e7b19351c006b1aee64cae4ca573791cdece87d2a78366c790",
+    "UKACTIVE_A4C_NET_EARLY_PARTICIPATION_VALUE.csv": "03f7ee6d2c4e86b97b787ecea30963fa77e3e0f8c7af0d4af5d87af7919066e2",
+    "UKACTIVE_A4C_EARLY_RIGHT_TAIL_CAPTURE.csv": "a7e215114a8a30450fcb2146b0391016f497d60bdab3ae64a3168d08af0698b6",
+    "UKACTIVE_A4C_TREND_EXIT_RESULTS.csv": "5c72a1298a6fa287ab49ee3396dd67c128f018dd3774c1abb41c3891362e90d0",
+    "UKACTIVE_A4C_EXIT_EVENTS.csv": "dd8ad3d0b323667fe15730633e6932d9b7ce0f8ebef65738b0f40151e5545fa0",
+    "UKACTIVE_A4C_NET_EXIT_VALUE.csv": "d5029ef0f8e880a12ceaa966366035f3621278bcbdb687fa2ec2efd2032d869a",
+    "UKACTIVE_A4C_EXIT_RIGHT_TAIL_RETENTION.csv": "cb210c05d721a39542639796a0696f5c7cba077317cd117c6d032da3ac8fb292",
+    "UKACTIVE_A4C_EXIT_WHIPSAW_ANALYSIS.csv": "d29b62221ecc619d91f935c5d410d97ec806dce7ca5b0c858d2d338443030454",
+    "UKACTIVE_A4C_VOLATILITY_TARGET_RESULTS.csv": "5f5e99e0212d759a186454fc85ab552169b20c0264b802d0e7d536f1008a66e9",
+    "UKACTIVE_A4C_VOLATILITY_POSITION_HISTORY.csv": "00614f0be7feea8cd23838dac1e61b10eac40918c87392daeb4e8c3550f900c1",
+    "UKACTIVE_A4C_VOLATILITY_SIZING_ATTRIBUTION.csv": "ee7ca9a0a9512bf887141c1cf72116c9ef118f62d1a355fe2c2f999e47d12713",
+    "UKACTIVE_A4C_CASH_HISTORY.csv": "7ee3e4604f592ae4a304c61eff79dee8a593d628231297f5c14abdf671e008c3",
+    "UKACTIVE_A4C_CORE_SATELLITE_RESULTS.csv": "3816e5a16a60553d5bd886c4611883b1c370474f945354791c02cf49162d8d72",
+    "UKACTIVE_A4C_CORE_SATELLITE_EQUITY_CURVES.parquet": "c752a5487b4e565eee492cfff6dcca47ce923992ae7e7878bdcf48b9eaed1f0e",
+    "UKACTIVE_A4C_CORE_ACTIVE_CONTRIBUTION.csv": "fa6fb528a8a6dc5234f2cab7fb22e9cbd432a3863af7a375ff1e0775fa150481",
+    "UKACTIVE_A4C_STRATEGIC_REBALANCE_MONETISATION.csv": "1f3c45a3275a23d730dc2d6fdb80a29e8c83e80e4ed17a0c8d82c880b26de381",
+    "UKACTIVE_A4C_ABLATION_RESULTS.csv": "ea879376310d7828dbe2bb131fb7ed3426ef831be6ed700a5e5de006e14ef79f",
+    "UKACTIVE_A4C_COMBINED_ARCHITECTURES.csv": "cc78201661a25405b1a0c13616aa2cdb4a7fa9139f8da7ee5b4fcf0cf0d39875",
+    "UKACTIVE_A4C_DRAWDOWN_COMPARISON.csv": "5e08016ecafcbd04bfcea99c50763dfeb93fe50b2c66980dec07596762d099bc",
+    "UKACTIVE_A4C_RIGHT_TAIL_RETENTION.csv": "9269db5c72615843bc1e4cc37788f339b66e023ef5d00a2736584fe7c944ff7d",
+    "UKACTIVE_A4C_ROLLING_RESULTS.csv": "c26575074f5f2dd4a57a5013623a7b09d767d01238f1edd7ab966df25c9a59a9",
+    "UKACTIVE_A4C_YEAR_BY_YEAR_RESULTS.csv": "89f2ef392e277eeb5409b9a2478f25787c1193b6d7f31c04b4f7478401827b2f",
+    "UKACTIVE_A4C_DEPENDENCY_TESTS.csv": "3d8835c74995fac1a25c6efbe71d3b0d0238f068ab0a4a7a51fd254422b28a2a",
+    "UKACTIVE_A4C_COST_STRESS.csv": "bbf8400a8917b498bc4425bb87365e442c566d2b6294e143b41ffd8b416caf12",
+    "UKACTIVE_A4C_SCOPE_AND_PREREGISTRATION.md": "5dc82034e5e1ef76fa9d59815cfdae9016b2126052a374a5215671f9d34698e1",
+    "UKACTIVE_A4C_MODULE_REGISTRY.csv": "7a60b630fbd1c8fb15951adcb259a3095f321acf11e3996bc8ebf443704f6b08",
+    "UKACTIVE_A4C_RESEARCH_DIRECTOR_REVIEW.md": "2e57cde30af84195e1df563dfb92cc974f80b31226bf7c88d3364301942b18b3",
+    "UKACTIVE_A4C_MODULE_DECISIONS.csv": "f1b6bac93c42952442a9d7606a4f59fbd9ea048bd0ccb01cb38a23b6bd3a3ef8",
+    "UKACTIVE_A4C_DATA_QUALITY_REPORT.md": "ce1897887ff7adfe1488c6fb6457b03b7ae01fed4616dd66a594141189b0eaed",
+    "UKACTIVE_A4C_CORRECTNESS_TEST_RESULTS.csv": "9f25e668a45de074d8fe6781facc8e7292a7dd601959c1b9bfb8ad8a0c9157e7",
+    "UKACTIVE_A4C_UNRESOLVED_ITEMS.csv": "2f2ec66076bc63e23cb2d55b0e5e00af7dede0779ceabfe45adca1dfb717736b",
+    "UKACTIVE_A4C_DECISION.json": "e92a53ee17327e456b9053f2547512c345ccdb4da670c42fc8ff9c5ec9378e9b",
+    "UKACTIVE_A4C_QUERY_OVERLAY.parquet": "739106ad12c5dd3d8d7e29aec4f237ffb916c8696ffd09fe97bd12ff58d86326",
+    "UKACTIVE_A3R2Q_QUERY_GUIDE.md": "392d6545789070a22b095652446938e11a29257444b358618bad3c189e5eb93c"
+  },
+  "package_versions": {
+    "python": "3.12.10",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0"
+  },
+  "executed_commands": [
+    "python code/build_ukactive_a4c_early.py",
+    "python code/build_ukactive_a4c_risk.py",
+    "python code/build_ukactive_a4c_core_satellite.py",
+    "python code/finalize_ukactive_a4c.py",
+    "python code/build_git_excluded_data_inventory.py",
+    "python code/query_ukactive_rotation.py --asof latest --pool industry --top 3",
+    "python code/query_ukactive_rotation.py --asof 2025-08-22 --pool industry --top 1"
+  ],
+  "excluded_data_inventory": {
+    "path": "UKACTIVE_GIT_EXCLUDED_DATA_INVENTORY.csv",
+    "sha256": "9879a7182f7641b630acb7a1f17995faf706282d167693dcd7a26f94bfb12e7b",
+    "record_count": 2734,
+    "a4c_record_count": 5,
+    "a4c_records": [
+      {
+        "local_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4C_CORE_SATELLITE_EQUITY_CURVES.parquet",
+        "relative_path": "UKACTIVE_A4C_CORE_SATELLITE_EQUITY_CURVES.parquet",
+        "sha256": "c752a5487b4e565eee492cfff6dcca47ce923992ae7e7878bdcf48b9eaed1f0e",
+        "size_bytes": 700730,
+        "source_identity": "UKACTIVE_A4C_CORE_SATELLITE_EQUITY_CURVES.parquet",
+        "retrieval_or_generation_date": "2026-08-23",
+        "date_basis": "LOCAL_LAST_WRITE_UTC; AUTHORITATIVE RETRIEVAL IN EVIDENCE LEDGER/MANIFEST",
+        "generating_policy_version": "UKACTIVE_A4C_POLICY_OR_MANIFEST",
+        "git_exclusion_reason": "LARGE_OR_REPRODUCIBLE_BINARY_DATA"
+      },
+      {
+        "local_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4C_DAILY_TECHNICAL_FEATURES.parquet",
+        "relative_path": "UKACTIVE_A4C_DAILY_TECHNICAL_FEATURES.parquet",
+        "sha256": "f33071f5f549e82b989f86237658b2be18f0b88d804ef3b386c5555765fb4288",
+        "size_bytes": 9363581,
+        "source_identity": "UKACTIVE_A4C_DAILY_TECHNICAL_FEATURES.parquet",
+        "retrieval_or_generation_date": "2026-08-23",
+        "date_basis": "LOCAL_LAST_WRITE_UTC; AUTHORITATIVE RETRIEVAL IN EVIDENCE LEDGER/MANIFEST",
+        "generating_policy_version": "UKACTIVE_A4C_POLICY_OR_MANIFEST",
+        "git_exclusion_reason": "LARGE_OR_REPRODUCIBLE_BINARY_DATA"
+      },
+      {
+        "local_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4C_FAST_TO_SLOW_MIGRATION.parquet",
+        "relative_path": "UKACTIVE_A4C_FAST_TO_SLOW_MIGRATION.parquet",
+        "sha256": "fb430d6f9584644efdbfc39b2d90f64b2c6898757806bc92c1c15b6ae7750c33",
+        "size_bytes": 3589078,
+        "source_identity": "UKACTIVE_A4C_FAST_TO_SLOW_MIGRATION.parquet",
+        "retrieval_or_generation_date": "2026-08-23",
+        "date_basis": "LOCAL_LAST_WRITE_UTC; AUTHORITATIVE RETRIEVAL IN EVIDENCE LEDGER/MANIFEST",
+        "generating_policy_version": "UKACTIVE_A4C_POLICY_OR_MANIFEST",
+        "git_exclusion_reason": "LARGE_OR_REPRODUCIBLE_BINARY_DATA"
+      },
+      {
+        "local_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4C_PRE_LEADER_TRAJECTORIES.csv",
+        "relative_path": "UKACTIVE_A4C_PRE_LEADER_TRAJECTORIES.csv",
+        "sha256": "9ccda49af1a6af2519fb8e5fe95a7e2c005bff1b884e1b7fb41c835d44005a54",
+        "size_bytes": 5493992,
+        "source_identity": "UKACTIVE_A4C_PRE_LEADER_TRAJECTORIES.csv",
+        "retrieval_or_generation_date": "2026-08-23",
+        "date_basis": "LOCAL_LAST_WRITE_UTC; AUTHORITATIVE RETRIEVAL IN EVIDENCE LEDGER/MANIFEST",
+        "generating_policy_version": "UKACTIVE_A4C_POLICY_OR_MANIFEST",
+        "git_exclusion_reason": "GENERATED_OUTPUT_OVER_5_MIB"
+      },
+      {
+        "local_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4C_QUERY_OVERLAY.parquet",
+        "relative_path": "UKACTIVE_A4C_QUERY_OVERLAY.parquet",
+        "sha256": "739106ad12c5dd3d8d7e29aec4f237ffb916c8696ffd09fe97bd12ff58d86326",
+        "size_bytes": 671855,
+        "source_identity": "UKACTIVE_A4C_QUERY_OVERLAY.parquet",
+        "retrieval_or_generation_date": "2026-08-23",
+        "date_basis": "LOCAL_LAST_WRITE_UTC; AUTHORITATIVE RETRIEVAL IN EVIDENCE LEDGER/MANIFEST",
+        "generating_policy_version": "UKACTIVE_A4C_POLICY_OR_MANIFEST",
+        "git_exclusion_reason": "LARGE_OR_REPRODUCIBLE_BINARY_DATA"
+      }
+    ]
+  },
+  "policy_path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A4C_POLICY_v1.json",
+  "correctness_tests": [
+    {
+      "test_id": "A4_BASELINE_EXACT_REPRODUCTION",
+      "result": "PASS",
+      "evidence": "max_abs_diff=8.33e-17",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "NO_SAME_CLOSE_EXECUTION",
+      "result": "PASS",
+      "evidence": "executed_rows=831",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CORRECTED_XLON_CALENDAR_RETAINED",
+      "result": "PASS",
+      "evidence": "sessions=6649",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "FAST_SLOW_CALCULATIONS_CORRECT",
+      "result": "PASS",
+      "evidence": "max_abs_diff=0",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "PRE_LEADER_TRAJECTORY_USES_ONLY_PRIOR_OR_CURRENT_DATA",
+      "result": "PASS",
+      "evidence": "rows=14271",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CROSSOVER_RULE_FROZEN_AND_CURRENT_ONLY",
+      "result": "PASS",
+      "evidence": "rows=37071",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CONVERSION_OUTCOME_NOT_IN_CROSSOVER_SIGNAL",
+      "result": "PASS",
+      "evidence": "policy inputs are contemporaneous FAST/gap/change/RS63/slope42 only",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "SCOUT_TOTAL_EXPOSURE_NO_GREATER_THAN_100PCT",
+      "result": "PASS",
+      "evidence": "max_scout=1.000",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "SCOUT_MAXIMUM_TWO_RISKY_HOLDINGS",
+      "result": "PASS",
+      "evidence": "max_holding_count=2",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "TREND_EXITS_EXECUTE_NEXT_VALID_SESSION",
+      "result": "PASS",
+      "evidence": "exit_trade_rows=200",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "VOLATILITY_SIZING_PRIOR_ONLY",
+      "result": "PASS",
+      "evidence": "decisions=183 executable=180 cancelled_at_panel_end=3 positive_targets=180 missing_vol_cash_only=3",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "NO_LEVERAGE",
+      "result": "PASS",
+      "evidence": "max_target=1.000000000000",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "RESIDUAL_WEIGHT_EARNS_VALIDATED_GBP_CASH",
+      "result": "PASS",
+      "evidence": "sample=100 max_diff=2.22e-16",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CORE_SATELLITE_REBALANCE_COST_CORRECT",
+      "result": "PASS",
+      "evidence": "difference=0",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CURRENT_II_STATUS_NOT_USED_OR_BACK_PROJECTED",
+      "result": "PASS",
+      "evidence": "A4C engines contain no ii field",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "EVERY_TESTED_MODULE_REGISTERED",
+      "result": "PASS",
+      "evidence": "registered=28",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "FAILED_MODULES_RETAINED",
+      "result": "PASS",
+      "evidence": "9 early + 4 exit + 3 volatility rows retained",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "NO_FORWARD_FILLED_OR_STALE_VALUES_INTRODUCED",
+      "result": "PASS",
+      "evidence": "invalid endpoints remain NaN",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "QUERY_OVERLAY_REPRODUCES_FEATURES",
+      "result": "PASS",
+      "evidence": "rows=37071",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "CURRENT_QUERY_REPRODUCES_A4C_OVERLAY",
+      "result": "PASS",
+      "evidence": "families=27 max_rank_diff=0",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "test_id": "HISTORICAL_QUERY_DOES_NOT_BACK_PROJECT_A4C_OR_II",
+      "result": "PASS",
+      "evidence": "rows=9",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    }
+  ],
+  "unresolved_items": [
+    {
+      "item_id": "A4C_OPEN_001",
+      "severity": "BLOCKS_DEPLOYMENT_NOT_RESEARCH",
+      "item": "Historical UK retail/ISA/account/broker eligibility remains partly unresolved for active selections.",
+      "owner": "FUTURE_IMPLEMENTATION_RECONSTRUCTION",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "item_id": "A4C_OPEN_002",
+      "severity": "EVIDENCE_LIMITATION",
+      "item": "All A4C market evidence is E2 developmental and uses previously observed history; no E3 confirmation exists.",
+      "owner": "PROSPECTIVE_A5",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "item_id": "A4C_OPEN_003",
+      "severity": "RISK_LIMITATION",
+      "item": "The 50/50 candidate remains above the preferred -15% whole-portfolio drawdown range.",
+      "owner": "PROSPECTIVE_A5",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "item_id": "A4C_OPEN_004",
+      "severity": "DATA_LIMITATION",
+      "item": "Validated next-open/high/low history is unavailable; opening-gap and true ATR diagnostics remain unresolved.",
+      "owner": "FUTURE_DATA_STAGE",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    },
+    {
+      "item_id": "A4C_OPEN_005",
+      "severity": "MECHANISM_LIMITATION",
+      "item": "Fast-to-slow migration is observable but none of the preregistered scout ladders monetised it robustly.",
+      "owner": "DO_NOT_PROMOTE_WITHOUT_NEW_PREREGISTRATION",
+      "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+    }
+  ],
+  "a5_started": false,
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}

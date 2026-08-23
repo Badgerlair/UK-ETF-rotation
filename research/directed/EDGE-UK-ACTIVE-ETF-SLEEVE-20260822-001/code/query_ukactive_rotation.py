@@ -160,12 +160,40 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
             on=["date", "economic_exposure_family_id"], how="left", validate="many_to_one",
         )
 
+    # A4C is also a display-only overlay. It adds migration, absolute-risk and
+    # promoted core/satellite fields after the A4C experiment is complete; none
+    # of these columns feed the frozen A3R2/A4/A4B/A4C historical decisions.
+    a4c_overlay_path = PROGRAMME_ROOT / "UKACTIVE_A4C_QUERY_OVERLAY.parquet"
+    if a4c_overlay_path.exists():
+        a4c = pd.read_parquet(a4c_overlay_path)
+        a4c["date"] = pd.to_datetime(a4c["date"])
+        a4c = a4c.loc[a4c["date"].eq(resolved)].drop_duplicates(["date", "economic_exposure_family_id"])
+        a4c_fields = [
+            "FAST_ORDINAL_RANK", "SLOW_ORDINAL_RANK", "FAST_MINUS_SLOW",
+            "FAST_RS_CHANGE_1W", "FAST_RS_CHANGE_4W", "FAST_CROSSOVER_PRIMARY",
+            "FAST_CROSSOVER_PERSISTENCE_PRIMARY", "PROBABILITY_SLOW_TOP3_8W",
+            "PROBABILITY_SLOW_RANK1_8W", "ABSOLUTE_TREND_STATE", "ABS_BELOW_EMA21",
+            "ABS_BELOW_EMA50", "REALISED_VOL_63", "IMPLIED_RISK_WEIGHT_0_1",
+            "IMPLIED_RISK_WEIGHT_0_125", "IMPLIED_RISK_WEIGHT_0_15", "CURRENT_SLOW_LEADER",
+            "IS_CURRENT_SLOW_LEADER", "A4C_PROMOTED_ARCHITECTURE",
+            "A4C_CURRENT_ACTIVE_ALLOCATION", "A4C_CURRENT_CORE_ALLOCATION",
+            "A4C_CURRENT_CASH_ALLOCATION",
+        ]
+        selected = selected.merge(
+            a4c[["date", "economic_exposure_family_id", *[column for column in a4c_fields if column in a4c.columns]]],
+            on=["date", "economic_exposure_family_id"], how="left", validate="many_to_one",
+        )
+
     current_view = resolved == current_cutoff
     if not current_view:
         selected["II_CURRENT_TRADABLE"] = "NOT_APPLICABLE_HISTORICAL_ASOF"
         selected["II_OBSERVATION_DATE"] = pd.NA
         selected["ticker"] = "HISTORICAL_CURRENT_LINE_NOT_BACK_PROJECTED"
         selected["isin"] = "HISTORICAL_CURRENT_LINE_NOT_BACK_PROJECTED"
+        selected["A4C_PROMOTED_ARCHITECTURE"] = "NOT_APPLICABLE_HISTORICAL_ASOF_POSTHOC_A4C"
+        selected["A4C_CURRENT_ACTIVE_ALLOCATION"] = pd.NA
+        selected["A4C_CURRENT_CORE_ALLOCATION"] = pd.NA
+        selected["A4C_CURRENT_CASH_ALLOCATION"] = pd.NA
     selected["current_universe_status"] = np.where(
         selected["MH_LEVEL_3_6_12_REFERENCE"].notna(),
         "SIGNAL_ELIGIBLE_AT_ASOF",
@@ -197,6 +225,28 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
         "REGIME_STATE": "regime_state",
         "REGIME_PEAK_DETECTED": "regime_peak_flag",
         "REGIME_PEAK_OR_MATURITY_FLAG": "regime_peak_maturity_flag",
+        "FAST_ORDINAL_RANK": "fast_rank",
+        "SLOW_ORDINAL_RANK": "slow_rank",
+        "FAST_MINUS_SLOW": "fast_slow_gap",
+        "FAST_RS_CHANGE_1W": "fast_rank_change_1w",
+        "FAST_RS_CHANGE_4W": "fast_rank_change_4w",
+        "FAST_CROSSOVER_PRIMARY": "fast_crossover_state",
+        "FAST_CROSSOVER_PERSISTENCE_PRIMARY": "fast_crossover_persistence_count",
+        "PROBABILITY_SLOW_TOP3_8W": "probability_slow_top3_8w",
+        "PROBABILITY_SLOW_RANK1_8W": "probability_slow_rank1_8w",
+        "ABSOLUTE_TREND_STATE": "absolute_trend_state",
+        "ABS_BELOW_EMA21": "below_ema21",
+        "ABS_BELOW_EMA50": "below_ema50",
+        "REALISED_VOL_63": "realised_volatility_63",
+        "IMPLIED_RISK_WEIGHT_0_1": "implied_risk_weight_10pct",
+        "IMPLIED_RISK_WEIGHT_0_125": "implied_risk_weight_12_5pct",
+        "IMPLIED_RISK_WEIGHT_0_15": "implied_risk_weight_15pct",
+        "CURRENT_SLOW_LEADER": "current_slow_leader",
+        "IS_CURRENT_SLOW_LEADER": "is_current_slow_leader",
+        "A4C_PROMOTED_ARCHITECTURE": "a4c_promoted_architecture",
+        "A4C_CURRENT_ACTIVE_ALLOCATION": "a4c_current_active_allocation",
+        "A4C_CURRENT_CORE_ALLOCATION": "a4c_current_core_allocation",
+        "A4C_CURRENT_CASH_ALLOCATION": "a4c_current_cash_allocation",
         "contemporaneous_research_maturity": "research_maturity_asof",
         "data_quality_flags": "data_quality_status",
     }
@@ -215,6 +265,13 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
         "regime_score", "regime_state", "regime_peak_flag", "regime_peak_maturity_flag",
         "target_leadership_allocation", "regime_multiplier", "final_target_risky_allocation",
         "cash_allocation", "MFE", "current_giveback", "profit_lock_state", "a4b_portfolio_status",
+        "fast_rank", "slow_rank", "fast_slow_gap", "fast_rank_change_1w", "fast_rank_change_4w",
+        "fast_crossover_state", "fast_crossover_persistence_count", "probability_slow_top3_8w",
+        "probability_slow_rank1_8w", "absolute_trend_state", "below_ema21", "below_ema50",
+        "realised_volatility_63", "implied_risk_weight_10pct", "implied_risk_weight_12_5pct",
+        "implied_risk_weight_15pct", "current_slow_leader", "is_current_slow_leader",
+        "a4c_promoted_architecture", "a4c_current_active_allocation", "a4c_current_core_allocation",
+        "a4c_current_cash_allocation",
         "data_quality_status", "current_universe_status", "current_implementable_view", "market_intelligence_classification",
         "public_ISA_rules_status", "UK_retail_disclosure_status", "LSE_current_status", "current_observation_date", "warning",
     ]

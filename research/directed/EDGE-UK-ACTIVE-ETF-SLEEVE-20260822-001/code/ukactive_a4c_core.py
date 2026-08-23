@@ -559,9 +559,11 @@ def build_core_satellite_plan(
     *,
     review_start: pd.Timestamp = LATEST5_REVIEW_START,
     active_weight_override: pd.Series | None = None,
+    excluded_families: set[str] | None = None,
+    maturity_scope: str = "DYNAMIC_POINT_IN_TIME",
 ) -> a4b.PlannedPortfolio:
     core_family = str(data.policy["core_satellite"]["core_family"])
-    leaders = monthly_leaders(data)
+    leaders = monthly_leaders(data, excluded_families, maturity_scope)
     dates = management_dates(data, review_start, weekly=False)
     targets: dict[pd.Timestamp, dict[str, float]] = {}
     for date in dates:

@@ -1,0 +1,6 @@
+item_id,severity,item,owner,warning
+A4C_OPEN_001,BLOCKS_DEPLOYMENT_NOT_RESEARCH,Historical UK retail/ISA/account/broker eligibility remains partly unresolved for active selections.,FUTURE_IMPLEMENTATION_RECONSTRUCTION,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4C_OPEN_002,EVIDENCE_LIMITATION,All A4C market evidence is E2 developmental and uses previously observed history; no E3 confirmation exists.,PROSPECTIVE_A5,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4C_OPEN_003,RISK_LIMITATION,The 50/50 candidate remains above the preferred -15% whole-portfolio drawdown range.,PROSPECTIVE_A5,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4C_OPEN_004,DATA_LIMITATION,Validated next-open/high/low history is unavailable; opening-gap and true ATR diagnostics remain unresolved.,FUTURE_DATA_STAGE,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4C_OPEN_005,MECHANISM_LIMITATION,Fast-to-slow migration is observable but none of the preregistered scout ladders monetised it robustly.,DO_NOT_PROMOTE_WITHOUT_NEW_PREREGISTRATION,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"

@@ -1,0 +1,15 @@
+{
+  "stage_id": "UKACTIVE-A4C",
+  "decision": "UKACTIVE_A4C_CORE_SATELLITE_CANDIDATE_FOUND",
+  "primary_candidate": "CORE_ACTIVE_50",
+  "candidate_definition": "50% A4 frozen INDUSTRY_PLUS_THEME 3/6/12 TOP_1 monthly active sleeve + 50% GLOBAL_DEVELOPED_WORLD; monthly fixed-weight rebalance; canonical costs",
+  "early_participation": "REJECTED",
+  "trend_failure_exits": "REJECTED",
+  "standalone_volatility_sizing": "DRAWDOWN_CONTROL_DIAGNOSTIC_ONLY",
+  "core_satellite": "RESEARCH_CANDIDATE",
+  "a5_started": false,
+  "a5_recommendation": "FREEZE_BASELINE_V1_AND_CORE_ACTIVE_50_AS_PARALLEL_PROSPECTIVE_SHADOW_COMPARATORS",
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "independent_confirmation": false,
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}
