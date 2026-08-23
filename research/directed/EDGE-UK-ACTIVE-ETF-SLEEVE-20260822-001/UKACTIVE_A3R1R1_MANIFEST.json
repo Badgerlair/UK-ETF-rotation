@@ -471,8 +471,8 @@
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R1R1_DECISION.json",
-      "sha256": "361350c790145b6014afef20b47943bfa35334f2ed5157c5b7e97a5d3cbb4c07",
-      "size_bytes": 12088
+      "sha256": "8e0797c23705c070faea88dca5fd75bf1e8451fffd0b888a13f6b5a609d43477",
+      "size_bytes": 12204
     }
   ],
   "package_versions": {
@@ -484,7 +484,8 @@
     "scipy": "1.18.0"
   },
   "portfolio_research_performed": false,
-  "post_a3r1r1_result_commit": "PENDING_AFTER_EXECUTION",
+  "post_a3r1r1_provenance_commit": "FOLLOWUP_COMMIT_CONTAINING_THIS_MANIFEST",
+  "post_a3r1r1_result_commit": "88c0ba161a3bb2556187948b556737403c04ccf1",
   "pre_a2r2_checkpoint_commit": "f9597c3d3f95e5de5c55da92721a93771aeeadf6",
   "pushed_to_github": false,
   "remote_count": 0,
