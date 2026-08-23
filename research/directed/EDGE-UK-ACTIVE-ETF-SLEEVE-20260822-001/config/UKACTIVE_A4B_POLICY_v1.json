@@ -1,0 +1,234 @@
+{
+  "stage_id": "UKACTIVE-A4B",
+  "run_id": "UKACTIVE-A4B-20260823-001",
+  "evidence": {
+    "portfolio_results": "E2_DEVELOPMENTAL",
+    "mechanism_diagnostics": "E1_EXPLORATORY",
+    "independent_confirmation": false
+  },
+  "source_edge": {
+    "pool": "INDUSTRY_PLUS_THEME",
+    "slow_signal": "MH_LEVEL_3_6_12_REFERENCE",
+    "slow_components": ["RANK_RS_63", "RANK_RS_126", "RANK_RS_252"],
+    "slow_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "baseline_selection": "TOP_1",
+    "baseline_review": "MONTHLY_FINAL_VALID_XLON_SESSION",
+    "execution": "FIRST_COMMON_VALID_ENDPOINT_AFTER_REVIEW_WITHIN_3_XLON_SESSIONS",
+    "global_benchmark": "GLOBAL_DEVELOPED_WORLD",
+    "equal_pool_benchmark": "CONTEMPORANEOUS_INDUSTRY_PLUS_THEME_POOL"
+  },
+  "management": {
+    "primary_frequency": "WEEKLY_FINAL_VALID_XLON_SESSION",
+    "control_frequency": "MONTHLY_FINAL_VALID_XLON_SESSION",
+    "maximum_risky_weight": 1.0,
+    "maximum_risky_holdings_during_handover": 2,
+    "leverage": false,
+    "shorting": false,
+    "cash_asset": "ACTUAL_GBP_CASH"
+  },
+  "features": {
+    "fast_components": ["RANK_RS_21", "RANK_RS_42", "RANK_RS_63"],
+    "fast_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "fast_change_weeks": 4,
+    "slow_change_weeks": 4,
+    "relative_slopes": [42, 63],
+    "extension_quantile": 0.9,
+    "extension_minimum_prior_weekly_observations": 52,
+    "expanding_quantiles_exclude_current_observation": true
+  },
+  "leadership_state_primary": {
+    "precedence": ["FAILED", "WEAKENING", "EXTENDED", "ESTABLISHED", "CONFIRMING", "EMERGING", "OTHER"],
+    "emerging": {
+      "fast_min": 0.9,
+      "rs63_positive": true,
+      "fast_change_4w_min": 0.1,
+      "slow_max_exclusive": 0.8
+    },
+    "confirming": {
+      "fast_min": 0.8,
+      "slow_min": 0.6,
+      "slow_change_4w_positive": true,
+      "rs63_positive": true
+    },
+    "established": {
+      "slow_ordinal_rank_max": 1,
+      "fast_min": 0.5,
+      "rs63_positive": true,
+      "relative_slope_42_nonnegative": true
+    },
+    "extended": {
+      "requires_established": true,
+      "rs63_above_prior_expanding_quantile": 0.9
+    },
+    "weakening": {
+      "slow_ordinal_rank_max": 3,
+      "any": [
+        "FAST_RS_LT_0_50",
+        "FAST_RS_CHANGE_4W_LE_NEG_0_20",
+        "RELATIVE_SLOPE_42_LT_0"
+      ]
+    },
+    "stronger_weakening": {
+      "any": [
+        "FAST_RS_LT_0_25",
+        "RELATIVE_SLOPE_42_LT_0_AND_SECOND_CONSECUTIVE_WEAKENING"
+      ]
+    },
+    "failed": {
+      "any": [
+        "SLOW_ORDINAL_RANK_GT_5_AND_FAST_RS_LT_0_50",
+        "RS63_LE_0_AND_RELATIVE_SLOPE_42_LT_0"
+      ]
+    }
+  },
+  "leadership_state_neighbourhoods": {
+    "LOOSER": {
+      "emerging_fast_min": 0.85,
+      "emerging_fast_change_min": 0.08,
+      "emerging_slow_max": 0.85,
+      "confirming_fast_min": 0.75,
+      "confirming_slow_min": 0.55,
+      "weakening_fast_cutoff": 0.45,
+      "weakening_fast_change_cutoff": -0.15,
+      "failed_rank_cutoff": 6,
+      "failed_fast_cutoff": 0.45,
+      "extension_quantile": 0.85
+    },
+    "TIGHTER": {
+      "emerging_fast_min": 0.95,
+      "emerging_fast_change_min": 0.12,
+      "emerging_slow_max": 0.75,
+      "confirming_fast_min": 0.85,
+      "confirming_slow_min": 0.65,
+      "weakening_fast_cutoff": 0.55,
+      "weakening_fast_change_cutoff": -0.25,
+      "failed_rank_cutoff": 4,
+      "failed_fast_cutoff": 0.55,
+      "extension_quantile": 0.95
+    }
+  },
+  "scale_in": {
+    "starter_a": {
+      "requires_incumbent_weakening": false,
+      "emerging_weight": 0.25,
+      "confirming_weight": 0.5,
+      "slow_top3_weight": 0.75,
+      "slow_rank1_weight": 1.0
+    },
+    "starter_b": {
+      "requires_incumbent_weakening": true,
+      "emerging_weight": 0.25,
+      "confirming_weight": 0.5,
+      "slow_top3_weight": 0.75,
+      "slow_rank1_weight": 1.0
+    },
+    "challenger_tie_break": ["FAST_RS_DESC", "economic_exposure_family_id_ASC"],
+    "challenger_failure": "NOT_EMERGING_NOT_CONFIRMING_AND_SLOW_RANK_OUTSIDE_TOP3",
+    "incumbent_residual": true
+  },
+  "exit_modules": {
+    "FAST_TAPER": {
+      "normal_weight": 1.0,
+      "first_weakening_weight": 0.75,
+      "stronger_weakening_weight": 0.5,
+      "failed_weight": 0.0,
+      "recovery_allowed": true
+    },
+    "MFE_GIVEBACK_LOCK": {
+      "activation_mfe": 0.1,
+      "first_giveback_fraction": 0.25,
+      "first_target_cap": 0.5,
+      "exit_giveback_fraction": 0.5,
+      "leadership_deterioration_required_for_giveback_trigger": true,
+      "failed_exits": true,
+      "exit_lockout_until_incumbent_changes": true
+    },
+    "STRENGTH_HARVEST": {
+      "minimum_position_return": 0.2,
+      "requires_extension": true,
+      "requires_slow_rank1": true,
+      "trim_fraction_of_sleeve": 0.25,
+      "one_trim_per_holding_episode": true,
+      "trim_persists_until_incumbent_changes": true
+    },
+    "STRENGTH_PLUS_DECELERATION": {
+      "minimum_position_return": 0.2,
+      "requires_extension": true,
+      "requires_slow_rank1": true,
+      "trim_fraction_of_sleeve": 0.25,
+      "one_trim_per_holding_episode": true,
+      "trim_persists_until_incumbent_changes": true,
+      "deceleration_any": [
+        "FAST_RS_CHANGE_4W_LT_0",
+        "REGIME_STATE_IN_MATURE_DETERIORATING_HOSTILE"
+      ]
+    }
+  },
+  "regime": {
+    "pool": "INDUSTRY_PLUS_THEME",
+    "score_points": {
+      "GLOBAL_ABOVE_200": 1,
+      "DISPERSION_HIGH": 1,
+      "BREADTH_MEDIUM": 1,
+      "ROTATION_HIGH": 1,
+      "US_TECH_NOT_DOMINANT": 1,
+      "VOLATILITY_HIGH": -1
+    },
+    "prior_peak_window_weeks": 8,
+    "state_precedence": ["HOSTILE", "DETERIORATING", "MATURE", "STRONG", "POSITIVE"],
+    "hostile": "SCORE_LE_0_OR_GLOBAL_BELOW_200_AND_VOL_HIGH",
+    "deteriorating": "PRIOR_8W_MAX_GE_4_AND_CURRENT_LE_PRIOR_MAX_MINUS_2",
+    "mature": "PRIOR_8W_MAX_GE_4_AND_CURRENT_EQ_PRIOR_MAX_MINUS_1",
+    "strong": "CURRENT_SCORE_GE_4",
+    "positive": "OTHER_NON_HOSTILE",
+    "peak_detection": "AT_T_OBSERVE_T_MINUS_1_EQUALS_TRAILING_8W_MAX_THROUGH_T_MINUS_1_AND_SCORE_T_LE_SCORE_T_MINUS_1_MINUS_1",
+    "multipliers": {
+      "CONTROL": {"STRONG": 1.0, "POSITIVE": 1.0, "MATURE": 1.0, "DETERIORATING": 1.0, "HOSTILE": 1.0},
+      "BINARY": {"STRONG": 1.0, "POSITIVE": 1.0, "MATURE": 1.0, "DETERIORATING": 1.0, "HOSTILE": 0.0},
+      "GRADUAL": {"STRONG": 1.0, "POSITIVE": 1.0, "MATURE": 0.75, "DETERIORATING": 0.5, "HOSTILE": 0.0},
+      "GRADUAL_HOSTILE_25": {"STRONG": 1.0, "POSITIVE": 1.0, "MATURE": 0.75, "DETERIORATING": 0.5, "HOSTILE": 0.25}
+    }
+  },
+  "costs": {
+    "canonical_one_way_friction_bps": 20.0,
+    "stress_one_way_friction_bps": [10.0, 20.0, 40.0],
+    "ii_fixed_fee_gbp_per_risky_trade_leg": 3.99,
+    "canonical_sleeve_size_gbp": 250000.0,
+    "non_gbp_fx_rate": 0.0075
+  },
+  "windows": {
+    "LATEST_5Y_START": "2021-09-01",
+    "LATEST_3Y_START": "2023-08-21",
+    "POST_2020_START": "2020-01-02",
+    "PRE_2020_END": "2019-12-31",
+    "CUTOFF": "2026-08-21"
+  },
+  "gates": {
+    "hard_maximum_drawdown": -0.25,
+    "preferred_maximum_drawdown": -0.15,
+    "minimum_drawdown_improvement": 0.05,
+    "minimum_baseline_pool_excess_retention": 0.7,
+    "minimum_top_three_winner_contribution_retention": 0.7,
+    "requires_positive_pool_excess": true,
+    "requires_positive_selected_vs_unselected": true,
+    "profit_module_requires_positive_net_monetisation_value": true,
+    "regime_module_requires_positive_regime_derisk_value": true,
+    "combination_selection_order": [
+      "PASSES_HARD_DRAWDOWN_GATE_DESC",
+      "MAXIMUM_DRAWDOWN_DESC",
+      "CALMAR_DESC",
+      "ULCER_INDEX_ASC",
+      "NET_EXCESS_VS_POOL_DESC"
+    ]
+  },
+  "governance": {
+    "a5_baseline_status": "A5_BASELINE_V1_NOT_STARTED",
+    "a5_baseline_tag": "ukactive-a5-frozen-candidate-v1-20260823",
+    "start_a5": false,
+    "backfill_a5": false,
+    "schedule_a5": false,
+    "dense_parameter_search": false,
+    "new_signal_horizons": false,
+    "new_universe_families": false
+  }
+}
