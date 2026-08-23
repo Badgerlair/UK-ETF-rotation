@@ -115,7 +115,8 @@
     "pyarrow": "24.0.0",
     "python": "3.12.10"
   },
-  "post_a3r2u_commit": "PENDING_AFTER_EXECUTION",
+  "post_a3r2u_commit": "44911118125916ed66b48a8eea7bb03cadfe2153",
+  "post_a3r2u_provenance_commit": "FOLLOWUP_COMMIT_CONTAINING_THIS_MANIFEST",
   "pre_a3r2_commit": "c30de89d0ceee74ea024708e7c95270bae38d150",
   "preregistration_commit": "3ed64a2240a1fc7c6f6b573ef27e436e13d53671",
   "primary_source_urls": [

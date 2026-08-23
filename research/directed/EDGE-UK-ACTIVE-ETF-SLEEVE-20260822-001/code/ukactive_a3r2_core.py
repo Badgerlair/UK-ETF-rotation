@@ -171,4 +171,3 @@ def benjamini_hochberg(p_values: pd.Series) -> pd.Series:
     adjusted = np.minimum.accumulate(raw[::-1])[::-1].clip(0, 1)
     result.loc[ordered.index] = adjusted
     return result
-
