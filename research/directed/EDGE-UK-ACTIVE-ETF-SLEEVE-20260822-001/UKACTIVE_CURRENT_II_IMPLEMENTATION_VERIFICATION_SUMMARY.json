@@ -1,0 +1,524 @@
+{
+  "current_ii_implementation_coverage": 1.0,
+  "deployment_readiness_inference": "NOT_AUTHORISED",
+  "executed_from_commit": "67d4ae055f37e2844c1ee0e780a3ee3ba68e524d",
+  "historical_back_projection": "PROHIBITED_AND_NOT_PERFORMED",
+  "ii_confirmed": 25,
+  "limitations": [
+    "Current user-account observations are not evidence of historical ii availability.",
+    "Current ii confirmation is not historical ISA or UK-retail verification.",
+    "Current ii confirmation does not make the frozen research candidate deployment-ready."
+  ],
+  "metadata_scope": "CURRENT_IMPLEMENTATION_ONLY",
+  "observation_date": "2026-08-23",
+  "outputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_II_IMPLEMENTATION_VERIFIED_20260823.csv",
+      "sha256": "6025783d9620227c4fe85d80b65b0c9e401d5c1e3223378e3a36e64bdcda7818",
+      "size_bytes": 9013
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_II_IMPLEMENTATION_VERIFIED_20260823.md",
+      "sha256": "bb5ab3e94af1252783f7498d156a960d26e43964598d078a7c515183009d92bd",
+      "size_bytes": 10600
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT_II_VERIFIED_20260823.csv",
+      "sha256": "233cfc0bb7feed0f13506d6384513f0ce53f5c59ac1bb2133a3f325c2354453e",
+      "size_bytes": 101242
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT_II_VERIFIED_20260823.json",
+      "sha256": "13776bccb3abac7a5556cad0a4a5c14fca96d180f6a8f1bf5f733aa019f5b595",
+      "size_bytes": 324894
+    }
+  ],
+  "programme_root": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001",
+  "protected_artifact_groups": {
+    "economic_family_mappings": {
+      "aggregate_sha256": "9f148369a3411a2187e6a7614772a9f4ed7f990697ed87ac54c114cf0f7a75b2",
+      "file_count": 3,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_A3R0_OVERLAP_CLUSTERS_POST_A2R.csv",
+          "sha256": "4e131dc7f56cdbbd13df77d34b8abbcee0b4907dda94a5f04b1ef406e9dcc398"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_A3R0_PARENT_CHILD_MAP_POST_A2R.csv",
+          "sha256": "cf32ed4b5a2dc19a428d5838197838d5a23d01ac713135aa3566a56235d0136b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+          "sha256": "8fd81aca2dd90ad2090282839243072dec276228d1c546559ffe3883dbb3c61b"
+        }
+      ]
+    },
+    "frozen_model_and_config": {
+      "aggregate_sha256": "25ac387a0425eb744d0ea6d39b9e00126c01680b4c82bd003581da5febcf14ed",
+      "file_count": 13,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/current_listing_supplements.csv",
+          "sha256": "ab440e9099f4142508031508246e6633103c08adae7a86e962cf4396524d153b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A2_POLICY_v1.json",
+          "sha256": "d29197fb85e826664cab0413e38d095abeec5c48ebe9456868cbb342525f0195"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A2R2_POLICY_v1.json",
+          "sha256": "dd22226b9bbab6741c6877a8d1dea2287cc3f8b43ed9789f7d912c7ad4cc9502"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A2R_POLICY_v1.json",
+          "sha256": "b29ea64251aaa290c473beb838784ce2128f7f9de90f0759e20ece0ff181c4b9"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A3_POLICY_v1.json",
+          "sha256": "0fcaa4f7a02a5d12134e72da473265cd459f3142e2b0a7ff9bafd40d364be056"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A3R0_POLICY_v1.json",
+          "sha256": "a96547ca9bd4d664f391a366eea881744ef9c0f438bc8c5057055d3605a06e59"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A3R1_POLICY_v1.json",
+          "sha256": "55307bcadd924b4324384999ec09e5c53f4c1a1f492a0315aeba2231ad791d55"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A3R2_POLICY_v1.json",
+          "sha256": "9c9e678817e1aad63dd4d8efb1b22a67921fde62646584a959685a3f252b0cdc"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A4_IMPLEMENTATION_EVIDENCE_v1.json",
+          "sha256": "d7c96deae0d52503f8c931761a0ec335b9b911c3913f2f9cebd287afb02fb972"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A4_POLICY_v1.json",
+          "sha256": "8a3138c3cf0d2b2b882a05418cdc2cd4d1213a83d8d53d776a442d5c64fe56b8"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A4B_POLICY_v1.json",
+          "sha256": "e75fab9474297904d09282dc0d7f2e1bb2f7add560b85914c3eddcfc98983d98"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/UKACTIVE_A4C_POLICY_v1.json",
+          "sha256": "4c999d2d94d8bdcc72a0a0709734c06d06fa614f2bd01c62ffe0c510d588b7fc"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/config/ukactive_a5_frozen_candidate.json",
+          "sha256": "5d86b5ad0cf3d7d49c2f6bb48410b4f3282945c0ed7e29833f8765fd78ff0894"
+        }
+      ]
+    },
+    "historical_eligibility": {
+      "aggregate_sha256": "d56d6fcd8e7a161394ddb5bb153e407487030505da738a02b74127d02a481280",
+      "file_count": 3,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_A3R0_PUBLIC_UK_ELIGIBILITY_POST_A2R.csv",
+          "sha256": "42f919a681433afb2234ecf9582a81aad7e66b59891055f4b82ca95a72387578"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_HISTORICAL_ISA_EVIDENCE.csv",
+          "sha256": "9e4c16e1c78b281990045677b37dc9114f5898b05b821b13a1a6113b43c85fd7"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_HISTORICAL_UK_RETAIL_EVIDENCE.csv",
+          "sha256": "9a646b94dde52ee10c75ed8cc98cd982bb287baccbcdba206a23cb5b3a8a8ee7"
+        }
+      ]
+    },
+    "historical_implementation_lineage": {
+      "aggregate_sha256": "e16e60be707715405d104cf316e3b10c96540c8397ef2129ead3bf9f380d5234",
+      "file_count": 3,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_A3R0_CURRENT_IMPLEMENTATION_LINES_POST_A2R.csv",
+          "sha256": "f6298116711ed451ec76ce28280d6248371a1471d66640797262cd7682d41eb0"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_CORRECTED_IMPLEMENTATION_HISTORY.parquet",
+          "sha256": "e29b50f82ed54cbc071bce82c628fcdaf9a538bb5cd07c76ea667d8ec200e780"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A2R_LINEAGE_CORRECTIONS.csv",
+          "sha256": "9cae56e01657a40c24b2a0c79fedf66a9ce76477d8325ea53ae7e5c74287d63d"
+        }
+      ]
+    },
+    "immutable_20260821_snapshot": {
+      "aggregate_sha256": "289d1d00a33b5c0898df46dc8f8c2bc13bb29470233d795bbe32b5d90cc0d97a",
+      "file_count": 2,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_CURRENT_ROTATION_SNAPSHOT.csv",
+          "sha256": "fafbdf445b1c9affd289db9b2acbb905260789df1755b4d5ecc28cccd81150a7"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_CURRENT_ROTATION_SNAPSHOT.json",
+          "sha256": "4970b281b9afca0d02a8c538737ff6d94619315e012d5852ad57ac221c8ed50c"
+        }
+      ]
+    },
+    "research_return_outputs": {
+      "aggregate_sha256": "d50044eb1535559d0fb3531c37d02deb472e41443cfc1b9488d44ad16fa1dcfe",
+      "file_count": 68,
+      "members": [
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3_AUTOMATED_TEST_RESULTS.csv",
+          "sha256": "ab6a7367c5f1d4b30538af09dfbd58e2b461e0a2d1565be6b0a50aed5e11f3cd"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3_BLOCK_BOOTSTRAP_RESULTS.csv",
+          "sha256": "1487d45013c6799786c4a47d5e319a81a1b5df0a9d7c92e91c3522be8fdbeea9"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3_CATEGORY_RESULTS.csv",
+          "sha256": "69da8d37b86d34b5ea38a0b02f0ab082c35e4ab56e3b7ef91b001f292b9033d5"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3_SUBPERIOD_RESULTS.csv",
+          "sha256": "87353849c1b4ff9fe3c49fc0d1fd3380178a8362e5661f5082744eb59acef028"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3_SUBPERIOD_RESULTS.parquet",
+          "sha256": "c4953a97edccb8a8e54121467ec1918849d95d7504138d3801168231316910f6"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R0_AUTOMATED_TEST_RESULTS.csv",
+          "sha256": "1d74b97cba28c7213adb79f75d0122a5362a8746699fc7c74f4231676d615ea7"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "d8a724d8adb55f1929453230a246d501a1a3fa97b5b6503281e6831442e93555"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_GROUP_RESULTS.csv",
+          "sha256": "1684b295cdd866b14b8b0a4a4ce829d717de184399ad6235a03d489dceb8f60b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_PAIRWISE_RS_RESULTS.parquet",
+          "sha256": "ef867d764d897456047beec088c2d595f37d2f96893862be1360f2aab90bc813"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_PARENT_RS_RESULTS.csv",
+          "sha256": "997fbb7c664672e18b0ce0b9915aae827667f4d79970e940eedf406776663e63"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_SUBPERIOD_RESULTS.csv",
+          "sha256": "a45741d0b446a8053c891c07ec6f05e715932ebcbbe09d8c605923c3ae34bfb0"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1_TOP_TAIL_RESULTS.csv",
+          "sha256": "1b8aca0cf6e77da11005b45df232c622cfb586be36fae1e1368991c488947df8"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "66bbfe1c4497ce3ff48f86e0652bdfb129263f10f1ec67ff51f75c964d08acd7"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_GROUP_RESULTS.csv",
+          "sha256": "357e9f4df41879d6bf31f10c8cf1061df4402ec1075697be5376dd7475bfa713"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_PAIRWISE_RS_RESULTS.parquet",
+          "sha256": "39422dbfa9c389b1040e67cd6031ff73b927f552e722782f4855dcf4316a95ac"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_PARENT_RS_RESULTS.csv",
+          "sha256": "8d9a54f5e5619097f27fbffec060bfe691734e0daa19d71bf3666c3f45684234"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_SUBPERIOD_RESULTS.csv",
+          "sha256": "5620e20d535bf548889bb5eb190f5af966903abf88b2eaf2cbe9253d3bd44e3b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R1R1_TOP_TAIL_RESULTS.csv",
+          "sha256": "3ee12c9a02ab842d638b8af6200b01680335ed85c3d1b3de197a653b09359ed1"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_CADENCE_RESULTS.csv",
+          "sha256": "286a675c5a82e1811cf5537a8b8205063f74e0d8eaef59c9ed7a3880ec6534d1"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "91b240a16f353c14a9abc81c4577e619eb230dfe98b48fb920e4043adbdf390b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_POOL_BENCHMARK_RESULTS.csv",
+          "sha256": "9f4356cf37636bf99bb4ed9c38ac0b667eb42bedb0f81f88e1ad5a68a077c10f"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_RECENT_FIVE_YEAR_RESULTS.csv",
+          "sha256": "286a675c5a82e1811cf5537a8b8205063f74e0d8eaef59c9ed7a3880ec6534d1"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_RECENT_THREE_YEAR_RESULTS.csv",
+          "sha256": "4249f5d95683372e81468440086e282fcd9841c68facc8dbb0f783a721682c38"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_REGIME_RESULTS.csv",
+          "sha256": "ba77fcdc2a939532d8bd16121d61b11d1d183eb5f2fefa516497f9dbd8b9aeef"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_ROLLING_WINDOW_RESULTS.csv",
+          "sha256": "1401a2c04086f3ffc98cdda016b68b3b92cd55dffcf5252e01641c960f071374"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_SELECTION_COUNT_RESULTS.csv",
+          "sha256": "286a675c5a82e1811cf5537a8b8205063f74e0d8eaef59c9ed7a3880ec6534d1"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_SHORT_VERSUS_SLOW_RESULTS.csv",
+          "sha256": "b86bebf85b1404fc68ed6aa9f09a94e4d26d1e68dea3f1faeb07067dd3323434"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2_YEAR_BY_YEAR_RESULTS.csv",
+          "sha256": "5881eea87a2d4f637cb6c9a535ff37e22994715c837375a537a79e2e9ef94b23"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2Q_VALIDATION_RESULTS.csv",
+          "sha256": "4abaa7d49648216562676f8fb13f3ec0f49ed328e9365e5af005f46a8d43d768"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2U_VALIDATION_RESULTS.csv",
+          "sha256": "2fa5140adc1ed07d9a38a276130afd35524d315851c605c57e4a9527b9708e12"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2W_CONCENTRATION_RESULTS.csv",
+          "sha256": "0115d2622ab429b682f43c0123d993b449b13d6f69e6ced2d684c97bf871db9d"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2W_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "6b8ee9770ac3d6fa4c87c919b780a2cf04044ac3023b4c11219336d4432548bd"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2W_COST_AND_TURNOVER_RESULTS.csv",
+          "sha256": "e192a9b1bc171d339ce024a57905e204fdc79ae5670dcc6e141c26ee256bdbef"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2W_RECENT_FIVE_YEAR_RESULTS.csv",
+          "sha256": "d8ddcfc701b7b4805b2f9710f1e254b171070867e1010fda008bd201d0470a16"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A3R2W_WEIGHTING_RESULTS.csv",
+          "sha256": "50900b9de0ffd547e26090694cf5871cbdcdfb975a9ff5617096cc3dbac1af8e"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "0152eb7310a52e86ffc961b25a71459fbdef0044933fc9d1c02e050b454e1187"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_COST_STRESS_RESULTS.csv",
+          "sha256": "38d0fc84924f2b2b5e5e80aa340dc1331024dd5eaf1e2408144efe5e97cca167"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_EXECUTION_MODEL_RESULTS.csv",
+          "sha256": "30c4b534ec3c190b599cc470edfcbeaee1665b7237330c7c33e711d202b63f82"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_IMPLEMENTATION_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "4a58c6f58292789c22812dbd572477b8fc2c42b358ded6cfa0b98c2420392d7d"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_RETURN_CONTRIBUTION_BY_EPISODE.csv",
+          "sha256": "ea2103665ccf4c2fe62dffb0ab71f0c4547ce74a2904300613e1f18bfc81d9e9"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_RETURN_CONTRIBUTION_BY_FAMILY.csv",
+          "sha256": "63f98bedda764bfc4ec76aa9ceb12bc5bee728b118d59410abc03a2938f0d2ea"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_RETURN_CONTRIBUTION_BY_YEAR.csv",
+          "sha256": "98c5968cf70978b34876dceecc49a4b3716b6bcbe7633016a0bc1775b4d692bd"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_ROLLING_12M_RESULTS.csv",
+          "sha256": "ffe1b55b732b9ff703615c082970ade3fa3e51e89e7b019b08e5930776519e83"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_ROLLING_24M_RESULTS.csv",
+          "sha256": "b312a946d6eaad27a367a41f2e596a2467c04c98fc00f26192f5938e7ae2c37b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4_YEAR_BY_YEAR_RESULTS.csv",
+          "sha256": "34441ea37536c25ad107a4d23e4dc565161d41ba8f274017fa5e60bdccdc27b3"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_ABLATION_RESULTS.csv",
+          "sha256": "ee53c6d24e08246fcfad46dff69d55d365827f507196ae0bf67bb01b0ec381c2"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_COMBINED_LIFECYCLE_RESULTS.csv",
+          "sha256": "ee53c6d24e08246fcfad46dff69d55d365827f507196ae0bf67bb01b0ec381c2"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "c5f11f6fb024928f94bfb54fff806f15633c1015a377381fdfb9a1bc4c5078fd"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_EQUITY_CURVE_SMOOTHNESS.csv",
+          "sha256": "3df52330e4bda6c30b21dde1c43af0764836786a9de23c3334b10babc5f775ab"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_EQUITY_CURVES.parquet",
+          "sha256": "cc0cee2813ba8a3f13c839f8dc0acd5886c78a5f1be1e3270eea42849437acb5"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_EXIT_MODULE_RESULTS.csv",
+          "sha256": "6ab84f0c9923c45a95a009233e29e022f4c0d2228f54ee09097f2b1eb597e194"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_QUERY_VALIDATION_RESULTS.csv",
+          "sha256": "d68a9b662b0eeff0bd17faaa0b5ffb74c18d62aa212479d61229cdb9cb5ab12f"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_REGIME_SCALING_RESULTS.csv",
+          "sha256": "db483f46574f8325e023d2862f25479c11228b49967f4a09858df91df15d2b2b"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_ROLLING_RESULTS.csv",
+          "sha256": "64a61802b123c3fbcd0d66fe1887785bc2a91b87241cc15aa371cbc677bbb074"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_SCALE_IN_RESULTS.csv",
+          "sha256": "50e20aeda2f9dd960a0b47ea19768b22656e784ce97ad8cfc9ea323a4c515a5e"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_SEQUENTIAL_GATE_RESULTS.json",
+          "sha256": "9dbae71db7083c768f7e55db1f90cd8bb3e6fc2c86ab3a760a577a96807d0474"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4B_YEAR_BY_YEAR_RESULTS.csv",
+          "sha256": "b1f898261898b31cc02ea4f1e6534b835bc2373d499080c2f7c918a05f3835f0"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_ABLATION_RESULTS.csv",
+          "sha256": "ea879376310d7828dbe2bb131fb7ed3426ef831be6ed700a5e5de006e14ef79f"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_CORE_SATELLITE_EQUITY_CURVES.parquet",
+          "sha256": "c752a5487b4e565eee492cfff6dcca47ce923992ae7e7878bdcf48b9eaed1f0e"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_CORE_SATELLITE_RESULTS.csv",
+          "sha256": "3816e5a16a60553d5bd886c4611883b1c370474f945354791c02cf49162d8d72"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_CORRECTNESS_TEST_RESULTS.csv",
+          "sha256": "9f25e668a45de074d8fe6781facc8e7292a7dd601959c1b9bfb8ad8a0c9157e7"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_EARLY_PARTICIPATION_RESULTS.csv",
+          "sha256": "90d58ab9b823158cd2e82e0c0687b957f2df2082740f9e8b06a3a93f211d2061"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_FAST_CROSSOVER_RESULTS.csv",
+          "sha256": "5e8043a4fb77f9ecc9030f846e2e5a7643b8bad5b839eb4b0e940ec6bc18eae8"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_FAST_PERSISTENCE_RESULTS.csv",
+          "sha256": "4ecc05d84eb32fcd9fa90f314eaabf57f358267f21d4b7292ddb3a1abae75aff"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_ROLLING_RESULTS.csv",
+          "sha256": "c26575074f5f2dd4a57a5013623a7b09d767d01238f1edd7ab966df25c9a59a9"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_TREND_EXIT_RESULTS.csv",
+          "sha256": "5c72a1298a6fa287ab49ee3396dd67c128f018dd3774c1abb41c3891362e90d0"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_VOLATILITY_TARGET_RESULTS.csv",
+          "sha256": "5f5e99e0212d759a186454fc85ab552169b20c0264b802d0e7d536f1008a66e9"
+        },
+        {
+          "path": "research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/UKACTIVE_A4C_YEAR_BY_YEAR_RESULTS.csv",
+          "sha256": "89f2ef392e277eeb5409b9a2478f25787c1193b6d7f31c04b4f7478401827b2f"
+        }
+      ]
+    }
+  },
+  "quality_controls": [
+    {
+      "control_id": "II-V01",
+      "detail": "verified=25; query_signal_ready=25",
+      "requirement": "Exactly 25 signal-ready INDUSTRY + THEME families",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V02",
+      "detail": "25",
+      "requirement": "25/25 are CONFIRMED_BY_USER",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V03",
+      "detail": "0",
+      "requirement": "Zero TO_CHECK",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V04",
+      "detail": "0",
+      "requirement": "Zero unresolved preferred implementations",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V05",
+      "detail": "historical artifact digest unchanged; historical query masks current ii metadata",
+      "requirement": "Historical eligibility remains unchanged and current ii status is masked historically",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V06",
+      "detail": "protected_files=68; tracked_changes=['research/directed/EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001/code/query_ukactive_rotation.py']",
+      "requirement": "No research-return outputs changed",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V07",
+      "detail": "protected_files=13",
+      "requirement": "No frozen model/config changed",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V08",
+      "detail": "protected_files=3",
+      "requirement": "No economic-family mappings changed",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V09",
+      "detail": "lineage and immutable current-alias digests unchanged",
+      "requirement": "No historical implementation lineage changed and immutable 2026-08-21 snapshot preserved",
+      "status": "PASS"
+    },
+    {
+      "control_id": "II-V10",
+      "detail": "confirmed=25/25",
+      "requirement": "Query-engine current metadata reproduces the 25 confirmations",
+      "status": "PASS"
+    }
+  ],
+  "signal_ready_industry_theme_families": 25,
+  "source_artifacts": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_II_MANUAL_CHECK_LIST.csv",
+      "sha256": "414e50479ad2b593d5c4eff1ebd2113576079d5b10059dbc63c74f063c8ac236"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CURRENT_II_IMPLEMENTATION.csv",
+      "sha256": "1a8f3673fb1ae466fde158a87ed6e7154552f02ddfce8f796ccf3a9b3749c660"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT.csv",
+      "sha256": "fafbdf445b1c9affd289db9b2acbb905260789df1755b4d5ecc28cccd81150a7"
+    }
+  ],
+  "to_check": 0,
+  "unresolved": 0,
+  "update_id": "UKACTIVE-CURRENT-II-VERIFICATION-20260823-001",
+  "verification_method": "USER_ACCOUNT_MANUAL_CHECK"
+}

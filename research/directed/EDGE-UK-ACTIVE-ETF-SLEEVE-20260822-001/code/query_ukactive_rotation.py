@@ -43,6 +43,7 @@ INTELLIGENCE = {
     "INDUSTRY_PLUS_THEME": "TRADE_RESEARCH_CANDIDATE",
 }
 DEFAULT_SORT = "short_1_2_3_composite"
+CURRENT_II_VERIFICATION = PROGRAMME_ROOT / "UKACTIVE_CURRENT_II_IMPLEMENTATION_VERIFIED_20260823.csv"
 
 
 def _read_parquet(name: str) -> pd.DataFrame:
@@ -185,9 +186,40 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
         )
 
     current_view = resolved == current_cutoff
-    if not current_view:
+    if current_view:
+        selected["II_VERIFICATION_METHOD"] = np.where(
+            selected["II_CURRENT_TRADABLE"].eq("CONFIRMED_BY_USER"),
+            "USER_ACCOUNT_MANUAL_CHECK",
+            "NOT_CHECKED",
+        )
+        if CURRENT_II_VERIFICATION.exists():
+            verification = pd.read_csv(CURRENT_II_VERIFICATION, dtype=str)
+            required = {
+                "economic_exposure_family_id",
+                "ii_current_tradable",
+                "ii_observation_date",
+                "ii_verification_method",
+            }
+            if not required.issubset(verification.columns):
+                missing = sorted(required.difference(verification.columns))
+                raise ValueError(f"Current ii verification is missing required columns: {missing}")
+            if verification["economic_exposure_family_id"].duplicated().any():
+                raise ValueError("Current ii verification contains duplicate economic families")
+            verified = verification.set_index("economic_exposure_family_id")
+            in_scope = selected["economic_exposure_family_id"].isin(verified.index)
+            selected.loc[in_scope, "II_CURRENT_TRADABLE"] = selected.loc[
+                in_scope, "economic_exposure_family_id"
+            ].map(verified["ii_current_tradable"])
+            selected.loc[in_scope, "II_OBSERVATION_DATE"] = selected.loc[
+                in_scope, "economic_exposure_family_id"
+            ].map(verified["ii_observation_date"])
+            selected.loc[in_scope, "II_VERIFICATION_METHOD"] = selected.loc[
+                in_scope, "economic_exposure_family_id"
+            ].map(verified["ii_verification_method"])
+    else:
         selected["II_CURRENT_TRADABLE"] = "NOT_APPLICABLE_HISTORICAL_ASOF"
         selected["II_OBSERVATION_DATE"] = pd.NA
+        selected["II_VERIFICATION_METHOD"] = "NOT_APPLICABLE_HISTORICAL_ASOF"
         selected["ticker"] = "HISTORICAL_CURRENT_LINE_NOT_BACK_PROJECTED"
         selected["isin"] = "HISTORICAL_CURRENT_LINE_NOT_BACK_PROJECTED"
         selected["A4C_PROMOTED_ARCHITECTURE"] = "NOT_APPLICABLE_HISTORICAL_ASOF_POSTHOC_A4C"
@@ -253,7 +285,7 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
     selected = selected.rename(columns=rename)
     output_columns = [
         "as_of_date", "requested_asof", "economic_exposure_family_id", "economic_exposure_family", "ticker", "isin",
-        "II_CURRENT_TRADABLE", "II_OBSERVATION_DATE", "rotation_pool", "primary_competition_pool_id",
+        "II_CURRENT_TRADABLE", "II_OBSERVATION_DATE", "II_VERIFICATION_METHOD", "rotation_pool", "primary_competition_pool_id",
         "parent_exposure_family_id", "global_benchmark_family_id", "parent_benchmark_family_id", "a0_primary_geography",
         "sector", "industry", "economic_theme", "deepvue_theme", "RS_21", "RS_42", "RS_63", "RS_126", "RS_252",
         "rank_1m", "rank_2m", "rank_3m", "rank_6m", "rank_12m", "short_1_2_3_composite",
@@ -318,7 +350,7 @@ def main() -> int:
     elif args.format == "json":
         print(json.dumps({"results": _json_ready(frame), "regime": regime if args.show_regime else None}, indent=2, default=str))
     else:
-        display = [column for column in ["as_of_date", "economic_exposure_family_id", "ticker", "rotation_pool", "RS_21", "RS_42", "RS_63", "short_1_2_3_composite", "3_6_12_composite", "pairwise_rank", "relative_strength_state", "one_month_rank_change"] if column in frame]
+        display = [column for column in ["as_of_date", "economic_exposure_family_id", "ticker", "II_CURRENT_TRADABLE", "II_VERIFICATION_METHOD", "rotation_pool", "RS_21", "RS_42", "RS_63", "short_1_2_3_composite", "3_6_12_composite", "pairwise_rank", "relative_strength_state", "one_month_rank_change"] if column in frame]
         print(frame[display].to_string(index=False))
         if args.show_regime:
             print("\nREGIME")
