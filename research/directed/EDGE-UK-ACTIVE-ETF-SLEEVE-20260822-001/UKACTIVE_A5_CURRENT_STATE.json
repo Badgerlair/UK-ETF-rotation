@@ -1,0 +1,45 @@
+{
+  "authoritative_history": "APPEND_ONLY_LEDGERS",
+  "cash_gbp": {
+    "A5A_ACTIVE_BASELINE_V1": 250000.0,
+    "A5B_CORE_ACTIVE_50_V1": 250000.0
+  },
+  "completed_on_time_decision_count": 0,
+  "completed_shadow_execution_count": 0,
+  "cumulative_costs_gbp": {
+    "A5A_ACTIVE_BASELINE_V1": 0.0,
+    "A5B_CORE_ACTIVE_50_V1": 0.0
+  },
+  "current_positions": {
+    "A5A_ACTIVE_BASELINE_V1": [],
+    "A5B_CORE_ACTIVE_50_V1": []
+  },
+  "drawdown": {
+    "A5A_ACTIVE_BASELINE_V1": 0.0,
+    "A5B_CORE_ACTIVE_50_V1": 0.0
+  },
+  "high_water_mark_gbp": {
+    "A5A_ACTIVE_BASELINE_V1": 250000.0,
+    "A5B_CORE_ACTIVE_50_V1": 250000.0
+  },
+  "initial_notional_gbp": {
+    "A5A_ACTIVE_BASELINE_V1": 250000.0,
+    "A5B_CORE_ACTIVE_50_V1": 250000.0
+  },
+  "last_execution": null,
+  "last_official_signal": null,
+  "latest_telemetry_date": null,
+  "model_status": {
+    "A5A_ACTIVE_BASELINE_V1": "PROSPECTIVE_NOT_STARTED",
+    "A5B_CORE_ACTIVE_50_V1": "PROSPECTIVE_NOT_STARTED"
+  },
+  "nav_gbp": {
+    "A5A_ACTIVE_BASELINE_V1": 250000.0,
+    "A5B_CORE_ACTIVE_50_V1": 250000.0
+  },
+  "pending_decision": null,
+  "pending_execution": null,
+  "prospective_integrity_status": "E3_CONFIRMATION_NOT_YET_AVAILABLE",
+  "specification_id": "UKACTIVE-A5-SHADOW-COMPARISON-v1",
+  "warning": "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
+}

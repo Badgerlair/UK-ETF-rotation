@@ -1,0 +1,1 @@
+cost_event_id,execution_event_id,leg_id,model_id,date,notional_traded_gbp,friction_bps,friction_cost_gbp,fixed_fee_gbp,total_cost_gbp,source_git_commit,warning

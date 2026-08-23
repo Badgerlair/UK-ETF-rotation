@@ -1,0 +1,1 @@
+warning_event_id,date,warning_type,severity,related_event_id,message,evidence,recorded_at_utc,source_git_commit,resolved_status

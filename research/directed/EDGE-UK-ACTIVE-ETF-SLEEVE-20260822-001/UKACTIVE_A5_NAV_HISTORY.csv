@@ -1,0 +1,1 @@
+nav_event_id,model_id,date,nav_gbp,cumulative_net_return,daily_return,position_value_gbp,cash_value_gbp,cash_weight,holdings,high_water_mark_gbp,drawdown,cumulative_costs_gbp,traded_notional_turnover,trade_legs,source_input_hash,source_git_commit,warning

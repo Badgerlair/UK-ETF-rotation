@@ -1,0 +1,48 @@
+{
+  "a5_started": false,
+  "active_implementation_coverage": "25_OF_25_CONFIRMED_BY_USER",
+  "core_ii_status": "TO_CHECK",
+  "core_preferred_isin": "IE00B4L5Y983",
+  "core_preferred_ticker": "SWDA",
+  "correctness_tests_passed": 25,
+  "correctness_tests_total": 25,
+  "decision": "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS",
+  "dry_run": {
+    "a5a_synthetic_initial_post_cost_nav_gbp": 249496.01,
+    "a5b_synthetic_active_notional_gbp": 124746.01,
+    "a5b_synthetic_core_notional_gbp": 124746.01,
+    "a5b_synthetic_initial_post_cost_nav_gbp": 249492.02,
+    "as_of_date": "2026-08-21",
+    "dry_run_status": "DRY_RUN_NOT_PROSPECTIVE",
+    "eligible_family_count": 25,
+    "maximum_ranking_difference": 1.1102230246251565e-16,
+    "prospective_decision_rows": 0,
+    "prospective_execution_rows": 0,
+    "prospective_nav_rows": 0,
+    "provisional_fast_leader": "GLOBAL_GOLD_MINERS",
+    "provisional_slow_leader": "GLOBAL_GENOMICS",
+    "ranking_differences": {
+      "MH_LEVEL_3_6_12_REFERENCE": 1.1102230246251565e-16,
+      "RANK_RS_126": 0.0,
+      "RANK_RS_252": 0.0,
+      "RANK_RS_63": 0.0,
+      "RS_126": 0.0,
+      "RS_252": 0.0,
+      "RS_63": 0.0
+    },
+    "warning": "Dry-run ranking and accounting diagnostics are not A5 evidence."
+  },
+  "earliest_official_signal_date": "2026-08-28",
+  "expected_first_execution_date": "2026-09-01",
+  "models": [
+    "A5A_ACTIVE_BASELINE_V1",
+    "A5B_CORE_ACTIVE_50_V1"
+  ],
+  "open_items": [
+    "MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"
+  ],
+  "orders_or_scheduler": "NONE",
+  "prospective_events_created": 0,
+  "stage_id": "UKACTIVE-A5S",
+  "warning": "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
+}
