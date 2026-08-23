@@ -177,7 +177,7 @@ def _augment_features(
         frame[f"FAST_CROSSOVER_{variant}"] = flag
         if frequency == "WEEKLY":
             run = flag.groupby(frame["economic_exposure_family_id"], sort=False).transform(
-                lambda values: values.groupby((~values).cumsum()).cumcount() + 1
+                lambda values: values.astype(int).groupby((~values).cumsum()).cumsum()
             )
             frame[f"FAST_CROSSOVER_PERSISTENCE_{variant}"] = run.where(flag, 0).astype(int)
         else:
@@ -676,4 +676,3 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
-
