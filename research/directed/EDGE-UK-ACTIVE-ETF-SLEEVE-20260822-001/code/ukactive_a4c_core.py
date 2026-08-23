@@ -465,7 +465,8 @@ def build_exit_plan(
         before = dict(planner.current_target)
         execution = planner.submit(date, target, f"{exit_module}|{trigger}")
         if not a4b.weight_dict_equal(before, target):
-            actions.append({"module_id": module_id, "review_date": date, "family": incumbent, "action_type": trigger, "from_weights_json": json.dumps(before, sort_keys=True), "to_weights_json": json.dumps(target, sort_keys=True), "warning": WARNING})
+            action_type = trigger if trigger != "NONE" else ("MONTHLY_REENTRY_OR_SELECTION" if is_monthly else "TARGET_RESTORE")
+            actions.append({"module_id": module_id, "review_date": date, "family": incumbent, "action_type": action_type, "from_weights_json": json.dumps(before, sort_keys=True), "to_weights_json": json.dumps(target, sort_keys=True), "warning": WARNING})
         decisions.append({
             "module_id": module_id, "review_date": date, "monthly_incumbent": incumbent,
             "abs_below_ema21": below21, "abs_below_ema50": below50, "relative_below_ema42": rel_below42,
