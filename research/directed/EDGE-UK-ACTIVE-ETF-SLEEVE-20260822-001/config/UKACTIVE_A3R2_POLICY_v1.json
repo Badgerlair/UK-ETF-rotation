@@ -1,0 +1,182 @@
+{
+  "stage_id": "UKACTIVE-A3R2",
+  "run_id": "UKACTIVE-A3R2-20260823-001",
+  "policy_id": "UKACTIVE-A3R2-POLICY-v1.0.0",
+  "declared_at": "2026-08-23T07:44:50+01:00",
+  "pre_a3r2_commit": "c30de89d0ceee74ea024708e7c95270bae38d150",
+  "pre_a3r2_tag": "ukactive-a3r2-preflight-20260823",
+  "branch": "research/ukactive-a3r2",
+  "research_boundary": {
+    "portfolio_research_allowed": true,
+    "deployment_claim_allowed": false,
+    "historical_retail_account_broker_eligibility_resolved": false,
+    "a3r3_or_later_execution_allowed": false,
+    "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+  },
+  "authoritative_inputs": {
+    "corrected_total_return_panel": "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+    "corrected_signal_eligibility": "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+    "signal_endpoint_history": "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet",
+    "xlon_calendar": "UKACTIVE_A2R2_XLON_RESEARCH_CALENDAR.csv",
+    "a2r2_decision": "UKACTIVE_A2R2_DECISION.json",
+    "a2r2_manifest": "UKACTIVE_A2R2_MANIFEST.json",
+    "a3r1r1_decision": "UKACTIVE_A3R1R1_DECISION.json",
+    "a3r1r1_manifest": "UKACTIVE_A3R1R1_MANIFEST.json",
+    "rotation_roles": "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+    "parent_benchmarks": "UKACTIVE_A2R_A3R0_PARENT_BENCHMARK_MAP_POST_A2R.csv",
+    "overlap_clusters": "UKACTIVE_A2R_A3R0_OVERLAP_CLUSTERS_POST_A2R.csv",
+    "current_implementation_lines": "UKACTIVE_A2R_A3R0_CURRENT_IMPLEMENTATION_LINES_POST_A2R.csv",
+    "discovery_registry": "UKACTIVE_A0A1_DISCOVERY_REGISTRY.csv"
+  },
+  "calendar_and_timing": {
+    "calendar": "A2R2_DETERMINISTIC_XLON",
+    "maximum_prior_endpoint_tolerance_xlon_sessions": 3,
+    "continuity_gap_reset_xlon_sessions": 3,
+    "forward_fill_prices_or_returns": false,
+    "stale_observations_valid": false,
+    "signal_time": "AFTER_REVIEW_SESSION_CLOSE",
+    "execution_time": "FIRST_VALID_CLOSE_ON_OR_AFTER_NEXT_XLON_SESSION_WITHIN_3_XLON_SESSIONS",
+    "new_weights_first_return": "SESSION_AFTER_EXECUTION_CLOSE",
+    "same_close_execution": false,
+    "cancel_rebalance_if_execution_not_possible_within_sessions": 3
+  },
+  "evidence_windows": {
+    "primary_contemporary": "FINAL_FIVE_CALENDAR_YEARS_TO_CUTOFF",
+    "recent_confirmation": "FINAL_THREE_CALENDAR_YEARS_TO_CUTOFF",
+    "post_2020": "2020-01-01_TO_CUTOFF",
+    "full_history": "ALL_VALID_CORRECTED_HISTORY",
+    "pre_2020": "START_TO_2019-12-31",
+    "year_by_year": true,
+    "partial_final_year_separate": true,
+    "decision_priority": ["LATEST_5Y", "LATEST_3Y", "ROLLING_AND_YEARLY_LATEST_5Y", "FULL", "PRE_2020"]
+  },
+  "portfolio_research_pools": {
+    "primary": ["INDUSTRY"],
+    "co_primary": ["THEME"],
+    "secondary": ["INDUSTRY_PLUS_THEME"],
+    "market_intelligence": ["GEOGRAPHY", "COUNTRY", "SECTOR", "ALL_EQUITY_OPPORTUNITIES"]
+  },
+  "signals": {
+    "portfolio_screen": [
+      "MH_LEVEL_3_6_12_REFERENCE",
+      "MH_LEVEL_EQ",
+      "MH_LEVEL_60D_CENTERED",
+      "MH_LEVEL_RECENCY_TILT",
+      "PAIRWISE_MAJORITY_5H",
+      "SHORT_RS_1_2_3_EQ",
+      "SHORT_RS_1_2_3_PERSISTENT"
+    ],
+    "secondary_diagnostics": ["DISCRETE_RECENT_CONSISTENCY", "RRG_TRANSPARENT_LEVEL", "SHORT_MINUS_LONG_RS"],
+    "rejected_not_promotable": ["ACCEL_FAST_COMPOSITE"],
+    "short_rs_1_2_3_eq": "MEAN_WITHIN_POOL_PERCENTILE_RANK_RS21_RS42_RS63",
+    "short_rs_1_2_3_persistent": "SHORT_RS_1_2_3_EQ_IF_AT_LEAST_2_OF_LATEST_3_NON_OVERLAPPING_MONTHLY_RELATIVE_SEGMENTS_POSITIVE_ELSE_UNAVAILABLE",
+    "multi_horizon_weights": {
+      "MH_LEVEL_EQ": {"RS_21": 0.20, "RS_42": 0.20, "RS_63": 0.20, "RS_126": 0.20, "RS_252": 0.20},
+      "MH_LEVEL_RECENCY_TILT": {"RS_21": 0.30, "RS_42": 0.25, "RS_63": 0.20, "RS_126": 0.15, "RS_252": 0.10},
+      "MH_LEVEL_60D_CENTERED": {"RS_21": 0.10, "RS_42": 0.25, "RS_63": 0.35, "RS_126": 0.20, "RS_252": 0.10},
+      "MH_LEVEL_3_6_12_REFERENCE": {"RS_21": 0.0, "RS_42": 0.0, "RS_63": 0.3333333333333333, "RS_126": 0.3333333333333333, "RS_252": 0.3333333333333333}
+    },
+    "common_benchmark_rank_invariance_acknowledged": true
+  },
+  "selection": {
+    "counts": [1, 2, 3, 5],
+    "variable_threshold": {
+      "minimum_within_pool_percentile": 0.80,
+      "require_positive_global_rs63": true,
+      "maximum_holdings": 5,
+      "allow_zero_holdings": true
+    },
+    "screening_weight": "EQUAL",
+    "missing_signal": "EXCLUDE_NOT_ZERO",
+    "duplicate_identity": "economic_exposure_family_id"
+  },
+  "cadence": {
+    "WEEKLY": "FINAL_VALID_XLON_SESSION_OF_EACH_ISO_WEEK",
+    "FORTNIGHTLY": "WEEKLY_REVIEW_ROWS_WITH_FLOOR_DAYS_SINCE_1970-01-05_DIVIDED_BY_7_MODULO_2_EQUAL_0",
+    "MONTHLY": "FINAL_VALID_XLON_SESSION_OF_EACH_CALENDAR_MONTH"
+  },
+  "comparators": [
+    "GLOBAL_DEVELOPED_WORLD",
+    "EQUAL_WEIGHT_CONTEMPORANEOUS_POOL",
+    "UNSELECTED_EQUAL_WEIGHT_POOL",
+    "PARENT_EXPOSURE_WHERE_AVAILABLE",
+    "FIVE_YEAR_START_STATIC_UNIVERSE"
+  ],
+  "cost_model": {
+    "source_url": "https://www.ii.co.uk/our-charges",
+    "observation_date": "2026-08-23",
+    "uk_and_us_etf_online_trade_fee_core_plus_gbp": 3.99,
+    "uk_and_us_etf_online_trade_fee_premium_gbp": 2.99,
+    "base_plan_for_research": "CORE_OR_PLUS",
+    "fixed_fee_sleeve_sizes_gbp": [100000, 250000, 500000],
+    "one_way_friction_bps": [10, 20, 40],
+    "fx_rate_core": 0.0075,
+    "fx_rate_plus_first_50000": 0.0075,
+    "fx_rate_plus_over_50000": 0.0025,
+    "fx_rate_premium": 0.0025,
+    "preferred_gbp_line_avoids_fx": true,
+    "stamp_duty": "NOT_MODELLED_WITHOUT_PRODUCT_SPECIFIC_EVIDENCE",
+    "product_ter_ocf": "ALREADY_EMBEDDED_IN_IMPLEMENTATION_TOTAL_RETURN_HISTORY_NOT_DOUBLE_COUNTED",
+    "platform_monthly_fee": "ACCOUNT_LEVEL_NOT_INCREMENTALLY_ALLOCATED_TO_SLEEVE; REPORTED_SEPARATELY"
+  },
+  "regimes": {
+    "global_trend": "GLOBAL_DEVELOPED_WORLD_SIGNAL_WEALTH_INDEX_ABOVE_OR_BELOW_TRAILING_200_VALID_SESSION_SIMPLE_MOVING_AVERAGE",
+    "global_volatility": "TRAILING_63_VALID_SESSION_REALIZED_VOLATILITY_ANNUALISED; LOW_NORMAL_HIGH_BY_PRIOR_ONLY_EXPANDING_33_67_PERCENTILES_AFTER_252_OBSERVATIONS",
+    "dispersion": "CROSS_SECTIONAL_STANDARD_DEVIATION_OF_VALID_RS63; LOW_NORMAL_HIGH_BY_PRIOR_ONLY_EXPANDING_WEEKLY_33_67_PERCENTILES_AFTER_52_OBSERVATIONS",
+    "breadth": "POSITIVE_RS63_FRACTION; NARROW_BELOW_ONE_THIRD; MEDIUM_BELOW_TWO_THIRDS; BROAD_OTHERWISE",
+    "rotation_intensity": "MEDIAN_ABSOLUTE_WITHIN_POOL_RS63_PERCENTILE_RANK_CHANGE_OVER_21_XLON_SESSIONS; LOW_NORMAL_HIGH_BY_PRIOR_ONLY_EXPANDING_33_67_PERCENTILES_AFTER_52_OBSERVATIONS",
+    "us_technology_dominance": "DOMINANT_IF_AT_LEAST_2_OF_TOP5_ALL_EQUITY_ARE_US_TECHNOLOGY_OR_SEMICONDUCTOR_RELATED_AND_AT_LEAST_1_IS_TOP2",
+    "universe_breadth": "CONTEMPORANEOUS_ACTIVE_FAMILY_THEME_INDUSTRY_AND_RECENT_LAUNCH_COUNTS",
+    "maximum_regime_dimensions_per_interaction": 2,
+    "regimes_are_filters": false
+  },
+  "inference": {
+    "hac_kernel": "BARTLETT_NEWEY_WEST",
+    "hac_lag_weekly": 4,
+    "hac_lag_fortnightly": 2,
+    "hac_lag_monthly": 1,
+    "block_bootstrap_replications": 2000,
+    "block_bootstrap_block_observations": 13,
+    "confidence_level": 0.95,
+    "false_discovery_method": "BENJAMINI_HOCHBERG",
+    "false_discovery_q": 0.10,
+    "primary_family": "7_PORTFOLIO_SIGNALS_X_3_PORTFOLIO_POOLS_X_5_SELECTION_RULES_X_3_CADENCES_ON_LATEST_5Y_NET_20BPS_250K",
+    "minimum_review_observations": 24,
+    "random_seed": 20260823
+  },
+  "promotion_gate": {
+    "required_pass_count": 8,
+    "criteria_total": 12,
+    "correctness_mandatory": true,
+    "criteria": [
+      "positive_net_excess_vs_equal_weight_pool_latest_5y",
+      "positive_or_coherent_latest_3y_confirmation",
+      "positive_selected_vs_unselected_latest_5y",
+      "neighbouring_count_or_cadence_stability",
+      "not_dependent_on_one_family",
+      "survives_20bps_plus_fixed_250k_cost",
+      "not_entirely_universe_expansion_driven",
+      "annual_turnover_not_above_8x_without_exceptional_net_evidence",
+      "positive_in_at_least_3_complete_or_partial_calendar_years_or_majority_of_rolling_12m_windows",
+      "coherent_observable_regime_explanation_if_conditional",
+      "all_data_and_timing_tests_pass",
+      "mature_only_latest_5y_net_excess_not_materially_below_minus_2pct_annualised"
+    ]
+  },
+  "weighting": {
+    "run_only_after_signal_count_cadence_gate": true,
+    "methods": ["EQUAL", "RANK_DECAY", "SCORE_PROPORTIONAL_CAPPED", "INVERSE_VOLATILITY_CAPPED", "SIGNAL_X_INVERSE_VOLATILITY"],
+    "volatility_window_sessions": 63,
+    "maximum_position_weight_multiple_holdings": 0.50,
+    "single_holding_weight": 1.0,
+    "no_method_selection_by_cagr_alone": true
+  },
+  "universe_views": ["DYNAMIC_POINT_IN_TIME", "FIVE_YEAR_START_STATIC", "MATURE_ONLY", "MATURE_PLUS_DEVELOPING", "CURRENT_IMPLEMENTABLE_VIEW"],
+  "user_current_ii_observations": {
+    "observation_date": "2026-08-23",
+    "confirmed_tickers": ["CUKS", "TELE", "NDUS", "MTRL", "ITEC", "UTIL", "SEAL", "EBIG", "CSUK"],
+    "ebiz": "AVAILABLE_USD_LINE; PREFER_EBIG_GBP_LINE",
+    "fasa": "NOT_USER_PREFERRED; DO_NOT_INFER_II_CONFIRMATION",
+    "historical_back_projection": false
+  }
+}
