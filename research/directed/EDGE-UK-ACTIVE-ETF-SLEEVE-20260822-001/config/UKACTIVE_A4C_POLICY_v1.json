@@ -1,0 +1,191 @@
+{
+  "stage_id": "UKACTIVE-A4C",
+  "run_id": "UKACTIVE-A4C-20260823-001",
+  "evidence": {
+    "portfolio_results": "E2_DEVELOPMENTAL",
+    "mechanism_diagnostics": "E1_EXPLORATORY",
+    "independent_confirmation": false
+  },
+  "source_edge": {
+    "pool": "INDUSTRY_PLUS_THEME",
+    "slow_signal": "MH_LEVEL_3_6_12_REFERENCE",
+    "slow_components": ["RANK_RS_63", "RANK_RS_126", "RANK_RS_252"],
+    "slow_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "baseline_selection": "TOP_1",
+    "baseline_review": "MONTHLY_FINAL_VALID_XLON_SESSION",
+    "execution": "FIRST_COMMON_VALID_ENDPOINT_AFTER_REVIEW_WITHIN_3_XLON_SESSIONS",
+    "global_benchmark": "GLOBAL_DEVELOPED_WORLD",
+    "equal_pool_benchmark": "CONTEMPORANEOUS_INDUSTRY_PLUS_THEME_POOL"
+  },
+  "formation_features": {
+    "fast_components": ["RANK_RS_21", "RANK_RS_42", "RANK_RS_63"],
+    "fast_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "slow_components": ["RANK_RS_63", "RANK_RS_126", "RANK_RS_252"],
+    "fast_change_weeks": [1, 4],
+    "slow_change_weeks": [4],
+    "relative_slopes": [21, 42, 63],
+    "positive_recent_segments": ["REL_SEG_0_1M", "REL_SEG_1_2M", "REL_SEG_2_3M"],
+    "absolute_trend_index": "VALIDATED_GBP_TOTAL_RETURN_INDEX",
+    "absolute_ema_sessions": [21, 50, 200],
+    "relative_trend_index": "EXPOSURE_GBP_TOTAL_RETURN_INDEX_DIVIDED_BY_GLOBAL_DEVELOPED_WORLD_GBP_TOTAL_RETURN_INDEX",
+    "relative_ema_sessions": [21, 42, 50],
+    "ema_adjust": false,
+    "ema_minimum_periods_equal_span": true,
+    "volatility_sessions": 63,
+    "volatility_annualisation": 252,
+    "volatility_minimum_valid_returns": 63,
+    "volatility_floor_annualised": 0.05,
+    "atr_status": "NOT_AVAILABLE_NO_VALIDATED_HIGH_LOW_PANEL",
+    "volatility_expansion_proxy": "TRAILING_21_SESSION_REALIZED_VOL_DIVIDED_BY_PRIOR_TRAILING_126_SESSION_MEDIAN_OF_21_SESSION_REALIZED_VOL"
+  },
+  "fast_crossover": {
+    "PRIMARY": {
+      "fast_percentile_min": 0.90,
+      "fast_minus_slow_min": 0.15,
+      "fast_change_4w_min": 0.10,
+      "rs63_positive": true,
+      "relative_slope_42_positive": true
+    },
+    "LOOSER": {
+      "fast_percentile_min": 0.80,
+      "fast_minus_slow_min": 0.10,
+      "fast_change_4w_min": 0.05,
+      "rs63_positive": true,
+      "relative_slope_42_positive": true
+    },
+    "TIGHTER": {
+      "fast_percentile_min": 0.95,
+      "fast_minus_slow_min": 0.20,
+      "fast_change_4w_min": 0.15,
+      "rs63_positive": true,
+      "relative_slope_42_positive": true
+    },
+    "persistence_weeks": [1, 2, 3],
+    "candidate_tie_break": ["FAST_RS_DESC", "SLOW_RS_DESC", "economic_exposure_family_id_ASC"]
+  },
+  "early_architectures": {
+    "EARLY_A": {
+      "entry_persistence_weeks": 1,
+      "crossover_weight": 0.20,
+      "persistent_two_week_weight": 0.40,
+      "slow_top3_weight": 0.60,
+      "slow_rank1_weight": 1.00,
+      "failure_before_top3": "CROSSOVER_FALSE_RETURNS_TO_INCUMBENT_OR_CASH"
+    },
+    "EARLY_B": {
+      "entry_persistence_weeks": 2,
+      "entry_weight": 0.25,
+      "slow_top5_weight": 0.50,
+      "slow_top3_weight": 0.75,
+      "slow_rank1_weight": 1.00,
+      "failure_before_top3": "CROSSOVER_FALSE_RETURNS_TO_INCUMBENT_OR_CASH"
+    },
+    "EARLY_C": {
+      "entry_persistence_weeks": 1,
+      "entry_weight": 0.25,
+      "incumbent_weight": 0.75,
+      "two_consecutive_slow_rank_improvements_weight": 0.50,
+      "slow_top3_after_two_improvements_weight": 0.75,
+      "slow_rank1_weight": 1.00,
+      "maximum_risky_holdings": 2
+    }
+  },
+  "trend_exits": {
+    "CONTROL": "MONTHLY_SLOW_RANK_SWITCH",
+    "EXIT_A_50EMA": {
+      "exit_when": "VALIDATED_GBP_TOTAL_RETURN_INDEX_BELOW_EMA50_AT_WEEKLY_CLOSE",
+      "target_weight": 0.0,
+      "reentry": "NEXT_FROZEN_MONTHLY_SELECTION_EXECUTION"
+    },
+    "EXIT_B_21_WARNING_50_FAILURE": {
+      "below_ema21_weight": 0.75,
+      "below_ema50_weight": 0.0,
+      "recover_above_ema21_before_ema50_failure_weight": 1.0,
+      "after_ema50_failure_reentry": "NEXT_FROZEN_MONTHLY_SELECTION_EXECUTION"
+    },
+    "EXIT_C_ABSOLUTE_AND_RELATIVE": {
+      "exit_when": "ABSOLUTE_INDEX_BELOW_EMA50_AND_RELATIVE_INDEX_BELOW_EMA42",
+      "target_weight": 0.0,
+      "reentry": "NEXT_FROZEN_MONTHLY_SELECTION_EXECUTION"
+    },
+    "EXIT_D_RELATIVE_ONLY": {
+      "relative_slope_42_below_zero": true,
+      "fast_rs_below": 0.50,
+      "consecutive_weekly_reviews": 2,
+      "target_weight": 0.0,
+      "reentry": "NEXT_FROZEN_MONTHLY_SELECTION_EXECUTION"
+    }
+  },
+  "risk_budgeting": {
+    "volatility_targets": [0.10, 0.125, 0.15],
+    "weight_formula": "MIN_1_TARGET_VOL_DIVIDED_BY_MAX_PRIOR_63D_REALIZED_VOL_AND_5PCT_FLOOR",
+    "maximum_weight": 1.0,
+    "leverage": false,
+    "residual_asset": "ACTUAL_GBP_CASH"
+  },
+  "core_satellite": {
+    "core_family": "GLOBAL_DEVELOPED_WORLD",
+    "active_family": "FROZEN_A4_ACTIVE_SLEEVE",
+    "active_weights": [0.25, 0.50, 0.75, 1.0],
+    "rebalance": "MONTHLY_FINAL_VALID_XLON_SESSION_NEXT_ELIGIBLE_SESSION",
+    "costs_apply_to_actual_trade_legs": true,
+    "risk_sized_active_test": "ONLY_IF_VOLATILITY_TARGET_INDEPENDENTLY_QUALIFIES",
+    "risk_sized_active_maximum_strategic_weight": 0.50
+  },
+  "drawdown_forensics": {
+    "episode_thresholds": [-0.05, -0.10, -0.15],
+    "material_threshold": -0.05,
+    "primary_cause_precedence": [
+      "GAP_EVENT",
+      "MARKET_WIDE_SHOCK",
+      "RIGHT_TAIL_GIVEBACK",
+      "LATE_MONTHLY_EXIT",
+      "ABSOLUTE_TREND_FAILURE",
+      "LEADERSHIP_REVERSAL",
+      "VOLATILITY_EXPANSION",
+      "WRONG_LEADER_SELECTION",
+      "MULTIPLE_CAUSES"
+    ],
+    "market_wide_shock_global_drawdown": -0.05,
+    "right_tail_prior_mfe": 0.20,
+    "late_exit_minimum_warning_to_exit_sessions": 10,
+    "late_exit_minimum_post_warning_loss": -0.03,
+    "wrong_leader_maximum_prior_mfe": 0.03,
+    "wrong_leader_maximum_sessions_from_entry": 21,
+    "volatility_expansion_ratio": 1.5,
+    "gap_event_status_without_validated_open": "NOT_DETERMINABLE_FROM_CLOSE_ONLY_PANEL"
+  },
+  "costs": {
+    "canonical_one_way_friction_bps": 20.0,
+    "stress_one_way_friction_bps": [10.0, 20.0, 40.0],
+    "ii_fixed_fee_gbp_per_risky_trade_leg": 3.99,
+    "sleeve_sizes_gbp": [100000.0, 250000.0, 500000.0],
+    "canonical_sleeve_size_gbp": 250000.0,
+    "non_gbp_fx_rate": 0.0075
+  },
+  "windows": {
+    "LATEST_5Y_START": "2021-09-01",
+    "LATEST_3Y_START": "2023-08-21",
+    "POST_2020_START": "2020-01-02",
+    "PRE_2020_END": "2019-12-31",
+    "CUTOFF": "2026-08-21"
+  },
+  "promotion_gates": {
+    "active_hard_maximum_drawdown": -0.25,
+    "active_preferred_maximum_drawdown": -0.15,
+    "minimum_material_drawdown_improvement": 0.05,
+    "minimum_baseline_excess_retention": 0.70,
+    "minimum_top_three_contribution_retention": 0.70,
+    "early_requires_positive_net_value": true,
+    "exit_requires_positive_net_value": true,
+    "core_satellite_drawdown_reporting_thresholds": [-0.20, -0.15, -0.10]
+  },
+  "governance": {
+    "dense_search": false,
+    "new_universe_families": false,
+    "new_momentum_horizons": false,
+    "a4b_failed_modules_retested": false,
+    "start_a5": false,
+    "evidence_claim_ceiling": "E2_DEVELOPMENTAL"
+  }
+}
