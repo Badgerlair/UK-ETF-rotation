@@ -1,0 +1,156 @@
+{
+  "stage_id": "UKACTIVE-A4",
+  "run_id": "UKACTIVE-A4-20260823-001",
+  "policy_id": "UKACTIVE-A4-POLICY-v1.0.0",
+  "declared_at": "2026-08-23T09:30:00+01:00",
+  "evidence_level": "E2_DEVELOPMENTAL_ROBUSTNESS_NOT_E3_CONFIRMATION",
+  "branch": "research/ukactive-a4",
+  "preflight_commit": "6397c22e30d4fbe420ea3646348a3e4ac39c7e10",
+  "preflight_tag": "ukactive-a4-preflight-20260823",
+  "primary_candidate": {
+    "candidate_id": "A4_PRIMARY",
+    "pool_id": "INDUSTRY_PLUS_THEME",
+    "signal_id": "MH_LEVEL_3_6_12_REFERENCE",
+    "signal_horizons_sessions": [63, 126, 252],
+    "signal_horizon_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "selection_rule": "TOP_1",
+    "cadence": "MONTHLY",
+    "weighting": "EQUAL",
+    "benchmark_family_id": "GLOBAL_DEVELOPED_WORLD",
+    "execution": "FIRST_VALID_CLOSE_ON_OR_AFTER_NEXT_XLON_SESSION_WITHIN_3_XLON_SESSIONS",
+    "new_weights_first_return": "SESSION_AFTER_EXECUTION_CLOSE"
+  },
+  "neighbours": [
+    {
+      "candidate_id": "A4_NEIGHBOUR_1",
+      "pool_id": "INDUSTRY",
+      "signal_id": "MH_LEVEL_3_6_12_REFERENCE",
+      "selection_rule": "TOP_1",
+      "cadence": "MONTHLY",
+      "weighting": "EQUAL"
+    },
+    {
+      "candidate_id": "A4_NEIGHBOUR_2",
+      "pool_id": "INDUSTRY",
+      "signal_id": "PAIRWISE_MAJORITY_5H",
+      "selection_rule": "TOP_1",
+      "cadence": "MONTHLY",
+      "weighting": "EQUAL"
+    }
+  ],
+  "concentration_controls": [
+    {"selection_rule": "TOP_1", "weighting": "EQUAL"},
+    {"selection_rule": "TOP_2", "weighting": "EQUAL"},
+    {"selection_rule": "TOP_3", "weighting": "EQUAL"}
+  ],
+  "concentration_decision": {
+    "substantial_majority_of_top1_excess_fraction": 0.60,
+    "positive_excess_vs_equal_pool_required": true,
+    "positive_selected_vs_unselected_required": true,
+    "material_drawdown_improvement_percentage_points": 0.05,
+    "material_hhi_reduction": 0.20,
+    "no_selection_by_cagr_alone": true
+  },
+  "evidence_windows": {
+    "primary_five_year_start": "2021-08-23",
+    "data_cutoff": "2026-08-21",
+    "recent_three_year_start": "2023-08-21",
+    "post_2020_start": "2020-01-02",
+    "pre_2020_end": "2019-12-31",
+    "full_history": true
+  },
+  "forensics": {
+    "pre_entry_sessions": 63,
+    "post_exit_sessions": 63,
+    "final_pre_exit_deterioration_sessions": 21,
+    "entry_timing": {
+      "EARLY_max_positive_log_move_share": 0.3333333333333333,
+      "MID_TREND_max_positive_log_move_share": 0.6666666666666666,
+      "otherwise": "LATE"
+    },
+    "exit_timing": {
+      "EARLY_if_post_exit_return_above": 0.05,
+      "LATE_if_final_21_session_return_below": -0.05,
+      "otherwise": "APPROPRIATELY"
+    },
+    "capture_ratio": "POSITIVE_HELD_LOG_RETURN_DIVIDED_BY_SUM_POSITIVE_PRE_HELD_POST_LOG_RETURNS",
+    "right_tail_primary_horizon": "NEXT_MONTHLY_EXECUTION_ENDPOINT",
+    "right_tail_secondary_horizons_sessions": [21, 42, 63]
+  },
+  "contribution": {
+    "method": "DAILY_WEALTH_CHANGE_PNL_ATTRIBUTION",
+    "market_pnl_on_execution_session_attributed_to_pre_trade_holding": true,
+    "transaction_cost_separate": true,
+    "reconciliation_tolerance": 1e-10
+  },
+  "falsification": {
+    "random_selection_simulations": 10000,
+    "random_selection_seed": 20260823,
+    "rank_permutation_simulations": 10000,
+    "rank_permutation_seed": 20260824,
+    "same_monthly_dates": true,
+    "same_contemporaneous_membership": true,
+    "same_holding_count": true,
+    "same_execution_dates": true,
+    "same_cost_contract": true,
+    "invalid_path_policy": "PATH_INVALID_IF_SELECTED_FAMILY_CANNOT_BE_VALUED_AT_FROZEN_INTERVAL_ENDPOINT"
+  },
+  "cost_model": {
+    "one_way_friction_bps": [10, 20, 40],
+    "base_one_way_friction_bps": 20,
+    "fixed_fee_per_trade_leg_gbp": 3.99,
+    "sleeve_sizes_gbp": [100000, 250000, 500000],
+    "base_sleeve_size_gbp": 250000,
+    "non_gbp_fx_rate": 0.0075,
+    "historical_realised_spreads_available": false
+  },
+  "regimes": {
+    "source": "UKACTIVE_A3R2_REGIME_STATE_HISTORY.parquet",
+    "thresholds_changed": false,
+    "filters_authorised": false
+  },
+  "implementation_scope": {
+    "primary_selected_families": true,
+    "top2_top3_selected_families": true,
+    "materially_different_neighbour_selected_families": true,
+    "current_benchmark_references": true,
+    "all_105_families": false,
+    "historical_retail_states": [
+      "HISTORICALLY_VERIFIED_UK_RETAIL",
+      "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "HISTORICALLY_UNCERTAIN",
+      "KNOWN_NOT_ELIGIBLE"
+    ],
+    "historical_isa_states": [
+      "HISTORICALLY_VERIFIED_ISA_ELIGIBLE",
+      "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "HISTORICALLY_UNCERTAIN_ISA",
+      "KNOWN_NOT_ISA_ELIGIBLE"
+    ]
+  },
+  "current_ii": {
+    "observation_date": "2026-08-23",
+    "confirmed_tickers": ["CUKS", "TELE", "NDUS", "MTRL", "ITEC", "UTIL", "SEAL", "EBIG", "CSUK"],
+    "confirmed_alternate": "EBIZ_USD",
+    "preferred_line": "EBIG_GBP",
+    "historical_back_projection": false
+  },
+  "next_open": {
+    "run_only_if_validated_open_data_exists": true,
+    "fallback_or_fabrication_forbidden": true
+  },
+  "a5": {
+    "create_spec_only_if_a4_survives": true,
+    "start_after_spec_commit_and_tag": true,
+    "backfill_forbidden": true,
+    "automatic_execution": false,
+    "unattended_scheduler": false
+  },
+  "claim_boundary": {
+    "deployment_claim_allowed": false,
+    "e3_claim_allowed": false,
+    "broad_parameter_search_allowed": false,
+    "portfolio_filter_creation_allowed": false,
+    "short_horizon_rule_creation_allowed": false
+  }
+}
