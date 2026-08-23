@@ -120,7 +120,7 @@
     "final_provenance": "FOLLOWUP_COMMIT_CONTAINING_THIS_MANIFEST",
     "preflight": "c30de89d0ceee74ea024708e7c95270bae38d150",
     "preregistration": "3ed64a2240a1fc7c6f6b573ef27e436e13d53671",
-    "query_and_final_results": "PENDING_NEXT_COMMIT",
+      "query_and_final_results": "32e6388a02689fd932b348aa20695f93c6199d5e",
     "signal_count_cadence": "d41a7f6744c613484894d7dd4da5e1d66718fd21",
     "universe_refresh_provenance": "3275e83f10df9bbd0a2ad293099d768bcccced8d",
     "universe_refresh_result": "44911118125916ed66b48a8eea7bb03cadfe2153",
@@ -412,8 +412,8 @@
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2Q_MANIFEST.json",
-      "sha256": "8cc562153bec779c51260d3ccb80f9dba844fd92bb1ebfe4080941eef129a2fe",
-      "size_bytes": 5545
+      "sha256": "027db20ae671d0a4c989a879f793eb5bbf7788c60b95cc257cecfdf464a23029",
+      "size_bytes": 5561
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2Q_QUERY_GUIDE.md",

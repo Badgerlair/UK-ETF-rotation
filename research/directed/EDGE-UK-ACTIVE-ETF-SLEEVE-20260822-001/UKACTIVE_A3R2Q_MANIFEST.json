@@ -71,7 +71,7 @@
     "pyarrow": "24.0.0",
     "python": "3.12.10"
   },
-  "post_a3r2q_commit": "PENDING_AFTER_EXECUTION",
+  "post_a3r2q_commit": "32e6388a02689fd932b348aa20695f93c6199d5e",
   "run_id": "UKACTIVE-A3R2Q-20260823-001",
   "snapshot_rows": 82,
   "validation": [
