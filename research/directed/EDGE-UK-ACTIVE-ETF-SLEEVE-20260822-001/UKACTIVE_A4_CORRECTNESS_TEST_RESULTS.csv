@@ -1,0 +1,22 @@
+test_id,test,status,detail
+A4-FREEZE-POOL_ID,Frozen pool_id unchanged,PASS,expected=INDUSTRY_PLUS_THEME; actual=INDUSTRY_PLUS_THEME
+A4-FREEZE-SIGNAL_ID,Frozen signal_id unchanged,PASS,expected=MH_LEVEL_3_6_12_REFERENCE; actual=MH_LEVEL_3_6_12_REFERENCE
+A4-FREEZE-SELECTION_RULE,Frozen selection_rule unchanged,PASS,expected=TOP_1; actual=TOP_1
+A4-FREEZE-CADENCE,Frozen cadence unchanged,PASS,expected=MONTHLY; actual=MONTHLY
+A4-FREEZE-WEIGHTING,Frozen weighting unchanged,PASS,expected=EQUAL; actual=EQUAL
+A4-FREEZE-SIGNAL_HORIZONS_SESSIONS,Frozen signal_horizons_sessions unchanged,PASS,"expected=[63, 126, 252]; actual=[63, 126, 252]"
+A4-FREEZE-WEIGHTS,3/6/12 weights unchanged,PASS,"[0.3333333333333333, 0.3333333333333333, 0.3333333333333333]"
+A4-FREEZE-EXECUTION,Next-eligible-session execution retained,PASS,FIRST_VALID_CLOSE_ON_OR_AFTER_NEXT_XLON_SESSION_WITHIN_3_XLON_SESSIONS
+A4-FREEZE-BENCHMARK,Global benchmark unchanged,PASS,GLOBAL_DEVELOPED_WORLD
+A4-T01,No same-close execution,PASS,Every executable decision is after signal close
+A4-T02,Corrected XLON next-session tolerance retained,PASS,lags=[np.float64(1.0)]
+A4-T03,No stale/filled price path introduced,PASS,A4 consumes A2R2 endpoint wealth only
+A4-T04,Dynamic contemporaneous membership retained,PASS,Ranks built date by date
+A4-T05,Contribution decomposition reconciles exactly,PASS,difference=0
+A4-T06,TOP2/TOP3 derive from same frozen ranks,PASS,selection_targets used same score/source; only requested count differs
+A4-T07,Randomisation retains contemporaneous pool,PASS,Each draw samples its review-date eligible family list
+A4-T08,Permutation has no future-return input,PASS,Independent seeded within-date rank permutation
+A4-T09,A3R2 regime definitions remain unchanged,PASS,4f0c61830e59e3c6dc5c1968ba8f8da8880a66e696b5e89d21a7e90d7804a79b
+A4-T10,Short-horizon fields never change decisions,PASS,Diagnostics are post-selection columns only
+A4-T11,Current ii status cannot be historical evidence,PASS,Implementation stage writes separate current and historical tables
+A4-T12,A5 prospective start cannot predate freeze,PASS,FIRST_DECISION_AFTER_A5_SPEC_COMMIT_AND_TAG

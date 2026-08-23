@@ -1,0 +1,206 @@
+{
+  "a3r2_remove_top_three_family_set": [
+    "EUROPE_BANKS",
+    "GLOBAL_GOLD_MINERS",
+    "GLOBAL_SEMICONDUCTORS"
+  ],
+  "concentration_control_results": [
+    {
+      "average_hhi": 0.5007877276202723,
+      "candidate_id": "A4_TOP2",
+      "convincing_concentration_control": false,
+      "drawdown_improvement_percentage_points": 0.006379043035497078,
+      "fraction_of_top1_excess_retained": 0.6392411254403962,
+      "meets_frozen_numeric_concentration_criteria": true,
+      "net_excess_after_removing_strongest_three_families": -0.006723398830433158,
+      "right_tail_dependency_resolved": false
+    },
+    {
+      "average_hhi": 0.33401852671918036,
+      "candidate_id": "A4_TOP3",
+      "convincing_concentration_control": false,
+      "drawdown_improvement_percentage_points": 0.045605068793655446,
+      "fraction_of_top1_excess_retained": 0.5551948454240364,
+      "meets_frozen_numeric_concentration_criteria": false,
+      "net_excess_after_removing_strongest_three_families": -0.029712316685356788,
+      "right_tail_dependency_resolved": false
+    }
+  ],
+  "contribution_reconciliation_difference": 0.0,
+  "correctness_tests": [
+    {
+      "detail": "expected=INDUSTRY_PLUS_THEME; actual=INDUSTRY_PLUS_THEME",
+      "status": "PASS",
+      "test": "Frozen pool_id unchanged",
+      "test_id": "A4-FREEZE-POOL_ID"
+    },
+    {
+      "detail": "expected=MH_LEVEL_3_6_12_REFERENCE; actual=MH_LEVEL_3_6_12_REFERENCE",
+      "status": "PASS",
+      "test": "Frozen signal_id unchanged",
+      "test_id": "A4-FREEZE-SIGNAL_ID"
+    },
+    {
+      "detail": "expected=TOP_1; actual=TOP_1",
+      "status": "PASS",
+      "test": "Frozen selection_rule unchanged",
+      "test_id": "A4-FREEZE-SELECTION_RULE"
+    },
+    {
+      "detail": "expected=MONTHLY; actual=MONTHLY",
+      "status": "PASS",
+      "test": "Frozen cadence unchanged",
+      "test_id": "A4-FREEZE-CADENCE"
+    },
+    {
+      "detail": "expected=EQUAL; actual=EQUAL",
+      "status": "PASS",
+      "test": "Frozen weighting unchanged",
+      "test_id": "A4-FREEZE-WEIGHTING"
+    },
+    {
+      "detail": "expected=[63, 126, 252]; actual=[63, 126, 252]",
+      "status": "PASS",
+      "test": "Frozen signal_horizons_sessions unchanged",
+      "test_id": "A4-FREEZE-SIGNAL_HORIZONS_SESSIONS"
+    },
+    {
+      "detail": "[0.3333333333333333, 0.3333333333333333, 0.3333333333333333]",
+      "status": "PASS",
+      "test": "3/6/12 weights unchanged",
+      "test_id": "A4-FREEZE-WEIGHTS"
+    },
+    {
+      "detail": "FIRST_VALID_CLOSE_ON_OR_AFTER_NEXT_XLON_SESSION_WITHIN_3_XLON_SESSIONS",
+      "status": "PASS",
+      "test": "Next-eligible-session execution retained",
+      "test_id": "A4-FREEZE-EXECUTION"
+    },
+    {
+      "detail": "GLOBAL_DEVELOPED_WORLD",
+      "status": "PASS",
+      "test": "Global benchmark unchanged",
+      "test_id": "A4-FREEZE-BENCHMARK"
+    },
+    {
+      "detail": "Every executable decision is after signal close",
+      "status": "PASS",
+      "test": "No same-close execution",
+      "test_id": "A4-T01"
+    },
+    {
+      "detail": "lags=[np.float64(1.0)]",
+      "status": "PASS",
+      "test": "Corrected XLON next-session tolerance retained",
+      "test_id": "A4-T02"
+    },
+    {
+      "detail": "A4 consumes A2R2 endpoint wealth only",
+      "status": "PASS",
+      "test": "No stale/filled price path introduced",
+      "test_id": "A4-T03"
+    },
+    {
+      "detail": "Ranks built date by date",
+      "status": "PASS",
+      "test": "Dynamic contemporaneous membership retained",
+      "test_id": "A4-T04"
+    },
+    {
+      "detail": "difference=0",
+      "status": "PASS",
+      "test": "Contribution decomposition reconciles exactly",
+      "test_id": "A4-T05"
+    },
+    {
+      "detail": "selection_targets used same score/source; only requested count differs",
+      "status": "PASS",
+      "test": "TOP2/TOP3 derive from same frozen ranks",
+      "test_id": "A4-T06"
+    },
+    {
+      "detail": "Each draw samples its review-date eligible family list",
+      "status": "PASS",
+      "test": "Randomisation retains contemporaneous pool",
+      "test_id": "A4-T07"
+    },
+    {
+      "detail": "Independent seeded within-date rank permutation",
+      "status": "PASS",
+      "test": "Permutation has no future-return input",
+      "test_id": "A4-T08"
+    },
+    {
+      "detail": "4f0c61830e59e3c6dc5c1968ba8f8da8880a66e696b5e89d21a7e90d7804a79b",
+      "status": "PASS",
+      "test": "A3R2 regime definitions remain unchanged",
+      "test_id": "A4-T09"
+    },
+    {
+      "detail": "Diagnostics are post-selection columns only",
+      "status": "PASS",
+      "test": "Short-horizon fields never change decisions",
+      "test_id": "A4-T10"
+    },
+    {
+      "detail": "Implementation stage writes separate current and historical tables",
+      "status": "PASS",
+      "test": "Current ii status cannot be historical evidence",
+      "test_id": "A4-T11"
+    },
+    {
+      "detail": "FIRST_DECISION_AFTER_A5_SPEC_COMMIT_AND_TAG",
+      "status": "PASS",
+      "test": "A5 prospective start cannot predate freeze",
+      "test_id": "A4-T12"
+    }
+  ],
+  "created_at": "2026-08-23T08:41:35+00:00",
+  "data_cutoff": "2026-08-21",
+  "evidence_level": "E2_DEVELOPMENTAL_NOT_E3_CONFIRMATORY",
+  "frozen_primary_unchanged": true,
+  "latest_five_year_start": "2021-08-23",
+  "permutation_summary": {
+    "candidate_cagr": 0.24861357128387485,
+    "candidate_cagr_percentile": 0.9609987242573356,
+    "candidate_drawdown": -0.19564203845800432,
+    "candidate_drawdown_percentile_less_severe_is_higher": 0.9724804082376526,
+    "candidate_excess_vs_pool_cagr": 0.1387139284993668,
+    "candidate_excess_vs_pool_percentile": 0.9609987242573356,
+    "candidate_selected_vs_unselected_percentile": 0.9602697284490614,
+    "candidate_selected_vs_unselected_spread": 0.13903469301695526,
+    "invalid_random_paths": 4513,
+    "valid_random_paths": 5487
+  },
+  "placebo_summary": {
+    "candidate_cagr": 0.24861357128387485,
+    "candidate_cagr_percentile": 0.9606371292566825,
+    "candidate_drawdown": -0.19564203845800432,
+    "candidate_drawdown_percentile_less_severe_is_higher": 0.967960454046137,
+    "candidate_excess_vs_pool_cagr": 0.1387139284993668,
+    "candidate_excess_vs_pool_percentile": 0.9606371292566825,
+    "candidate_selected_vs_unselected_percentile": 0.9597217136580007,
+    "candidate_selected_vs_unselected_spread": 0.13903469301695526,
+    "invalid_random_paths": 4538,
+    "valid_random_paths": 5462
+  },
+  "right_tail_repeatability_classification": "FEW_LARGE_BUT_PLAUSIBLE_WINNERS",
+  "run_id": "UKACTIVE-A4-20260823-001",
+  "selected_vs_unselected_inference": {
+    "ci_high": 0.03517208355310444,
+    "ci_low": -0.0011690945176484348,
+    "mean": 0.017035897672450628,
+    "n": 59,
+    "p_value": 0.0519476698377581,
+    "replications": 5000,
+    "standard_error": 0.00876527349718196,
+    "t_stat": 1.9435671548557703
+  },
+  "stage": "UKACTIVE-A4",
+  "top_three_actual_contributors": [
+    "GLOBAL_SILVER_MINERS",
+    "EUROPE_BANKS",
+    "GLOBAL_SEMICONDUCTORS"
+  ],
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+}

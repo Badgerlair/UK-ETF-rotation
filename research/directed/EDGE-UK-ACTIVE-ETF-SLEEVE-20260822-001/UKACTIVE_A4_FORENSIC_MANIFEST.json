@@ -1,0 +1,270 @@
+{
+  "all_historical_results_evidence_level": "E2",
+  "created_at": "2026-08-23T08:41:35+00:00",
+  "executed_from_commit": "f8c8b5e5c0e93396b83216b6e8bef11c94fd47a6",
+  "git_branch": "research/ukactive-a4",
+  "inputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_FEATURE_PANEL.parquet",
+      "sha256": "9b700ce0803989c382d322f97ed0e0ea503d2e003cef54d53c942fe24e87e615",
+      "size_bytes": 30779957
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_REGIME_STATE_HISTORY.parquet",
+      "sha256": "4f0c61830e59e3c6dc5c1968ba8f8da8880a66e696b5e89d21a7e90d7804a79b",
+      "size_bytes": 189545
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_CURRENT_UNIVERSE_SNAPSHOT.csv",
+      "sha256": "8f1e732272e502868133b05905467c528b5a0dd808b8cf642bc9721bb292a53a",
+      "size_bytes": 91303
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+      "sha256": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+      "size_bytes": 39179317
+    }
+  ],
+  "outputs": [
+    {
+      "columns": 59,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_MONTHLY_DECISION_LEDGER.csv",
+      "rows": 61,
+      "sha256": "4decf8614701a90779734665c16c73b2a778e8b61ba11e71a399d951fb0891a0",
+      "size_bytes": 73736
+    },
+    {
+      "columns": 18,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_MONTHLY_TOP5_RANKS.csv",
+      "rows": 305,
+      "sha256": "fe1d810b1568405c029bca354a394193cd73e31110159aa96d04a138f7ce5591",
+      "size_bytes": 98520
+    },
+    {
+      "columns": 30,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_HOLDING_EPISODES.csv",
+      "rows": 21,
+      "sha256": "5d181837953592847c137e1eefd8d308e296bc4ad53b13bae38940d0dcb0dd48",
+      "size_bytes": 11880
+    },
+    {
+      "columns": 12,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RETURN_CONTRIBUTION_BY_FAMILY.csv",
+      "rows": 10,
+      "sha256": "63f98bedda764bfc4ec76aa9ceb12bc5bee728b118d59410abc03a2938f0d2ea",
+      "size_bytes": 2905
+    },
+    {
+      "columns": 35,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RETURN_CONTRIBUTION_BY_EPISODE.csv",
+      "rows": 21,
+      "sha256": "ea2103665ccf4c2fe62dffb0ab71f0c4547ce74a2904300613e1f18bfc81d9e9",
+      "size_bytes": 13755
+    },
+    {
+      "columns": 9,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RETURN_CONTRIBUTION_BY_YEAR.csv",
+      "rows": 6,
+      "sha256": "98c5968cf70978b34876dceecc49a4b3716b6bcbe7633016a0bc1775b4d692bd",
+      "size_bytes": 1437
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_TOP3_WINNER_FORENSICS.md",
+      "sha256": "65d5e0fc2d14a6438273785d187090c0b4ec2d0138a10de21690a769a257553d",
+      "size_bytes": 8012
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_MEDIAN_SELECTION_FORENSICS.md",
+      "sha256": "b819a935718fec6fd82d00644d6ef7f1168feec5720d99f28bd684598fbd58d0",
+      "size_bytes": 2441
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_LOSER_SELECTION_FORENSICS.md",
+      "sha256": "e7549d2612d4b52fb0bc0f63bafa5ff7f8838ff06bec60bd74dd776e4a784663",
+      "size_bytes": 2476
+    },
+    {
+      "columns": 30,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_TREND_CAPTURE_METRICS.csv",
+      "rows": 21,
+      "sha256": "5d181837953592847c137e1eefd8d308e296bc4ad53b13bae38940d0dcb0dd48",
+      "size_bytes": 11880
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RIGHT_TAIL_REPEATABILITY.md",
+      "sha256": "8781f1b178f6bec047c26dc5284378e88f07f1f1d437dc4ef77240927860977d",
+      "size_bytes": 676
+    },
+    {
+      "columns": 28,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RANK1_FUTURE_TAIL_PROBABILITY.csv",
+      "rows": 60,
+      "sha256": "489af84855d8f975332b4512fd0a7ea704ce78ccfddf55cff7b5e64eeb3d8fe3",
+      "size_bytes": 16539
+    },
+    {
+      "columns": 16,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RETURN_SKEW_ANALYSIS.csv",
+      "rows": 2,
+      "sha256": "1792f687fad3fef2afa4beb15b2254d6068cb6b784ba6a04b5a2fa7385f0626f",
+      "size_bytes": 1068
+    },
+    {
+      "columns": 132,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_TOP1_TOP2_TOP3_COMPARISON.csv",
+      "rows": 5,
+      "sha256": "a84c63316a696dd6372be2fa258512c75e005d50b6871eadc2be8fba240d4ae9",
+      "size_bytes": 13569
+    },
+    {
+      "columns": 16,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CONCENTRATION_AND_DRAWDOWN.csv",
+      "rows": 3,
+      "sha256": "e083c8ecc445b2b8659555e8c8466d77991e4d3379887185dc7b0e71d0fdbfaa",
+      "size_bytes": 1182
+    },
+    {
+      "columns": 9,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RIGHT_TAIL_DEPENDENCY.csv",
+      "rows": 8,
+      "sha256": "650e3abdaf3c34e4af3f0f27335786bc8425a74085d837b9ed712574a7d296e7",
+      "size_bytes": 2427
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CONCENTRATION_DECISION.md",
+      "sha256": "94b6998dbd0e7182ee493b76c6841069aa8dbb5ebd868cd0d62e1c9dc15f6a4b",
+      "size_bytes": 579
+    },
+    {
+      "columns": 13,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_REGIME_FORENSICS.csv",
+      "rows": 16,
+      "sha256": "469ec529933c545cd5c4833c6c6daa2c5b706efb9816878cda0b2e568b06f957",
+      "size_bytes": 4254
+    },
+    {
+      "columns": 12,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_REGIME_RIGHT_TAIL_INTERACTION.csv",
+      "rows": 15,
+      "sha256": "ae3004df5567d5f051f4b9b5b7afe97a3a7f81522b382acd6876931f37c08bbd",
+      "size_bytes": 3145
+    },
+    {
+      "columns": 133,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_YEAR_BY_YEAR_RESULTS.csv",
+      "rows": 6,
+      "sha256": "34441ea37536c25ad107a4d23e4dc565161d41ba8f274017fa5e60bdccdc27b3",
+      "size_bytes": 14936
+    },
+    {
+      "columns": 9,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_ROLLING_12M_RESULTS.csv",
+      "rows": 48,
+      "sha256": "ffe1b55b732b9ff703615c082970ade3fa3e51e89e7b019b08e5930776519e83",
+      "size_bytes": 8894
+    },
+    {
+      "columns": 9,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_ROLLING_24M_RESULTS.csv",
+      "rows": 36,
+      "sha256": "b312a946d6eaad27a367a41f2e596a2467c04c98fc00f26192f5938e7ae2c37b",
+      "size_bytes": 6651
+    },
+    {
+      "columns": 8,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_LEAVE_ONE_YEAR_OUT.csv",
+      "rows": 6,
+      "sha256": "393d7220f458c5e15f7e208fb8371beeca458d5b07e03607ee66d08e6f1209e7",
+      "size_bytes": 1523
+    },
+    {
+      "columns": 132,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_FULL_HISTORY_CONTEXT.csv",
+      "rows": 5,
+      "sha256": "1b8c14f5d6ba76620dd5559bcb1b152ded63326686e4beefe2b0d48c7743608e",
+      "size_bytes": 13562
+    },
+    {
+      "columns": 14,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_SHORT_HORIZON_TRANSITION_DIAGNOSTICS.csv",
+      "rows": 61,
+      "sha256": "6269d21138d205930185b66f38c3ce198f92f26e64496a0322659ff26ba05e4b",
+      "size_bytes": 16637
+    },
+    {
+      "columns": 14,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_LEADING_WEAKENING_FORENSICS.csv",
+      "rows": 61,
+      "sha256": "01f8e4f49341728256e222afd586e720dfa596be51f792420152a394c986d29c",
+      "size_bytes": 15578
+    },
+    {
+      "columns": 11,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RANDOM_SELECTION_PLACEBO.csv",
+      "rows": 10000,
+      "sha256": "30fa8867a2e3d244c051d0a0b8334d1044355e2c3f0193c38833c57db7770f74",
+      "size_bytes": 1946626
+    },
+    {
+      "columns": 11,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_RANK_PERMUTATION_TEST.csv",
+      "rows": 10000,
+      "sha256": "e14156953ac247b6973610850c5bd6530b1cf1a08ee4426251010c1ad9d6ff42",
+      "size_bytes": 1809263
+    },
+    {
+      "columns": 11,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_PLACEBO_ENDPOINT_VALIDITY_AUDIT.csv",
+      "rows": 60,
+      "sha256": "31a1cf9581684e425aed35c127de4f43b9162b683008be1b54bd07e1e22217bf",
+      "size_bytes": 8953
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_FALSIFICATION_REPORT.md",
+      "sha256": "a8312335e8bb6914c25e0c9a252c13e085108bb027731cf68cd4504e2aefe52b",
+      "size_bytes": 1135
+    },
+    {
+      "columns": 7,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CROSS_SECTIONAL_RANK_BUCKET_FUTURE_RETURNS.csv",
+      "rows": 236,
+      "sha256": "16cae888ef2a3323e26f501015f5124a9f72d276df9c4dd73042f50c231f04bd",
+      "size_bytes": 18847
+    },
+    {
+      "columns": 4,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CORRECTNESS_TEST_RESULTS.csv",
+      "rows": 21,
+      "sha256": "9d0f7c8d9f87ca6c7cb4359ae83f16b79d51085a7a14e2fa72ae153893a835a3",
+      "size_bytes": 2142
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_FORENSIC_INTERIM_DECISION.json",
+      "sha256": "400d831d9d96a7268ca64ba19157fb652c86b599a326532be20f6ffd4497176b",
+      "size_bytes": 7320
+    }
+  ],
+  "package_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10"
+  },
+  "policy": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A4_POLICY_v1.json",
+    "sha256": "8a3138c3cf0d2b2b882a05418cdc2cd4d1213a83d8d53d776a442d5c64fe56b8",
+    "size_bytes": 5527
+  },
+  "random_seeds": {
+    "random_selection": 20260823,
+    "rank_permutation": 20260824
+  },
+  "run_id": "UKACTIVE-A4-20260823-001",
+  "simulation_count_each": 10000,
+  "source": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a4_forensics.py",
+    "sha256": "60e3a214a358bb8009900531d3f1087091b94141ace907f79f882631b54c4f53",
+    "size_bytes": 81115
+  },
+  "stage": "UKACTIVE-A4-RIGHT-TAIL-FORENSICS"
+}
