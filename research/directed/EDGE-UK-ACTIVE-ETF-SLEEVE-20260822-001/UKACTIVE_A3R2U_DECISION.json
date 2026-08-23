@@ -1,0 +1,22 @@
+{
+  "a3r2s_authorised": true,
+  "curated_recent_closure_count": 3,
+  "curated_recent_mandate_change_count": 2,
+  "curated_recent_merger_count": 6,
+  "current_lines_not_seen_count": 0,
+  "current_lse_line_count": 4356,
+  "decision": "UKACTIVE_A3R2U_PASS_WITH_OPEN_ITEMS",
+  "decision_timestamp": "2026-08-23T06:56:22+00:00",
+  "ii_current_user_confirmed_preferred_line_count": 9,
+  "ii_user_confirmed_total_ticker_count_including_ebiz_alternate": 10,
+  "master_family_count_retained": 105,
+  "new_current_listing_count": 0,
+  "new_economic_family_count": 0,
+  "prior_lse_line_count": 4356,
+  "recent_five_year_census_classification": "RECENT_FIVE_YEAR_CENSUS_SUBSTANTIALLY_COMPLETE",
+  "run_id": "UKACTIVE-A3R2U-20260823-001",
+  "stage_id": "UKACTIVE-A3R2U",
+  "tests_passed": 10,
+  "tests_total": 10,
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+}

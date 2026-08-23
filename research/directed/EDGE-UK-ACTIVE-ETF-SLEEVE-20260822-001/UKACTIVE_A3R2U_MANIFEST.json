@@ -1,0 +1,655 @@
+{
+  "created_at": "2026-08-23T06:56:22+00:00",
+  "decision": "UKACTIVE_A3R2U_PASS_WITH_OPEN_ITEMS",
+  "executed_source": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a3r2u.py",
+    "sha256": "8e20c5bdb28c1b7318836ad3af5de62a1d3753825a2c2756e7251e07e0d90651",
+    "size_bytes": 35742
+  },
+  "git_branch": "research/ukactive-a3r2",
+  "inputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A0A1_DISCOVERY_REGISTRY.csv",
+      "sha256": "6510a208100c80727550dad53b73f3671d1de755f26d0da16df263778228a542"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+      "sha256": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet",
+      "sha256": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_XLON_RESEARCH_CALENDAR.csv",
+      "sha256": "c211a3d3b0d7f93e5889c3dcafd0a3390adb24151277cb1b84265f213a776d95"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+      "sha256": "8fd81aca2dd90ad2090282839243072dec276228d1c546559ffe3883dbb3c61b"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R_A3R0_CURRENT_IMPLEMENTATION_LINES_POST_A2R.csv",
+      "sha256": "f6298116711ed451ec76ce28280d6248371a1471d66640797262cd7682d41eb0"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A3R2_POLICY_v1.json",
+      "sha256": "9c9e678817e1aad63dd4d8efb1b22a67921fde62646584a959685a3f252b0cdc"
+    }
+  ],
+  "outputs_excluding_manifest": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_SCOPE_AND_METHOD.md",
+      "sha256": "ced9589349f73504656c5e25031ec5cdaf17000971434c5578fea5d0c688c9ba",
+      "size_bytes": 666
+    },
+    {
+      "columns": 53,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_CURRENT_UNIVERSE_SNAPSHOT.csv",
+      "rows": 105,
+      "sha256": "8f1e732272e502868133b05905467c528b5a0dd808b8cf642bc9721bb292a53a",
+      "size_bytes": 91303
+    },
+    {
+      "columns": 10,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_UNIVERSE_CHANGE_LOG.csv",
+      "rows": 11,
+      "sha256": "d8588f58ef0914ce45b7ced882c398a0f4e1fa69d3f92dcb7e1568436bd11329",
+      "size_bytes": 3182
+    },
+    {
+      "columns": 13,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_NEW_PRODUCT_CANDIDATES.csv",
+      "rows": 0,
+      "sha256": "8ebd40a4e6a3611f45b9b036b465a5989d8194672f31900c0705a8d78599af09",
+      "size_bytes": 163
+    },
+    {
+      "columns": 22,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_FIVE_YEAR_LIFECYCLE_AUDIT.csv",
+      "rows": 105,
+      "sha256": "64b9e509cd726d2bbe01cd0c1a5d44c2045831bf29fc7bd5778ad98299c2c442",
+      "size_bytes": 77255
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_RECENT_SURVIVORSHIP_REPORT.md",
+      "sha256": "c9bf9cbef2a2ed46b4d34694390654a5788afc43abbcbaf8ec48bb62dabe41c7",
+      "size_bytes": 1049
+    },
+    {
+      "columns": 22,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_DYNAMIC_UNIVERSE.parquet",
+      "rows": 558516,
+      "sha256": "6b9a500a41dc1fe7b7c8bedb5d9a2c9087b53855d5e8f32a1790a340f0768044",
+      "size_bytes": 1410092
+    },
+    {
+      "columns": 14,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_UNIVERSE_VINTAGE_VIEWS.csv",
+      "rows": 84,
+      "sha256": "57064b24e3fc6219ba312f7b90d6f9894a4e7bbb1d4571d2727c60169f7a835c",
+      "size_bytes": 17344
+    },
+    {
+      "columns": 8,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_ACTIVE_FAMILY_COUNTS_BY_YEAR.csv",
+      "rows": 6,
+      "sha256": "d6dc266c0073ea60bdae3d8ca78072da1cf363cf322bf0c5b978f0f9a85451be",
+      "size_bytes": 386
+    },
+    {
+      "columns": 5,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_VALIDATION_RESULTS.csv",
+      "rows": 10,
+      "sha256": "2fa5140adc1ed07d9a38a276130afd35524d315851c605c57e4a9527b9708e12",
+      "size_bytes": 896
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_DECISION.json",
+      "sha256": "99da6bcbc07e6a7c4b0de3126230de6f20d0ef47584bf208d0c45b96340e029f",
+      "size_bytes": 911
+    }
+  ],
+  "package_versions": {
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10"
+  },
+  "post_a3r2u_commit": "PENDING_AFTER_EXECUTION",
+  "pre_a3r2_commit": "c30de89d0ceee74ea024708e7c95270bae38d150",
+  "preregistration_commit": "3ed64a2240a1fc7c6f6b573ef27e436e13d53671",
+  "primary_source_urls": [
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D10%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D11%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D12%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D13%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D14%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D15%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D16%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D17%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D18%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D19%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D20%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D21%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D22%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D23%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D24%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D25%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D26%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D27%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D28%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D29%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D30%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D31%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D32%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D33%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D34%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D35%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D36%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D37%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D38%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D39%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D4%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D40%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D41%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D5%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D6%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D7%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D8%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D9%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D1%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D2%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D3%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D4%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D5%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D6%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D7%26size%3D100",
+    "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D8%26size%3D100",
+    "https://hanetf.com/closed-funds/",
+    "https://hanetf.com/fund/gijo-future-of-us-defence-etf/",
+    "https://www.ii.co.uk/our-charges"
+  ],
+  "repository_root": "D:\\Codex\\equity_quant_research_platform",
+  "run_id": "UKACTIVE-A3R2U-20260823-001",
+  "source_pages": [
+    {
+      "page": 1,
+      "retrieved_at": "2026-08-23T06:55:48Z",
+      "row_count": 100,
+      "sha256": "00b9d67f44c186a1225933fdc6c01f3d9c2797f0d3b9c4f4ac2bb7960a4f32fb",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D1%26size%3D100"
+    },
+    {
+      "page": 2,
+      "retrieved_at": "2026-08-23T06:55:49Z",
+      "row_count": 100,
+      "sha256": "c7cf86ee688a49490a0dd8f202a922418eb9b4bc54f0967017beebe3242e869a",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D2%26size%3D100"
+    },
+    {
+      "page": 3,
+      "retrieved_at": "2026-08-23T06:55:49Z",
+      "row_count": 100,
+      "sha256": "0968f58e8a2329bd9b0804359fde978febbfd627e4f6cabdf4fa54d9451f8af9",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D3%26size%3D100"
+    },
+    {
+      "page": 4,
+      "retrieved_at": "2026-08-23T06:55:50Z",
+      "row_count": 100,
+      "sha256": "7b8beb46d6195b0d118995d544936495f5b9f6acf8d2511b8f608cbeaaed6e99",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D4%26size%3D100"
+    },
+    {
+      "page": 5,
+      "retrieved_at": "2026-08-23T06:55:50Z",
+      "row_count": 100,
+      "sha256": "95d4a63741a9b40474f7e6bd5bcc31310a8e09c8ad4be149759886d2dd5a0d14",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D5%26size%3D100"
+    },
+    {
+      "page": 6,
+      "retrieved_at": "2026-08-23T06:55:51Z",
+      "row_count": 100,
+      "sha256": "3fae9aeac25a7a7053c117356e540ba7920feb96a153c05b4a12fe89be6c4e6a",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D6%26size%3D100"
+    },
+    {
+      "page": 7,
+      "retrieved_at": "2026-08-23T06:55:51Z",
+      "row_count": 100,
+      "sha256": "9bd13596d212008d07834f295d5e3b3af599e1a3ee6a65918e870fe369f5973a",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D7%26size%3D100"
+    },
+    {
+      "page": 8,
+      "retrieved_at": "2026-08-23T06:55:52Z",
+      "row_count": 100,
+      "sha256": "d0b592932d7a24be1e5b60efe1d828231e14833bd530d854b921268b285ad055",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D8%26size%3D100"
+    },
+    {
+      "page": 9,
+      "retrieved_at": "2026-08-23T06:55:52Z",
+      "row_count": 100,
+      "sha256": "66dbe3a06fc97348d5af367fc21b0f60be0e2502dcea84c00da361548345adc6",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D9%26size%3D100"
+    },
+    {
+      "page": 10,
+      "retrieved_at": "2026-08-23T06:55:53Z",
+      "row_count": 100,
+      "sha256": "b3c0f37d5a2e28e6f318c294a4dea3bf0f37cb5c2e47893096fb76b96da10a11",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D10%26size%3D100"
+    },
+    {
+      "page": 11,
+      "retrieved_at": "2026-08-23T06:55:53Z",
+      "row_count": 100,
+      "sha256": "ddb1a5477a5d13b6a61e8415d6ffdb9b6807bbe4997e7307bb8a87bbdcde04ec",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D11%26size%3D100"
+    },
+    {
+      "page": 12,
+      "retrieved_at": "2026-08-23T06:55:54Z",
+      "row_count": 100,
+      "sha256": "f765268e3be01f39c99929e7ac67a8f5b719114152007163dfdd1182cda5d2fd",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D12%26size%3D100"
+    },
+    {
+      "page": 13,
+      "retrieved_at": "2026-08-23T06:55:54Z",
+      "row_count": 100,
+      "sha256": "6cef4ba1968e4746ca6410af2263ab1d0fff5621b1e4bc6e66833a50f063ac98",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D13%26size%3D100"
+    },
+    {
+      "page": 14,
+      "retrieved_at": "2026-08-23T06:55:55Z",
+      "row_count": 100,
+      "sha256": "3fcce4198863a68728c2e2f4a13c90e1352709f1acfa73d0b324a6d98494966d",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D14%26size%3D100"
+    },
+    {
+      "page": 15,
+      "retrieved_at": "2026-08-23T06:55:55Z",
+      "row_count": 100,
+      "sha256": "8e80e50289f44c31f7c8e456c69d4d6502905cb23360fab9f4edac500d4e30a5",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D15%26size%3D100"
+    },
+    {
+      "page": 16,
+      "retrieved_at": "2026-08-23T06:55:56Z",
+      "row_count": 100,
+      "sha256": "c3cf2b7e8bbfe2efa3aafb86b7973677d90e35898275122d2b8cd39531f23cbd",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D16%26size%3D100"
+    },
+    {
+      "page": 17,
+      "retrieved_at": "2026-08-23T06:55:56Z",
+      "row_count": 100,
+      "sha256": "aa83f3d8a4a7790c5b62d1b35fd78ad0ddb71623ca476e9cc83207da365d5148",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D17%26size%3D100"
+    },
+    {
+      "page": 18,
+      "retrieved_at": "2026-08-23T06:55:57Z",
+      "row_count": 100,
+      "sha256": "ddefb654624439f5977cfb8d0bb6e6f87e0fc3c6f5b138b6ce5a01fb13cacf59",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D18%26size%3D100"
+    },
+    {
+      "page": 19,
+      "retrieved_at": "2026-08-23T06:55:57Z",
+      "row_count": 100,
+      "sha256": "959dd3a9671be96a806ae2d17ee306db9b6c3408df06daa7966696e73497c804",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D19%26size%3D100"
+    },
+    {
+      "page": 20,
+      "retrieved_at": "2026-08-23T06:55:58Z",
+      "row_count": 100,
+      "sha256": "cffc2b35960bda1dd43c583f683f8004bacdb47765cdee9e194805b994bd4a4b",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D20%26size%3D100"
+    },
+    {
+      "page": 21,
+      "retrieved_at": "2026-08-23T06:55:58Z",
+      "row_count": 100,
+      "sha256": "e99c1c78d2d21486fc2e289569f6a00032175dface376426a0c3b6da39f5ef19",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D21%26size%3D100"
+    },
+    {
+      "page": 22,
+      "retrieved_at": "2026-08-23T06:55:59Z",
+      "row_count": 100,
+      "sha256": "8ef535029be9ac9a1e4601ee02c88021d0cdb4a8d54f478caa7f954615988987",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D22%26size%3D100"
+    },
+    {
+      "page": 23,
+      "retrieved_at": "2026-08-23T06:55:59Z",
+      "row_count": 100,
+      "sha256": "c6681e5a4abffa75a4c48290677a9cae8da12170983f59af7ac31ddf151b43cc",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D23%26size%3D100"
+    },
+    {
+      "page": 24,
+      "retrieved_at": "2026-08-23T06:56:00Z",
+      "row_count": 100,
+      "sha256": "c3bfd59506ed8a3deff3c8f4fa5d393c86e2f1439153912699314136bf7436a6",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D24%26size%3D100"
+    },
+    {
+      "page": 25,
+      "retrieved_at": "2026-08-23T06:56:00Z",
+      "row_count": 100,
+      "sha256": "dd1c013d7109cfaafbd443d7cf1490adfcb906542e741647edd5d165dcb0e677",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D25%26size%3D100"
+    },
+    {
+      "page": 26,
+      "retrieved_at": "2026-08-23T06:56:01Z",
+      "row_count": 100,
+      "sha256": "805ff701d8d6b3f4257af3ad0f3a1b9934a705e1cea7dbec05eeb9f02a0f4282",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D26%26size%3D100"
+    },
+    {
+      "page": 27,
+      "retrieved_at": "2026-08-23T06:56:01Z",
+      "row_count": 100,
+      "sha256": "809a61c717f8d73c375fe4a4cb9f42668801d245d9b999274e30ee51e89aee18",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D27%26size%3D100"
+    },
+    {
+      "page": 28,
+      "retrieved_at": "2026-08-23T06:56:02Z",
+      "row_count": 100,
+      "sha256": "bb2c94a7e878f8a540fa63b69557110fef5218a826fb846d079a87dbc712cdd7",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D28%26size%3D100"
+    },
+    {
+      "page": 29,
+      "retrieved_at": "2026-08-23T06:56:02Z",
+      "row_count": 100,
+      "sha256": "77503f2331a69ec14dfe3d2528b9001061f8657ac5d46aaffdc912a6b3ca4ee5",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D29%26size%3D100"
+    },
+    {
+      "page": 30,
+      "retrieved_at": "2026-08-23T06:56:03Z",
+      "row_count": 100,
+      "sha256": "d0e68783dffc7c5e77c6eb28f4c8b4393d060aff8d3ef362459968036850f6a9",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D30%26size%3D100"
+    },
+    {
+      "page": 31,
+      "retrieved_at": "2026-08-23T06:56:03Z",
+      "row_count": 100,
+      "sha256": "473d67b7ca4c9c5c4a7d8d753dbdffb7fdbe50903df9e00881cf6604abb3636a",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D31%26size%3D100"
+    },
+    {
+      "page": 32,
+      "retrieved_at": "2026-08-23T06:56:04Z",
+      "row_count": 100,
+      "sha256": "ef3fa3d930174641c6422f3fbe878faa659a49f0823c75f7453af4f62c692fac",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D32%26size%3D100"
+    },
+    {
+      "page": 33,
+      "retrieved_at": "2026-08-23T06:56:04Z",
+      "row_count": 100,
+      "sha256": "101bf94fbd10380c0547b465551af7b3eb69d6522cd3372376c13192edfd823d",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D33%26size%3D100"
+    },
+    {
+      "page": 34,
+      "retrieved_at": "2026-08-23T06:56:05Z",
+      "row_count": 100,
+      "sha256": "1553736e2532a8b09dfef36f574f2cb7ec206435cc045a216d8d7d3df3790cab",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D34%26size%3D100"
+    },
+    {
+      "page": 35,
+      "retrieved_at": "2026-08-23T06:56:05Z",
+      "row_count": 100,
+      "sha256": "54eebfcc68771a36e311b68a542803a5c4f4caae9af41fb112b30af2e5389692",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D35%26size%3D100"
+    },
+    {
+      "page": 36,
+      "retrieved_at": "2026-08-23T06:56:06Z",
+      "row_count": 100,
+      "sha256": "758ced944da48efba0e8a7fa289fadfd7a4a0a4672e2f0a34c55b8afeedc470b",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D36%26size%3D100"
+    },
+    {
+      "page": 37,
+      "retrieved_at": "2026-08-23T06:56:06Z",
+      "row_count": 100,
+      "sha256": "658d70716d6ece916cf1b302ecbec9bc5b383edd98ce8d2660e68dc9f8c37b7b",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D37%26size%3D100"
+    },
+    {
+      "page": 38,
+      "retrieved_at": "2026-08-23T06:56:07Z",
+      "row_count": 100,
+      "sha256": "3284b776b124f0ed64ebcb380c8b61d91545a14336164573b9a75bd7fc2d541c",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D38%26size%3D100"
+    },
+    {
+      "page": 39,
+      "retrieved_at": "2026-08-23T06:56:08Z",
+      "row_count": 100,
+      "sha256": "e0611c3cb25dad82fc2d1d88e1d9ce0fef49fcb9442d418c804bd6a0bab257c2",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D39%26size%3D100"
+    },
+    {
+      "page": 40,
+      "retrieved_at": "2026-08-23T06:56:08Z",
+      "row_count": 100,
+      "sha256": "6ba750ebf30b9410f097d911d53ea50bca88a34468ca9245dfa8bb14b2d57566",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D40%26size%3D100"
+    },
+    {
+      "page": 41,
+      "retrieved_at": "2026-08-23T06:56:09Z",
+      "row_count": 12,
+      "sha256": "7b47f3a95f761904e2ff76a531ba5d6ae86894675b91c9d4a957e8a88a280f6e",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETF",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D15%26page%3D41%26size%3D100"
+    },
+    {
+      "page": 1,
+      "retrieved_at": "2026-08-23T06:56:09Z",
+      "row_count": 100,
+      "sha256": "13f2e8ce63e608ec034945cbd37db3e218e7cd4b6503b3d6625b84c040fac320",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETC",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D1%26size%3D100"
+    },
+    {
+      "page": 2,
+      "retrieved_at": "2026-08-23T06:56:10Z",
+      "row_count": 100,
+      "sha256": "d0d5882d27049dfab8e3d8e1139bf985abfe069f9adf2c8781eac74925367a01",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETC",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D2%26size%3D100"
+    },
+    {
+      "page": 3,
+      "retrieved_at": "2026-08-23T06:56:10Z",
+      "row_count": 17,
+      "sha256": "81e8a38701e9392e6222b333d56cc83d69d8d1bce4340e5b8bdc6b7f4ed78aeb",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETC",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D16%26page%3D3%26size%3D100"
+    },
+    {
+      "page": 1,
+      "retrieved_at": "2026-08-23T06:56:11Z",
+      "row_count": 100,
+      "sha256": "80716da851c18f1503422ecd39fee44521a24a8669b1ba728aa73fa347d5e0a6",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D1%26size%3D100"
+    },
+    {
+      "page": 2,
+      "retrieved_at": "2026-08-23T06:56:11Z",
+      "row_count": 100,
+      "sha256": "84c3ad6ccb32640a57fa6b0132b9af31c14d29cbe073a4fd4f7b6869b7896466",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D2%26size%3D100"
+    },
+    {
+      "page": 3,
+      "retrieved_at": "2026-08-23T06:56:12Z",
+      "row_count": 100,
+      "sha256": "08b294f9a042d997d1331ca0a17fc7441a123a81d57262dfd0f63d82fe8416fc",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D3%26size%3D100"
+    },
+    {
+      "page": 4,
+      "retrieved_at": "2026-08-23T06:56:12Z",
+      "row_count": 100,
+      "sha256": "cd34a86b6bb5d44b2eb1401afc1de89e86822936dda2f5506301ac673d5fd7da",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D4%26size%3D100"
+    },
+    {
+      "page": 5,
+      "retrieved_at": "2026-08-23T06:56:13Z",
+      "row_count": 100,
+      "sha256": "8b01b42224e274a29d3846fcc090e0cf47382d8fbb1d223032d161f3f56799b7",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D5%26size%3D100"
+    },
+    {
+      "page": 6,
+      "retrieved_at": "2026-08-23T06:56:13Z",
+      "row_count": 100,
+      "sha256": "e9c9a7aa7430aa101aba27d189b7ce0019cd2a2db4893e7b128333fbf3b58bac",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D6%26size%3D100"
+    },
+    {
+      "page": 7,
+      "retrieved_at": "2026-08-23T06:56:14Z",
+      "row_count": 100,
+      "sha256": "f346203c085485985665b97056748712e335f2fcfe777060b3ce5c866f0fb78a",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D7%26size%3D100"
+    },
+    {
+      "page": 8,
+      "retrieved_at": "2026-08-23T06:56:14Z",
+      "row_count": 65,
+      "sha256": "dc30c33df8763f4d63826ab41d01222120f80536d97c3b4ac695db0f182e3a39",
+      "source": "LSE_PRICE_EXPLORER",
+      "subcategory": "ETN",
+      "url": "https://api.londonstockexchange.com/api/v1/pages?path=live-markets%2Fmarket-data-dashboard%2Fprice-explorer&parameters=categories%3DETFS%26subcategories%3D17%26page%3D8%26size%3D100"
+    }
+  ],
+  "stage_id": "UKACTIVE-A3R2U",
+  "unresolved_items": [
+    "No complete licensed historical LSE delisting feed",
+    "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+  ]
+}

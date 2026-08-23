@@ -1,0 +1,11 @@
+test_id,requirement,status,detail,critical
+A3R2U-T01,Master family identity remains unique,PASS,105 rows,YES
+A3R2U-T02,Ticker does not replace family identity,PASS,Every row retains family identity; ticker is implementation metadata and is not used as the key,YES
+A3R2U-T03,Live LSE refresh is non-empty,PASS,4356 current lines,YES
+A3R2U-T04,Current ii evidence is not historical,PASS,No current metadata back-projected,YES
+A3R2U-T05,User ii confirmations are current-only,PASS,9 preferred lines,YES
+A3R2U-T06,New products are not auto-admitted,PASS,0 candidates,YES
+A3R2U-T07,Point-in-time rows are unique,PASS,558516 rows,YES
+A3R2U-T08,Closed/mandate events are retained,PASS,11 primary-source events,YES
+A3R2U-T09,FASA is not inferred ii-confirmed,PASS,FASA preference is separate from availability,YES
+A3R2U-T10,EBIG preferred and EBIZ recorded alternate,PASS,GBP preferred line retained,YES

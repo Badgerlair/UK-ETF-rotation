@@ -1,0 +1,7 @@
+year,asof_date,active_implementation_family_count,eligible_short_63_family_count,eligible_long_252_family_count,five_year_start_static_active_count,mature_active_count,partial_year
+2021,2021-12-31,69,66,64,65,54,NO
+2022,2022-12-30,76,76,69,67,58,NO
+2023,2023-12-29,75,75,74,66,61,NO
+2024,2024-12-31,76,76,74,66,64,NO
+2025,2025-12-31,82,82,77,67,69,NO
+2026,2026-08-21,83,83,82,67,70,YES
