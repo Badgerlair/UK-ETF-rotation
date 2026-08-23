@@ -1,0 +1,22 @@
+test_id,requirement,status,detail,critical,executed_at
+A3R1-T01,No date-T close earns date-T return,PASS,Synthetic date-t 50% return is excluded from date-t forward-1 return,YES,2026-08-23T00:37:15+00:00
+A3R1-T02,Next-session execution alignment is correct,PASS,1372 weekly signals map strictly to a later canonical session,YES,2026-08-23T00:37:15+00:00
+A3R1-T03,Only contemporaneously admitted economic families rank,PASS,Every rank row has one contemporaneous economic-family identity in its declared context,YES,2026-08-23T00:37:15+00:00
+A3R1-T04,Dynamic signal-specific warm-up is respected,PASS,All 21/42/63/126/252 signals require their own complete formation window; no 504 gate,YES,2026-08-23T00:37:15+00:00
+A3R1-T05,Mismatched pre-A2R histories never reappear,PASS,Only the corrected A2R panel is an A3R1 return input,YES,2026-08-23T00:37:15+00:00
+A3R1-T06,US defence history before corrected mandate date never enters,PASS,US aerospace/defence cannot enter before corrected mandate history plus warm-up,YES,2026-08-23T00:37:15+00:00
+A3R1-T07,GLOBAL_BANKS never enters without valid history,PASS,GLOBAL_BANKS has no valid history and no rank row,YES,2026-08-23T00:37:15+00:00
+A3R1-T08,Duplicate ETF listings cannot receive separate ranks,PASS,Listing/provider duplication cannot enter the economic-family rank,YES,2026-08-23T00:37:15+00:00
+A3R1-T09,Common-benchmark arithmetic is not falsely claimed to alter order,PASS,Common benchmark subtraction/division preserves same-horizon order,YES,2026-08-23T00:37:15+00:00
+A3R1-T10,Relative segments are actually non-overlapping,PASS,Five impulse fixtures land in five distinct non-overlapping segments,YES,2026-08-23T00:37:15+00:00
+A3R1-T11,Pairwise uses only contemporaneously valid competitors,PASS,Pairwise denominator uses only the three contemporaneously complete competitors,YES,2026-08-23T00:37:15+00:00
+A3R1-T12,Parent mapping is frozen and does not use DeepVue/future data,PASS,Frozen semantic parent map is DeepVue-independent; returns require contemporaneous parent data,YES,2026-08-23T00:37:15+00:00
+A3R1-T13,Relative-price features use no future data,PASS,Changing observations after t cannot alter a relative-line feature at or before t,YES,2026-08-23T00:37:15+00:00
+A3R1-T14,Missing/stale/invalid observations remain excluded,PASS,5000 sampled A2R-invalid/stale/missing/proxy rows remain excluded,YES,2026-08-23T00:37:15+00:00
+A3R1-T15,No proxy history enters,PASS,No A2R proxy row is data-valid,YES,2026-08-23T00:37:15+00:00
+A3R1-T16,NEW-family admission follows genuine warm-up,PASS,Every first dynamic admission follows a genuine signal-specific complete window,YES,2026-08-23T00:37:15+00:00
+A3R1-T17,Top-tail groups use only valid observations,PASS,71704 retained top-tail date diagnostics contain only valid selected returns,YES,2026-08-23T00:37:15+00:00
+A3R1-T18,All specifications appear in registry/ledger,PASS,All 23 registered signal/diagnostic IDs appear in the complete ledger,YES,2026-08-23T00:37:15+00:00
+A3R1-T19,Weekly observation rule is fixed,PASS,Observation schedule is the last canonical XLON session of each calendar week,YES,2026-08-23T00:37:15+00:00
+A3R1-T20,Current eligibility is not back-projected,PASS,"Research admission uses return availability, not current public/broker eligibility",YES,2026-08-23T00:37:15+00:00
+A3R1-T21,Formal inference requires the preregistered minimum of 24 date observations,PASS,6 sub-minimum primary cells retain descriptive effects but have no BH/bootstrap label,YES,2026-08-23T00:54:41+00:00

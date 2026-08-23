@@ -59,6 +59,8 @@ research/**/evidence/sources/
 research/**/UKACTIVE_*_SUBPERIOD_RESULTS.csv
 research/**/UKACTIVE_*_QUANTILE_FORWARD_RETURNS.csv
 research/**/UKACTIVE_*_TIME_SERIES.csv
+research/**/UKACTIVE_A3R1_DYNAMIC_COHORT_COUNTS.csv
+research/**/UKACTIVE_A3R1_OVERLAP_DIAGNOSTICS.csv
 
 # Platform-local bulk research stores.  This repository checkpoints source and
 # reproducibility controls; these byte stores remain local and hash-inventoried.

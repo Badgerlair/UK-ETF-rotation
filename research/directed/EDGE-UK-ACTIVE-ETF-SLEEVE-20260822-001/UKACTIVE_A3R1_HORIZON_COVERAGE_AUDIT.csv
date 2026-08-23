@@ -1,0 +1,16 @@
+record_type,feature_or_signal_id,requires_252_session_input,first_valid_observation_date,last_valid_observation_date,covers_2020_onward,covers_latest_five_years,covers_latest_three_years,role_group_count,central_forward_cell_count,scientific_coverage_gate,detail
+PRIMARY_SIGNAL_COVERAGE,ACCEL_FAST_COMPOSITE,NO,2013-09-27,2026-04-17,YES,YES,YES,5.0,20,PASS,Signal retains post-2020 descriptive coverage or does not require a 252-session input.
+PRIMARY_SIGNAL_COVERAGE,DISCRETE_RECENT_CONSISTENCY,NO,2013-08-02,2026-04-17,YES,YES,YES,5.0,20,PASS,Signal retains post-2020 descriptive coverage or does not require a 252-session input.
+PRIMARY_SIGNAL_COVERAGE,MH_LEVEL_3_6_12_REFERENCE,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+PRIMARY_SIGNAL_COVERAGE,MH_LEVEL_60D_CENTERED,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+PRIMARY_SIGNAL_COVERAGE,MH_LEVEL_EQ,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+PRIMARY_SIGNAL_COVERAGE,MH_LEVEL_RECENCY_TILT,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+PRIMARY_SIGNAL_COVERAGE,PAIRWISE_MAJORITY_5H,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+PRIMARY_SIGNAL_COVERAGE,RRG_TRANSPARENT_LEVEL,NO,2013-10-25,2026-04-17,YES,YES,YES,5.0,20,PASS,Signal retains post-2020 descriptive coverage or does not require a 252-session input.
+PRIMARY_SIGNAL_COVERAGE,SHORT_MINUS_LONG_RS,YES,2014-05-02,2017-08-11,NO,NO,NO,5.0,20,FAIL,Principal signal lacks post-2020 evidence because strict A2R-valid 252-session windows cease after recurring invalid/missing rows.
+FEATURE_COVERAGE,RS_21,NO,2011-04-01,2026-08-21,YES,YES,YES,,96012,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
+FEATURE_COVERAGE,RS_42,NO,2013-06-28,2026-08-21,YES,YES,YES,,76515,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
+FEATURE_COVERAGE,RS_63,NO,2013-08-02,2026-08-21,YES,YES,YES,,59013,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
+FEATURE_COVERAGE,RS_126,NO,2013-10-25,2026-05-01,YES,YES,YES,,31383,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
+FEATURE_COVERAGE,RS_252,YES,2014-05-02,2017-11-03,NO,NO,NO,,15924,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
+FEATURE_COVERAGE,MH_LEVEL_EQ,YES,2014-05-02,2017-08-25,NO,NO,NO,,13613,DIAGNOSTIC,Strict rolling feature uses only A2R-valid daily total-return rows and never bridges an invalid observation.
