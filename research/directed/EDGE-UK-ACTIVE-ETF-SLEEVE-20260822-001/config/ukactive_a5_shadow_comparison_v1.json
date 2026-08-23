@@ -1,7 +1,7 @@
 {
   "benchmark": {
     "economic_family_id": "GLOBAL_DEVELOPED_WORLD",
-    "ii_current_tradable": "TO_CHECK",
+    "ii_current_tradable": "CONFIRMED_BY_USER",
     "preferred_isin": "IE00B4L5Y983",
     "preferred_ticker": "SWDA"
   },
@@ -53,7 +53,7 @@
     "discretionary_substitution": false,
     "implementation_failure": "GBP_CASH",
     "map_path": "UKACTIVE_A5_IMPLEMENTATION_MAP.csv",
-    "map_sha256": "867295039d8635d8c34273fc5afd581d8b30d38e59ab2c13d3d81e19aa6c161b",
+    "map_sha256": "bfd68a76e2dd528aa4fad8844ef0057880b6166bf234f6d1579675b1ea1a4c99",
     "preferred_then_preverified_alternate_only": true
   },
   "integrity": {
@@ -91,7 +91,7 @@
   "model_b": {
     "active_process": "EXACT_MODEL_A_SELECTION_AND_EXECUTION_DATE",
     "core_family_id": "GLOBAL_DEVELOPED_WORLD",
-    "core_manual_ii_confirmation_required_before_first_booking": true,
+    "core_manual_ii_confirmation_required_before_first_booking": false,
     "core_preferred_isin": "IE00B4L5Y983",
     "core_preferred_ticker": "SWDA",
     "initial_notional_gbp": 250000.0,

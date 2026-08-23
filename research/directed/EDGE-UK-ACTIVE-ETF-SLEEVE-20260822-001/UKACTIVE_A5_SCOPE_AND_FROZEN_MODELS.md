@@ -18,6 +18,6 @@ Exactly 50% of the same A5-A active leader and exactly 50% `GLOBAL_DEVELOPED_WOR
 
 The 25 currently signal-ready active families use the versioned, user-confirmed ii map dated 2026-08-23. The preferred line is used first; only an already declared and verified alternate may replace it. Otherwise the affected allocation is GBP cash and the event is `IMPLEMENTATION_BLOCKED`; rank 2 is never substituted. The economic pool retains its frozen 27-family dynamic-admission lineage, so a later newly signal-ready family without a preverified line is blocked rather than silently added operationally.
 
-The global core is the authoritative `GLOBAL_DEVELOPED_WORLD` line SWDA / IE00B4L5Y983. Public UK evidence is confirmed; current ii availability is `TO_CHECK`, which is the sole setup open item.
+The global core is the authoritative `GLOBAL_DEVELOPED_WORLD` line SWDA / IE00B4L5Y983. Public UK evidence is confirmed, and the user manually confirmed current ii tradability on 2026-08-23. This current-only observation is not historical platform evidence and is never back-projected.
 
 No live order, broker connector, scheduler, backfill, same-close fill, discretionary substitution or model change exists in this infrastructure. Weekly FAST, geography and regime fields are telemetry only.

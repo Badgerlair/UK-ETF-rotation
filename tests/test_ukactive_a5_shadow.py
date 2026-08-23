@@ -23,8 +23,9 @@ def test_setup_correctness_artifact_all_pass() -> None:
 
 def test_setup_created_no_prospective_event() -> None:
     counts = a5.ledger_counts()
-    for key in ["run", "decision", "execution", "position", "cash", "cost", "nav", "benchmark", "telemetry_csv", "warnings", "amendment"]:
+    for key in ["run", "decision", "execution", "position", "cash", "cost", "nav", "benchmark", "telemetry_csv", "warnings"]:
         assert counts[key] == 0
+    assert counts["amendment"] == 1
 
 
 def test_frozen_model_and_first_calendar_boundary() -> None:
@@ -38,7 +39,7 @@ def test_frozen_model_and_first_calendar_boundary() -> None:
     assert calendar.iloc[0]["expected_next_eligible_execution_date"] == "2026-09-01"
 
 
-def test_active_map_is_25_of_25_and_core_is_one_open_check() -> None:
+def test_active_map_is_25_of_25_and_core_is_currently_confirmed() -> None:
     implementation = pd.read_csv(PROGRAMME / "UKACTIVE_A5_IMPLEMENTATION_MAP.csv", dtype=str)
     active = implementation.loc[implementation["implementation_scope"].eq("ACTIVE_SIGNAL_READY")]
     core = implementation.loc[implementation["implementation_scope"].eq("GLOBAL_CORE_REFERENCE")]
@@ -47,7 +48,15 @@ def test_active_map_is_25_of_25_and_core_is_one_open_check() -> None:
     assert len(core) == 1
     assert core.iloc[0]["preferred_ticker"] == "SWDA"
     assert core.iloc[0]["preferred_isin"] == "IE00B4L5Y983"
-    assert core.iloc[0]["ii_current_tradable"] == "TO_CHECK"
+    assert core.iloc[0]["ii_current_tradable"] == "CONFIRMED_BY_USER"
+    assert core.iloc[0]["ii_observation_date"] == "2026-08-23"
+    assert core.iloc[0]["ii_verification_method"] == "USER_ACCOUNT_MANUAL_CHECK"
+    assert core.iloc[0]["historical_back_projection"] == "NO"
+    config = json.loads((PROGRAMME / "config" / "ukactive_a5_shadow_comparison_v1.json").read_text())
+    assert config["model_b"]["core_manual_ii_confirmation_required_before_first_booking"] is False
+    state = json.loads((PROGRAMME / "UKACTIVE_A5_CURRENT_STATE.json").read_text())
+    assert state["operational_readiness"][a5.MODEL_A] == "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
+    assert state["operational_readiness"][a5.MODEL_B] == "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
 
 
 def test_runner_has_no_order_dependency() -> None:

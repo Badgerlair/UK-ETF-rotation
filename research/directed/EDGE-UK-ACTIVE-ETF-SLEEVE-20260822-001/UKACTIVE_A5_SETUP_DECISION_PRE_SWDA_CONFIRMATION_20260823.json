@@ -1,16 +1,12 @@
 {
   "a5_started": false,
-  "a5a_operational_readiness": "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
-  "a5b_operational_readiness": "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
   "active_implementation_coverage": "25_OF_25_CONFIRMED_BY_USER",
-  "core_ii_observation_date": "2026-08-23",
-  "core_ii_status": "CONFIRMED_BY_USER",
-  "core_ii_verification_method": "USER_ACCOUNT_MANUAL_CHECK",
+  "core_ii_status": "TO_CHECK",
   "core_preferred_isin": "IE00B4L5Y983",
   "core_preferred_ticker": "SWDA",
   "correctness_tests_passed": 25,
   "correctness_tests_total": 25,
-  "decision": "UKACTIVE_A5_SETUP_PASS",
+  "decision": "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS",
   "dry_run": {
     "a5a_synthetic_initial_post_cost_nav_gbp": 249496.01,
     "a5b_synthetic_active_notional_gbp": 124746.01,
@@ -42,10 +38,11 @@
     "A5A_ACTIVE_BASELINE_V1",
     "A5B_CORE_ACTIVE_50_V1"
   ],
-  "open_items": [],
+  "open_items": [
+    "MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"
+  ],
   "orders_or_scheduler": "NONE",
   "prospective_events_created": 0,
-  "setup_amendment_event_id": "A5AMD-902A30DD97D9CA0B",
   "stage_id": "UKACTIVE-A5S",
   "warning": "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
 }

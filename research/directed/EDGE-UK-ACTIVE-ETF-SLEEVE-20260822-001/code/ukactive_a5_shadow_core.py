@@ -39,6 +39,19 @@ INITIAL_NOTIONAL_GBP = 250_000.0
 FREEZE_TAG = "ukactive-a5-shadow-comparison-v1-20260823"
 EXPECTED_ORIGIN = "https://github.com/Badgerlair/UK-ETF-rotation.git"
 WARNING = "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
+CORE_FAMILY_ID = "GLOBAL_DEVELOPED_WORLD"
+CORE_PREFERRED_TICKER = "SWDA"
+CORE_PREFERRED_ISIN = "IE00B4L5Y983"
+CORE_II_STATUS = "CONFIRMED_BY_USER"
+CORE_II_OBSERVATION_DATE = "2026-08-23"
+CORE_II_VERIFICATION_METHOD = "USER_ACCOUNT_MANUAL_CHECK"
+SETUP_AMENDMENT_ORIGINAL_EVENT_ID = "UKACTIVE-A5S-SETUP-DECISION-20260823"
+SETUP_AMENDMENT_REASON = "USER_CONFIRMED_GLOBAL_CORE_CURRENT_II_IMPLEMENTATION"
+SETUP_AMENDMENT_FIELD = "setup_decision_and_global_core_current_ii_metadata"
+SETUP_AMENDMENT_EVIDENCE = (
+    "User account manual check: SWDA / IE00B4L5Y983 was present and tradeable in "
+    "Interactive Investor on 2026-08-23. Current-only evidence; do not back-project."
+)
 
 MODEL_A = "A5A_ACTIVE_BASELINE_V1"
 MODEL_B = "A5B_CORE_ACTIVE_50_V1"
@@ -91,6 +104,8 @@ LEDGER_PATHS = {
 }
 
 STATE_PATH = PROGRAMME_ROOT / "UKACTIVE_A5_CURRENT_STATE.json"
+ORIGINAL_SETUP_DECISION_PATH = PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_DECISION_PRE_SWDA_CONFIRMATION_20260823.json"
+SETUP_AMENDMENT_PATH = PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_AMENDMENT_20260823.json"
 LATEST_REPORT_MD = PROGRAMME_ROOT / "UKACTIVE_A5_LATEST_RUN_REPORT.md"
 LATEST_REPORT_JSON = PROGRAMME_ROOT / "UKACTIVE_A5_LATEST_RUN_REPORT.json"
 SNAPSHOT_ROOT = PROGRAMME_ROOT / "snapshots" / "a5"
@@ -220,6 +235,49 @@ def versioned_sha256_file(path: Path) -> str:
 def stable_id(prefix: str, *parts: Any) -> str:
     digest = sha256_bytes("|".join(str(part) for part in parts).encode("utf-8"))[:16].upper()
     return f"{prefix}-{digest}"
+
+
+def setup_amendment_values() -> tuple[dict[str, Any], dict[str, Any]]:
+    old_value = {
+        "decision": "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS",
+        "core_ii_status": "TO_CHECK",
+        "core_ii_observation_date": "NOT_CHECKED",
+        "core_ii_verification_method": "NOT_CHECKED",
+        "open_items": ["MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"],
+    }
+    new_value = {
+        "decision": "UKACTIVE_A5_SETUP_PASS",
+        "core_ii_status": CORE_II_STATUS,
+        "core_ii_observation_date": CORE_II_OBSERVATION_DATE,
+        "core_ii_verification_method": CORE_II_VERIFICATION_METHOD,
+        "open_items": [],
+    }
+    return old_value, new_value
+
+
+def setup_amendment_event_id() -> str:
+    old_value, new_value = setup_amendment_values()
+    return stable_id(
+        "A5AMD", SETUP_AMENDMENT_ORIGINAL_EVENT_ID, "UKACTIVE_A5_SETUP_DECISION.json",
+        SETUP_AMENDMENT_REASON, SETUP_AMENDMENT_FIELD, canonical_json(old_value),
+        canonical_json(new_value), SETUP_AMENDMENT_EVIDENCE,
+    )
+
+
+def core_implementation_confirmed(implementation: pd.DataFrame) -> bool:
+    core = implementation.loc[
+        implementation["economic_exposure_family_id"].eq(CORE_FAMILY_ID)
+        & implementation["implementation_scope"].eq("GLOBAL_CORE_REFERENCE")
+    ]
+    return bool(
+        len(core) == 1
+        and core.iloc[0]["preferred_ticker"] == CORE_PREFERRED_TICKER
+        and core.iloc[0]["preferred_isin"] == CORE_PREFERRED_ISIN
+        and core.iloc[0]["ii_current_tradable"] == CORE_II_STATUS
+        and core.iloc[0]["ii_observation_date"] == CORE_II_OBSERVATION_DATE
+        and core.iloc[0]["ii_verification_method"] == CORE_II_VERIFICATION_METHOD
+        and core.iloc[0]["historical_back_projection"] == "NO"
+    )
 
 
 def git_value(*args: str, check: bool = False) -> str:
@@ -475,7 +533,7 @@ def build_implementation_map() -> pd.DataFrame:
             "notes": record.notes,
         })
 
-    core_lines = lines.loc[lines["economic_exposure_family_id"].eq("GLOBAL_DEVELOPED_WORLD")]
+    core_lines = lines.loc[lines["economic_exposure_family_id"].eq(CORE_FAMILY_ID)]
     preferred = core_lines.loc[core_lines["preferred_or_alternate"].eq("PREFERRED")]
     alternate = core_lines.loc[core_lines["preferred_or_alternate"].eq("ALTERNATE")]
     if len(preferred) != 1 or len(alternate) != 1:
@@ -485,7 +543,7 @@ def build_implementation_map() -> pd.DataFrame:
     share_row = share.loc[pref["share_class_id"]] if pref["share_class_id"] in share.index else {}
     rows.append({
         "implementation_scope": "GLOBAL_CORE_REFERENCE",
-        "economic_exposure_family_id": "GLOBAL_DEVELOPED_WORLD",
+        "economic_exposure_family_id": CORE_FAMILY_ID,
         "display_name": "Broad developed-world equities",
         "rotation_role": "BENCHMARK_REFERENCE",
         "deepvue_label": "NOT_APPLICABLE",
@@ -502,20 +560,24 @@ def build_implementation_map() -> pd.DataFrame:
         "product_structure": pref["product_structure"],
         "ucits_status": pref["ucits_status"],
         "current_public_uk_eligibility_status": "PUBLIC_UK_ELIGIBLE_CONFIRMED",
-        "ii_current_tradable": "TO_CHECK",
-        "ii_observation_date": "NOT_CHECKED",
-        "ii_verification_method": "NOT_CHECKED",
+        "ii_current_tradable": CORE_II_STATUS,
+        "ii_observation_date": CORE_II_OBSERVATION_DATE,
+        "ii_verification_method": CORE_II_VERIFICATION_METHOD,
         "alternate_ticker": alt["ticker"],
         "alternate_isin": alt["isin"],
         "alternate_listing_id": alt["listing_id"],
         "alternate_currency": alt["listing_currency"],
         "alternate_price_unit": alt["price_unit"],
         "alternate_ii_current_tradable": "TO_CHECK",
-        "current_implementation_state": "CURRENT_PUBLIC_UK_ELIGIBLE_II_UNCHECKED",
+        "current_implementation_state": "CURRENT_II_CONFIRMED",
         "historical_back_projection": "NO",
         "source_artifact": SOURCE_PATHS["current_lines"].name,
         "source_artifact_sha256": sha256_file(SOURCE_PATHS["current_lines"]),
-        "notes": "Preferred current core line resolved from authoritative A3R0 master. Manual ii check required before first A5-B booking; current-only status must not be back-projected.",
+        "notes": (
+            "Preferred current core line resolved from authoritative A3R0 master. User manually "
+            "confirmed SWDA present and tradeable in Interactive Investor on 2026-08-23. "
+            "Current-only evidence; do not back-project."
+        ),
     })
     result = pd.DataFrame(rows)
     roles = pd.read_csv(SOURCE_PATHS["roles"], dtype=str).fillna("")
@@ -525,6 +587,8 @@ def build_implementation_map() -> pd.DataFrame:
     active = result.loc[result["implementation_scope"].eq("ACTIVE_SIGNAL_READY")]
     if len(active) != 25 or not active["ii_current_tradable"].eq("CONFIRMED_BY_USER").all():
         raise AssertionError("The frozen active implementation map must contain 25/25 user-confirmed rows")
+    if not core_implementation_confirmed(result):
+        raise AssertionError("The frozen global-core implementation must carry the current-only SWDA confirmation")
     return result.sort_values(["implementation_scope", "economic_exposure_family_id"], kind="mergesort").reset_index(drop=True)
 
 
@@ -574,10 +638,10 @@ def build_config(implementation_map: pd.DataFrame) -> dict[str, Any]:
             "active_process": "EXACT_MODEL_A_SELECTION_AND_EXECUTION_DATE",
             "target_active_weight": 0.5,
             "target_core_weight": 0.5,
-            "core_family_id": "GLOBAL_DEVELOPED_WORLD",
+            "core_family_id": CORE_FAMILY_ID,
             "monthly_strategic_rebalance": True,
             "initial_notional_gbp": INITIAL_NOTIONAL_GBP,
-            "core_manual_ii_confirmation_required_before_first_booking": True,
+            "core_manual_ii_confirmation_required_before_first_booking": False,
             "core_preferred_ticker": core["preferred_ticker"],
             "core_preferred_isin": core["preferred_isin"],
         },
@@ -597,7 +661,7 @@ def build_config(implementation_map: pd.DataFrame) -> dict[str, Any]:
             "current_metadata_back_projection": False,
         },
         "benchmark": {
-            "economic_family_id": "GLOBAL_DEVELOPED_WORLD",
+            "economic_family_id": CORE_FAMILY_ID,
             "preferred_ticker": core["preferred_ticker"],
             "preferred_isin": core["preferred_isin"],
             "ii_current_tradable": core["ii_current_tradable"],
@@ -1091,6 +1155,7 @@ def implementation_execution_state(row: dict[str, Any] | None) -> str:
 
 
 def initial_state(config: dict[str, Any]) -> dict[str, Any]:
+    core_confirmed = config["benchmark"]["ii_current_tradable"] == CORE_II_STATUS
     return {
         "specification_id": config["specification_id"],
         "model_status": {MODEL_A: "PROSPECTIVE_NOT_STARTED", MODEL_B: "PROSPECTIVE_NOT_STARTED"},
@@ -1108,6 +1173,24 @@ def initial_state(config: dict[str, Any]) -> dict[str, Any]:
         "drawdown": {MODEL_A: 0.0, MODEL_B: 0.0},
         "completed_on_time_decision_count": 0,
         "completed_shadow_execution_count": 0,
+        "implementation_readiness": {
+            "active_industry_theme": "25_OF_25_CONFIRMED_BY_USER",
+            "global_core_family_id": CORE_FAMILY_ID,
+            "global_core_ticker": CORE_PREFERRED_TICKER,
+            "global_core_isin": CORE_PREFERRED_ISIN,
+            "global_core_ii_status": config["benchmark"]["ii_current_tradable"],
+            "global_core_ii_observation_date": CORE_II_OBSERVATION_DATE if core_confirmed else "NOT_CHECKED",
+            "global_core_ii_verification_method": CORE_II_VERIFICATION_METHOD if core_confirmed else "NOT_CHECKED",
+            "historical_back_projection": "NO",
+        },
+        "operational_readiness": {
+            MODEL_A: "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
+            MODEL_B: (
+                "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
+                if core_confirmed else "BLOCKED_PENDING_GLOBAL_CORE_II_CONFIRMATION"
+            ),
+        },
+        "setup_amendment_event_id": setup_amendment_event_id() if core_confirmed else None,
         "prospective_integrity_status": "E3_CONFIRMATION_NOT_YET_AVAILABLE",
         "authoritative_history": "APPEND_ONLY_LEDGERS",
         "warning": WARNING,
@@ -1126,7 +1209,7 @@ def initialise_empty_ledgers() -> None:
                     raise
                 write_csv_if_changed(path, pd.DataFrame(columns=columns))
                 existing = read_csv_schema(path, columns)
-            if len(existing):
+            if len(existing) and key != "amendment":
                 raise RuntimeError(f"Setup refuses to replace non-empty prospective ledger: {path.name}")
         else:
             write_csv_if_changed(path, pd.DataFrame(columns=columns))
@@ -1148,6 +1231,15 @@ def ledger_counts() -> dict[str, int]:
     else:
         counts["run"] = 0
     return counts
+
+
+def prospective_event_counts(counts: dict[str, int] | None = None) -> dict[str, int]:
+    counts = ledger_counts() if counts is None else counts
+    prospective_keys = [
+        "run", "decision", "execution", "position", "cash", "cost", "nav", "benchmark",
+        "telemetry_csv", "warnings",
+    ]
+    return {key: counts[key] for key in prospective_keys}
 
 
 def load_config() -> dict[str, Any]:
@@ -1487,6 +1579,68 @@ def append_amendment(
     append_csv_rows(
         LEDGER_PATHS["amendment"], CSV_SCHEMAS["amendment"], [row], ["amendment_event_id"]
     )
+    return event_id
+
+
+def preserve_original_setup_decision() -> dict[str, Any]:
+    """Freeze the pre-confirmation setup decision before replacing the latest alias."""
+    if ORIGINAL_SETUP_DECISION_PATH.exists():
+        return json.loads(ORIGINAL_SETUP_DECISION_PATH.read_text(encoding="utf-8"))
+    decision_path = PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_DECISION.json"
+    if not decision_path.exists():
+        raise RuntimeError("The pre-amendment A5 setup decision is missing")
+    original = json.loads(decision_path.read_text(encoding="utf-8"))
+    if (
+        original.get("decision") != "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS"
+        or original.get("core_ii_status") != "TO_CHECK"
+    ):
+        raise RuntimeError("The existing setup decision is not the expected pre-SWDA-confirmation state")
+    write_immutable_json(ORIGINAL_SETUP_DECISION_PATH, original)
+    return original
+
+
+def ensure_setup_amendment() -> str:
+    """Append one deterministic current-only setup amendment and write its audit mirror."""
+    old_value, new_value = setup_amendment_values()
+    event_id = append_amendment(
+        original_event_id=SETUP_AMENDMENT_ORIGINAL_EVENT_ID,
+        original_ledger="UKACTIVE_A5_SETUP_DECISION.json",
+        reason=SETUP_AMENDMENT_REASON,
+        field_name=SETUP_AMENDMENT_FIELD,
+        old_value=old_value,
+        new_value=new_value,
+        evidence=SETUP_AMENDMENT_EVIDENCE,
+    )
+    amendment_rows = read_csv_schema(LEDGER_PATHS["amendment"], CSV_SCHEMAS["amendment"])
+    amendment = amendment_rows.loc[amendment_rows["amendment_event_id"].eq(event_id)]
+    if len(amendment) != 1:
+        raise RuntimeError("The SWDA setup amendment did not resolve uniquely")
+    row = amendment.iloc[0].to_dict()
+    write_json_if_changed(SETUP_AMENDMENT_PATH, {
+        "stage_id": "UKACTIVE-A5S",
+        "amendment_event_id": event_id,
+        "amended_artifact": "UKACTIVE_A5_SETUP_DECISION.json",
+        "preserved_original_artifact": ORIGINAL_SETUP_DECISION_PATH.name,
+        "base_setup_commit": row["source_git_commit"],
+        "reason": SETUP_AMENDMENT_REASON,
+        "evidence": SETUP_AMENDMENT_EVIDENCE,
+        "verification": {
+            "economic_role": "GLOBAL_DEVELOPED_WORLD current implementation",
+            "ticker": CORE_PREFERRED_TICKER,
+            "isin": CORE_PREFERRED_ISIN,
+            "ii_current_tradable": CORE_II_STATUS,
+            "ii_observation_date": CORE_II_OBSERVATION_DATE,
+            "ii_verification_method": CORE_II_VERIFICATION_METHOD,
+            "historical_back_projection": "NO",
+        },
+        "old_value": old_value,
+        "new_value": new_value,
+        "recorded_at_utc": row["recorded_at_utc"],
+        "prospective_event": False,
+        "model_or_research_change": False,
+        "orders_or_scheduler": "NONE",
+        "warning": WARNING,
+    })
     return event_id
 
 
@@ -2257,8 +2411,9 @@ def build_report_payload(
     pending = state.get("pending_execution")
     latest_warning = read_csv_schema(LEDGER_PATHS["warnings"], CSV_SCHEMAS["warnings"])
     warnings = latest_warning.to_dict(orient="records")[-10:] if len(latest_warning) else []
-    core = bundle.implementation.loc[bundle.implementation["economic_exposure_family_id"].eq("GLOBAL_DEVELOPED_WORLD")].iloc[0]
-    if core["ii_current_tradable"] != "CONFIRMED_BY_USER":
+    core = bundle.implementation.loc[bundle.implementation["economic_exposure_family_id"].eq(CORE_FAMILY_ID)].iloc[0]
+    core_confirmed = core_implementation_confirmed(bundle.implementation)
+    if not core_confirmed:
         warnings.append({
             "warning_type": "CORE_II_MANUAL_CHECK_REQUIRED",
             "severity": "OPEN_ITEM",
@@ -2305,6 +2460,21 @@ def build_report_payload(
         "geography_top5": geo_top,
         "regime": regime,
         "scorecard": cards,
+        "implementation_readiness": {
+            "active_industry_theme": "25_OF_25_CONFIRMED_BY_USER",
+            "global_core_family_id": CORE_FAMILY_ID,
+            "global_core_ticker": core["preferred_ticker"],
+            "global_core_isin": core["preferred_isin"],
+            "global_core_ii_status": core["ii_current_tradable"],
+            "global_core_ii_observation_date": core["ii_observation_date"],
+            "global_core_ii_verification_method": core["ii_verification_method"],
+            "current_status_back_projected_historically": False,
+            MODEL_A: "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
+            MODEL_B: (
+                "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
+                if core_confirmed else "BLOCKED_PENDING_GLOBAL_CORE_II_CONFIRMATION"
+            ),
+        },
         "pending_execution": pending,
         "executions_booked": booked_execution_rows,
         "actions_recorded": actions,
@@ -2354,11 +2524,22 @@ def render_markdown_report(payload: dict[str, Any]) -> str:
         f"**Mode:** {payload['mode']}",
         f"**As-of / validated cutoff:** {payload['as_of_date']} / {payload['data_cutoff']}",
         f"**Evidence:** {payload['dry_run_status']}",
+        f"**Setup decision:** {payload.get('setup_decision', 'PENDING_CORRECTNESS_TESTS')}",
         f"**Safety:** {WARNING}", "",
         "## 1. Run status", "",
         f"Actions recorded: {', '.join(payload['actions_recorded']) if payload['actions_recorded'] else 'NONE'}. No broker instruction was created.", "",
-        "## 2. Official or provisional choice", "",
     ]
+    readiness = payload["implementation_readiness"]
+    lines.extend([
+        "### Current implementation readiness", "",
+        f"- Active INDUSTRY+THEME map: {readiness['active_industry_theme']}",
+        f"- Global core: {readiness['global_core_family_id']} — {readiness['global_core_ticker']} / {readiness['global_core_isin']}",
+        f"- Core ii status: {readiness['global_core_ii_status']} ({readiness['global_core_ii_verification_method']}, {readiness['global_core_ii_observation_date']})",
+        f"- A5-A readiness: {readiness[MODEL_A]}",
+        f"- A5-B readiness: {readiness[MODEL_B]}",
+        "- Current ii evidence back-projected historically: NO", "",
+        "## 2. Official or provisional choice", "",
+    ])
     if payload["official_decision"]:
         decision = payload["official_decision"]
         lines.extend([
@@ -2651,7 +2832,7 @@ Exactly 50% of the same A5-A active leader and exactly 50% `GLOBAL_DEVELOPED_WOR
 
 The 25 currently signal-ready active families use the versioned, user-confirmed ii map dated 2026-08-23. The preferred line is used first; only an already declared and verified alternate may replace it. Otherwise the affected allocation is GBP cash and the event is `IMPLEMENTATION_BLOCKED`; rank 2 is never substituted. The economic pool retains its frozen 27-family dynamic-admission lineage, so a later newly signal-ready family without a preverified line is blocked rather than silently added operationally.
 
-The global core is the authoritative `GLOBAL_DEVELOPED_WORLD` line SWDA / IE00B4L5Y983. Public UK evidence is confirmed; current ii availability is `TO_CHECK`, which is the sole setup open item.
+The global core is the authoritative `GLOBAL_DEVELOPED_WORLD` line SWDA / IE00B4L5Y983. Public UK evidence is confirmed, and the user manually confirmed current ii tradability on 2026-08-23. This current-only observation is not historical platform evidence and is never back-projected.
 
 No live order, broker connector, scheduler, backfill, same-close fill, discretionary substitution or model change exists in this infrastructure. Weekly FAST, geography and regime fields are telemetry only.
 """
@@ -2820,13 +3001,13 @@ def run_setup_checks(bundle: DataBundle, dry: dict[str, Any], report_markdown: s
         and model_a["target_active_weight"] == 1.0
         and pd.read_csv(SOURCE_PATHS["a4c_baseline_reproduction"])["result"].eq("PASS").all()
     ), {"model": model_a, "a4c_reproduction": "4_OF_4_PASS"})
-    add("A5S-T02", "A5-B is exactly 50% A5-A and 50% global core", config["model_b"]["target_active_weight"] == 0.5 and config["model_b"]["target_core_weight"] == 0.5 and config["model_b"]["active_process"].startswith("EXACT_MODEL_A"), config["model_b"])
+    add("A5S-T02", "A5-B is exactly 50% A5-A and 50% global core", config["model_b"]["target_active_weight"] == 0.5 and config["model_b"]["target_core_weight"] == 0.5 and config["model_b"]["active_process"].startswith("EXACT_MODEL_A") and config["model_b"]["core_manual_ii_confirmation_required_before_first_booking"] is False, config["model_b"])
     add("A5S-T03", "Month-end signal uses only information after that close", counts["decision"] == 0 and dry["as_of_date"] == "2026-08-21", {"decision_rows": counts["decision"], "dry_asof": dry["as_of_date"]})
     add("A5S-T04", "No next-session data enter signal", dry["maximum_ranking_difference"] <= 1e-12, dry["ranking_differences"])
     first = calendar.iloc[0]
     add("A5S-T05", "Same-close execution is impossible", pd.Timestamp(first["expected_next_eligible_execution_date"]) > pd.Timestamp(first["expected_final_valid_xlon_signal_date"]), first.to_dict())
     add("A5S-T06", "Next eligible XLON execution is calendar-resolved", first["expected_final_valid_xlon_signal_date"] == "2026-08-28" and first["expected_next_eligible_execution_date"] == "2026-09-01", first.to_dict())
-    add("A5S-T07", "Repeated setup runs are idempotent", counts["decision"] == counts["execution"] == counts["nav"] == counts["run"] == 0, counts)
+    add("A5S-T07", "Repeated setup runs are idempotent", all(value == 0 for value in prospective_event_counts(counts).values()) and counts["amendment"] == 1, counts)
     unique = all(not read_csv_schema(LEDGER_PATHS[key], CSV_SCHEMAS[key]).duplicated().any() for key in CSV_SCHEMAS)
     add("A5S-T08", "No duplicate event, decision, cost or NAV rows", unique, counts)
     source = Path(__file__).read_text(encoding="utf-8")
@@ -2836,10 +3017,13 @@ def run_setup_checks(bundle: DataBundle, dry: dict[str, Any], report_markdown: s
     active_family = implementation.loc[implementation["implementation_scope"].eq("ACTIVE_SIGNAL_READY"), "economic_exposure_family_id"].iloc[0]
     historical_status = bundle.implementation_row(active_family, HISTORICAL_CUTOFF)["ii_current_tradable"]
     add("A5S-T11", "Current ii metadata is not back-projected", historical_status == "NOT_APPLICABLE_HISTORICAL_ASOF", historical_status)
-    add("A5S-T12", "Preferred/alternate implementation map is deterministic", len(implementation) == 26 and not implementation["economic_exposure_family_id"].duplicated().any() and implementation.loc[implementation["implementation_scope"].eq("ACTIVE_SIGNAL_READY"), "ii_current_tradable"].eq("CONFIRMED_BY_USER").all(), {"rows": len(implementation), "active_confirmed": 25})
+    add("A5S-T12", "Preferred/alternate implementation map is deterministic", len(implementation) == 26 and not implementation["economic_exposure_family_id"].duplicated().any() and implementation.loc[implementation["implementation_scope"].eq("ACTIVE_SIGNAL_READY"), "ii_current_tradable"].eq("CONFIRMED_BY_USER").all() and core_implementation_confirmed(implementation), {"rows": len(implementation), "active_confirmed": 25, "core_confirmed": core_implementation_confirmed(implementation)})
     add("A5S-T13", "Unavailable family falls to cash with no substitute", implementation_execution_state(None) == "IMPLEMENTATION_BLOCKED_NO_PREVERIFIED_LINE", implementation_execution_state(None))
-    original_core_status = bundle.implementation.loc[bundle.implementation["economic_exposure_family_id"].eq("GLOBAL_DEVELOPED_WORLD"), "ii_current_tradable"].iloc[0]
-    bundle.implementation.loc[bundle.implementation["economic_exposure_family_id"].eq("GLOBAL_DEVELOPED_WORLD"), "ii_current_tradable"] = "CONFIRMED_BY_USER"
+    core_mask = bundle.implementation["economic_exposure_family_id"].eq(CORE_FAMILY_ID)
+    original_core_status = bundle.implementation.loc[core_mask, "ii_current_tradable"].iloc[0]
+    original_core_observation = bundle.implementation.loc[core_mask, "ii_observation_date"].iloc[0]
+    bundle.implementation.loc[core_mask, "ii_current_tradable"] = "CONFIRMED_BY_USER"
+    bundle.implementation.loc[core_mask, "ii_observation_date"] = "2026-07-01"
     synthetic_active_mask = bundle.implementation["economic_exposure_family_id"].eq("GLOBAL_SEMICONDUCTORS")
     original_active_observation = bundle.implementation.loc[synthetic_active_mask, "ii_observation_date"].iloc[0]
     bundle.implementation.loc[synthetic_active_mask, "ii_observation_date"] = "2026-07-01"
@@ -2847,7 +3031,8 @@ def run_setup_checks(bundle: DataBundle, dry: dict[str, Any], report_markdown: s
     targets = _target_sets(bundle, synthetic_decision)
     add("A5S-T14", "A5-A and A5-B use the same active leader", list(targets[MODEL_A]) == ["GLOBAL_SEMICONDUCTORS"] and targets[MODEL_B].get("GLOBAL_SEMICONDUCTORS") == 0.5, {MODEL_A: targets[MODEL_A], MODEL_B: targets[MODEL_B]})
     add("A5S-T15", "A5-B monthly target is exactly 50/50", abs(sum(weight for family, weight in targets[MODEL_B].items() if family != "GLOBAL_DEVELOPED_WORLD") - 0.5) < 1e-12 and targets[MODEL_B]["GLOBAL_DEVELOPED_WORLD"] == 0.5, targets[MODEL_B])
-    bundle.implementation.loc[bundle.implementation["economic_exposure_family_id"].eq("GLOBAL_DEVELOPED_WORLD"), "ii_current_tradable"] = original_core_status
+    bundle.implementation.loc[core_mask, "ii_current_tradable"] = original_core_status
+    bundle.implementation.loc[core_mask, "ii_observation_date"] = original_core_observation
     bundle.implementation.loc[synthetic_active_mask, "ii_observation_date"] = original_active_observation
     expected_one_leg_cost = INITIAL_NOTIONAL_GBP * 0.002 + 3.99
     add("A5S-T16", "Costs are charged on actual shadow trade legs", abs(expected_one_leg_cost - 503.99) < 1e-10 and "for family in legs" in source, expected_one_leg_cost)
@@ -2927,13 +3112,14 @@ def setup_infrastructure() -> dict[str, Any]:
     if origin.rstrip("/") != EXPECTED_ORIGIN.rstrip("/"):
         raise RuntimeError(f"Unexpected origin: {origin}")
 
+    preserve_original_setup_decision()
     implementation = build_implementation_map()
     write_csv_if_changed(IMPLEMENTATION_MAP_PATH, implementation)
     config = build_config(implementation)
     write_json_if_changed(CONFIG_PATH, config)
     write_csv_if_changed(OPERATING_CALENDAR_PATH, build_operating_calendar(30))
     initialise_empty_ledgers()
-    write_json_if_changed(STATE_PATH, initial_state(config))
+    amendment_event_id = ensure_setup_amendment()
 
     write_text_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SCOPE_AND_FROZEN_MODELS.md", _scope_document(config))
     write_text_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_COMPARATOR_DEFINITIONS.md", _comparator_document())
@@ -2951,16 +3137,24 @@ def setup_infrastructure() -> dict[str, Any]:
         official_decision=None, actions=[], dry_run=True,
     )
     report_markdown = render_markdown_report(payload)
-    report_paths = write_reports(payload)
-    dry_report = _dry_run_report_document(dry, report_markdown)
-    write_text_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_DRY_RUN_REPORT.md", dry_report)
 
     checks = run_setup_checks(bundle, dry, report_markdown)
     write_csv_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_CORRECTNESS_TESTS.csv", checks)
     passed = bool(checks["result"].eq("PASS").all())
     counts = ledger_counts()
-    no_prospective = all(counts[key] == 0 for key in ["run", "decision", "execution", "position", "cash", "cost", "nav", "benchmark", "telemetry_csv", "warnings", "amendment"])
-    decision_state = "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS" if passed and no_prospective else "UKACTIVE_A5_SETUP_FAIL"
+    prospective_counts = prospective_event_counts(counts)
+    no_prospective = all(value == 0 for value in prospective_counts.values())
+    core_confirmed = core_implementation_confirmed(implementation)
+    amendment_complete = counts["amendment"] == 1 and amendment_event_id == setup_amendment_event_id()
+    if passed and no_prospective and core_confirmed and amendment_complete:
+        decision_state = "UKACTIVE_A5_SETUP_PASS"
+    elif passed and no_prospective and amendment_complete:
+        decision_state = "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS"
+    else:
+        decision_state = "UKACTIVE_A5_SETUP_FAIL"
+    open_items = [] if core_confirmed else [
+        "MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"
+    ]
     decision = {
         "stage_id": "UKACTIVE-A5S",
         "decision": decision_state,
@@ -2968,19 +3162,47 @@ def setup_infrastructure() -> dict[str, Any]:
         "active_implementation_coverage": "25_OF_25_CONFIRMED_BY_USER",
         "core_preferred_ticker": "SWDA",
         "core_preferred_isin": "IE00B4L5Y983",
-        "core_ii_status": "TO_CHECK",
-        "open_items": ["MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"],
+        "core_ii_status": CORE_II_STATUS if core_confirmed else "TO_CHECK",
+        "core_ii_observation_date": CORE_II_OBSERVATION_DATE if core_confirmed else "NOT_CHECKED",
+        "core_ii_verification_method": CORE_II_VERIFICATION_METHOD if core_confirmed else "NOT_CHECKED",
+        "a5a_operational_readiness": "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
+        "a5b_operational_readiness": (
+            "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
+            if core_confirmed else "BLOCKED_PENDING_GLOBAL_CORE_II_CONFIRMATION"
+        ),
+        "setup_amendment_event_id": amendment_event_id,
+        "open_items": open_items,
         "earliest_official_signal_date": "2026-08-28",
         "expected_first_execution_date": "2026-09-01",
         "dry_run": dry,
         "correctness_tests_passed": int(checks["result"].eq("PASS").sum()),
         "correctness_tests_total": int(len(checks)),
-        "prospective_events_created": 0,
+        "prospective_events_created": int(sum(prospective_counts.values())),
         "a5_started": False,
         "orders_or_scheduler": "NONE",
         "warning": WARNING,
     }
     write_json_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_DECISION.json", decision)
+    current_state = derive_state(config)
+    current_state["setup_decision"] = decision_state
+    current_state["setup_amendment_event_id"] = amendment_event_id
+    write_json_if_changed(STATE_PATH, current_state)
+
+    payload["setup_decision"] = decision_state
+    payload["setup_amendment_event_id"] = amendment_event_id
+    payload["correctness_tests"] = {"passed": int(checks["result"].eq("PASS").sum()), "total": len(checks)}
+    payload["core_manual_check"] = {
+        "ticker": CORE_PREFERRED_TICKER,
+        "isin": CORE_PREFERRED_ISIN,
+        "ii_status": CORE_II_STATUS if core_confirmed else "TO_CHECK",
+        "observation_date": CORE_II_OBSERVATION_DATE if core_confirmed else "NOT_CHECKED",
+        "verification_method": CORE_II_VERIFICATION_METHOD if core_confirmed else "NOT_CHECKED",
+        "required_before_first_a5b_booking": not core_confirmed,
+    }
+    report_paths = write_reports(payload)
+    final_report_markdown = render_markdown_report(payload)
+    dry_report = _dry_run_report_document(dry, final_report_markdown)
+    write_text_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_DRY_RUN_REPORT.md", dry_report)
 
     output_names = [
         "UKACTIVE_A5_SCOPE_AND_FROZEN_MODELS.md", "config/ukactive_a5_shadow_comparison_v1.json",
@@ -2988,7 +3210,8 @@ def setup_infrastructure() -> dict[str, Any]:
         "UKACTIVE_A5_LEDGER_SCHEMA.md", "UKACTIVE_A5_REPORT_SCHEMA.md", "UKACTIVE_A5_OPERATING_CALENDAR.csv",
         "UKACTIVE_A5_RUNBOOK.md", "UKACTIVE_A5_RECURRING_CODEX_INSTRUCTION.md",
         "UKACTIVE_A5_SETUP_DRY_RUN_REPORT.md", "UKACTIVE_A5_SETUP_CORRECTNESS_TESTS.csv",
-        "UKACTIVE_A5_SETUP_DECISION.json", "code/run_ukactive_a5_shadow.py", "code/ukactive_a5_shadow_core.py",
+        "UKACTIVE_A5_SETUP_DECISION.json", "UKACTIVE_A5_SETUP_DECISION_PRE_SWDA_CONFIRMATION_20260823.json",
+        "UKACTIVE_A5_SETUP_AMENDMENT_20260823.json", "code/run_ukactive_a5_shadow.py", "code/ukactive_a5_shadow_core.py",
         "run_ukactive_a5.ps1", "UKACTIVE_A5_RUN_LEDGER.jsonl", "UKACTIVE_A5_DECISION_LEDGER.csv",
         "UKACTIVE_A5_EXECUTION_LEDGER.csv", "UKACTIVE_A5_POSITION_LEDGER.csv", "UKACTIVE_A5_CASH_LEDGER.csv",
         "UKACTIVE_A5_COST_LEDGER.csv", "UKACTIVE_A5_NAV_HISTORY.csv", "UKACTIVE_A5_BENCHMARK_HISTORY.csv",
@@ -3021,7 +3244,17 @@ def setup_infrastructure() -> dict[str, Any]:
         "implementation_map": {
             "path": str(IMPLEMENTATION_MAP_PATH.resolve()), "sha256": sha256_file(IMPLEMENTATION_MAP_PATH),
             "active_rows": 25, "active_confirmed": 25, "core_ticker": "SWDA", "core_isin": "IE00B4L5Y983",
-            "core_ii_status": "TO_CHECK",
+            "core_ii_status": CORE_II_STATUS if core_confirmed else "TO_CHECK",
+            "core_ii_observation_date": CORE_II_OBSERVATION_DATE if core_confirmed else "NOT_CHECKED",
+            "core_ii_verification_method": CORE_II_VERIFICATION_METHOD if core_confirmed else "NOT_CHECKED",
+        },
+        "setup_amendment": {
+            "event_id": amendment_event_id,
+            "path": str(SETUP_AMENDMENT_PATH.resolve()),
+            "sha256": sha256_file(SETUP_AMENDMENT_PATH),
+            "preserved_original_decision_path": str(ORIGINAL_SETUP_DECISION_PATH.resolve()),
+            "preserved_original_decision_sha256": sha256_file(ORIGINAL_SETUP_DECISION_PATH),
+            "current_only_not_back_projected": True,
         },
         "source_inputs": source_inventory(SOURCE_PATHS.values()),
         "outputs": source_inventory(output_paths),
@@ -3038,7 +3271,8 @@ def setup_infrastructure() -> dict[str, Any]:
         "dry_run": dry,
         "tests": {"passed": int(checks["result"].eq("PASS").sum()), "total": int(len(checks))},
         "ledger_counts": counts,
-        "prospective_event_created": False,
+        "prospective_event_created": not no_prospective,
+        "prospective_event_counts": prospective_counts,
         "packages": {
             "python": platform.python_version(), "pandas": pd.__version__, "numpy": np.__version__,
             "pyarrow": pyarrow.__version__,
@@ -3049,8 +3283,5 @@ def setup_infrastructure() -> dict[str, Any]:
         "warning": WARNING,
     }
     write_json_if_changed(PROGRAMME_ROOT / "UKACTIVE_A5_SETUP_MANIFEST.json", manifest)
-    payload["setup_decision"] = decision_state
     payload["dry_run"] = dry
-    payload["correctness_tests"] = {"passed": int(checks["result"].eq("PASS").sum()), "total": len(checks)}
-    payload["core_manual_check"] = {"ticker": "SWDA", "isin": "IE00B4L5Y983", "ii_status": "TO_CHECK"}
     return payload

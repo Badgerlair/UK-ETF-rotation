@@ -22,6 +22,16 @@
     "A5A_ACTIVE_BASELINE_V1": 250000.0,
     "A5B_CORE_ACTIVE_50_V1": 250000.0
   },
+  "implementation_readiness": {
+    "active_industry_theme": "25_OF_25_CONFIRMED_BY_USER",
+    "global_core_family_id": "GLOBAL_DEVELOPED_WORLD",
+    "global_core_ii_observation_date": "2026-08-23",
+    "global_core_ii_status": "CONFIRMED_BY_USER",
+    "global_core_ii_verification_method": "USER_ACCOUNT_MANUAL_CHECK",
+    "global_core_isin": "IE00B4L5Y983",
+    "global_core_ticker": "SWDA",
+    "historical_back_projection": "NO"
+  },
   "initial_notional_gbp": {
     "A5A_ACTIVE_BASELINE_V1": 250000.0,
     "A5B_CORE_ACTIVE_50_V1": 250000.0
@@ -37,9 +47,15 @@
     "A5A_ACTIVE_BASELINE_V1": 250000.0,
     "A5B_CORE_ACTIVE_50_V1": 250000.0
   },
+  "operational_readiness": {
+    "A5A_ACTIVE_BASELINE_V1": "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED",
+    "A5B_CORE_ACTIVE_50_V1": "OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED"
+  },
   "pending_decision": null,
   "pending_execution": null,
   "prospective_integrity_status": "E3_CONFIRMATION_NOT_YET_AVAILABLE",
+  "setup_amendment_event_id": "A5AMD-902A30DD97D9CA0B",
+  "setup_decision": "UKACTIVE_A5_SETUP_PASS",
   "specification_id": "UKACTIVE-A5-SHADOW-COMPARISON-v1",
   "warning": "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
 }

@@ -27,11 +27,21 @@ The calculations validate the two engines and cost logic without booking a decis
 **Mode:** setup
 **As-of / validated cutoff:** 2026-08-21 / 2026-08-21
 **Evidence:** DRY_RUN_NOT_PROSPECTIVE
+**Setup decision:** UKACTIVE_A5_SETUP_PASS
 **Safety:** SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED
 
 ## 1. Run status
 
 Actions recorded: NONE. No broker instruction was created.
+
+### Current implementation readiness
+
+- Active INDUSTRY+THEME map: 25_OF_25_CONFIRMED_BY_USER
+- Global core: GLOBAL_DEVELOPED_WORLD — SWDA / IE00B4L5Y983
+- Core ii status: CONFIRMED_BY_USER (USER_ACCOUNT_MANUAL_CHECK, 2026-08-23)
+- A5-A readiness: OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED
+- A5-B readiness: OPERATIONALLY_READY_PROSPECTIVE_NOT_STARTED
+- Current ii evidence back-projected historically: NO
 
 ## 2. Official or provisional choice
 
@@ -158,7 +168,7 @@ Pending execution: NONE
 
 ## 15. Operational warnings
 
-- OPEN_ITEM: Check SWDA / IE00B4L5Y983 in ii before first A5-B booking.
+- NONE
 
 ## 16. Next required run date
 

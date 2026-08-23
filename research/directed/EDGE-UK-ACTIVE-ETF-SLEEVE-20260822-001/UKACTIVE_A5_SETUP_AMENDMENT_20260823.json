@@ -1,0 +1,39 @@
+{
+  "amended_artifact": "UKACTIVE_A5_SETUP_DECISION.json",
+  "amendment_event_id": "A5AMD-902A30DD97D9CA0B",
+  "base_setup_commit": "1938fcb225f86f12ec058d9130d31f12725afc8d",
+  "evidence": "User account manual check: SWDA / IE00B4L5Y983 was present and tradeable in Interactive Investor on 2026-08-23. Current-only evidence; do not back-project.",
+  "model_or_research_change": false,
+  "new_value": {
+    "core_ii_observation_date": "2026-08-23",
+    "core_ii_status": "CONFIRMED_BY_USER",
+    "core_ii_verification_method": "USER_ACCOUNT_MANUAL_CHECK",
+    "decision": "UKACTIVE_A5_SETUP_PASS",
+    "open_items": []
+  },
+  "old_value": {
+    "core_ii_observation_date": "NOT_CHECKED",
+    "core_ii_status": "TO_CHECK",
+    "core_ii_verification_method": "NOT_CHECKED",
+    "decision": "UKACTIVE_A5_SETUP_PASS_WITH_OPEN_ITEMS",
+    "open_items": [
+      "MANUALLY_CONFIRM_SWDA_IE00B4L5Y983_IN_INTERACTIVE_INVESTOR_BEFORE_FIRST_A5B_BOOKING"
+    ]
+  },
+  "orders_or_scheduler": "NONE",
+  "preserved_original_artifact": "UKACTIVE_A5_SETUP_DECISION_PRE_SWDA_CONFIRMATION_20260823.json",
+  "prospective_event": false,
+  "reason": "USER_CONFIRMED_GLOBAL_CORE_CURRENT_II_IMPLEMENTATION",
+  "recorded_at_utc": "2026-08-23T19:16:18+00:00",
+  "stage_id": "UKACTIVE-A5S",
+  "verification": {
+    "economic_role": "GLOBAL_DEVELOPED_WORLD current implementation",
+    "historical_back_projection": "NO",
+    "ii_current_tradable": "CONFIRMED_BY_USER",
+    "ii_observation_date": "2026-08-23",
+    "ii_verification_method": "USER_ACCOUNT_MANUAL_CHECK",
+    "isin": "IE00B4L5Y983",
+    "ticker": "SWDA"
+  },
+  "warning": "SHADOW TESTING ONLY — NO LIVE TRADING OR BROKER ORDER IS AUTHORISED"
+}
