@@ -87,6 +87,7 @@
       "two_consecutive_slow_rank_improvements_weight": 0.50,
       "slow_top3_after_two_improvements_weight": 0.75,
       "slow_rank1_weight": 1.00,
+      "failure_before_two_slow_rank_improvements": "CROSSOVER_FALSE_RETURNS_TO_INCUMBENT_OR_CASH",
       "maximum_risky_holdings": 2
     }
   },

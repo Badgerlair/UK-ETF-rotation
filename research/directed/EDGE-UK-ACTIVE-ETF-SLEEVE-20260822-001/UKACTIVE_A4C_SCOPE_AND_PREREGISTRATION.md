@@ -22,6 +22,8 @@ Absolute trend uses the validated GBP total-return index rather than unadjusted 
 
 The early ladders, four exit rules, 10%/12.5%/15% volatility targets, 25%/50%/75%/100% active-core weights and transaction-cost stresses are exactly those recorded in `config/UKACTIVE_A4C_POLICY_v1.json`. No result-dependent threshold amendment is permitted.
 
+For `EARLY_C`, a challenger whose crossover fails before it records two consecutive weekly slow-rank improvements is removed; capital returns to the valid incumbent or cash. After that confirmation, the highest achieved ladder weight is retained until the frozen monthly review resolves the handover. This clarification was frozen before any A4C result was computed.
+
 ## Sequential gates
 
 1. Exact A4 baseline reproduction.
