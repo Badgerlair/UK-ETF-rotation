@@ -1,0 +1,12 @@
+item_id,category,description,severity,blocks_a4_decision,blocks_a5_shadow,blocks_deployment,resolution_stage,status
+A4-U001,RIGHT_TAIL,Actual top-three contributors account for 90.45% of net gain; removing them makes excess negative.,HIGH,NO,NO,YES,A5_PROSPECTIVE,OPEN
+A4-U002,REGIME,Pre-2020 excess is negative while post-2020 excess is strongly positive.,HIGH,NO,NO,YES,A5_PROSPECTIVE,OPEN
+A4-U003,STATISTICS,HAC p is 0.052 and block-bootstrap interval crosses zero; no broad FDR edge.,HIGH,NO,NO,YES,A5_PROSPECTIVE,OPEN
+A4-U004,FALSIFICATION,About 45% of random/permuted paths are invalid under strict endpoint continuity; percentiles are conditional.,MEDIUM,NO,NO,NO,FUTURE_DATA_REFRESH,OPEN
+A4-U005,HISTORICAL_RETAIL,"20/21 primary episodes are retail-probable, not verified.",MEDIUM,NO,NO,YES,ARCHIVE_EVIDENCE_PASS,OPEN
+A4-U006,HISTORICAL_ISA,0/21 primary episodes have product/account-specific verified historical ISA evidence.,HIGH,NO,NO,YES,ARCHIVE_EVIDENCE_PASS,OPEN
+A4-U007,HISTORICAL_BROKER,Historical broker/platform availability is unverified for every episode.,HIGH,NO,NO,YES,BROKER_ARCHIVE_OR_DEPLOYMENT,OPEN
+A4-U008,CURRENT_II,Only 2/27 pool families are current user-confirmed on ii; only 1/25 current signal-eligible families is confirmed.,HIGH,NO,NO,YES,CURRENT_BROKER_VERIFICATION,OPEN
+A4-U009,EXECUTION,No validated NEXT_OPEN route or realised historical spread series exists.,MEDIUM,NO,NO,YES,EXECUTION_DATA_STAGE,OPEN
+A4-U010,SURVIVORSHIP,Recent five-year lifecycle census is substantially complete rather than complete.,MEDIUM,NO,NO,YES,POINT_IN_TIME_CENSUS,OPEN
+A4-U011,CONFIRMATION,No prospective E3 observations exist yet.,HIGH,NO,NO,YES,A5_PROSPECTIVE,OPEN

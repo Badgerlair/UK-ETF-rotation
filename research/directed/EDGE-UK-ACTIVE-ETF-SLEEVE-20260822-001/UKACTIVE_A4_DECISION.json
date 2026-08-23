@@ -1,0 +1,131 @@
+{
+  "a5_backfilled": false,
+  "a5_prospective_shadow_justified": true,
+  "a5_specification": "config/ukactive_a5_frozen_candidate.json",
+  "a5_started": false,
+  "automatic_deployment_authorised": false,
+  "automatic_next_stage_execution_authorised": false,
+  "concentration_controls": [
+    {
+      "average_hhi": 0.5007877276202723,
+      "candidate_id": "A4_TOP2",
+      "convincing_concentration_control": false,
+      "drawdown_improvement_percentage_points": 0.006379043035497078,
+      "fraction_of_top1_excess_retained": 0.6392411254403962,
+      "meets_frozen_numeric_concentration_criteria": true,
+      "net_excess_after_removing_strongest_three_families": -0.006723398830433158,
+      "right_tail_dependency_resolved": false
+    },
+    {
+      "average_hhi": 0.33401852671918036,
+      "candidate_id": "A4_TOP3",
+      "convincing_concentration_control": false,
+      "drawdown_improvement_percentage_points": 0.045605068793655446,
+      "fraction_of_top1_excess_retained": 0.5551948454240364,
+      "meets_frozen_numeric_concentration_criteria": false,
+      "net_excess_after_removing_strongest_three_families": -0.029712316685356788,
+      "right_tail_dependency_resolved": false
+    }
+  ],
+  "correctness_tests_passed": 46,
+  "correctness_tests_total": 46,
+  "current_ii_confirmed_pool_families": 2,
+  "current_ii_confirmed_signal_eligible_families": 1,
+  "current_pool_families": 27,
+  "current_signal_eligible_families": 25,
+  "decision": "UKACTIVE_A4_REGIME_CONDITIONAL_ONLY",
+  "decision_timestamp": "2026-08-23T09:12:53+00:00",
+  "deployment_candidate": false,
+  "evidence_level": "E2_DEVELOPMENTAL_WITH_E1_MECHANISM; NO_E3",
+  "falsification": {
+    "random_selection": {
+      "candidate_cagr": 0.24861357128387485,
+      "candidate_cagr_percentile": 0.9606371292566825,
+      "candidate_drawdown": -0.19564203845800432,
+      "candidate_drawdown_percentile_less_severe_is_higher": 0.967960454046137,
+      "candidate_excess_vs_pool_cagr": 0.1387139284993668,
+      "candidate_excess_vs_pool_percentile": 0.9606371292566825,
+      "candidate_selected_vs_unselected_percentile": 0.9597217136580007,
+      "candidate_selected_vs_unselected_spread": 0.13903469301695526,
+      "invalid_random_paths": 4538,
+      "valid_random_paths": 5462
+    },
+    "rank_permutation": {
+      "candidate_cagr": 0.24861357128387485,
+      "candidate_cagr_percentile": 0.9609987242573356,
+      "candidate_drawdown": -0.19564203845800432,
+      "candidate_drawdown_percentile_less_severe_is_higher": 0.9724804082376526,
+      "candidate_excess_vs_pool_cagr": 0.1387139284993668,
+      "candidate_excess_vs_pool_percentile": 0.9609987242573356,
+      "candidate_selected_vs_unselected_percentile": 0.9602697284490614,
+      "candidate_selected_vs_unselected_spread": 0.13903469301695526,
+      "invalid_random_paths": 4513,
+      "valid_random_paths": 5487
+    },
+    "selected_vs_unselected_inference": {
+      "ci_high": 0.03517208355310444,
+      "ci_low": -0.0011690945176484348,
+      "mean": 0.017035897672450628,
+      "n": 59,
+      "p_value": 0.0519476698377581,
+      "replications": 5000,
+      "standard_error": 0.00876527349718196,
+      "t_stat": 1.9435671548557703
+    }
+  },
+  "five_year": {
+    "equal_pool_cagr": 0.109899642784508,
+    "global_cagr": 0.1151645482129135,
+    "gross_cagr": 0.269040134672021,
+    "maximum_drawdown": -0.3089820359281441,
+    "net_cagr": 0.2486133293542662,
+    "net_excess_vs_global": 0.1334487811413527,
+    "net_excess_vs_pool": 0.1387136865697582,
+    "selected_vs_unselected_spread": 0.1713290445524971
+  },
+  "frozen_primary_unchanged": true,
+  "historical_isa_episode_counts": {
+    "HISTORICALLY_PROBABLE_ISA_ELIGIBLE": 21
+  },
+  "historical_retail_episode_counts": {
+    "HISTORICALLY_PROBABLE_UK_RETAIL": 20,
+    "HISTORICALLY_VERIFIED_UK_RETAIL": 1
+  },
+  "primary_candidate": "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY|EQUAL",
+  "rank1_future_tail": {
+    "beats_pool_median_probability": 0.6101694915254238,
+    "top_decile_probability": 0.2033898305084746,
+    "top_quintile_probability": 0.3559322033898305
+  },
+  "right_tail_repeatability": "FEW_LARGE_BUT_PLAUSIBLE_WINNERS",
+  "run_id": "UKACTIVE-A4-20260823-001",
+  "stage_id": "UKACTIVE-A4",
+  "top_contributors": [
+    {
+      "family": "GLOBAL_SILVER_MINERS",
+      "share_of_total_excess_pnl_vs_equal_pool": 0.7365339369741247,
+      "share_of_total_net_portfolio_gain": 0.5286123016515655
+    },
+    {
+      "family": "EUROPE_BANKS",
+      "share_of_total_excess_pnl_vs_equal_pool": 0.3166946716636941,
+      "share_of_total_net_portfolio_gain": 0.1967782184404833
+    },
+    {
+      "family": "GLOBAL_SEMICONDUCTORS",
+      "share_of_total_excess_pnl_vs_equal_pool": 0.2315212285507323,
+      "share_of_total_net_portfolio_gain": 0.1791102149745998
+    },
+    {
+      "family": "GLOBAL_OIL_GAS",
+      "share_of_total_excess_pnl_vs_equal_pool": 0.138647840747552,
+      "share_of_total_net_portfolio_gain": 0.1684638229815726
+    },
+    {
+      "family": "GLOBAL_GOLD_MINERS",
+      "share_of_total_excess_pnl_vs_equal_pool": -0.1832103575141113,
+      "share_of_total_net_portfolio_gain": 0.0515764924667324
+    }
+  ],
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}

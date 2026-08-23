@@ -1,0 +1,91 @@
+{
+  "specification_id": "UKACTIVE-A5-FROZEN-CANDIDATE-v1",
+  "status": "FROZEN_NOT_STARTED",
+  "created_date": "2026-08-23",
+  "evidence_target": "E3_PROSPECTIVE_CONFIRMATION",
+  "historical_development_cutoff": "2026-08-21",
+  "prospective_signal_not_before": "2026-08-28",
+  "prospective_start_rule": "FIRST_FINAL_VALID_XLON_SESSION_OF_A_CALENDAR_MONTH_AFTER_SPEC_COMMIT_AND_TAG",
+  "model_freeze_git_tag": "ukactive-a5-frozen-candidate-v1-20260823",
+  "model_freeze_git_commit": "RESOLVE_FROM_TAG_AT_RUNTIME",
+  "candidate": {
+    "economic_pool": "INDUSTRY_PLUS_THEME",
+    "signal": "MH_LEVEL_3_6_12_REFERENCE",
+    "signal_horizons_xlon_sessions": [63, 126, 252],
+    "signal_component_fields": ["RANK_RS_63", "RANK_RS_126", "RANK_RS_252"],
+    "signal_component_weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+    "ranking_unit": "economic_exposure_family_id",
+    "ranking_direction": "DESCENDING",
+    "tie_break": "economic_exposure_family_id_ASCENDING",
+    "selection": "TOP_1",
+    "weighting": "EQUAL_100_PERCENT_OF_ACTIVE_SLEEVE",
+    "review_cadence": "MONTHLY_FINAL_VALID_XLON_SESSION",
+    "signal_information_time": "AFTER_REVIEW_SESSION_CLOSE",
+    "execution": "FIRST_VALID_CLOSE_ON_OR_AFTER_NEXT_XLON_SESSION_WITHIN_3_XLON_SESSIONS",
+    "same_close_execution": false,
+    "global_benchmark_family_id": "GLOBAL_DEVELOPED_WORLD",
+    "equal_weight_pool_benchmark": "CONTEMPORANEOUS_INDUSTRY_PLUS_THEME_POOL"
+  },
+  "universe": {
+    "source": "A2R2_CORRECTED_HISTORY_PLUS_A3R2U_VERSIONED_CURRENT_UNIVERSE",
+    "membership": "SIGNAL_SPECIFIC_DYNAMIC_ADMISSION",
+    "stale_or_missing_values": "EXCLUDED_NOT_FILLED",
+    "proxy_history": "PROHIBITED",
+    "duplicate_rank_entries": "PROHIBITED",
+    "family_ids_frozen": true,
+    "new_family_policy": "REQUIRES_SEPARATE_VERSIONED_UNIVERSE_EVIDENCE_AND_DOES_NOT_REWRITE_PRIOR_DECISIONS"
+  },
+  "implementation": {
+    "selection_rule": "PREFERRED_CURRENT_UK_LINE_FROM_VERSIONED_UNIVERSE_SNAPSHOT",
+    "ii_rule": "CHECK_CURRENT_II_CONFIRMATION_AFTER_ECONOMIC_TOP_1_IS_FROZEN",
+    "no_rerank_for_implementation_failure": true,
+    "confirmed_state": "SHADOW_EXECUTABLE_CURRENT_II_CONFIRMED",
+    "public_only_state": "SHADOW_NOT_EXECUTABLE_II_UNCHECKED",
+    "unresolved_state": "SHADOW_NOT_EXECUTABLE_IMPLEMENTATION_UNRESOLVED",
+    "orders_permitted": false,
+    "scheduler_permitted": false
+  },
+  "costs": {
+    "canonical_one_way_friction_bps": 20.0,
+    "stress_one_way_friction_bps": [10.0, 20.0, 40.0],
+    "ii_fixed_fee_gbp_per_trade_leg": 3.99,
+    "canonical_sleeve_size_gbp": 250000.0,
+    "non_gbp_fx_rate": 0.0075,
+    "historical_spread_claim": "NONE"
+  },
+  "regimes": {
+    "definition_source": "UKACTIVE_A3R2_REGIME_DEFINITIONS.md",
+    "definition_source_sha256": "2396be67468adff444ca4b69991fd091762a137e6fc9b5d48ccdc9e523ce20e5",
+    "state_history_source": "UKACTIVE_A3R2_REGIME_STATE_HISTORY.parquet",
+    "state_history_source_sha256": "4f0c61830e59e3c6dc5c1968ba8f8da8880a66e696b5e89d21a7e90d7804a79b",
+    "fields": [
+      "global_trend_regime",
+      "volatility_regime",
+      "dispersion_regime",
+      "breadth_regime",
+      "rotation_intensity_regime",
+      "us_technology_dominance"
+    ],
+    "portfolio_filtering": "PROHIBITED_IN_V1"
+  },
+  "evaluation": {
+    "minimum_completed_monthly_decisions_for_primary_review": 24,
+    "interim_monitoring": "DATA_AND_EXECUTION_QUALITY_ONLY_NO_EFFICACY_PROMOTION",
+    "primary_effect": "NET_RETURN_OF_FROZEN_TOP_1_MINUS_CONTEMPORANEOUS_EQUAL_WEIGHT_POOL",
+    "secondary_effects": [
+      "NET_RETURN_MINUS_GLOBAL_DEVELOPED_WORLD",
+      "SELECTED_MINUS_UNSELECTED_RETURN",
+      "RANK_1_FUTURE_TOP_QUINTILE_FREQUENCY",
+      "DRAWDOWN_AND_TURNOVER"
+    ],
+    "early_performance_stop": "PROHIBITED",
+    "lineage_stop_conditions": [
+      "DATA_OR_TIMING_DEFECT",
+      "FROZEN_RULE_CHANGE",
+      "UNIVERSE_OR_IMPLEMENTATION_POLICY_CHANGE"
+    ]
+  },
+  "lineage_break_rule": "ANY_SIGNAL_UNIVERSE_CADENCE_SELECTION_EXECUTION_COST_OR_IMPLEMENTATION_RULE_CHANGE_TERMINATES_V1_CONFIRMATION_LINEAGE",
+  "backfill": "PROHIBITED",
+  "warning": "THIS IS A RESEARCH SHADOW SPECIFICATION, NOT A DEPLOYMENT OR INVESTMENT RECOMMENDATION"
+}
