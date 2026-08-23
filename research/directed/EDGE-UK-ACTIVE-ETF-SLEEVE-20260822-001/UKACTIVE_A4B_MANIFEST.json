@@ -1,9 +1,9 @@
 {
   "stage_id": "UKACTIVE-A4B",
   "run_id": "UKACTIVE-A4B-20260823-001",
-  "generated_utc": "2026-08-23T12:16:37.134602+00:00",
+  "generated_utc": "2026-08-23T12:20:05.337332+00:00",
   "git_branch": "research/ukactive-a4b",
-  "pre_final_git_commit": "eda677817b9e24e8f737eb13901e22d02d55bb1f",
+  "pre_final_git_commit": "4661601ba95c498c1043d42101fa0349c5dcc46c",
   "final_git_commit": "6b45c3a9b10a38829b3e80aeb3b479bc8e99c58c",
   "git_checkpoints": {
     "a4b_preflight_tag_target": "93b45ba474c0bfd7df9c7e5ce083df1ce0e74c29",
@@ -64,8 +64,8 @@
     },
     {
       "relative_path": "code/build_ukactive_a4b_robustness.py",
-      "sha256": "7adeb84e0b6a1ffff843a72431f4d67c49681ebc38d03d3516d7ec7667029045",
-      "size_bytes": 33058
+      "sha256": "60f09a8e8a0a2723eae2374ef2c67f89f049bdd5d8918f8a7bba6c8520d0ea6a",
+      "size_bytes": 33284
     },
     {
       "relative_path": "code/query_ukactive_rotation.py",
@@ -326,8 +326,8 @@
     },
     {
       "relative_path": "UKACTIVE_A4B_YEAR_BY_YEAR_RESULTS.csv",
-      "sha256": "13fbf62f0b04e3eb22b5f060fdcbbe4a02c67b6fd83187bceb239ba8a4fdd777",
-      "size_bytes": 17051
+      "sha256": "b1f898261898b31cc02ea4f1e6534b835bc2373d499080c2f7c918a05f3835f0",
+      "size_bytes": 17548
     }
   ],
   "commands": [

@@ -55,6 +55,8 @@ def _calendar_year_rows(simulations: dict[str, core.A4BSimulation]) -> pd.DataFr
             end = CUTOFF if year == CUTOFF.year else pd.Timestamp(year=year, month=12, day=31)
             start = max(LATEST5_START, pd.Timestamp(year=year, month=1, day=1))
             row = _window_metrics(sim, f"CALENDAR_{year}", start, end)
+            values = sim.curve.loc[sim.curve["date"].between(start, end), "portfolio_value"].astype(float)
+            row["period_total_return"] = float(values.iloc[-1] / values.iloc[0] - 1.0) if len(values) >= 2 else np.nan
             row["partial_year"] = bool(year == CUTOFF.year)
             rows.append(row)
     return pd.DataFrame(rows)
