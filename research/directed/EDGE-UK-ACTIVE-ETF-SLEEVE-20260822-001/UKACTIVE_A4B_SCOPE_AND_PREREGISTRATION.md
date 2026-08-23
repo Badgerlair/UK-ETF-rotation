@@ -23,6 +23,8 @@ A4B tests only position lifecycle and total-risk management:
 
 All thresholds, state precedence, lockout behaviour, regime score, multipliers, gates, costs and evidence windows are frozen in `config/UKACTIVE_A4B_POLICY_v1.json` before portfolio outcomes are calculated.
 
+In a combined model, the order is fixed: monthly slow incumbent → optional challenger handover → independent per-position exit/profit cap → total-sleeve regime multiplier → residual actual GBP cash. MFE is measured from the actual execution entry using only valid endpoint wealth observed by the management close.
+
 ## Bounded adjacency review
 
 The cheap, decision-relevant omissions are covered: starter dilution, incumbent/challenger handover, fast failure, partial harvesting, MFE give-back, regime exposure, cash, costs, right-tail retention and counterfactual avoided-loss/foregone-upside attribution. Intraday stops, new horizons, new families, leverage, shorting, news, fundamentals, machine learning, macro forecasts, tax and discretionary overrides remain excluded.

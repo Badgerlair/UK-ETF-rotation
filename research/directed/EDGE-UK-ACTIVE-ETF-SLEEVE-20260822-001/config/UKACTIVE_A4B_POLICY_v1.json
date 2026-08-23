@@ -127,6 +127,8 @@
     "incumbent_residual": true
   },
   "exit_modules": {
+    "application_scope": "EACH_RISKY_POSITION_INDEPENDENTLY_AFTER_SCALE_IN_TARGETS_AND_BEFORE_REGIME_MULTIPLIER",
+    "mfe_measurement": "MAXIMUM_VALID_ENDPOINT_WEALTH_SINCE_ACTUAL_ENTRY_AVAILABLE_AT_MANAGEMENT_CLOSE",
     "FAST_TAPER": {
       "normal_weight": 1.0,
       "first_weakening_weight": 0.75,
@@ -189,6 +191,13 @@
       "GRADUAL_HOSTILE_25": {"STRONG": 1.0, "POSITIVE": 1.0, "MATURE": 0.75, "DETERIORATING": 0.5, "HOSTILE": 0.25}
     }
   },
+  "combination_order": [
+    "MONTHLY_SLOW_INCUMBENT",
+    "OPTIONAL_SCALE_IN_HANDOVER",
+    "OPTIONAL_PER_POSITION_EXIT_OR_PROFIT_CAP",
+    "TOTAL_SLEEVE_REGIME_MULTIPLIER",
+    "RESIDUAL_TO_ACTUAL_GBP_CASH"
+  ],
   "costs": {
     "canonical_one_way_friction_bps": 20.0,
     "stress_one_way_friction_bps": [10.0, 20.0, 40.0],
