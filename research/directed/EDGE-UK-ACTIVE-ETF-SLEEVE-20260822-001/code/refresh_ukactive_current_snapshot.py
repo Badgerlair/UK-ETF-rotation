@@ -36,8 +36,10 @@ def main() -> int:
     asof = pd.Timestamp(snapshot["as_of_date"].iloc[0]).strftime("%Y-%m-%d")
     snapshot_dir = PROGRAMME_ROOT / "snapshots"
     snapshot_dir.mkdir(exist_ok=True)
-    immutable_csv = snapshot_dir / f"UKACTIVE_ROTATION_SNAPSHOT_{asof}.csv"
-    immutable_json = snapshot_dir / f"UKACTIVE_ROTATION_SNAPSHOT_{asof}.json"
+    # A4B adds a lifecycle display overlay without rewriting the immutable
+    # A3R2 snapshot for the same market-data date.
+    immutable_csv = snapshot_dir / f"UKACTIVE_ROTATION_SNAPSHOT_{asof}_A4B_V1.csv"
+    immutable_json = snapshot_dir / f"UKACTIVE_ROTATION_SNAPSHOT_{asof}_A4B_V1.json"
     csv_bytes = snapshot.to_csv(index=False, lineterminator="\n").encode("utf-8")
     json_payload = json.loads(snapshot.to_json(orient="records", date_format="iso"))
     json_bytes = (json.dumps(json_payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
@@ -122,6 +124,10 @@ python code\\refresh_ukactive_current_snapshot.py --asof latest
 ```
 
 The refresh command preserves a date-versioned snapshot under `snapshots/` and refuses to rewrite that date with different bytes. Current alias files are refreshed only from the requested frozen data cutoff. Ranks are research intelligence, not deployment instructions. Historical UK retail/account/broker eligibility remains unresolved.
+
+## A4B lifecycle overlay
+
+The query also displays FAST_RS, SLOW_RS, frozen leadership and incumbent/challenger state, the A4B regime score/state, target risky/cash allocation, incumbent MFE/give-back and profit-lock state. These fields are display-only. A4B found no qualifying lifecycle/regime candidate, so the overlay reports `BASELINE_REFERENCE_ONLY_NO_LIFECYCLE_CANDIDATE` and cannot alter historical research decisions.
 """
     write_text(PROGRAMME_ROOT / "UKACTIVE_A3R2Q_QUERY_GUIDE.md", guide)
     manifest = {
@@ -129,6 +135,7 @@ The refresh command preserves a date-versioned snapshot under `snapshots/` and r
         "run_id": "UKACTIVE-A3R2Q-20260823-001",
         "created_at": utc_now(),
         "as_of": asof,
+        "snapshot_schema_version": "A4B_LIFECYCLE_OVERLAY_V1",
         "executed_from_commit": git_output("rev-parse", "HEAD"),
         "post_a3r2q_commit": "PENDING_AFTER_EXECUTION",
         "code": [audit_file(Path(__file__)), audit_file(Path(__file__).with_name("query_ukactive_rotation.py"))],

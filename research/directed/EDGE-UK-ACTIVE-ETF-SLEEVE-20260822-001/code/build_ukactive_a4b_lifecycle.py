@@ -514,11 +514,21 @@ def _counterfactual_actions(simulations: dict[str, core.A4BSimulation], data: co
             avoided = max(0.0, delta)
             foregone = max(0.0, -delta)
             incremental_cost = reduction * 20.0 / 10_000.0 + 3.99 / 250000.0
+            position_return = float(getattr(action, "position_return", np.nan))
+            embedded_gain_fraction = (
+                max(position_return, 0.0) / (1.0 + position_return)
+                if pd.notna(position_return) and position_return > -1.0 else 0.0
+            )
+            profit_locked = reduction * embedded_gain_fraction
+            profit_remaining = max(float(action.to_weight), 0.0) * embedded_gain_fraction
             rows.append({
                 "module_id": module_id, "counterfactual_event_id": f"{module_id}-CF-{number:03d}",
                 "review_date": pd.Timestamp(action.review_date), "execution_date": execution_date,
                 "counterfactual_end_date": end_date, "family": family,
                 "action_type": action.action_type, "allocation_reduced": reduction,
+                "position_return_at_reduction": position_return,
+                "realised_profit_locked_return_equivalent": profit_locked,
+                "profit_remaining_invested_return_equivalent": profit_remaining,
                 "family_counterfactual_return": family_factor - 1.0, "actual_cash_return": cash_factor - 1.0,
                 "avoided_downside_return_equivalent": avoided, "foregone_upside_return_equivalent": foregone,
                 "incremental_cost_return_equivalent": incremental_cost,
@@ -602,6 +612,8 @@ def main() -> None:
     # Aggregate action-counterfactual economics without using it to choose rules here.
     monetisation = counterfactual.groupby("module_id", as_index=False).agg(
         partial_reduction_events=("counterfactual_event_id", "count"),
+        aggregate_profit_locked=("realised_profit_locked_return_equivalent", "sum"),
+        aggregate_profit_remaining_invested=("profit_remaining_invested_return_equivalent", "sum"),
         aggregate_avoided_downside=("avoided_downside_return_equivalent", "sum"),
         aggregate_foregone_upside=("foregone_upside_return_equivalent", "sum"),
         aggregate_incremental_cost=("incremental_cost_return_equivalent", "sum"),

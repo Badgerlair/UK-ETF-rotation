@@ -1,0 +1,4 @@
+item_id,severity,status,item,effect,owner_next_stage,warning
+A4B-OPEN-001,MATERIAL_NON_BLOCKING_FOR_E2,OPEN,Historical UK retail/ISA/account/broker eligibility remains partly unresolved,Blocks deployment claim; does not alter data-only E2 comparison,IMPLEMENTATION_VERIFICATION,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4B-OPEN-002,BLOCKING_FOR_A5_V2,OPEN,No lifecycle/regime architecture passed the -25% drawdown gate,No lifecycle V2 prospective candidate can be frozen,NEW_CAUSAL_EXPLORATION_LINEAGE,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4B-OPEN-003,MATERIAL,OPEN,A4/A3R2 right-tail dependence remains,Baseline remains developmental and concentration-sensitive,PROSPECTIVE_OR_NEW_PREREGISTERED_RESEARCH,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"

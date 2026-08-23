@@ -3,26 +3,26 @@
   "code": [
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\refresh_ukactive_current_snapshot.py",
-      "sha256": "eea502598839de3cec26b2b9cc7bff0ac0f7d6864f157e00997031828ed1b25f",
-      "size_bytes": 11905
+      "sha256": "6df45c96bc6b2bf272a2daf72158cc464cf43fe2c93aa3e459dff0a130c923ce",
+      "size_bytes": 12535
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\query_ukactive_rotation.py",
-      "sha256": "2227d0a5e09f226cebf9586fa32e3fdca2391b4a1cf3a4e234dcdc38ef7196ca",
-      "size_bytes": 13248
+      "sha256": "8714d876803c5161af90290dd4031e01740f9583fa4937578a0e05474b8ee7c9",
+      "size_bytes": 15048
     }
   ],
-  "created_at": "2026-08-23T08:04:17+00:00",
+  "created_at": "2026-08-23T12:13:25+00:00",
   "current_outputs": [
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT.csv",
-      "sha256": "e073151ff1d9b522ffe34a9a11171b58bce1bfb5d86045d4effdc594620c008a",
-      "size_bytes": 85258
+      "sha256": "fafbdf445b1c9affd289db9b2acbb905260789df1755b4d5ecc28cccd81150a7",
+      "size_bytes": 91729
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT.json",
-      "sha256": "8f961c4d44ad7cf302cbd307220cdfed7bf81c507176d30c1cc5546503d5cb09",
-      "size_bytes": 210087
+      "sha256": "4970b281b9afca0d02a8c538737ff6d94619315e012d5852ad57ac221c8ed50c",
+      "size_bytes": 255216
     },
     {
       "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_REGIME_STATE.json",
@@ -30,17 +30,17 @@
       "size_bytes": 1056
     }
   ],
-  "executed_from_commit": "0898f509be951e9b792345aa1bcf7289e2133bac",
+  "executed_from_commit": "eda677817b9e24e8f737eb13901e22d02d55bb1f",
   "immutable_outputs": [
     {
-      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21.csv",
-      "sha256": "e073151ff1d9b522ffe34a9a11171b58bce1bfb5d86045d4effdc594620c008a",
-      "size_bytes": 85258
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21_A4B_V1.csv",
+      "sha256": "fafbdf445b1c9affd289db9b2acbb905260789df1755b4d5ecc28cccd81150a7",
+      "size_bytes": 91729
     },
     {
-      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21.json",
-      "sha256": "8f961c4d44ad7cf302cbd307220cdfed7bf81c507176d30c1cc5546503d5cb09",
-      "size_bytes": 210087
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21_A4B_V1.json",
+      "sha256": "4970b281b9afca0d02a8c538737ff6d94619315e012d5852ad57ac221c8ed50c",
+      "size_bytes": 255216
     }
   ],
   "input_hashes": [
@@ -71,9 +71,10 @@
     "pyarrow": "24.0.0",
     "python": "3.12.10"
   },
-  "post_a3r2q_commit": "32e6388a02689fd932b348aa20695f93c6199d5e",
+  "post_a3r2q_commit": "PENDING_AFTER_EXECUTION",
   "run_id": "UKACTIVE-A3R2Q-20260823-001",
   "snapshot_rows": 82,
+  "snapshot_schema_version": "A4B_LIFECYCLE_OVERLAY_V1",
   "validation": [
     {
       "detail": "25/25 sampled exact",

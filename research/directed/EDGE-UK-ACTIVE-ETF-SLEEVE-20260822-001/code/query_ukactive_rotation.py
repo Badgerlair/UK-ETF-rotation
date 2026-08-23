@@ -140,6 +140,26 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
     regime_columns = ["pool_id", "global_trend_regime", "volatility_regime", "dispersion_regime", "breadth_regime", "rotation_intensity_regime", "us_technology_dominance"]
     selected = selected.merge(regime[["date", *regime_columns]], left_on=["date", "analysis_context_id"], right_on=["date", "pool_id"], how="left")
 
+    # A4B is a display-only overlay generated after the historical experiment.
+    # It exposes lifecycle diagnostics but cannot feed A3R2/A4/A4B decisions.
+    a4b_overlay_path = PROGRAMME_ROOT / "UKACTIVE_A4B_QUERY_OVERLAY.parquet"
+    if a4b_overlay_path.exists():
+        a4b = pd.read_parquet(a4b_overlay_path)
+        a4b["date"] = pd.to_datetime(a4b["date"])
+        a4b = a4b.loc[a4b["date"].eq(resolved)].drop_duplicates(["date", "economic_exposure_family_id"])
+        a4b_fields = [
+            "date", "economic_exposure_family_id", "FAST_RS", "SLOW_RS",
+            "LEADERSHIP_STATE", "challenger_status", "incumbent_status",
+            "REGIME_SCORE", "REGIME_STATE", "REGIME_PEAK_DETECTED",
+            "REGIME_PEAK_OR_MATURITY_FLAG", "target_leadership_allocation",
+            "regime_multiplier", "final_target_risky_allocation", "cash_allocation",
+            "MFE", "current_giveback", "profit_lock_state", "a4b_portfolio_status",
+        ]
+        selected = selected.merge(
+            a4b[[column for column in a4b_fields if column in a4b.columns]],
+            on=["date", "economic_exposure_family_id"], how="left", validate="many_to_one",
+        )
+
     current_view = resolved == current_cutoff
     if not current_view:
         selected["II_CURRENT_TRADABLE"] = "NOT_APPLICABLE_HISTORICAL_ASOF"
@@ -172,6 +192,11 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
         "REL_SLOPE_63": "relative_line_slope_63",
         "REL_R2_63": "relative_line_r2_63",
         "ROTATION_STATE": "relative_strength_state",
+        "LEADERSHIP_STATE": "leadership_state",
+        "REGIME_SCORE": "regime_score",
+        "REGIME_STATE": "regime_state",
+        "REGIME_PEAK_DETECTED": "regime_peak_flag",
+        "REGIME_PEAK_OR_MATURITY_FLAG": "regime_peak_maturity_flag",
         "contemporaneous_research_maturity": "research_maturity_asof",
         "data_quality_flags": "data_quality_status",
     }
@@ -186,6 +211,10 @@ def build_snapshot(asof: str | pd.Timestamp = "latest", pool: str | None = None)
         *segment_columns, "one_week_rank_change", "one_month_rank_change", "relative_line_slope_63", "relative_line_r2_63",
         "relative_strength_state", "state_transition", "leadership_duration_weeks", "global_trend_regime", "volatility_regime",
         "dispersion_regime", "breadth_regime", "rotation_intensity_regime", "us_technology_dominance", "research_maturity_asof",
+        "FAST_RS", "SLOW_RS", "leadership_state", "challenger_status", "incumbent_status",
+        "regime_score", "regime_state", "regime_peak_flag", "regime_peak_maturity_flag",
+        "target_leadership_allocation", "regime_multiplier", "final_target_risky_allocation",
+        "cash_allocation", "MFE", "current_giveback", "profit_lock_state", "a4b_portfolio_status",
         "data_quality_status", "current_universe_status", "current_implementable_view", "market_intelligence_classification",
         "public_ISA_rules_status", "UK_retail_disclosure_status", "LSE_current_status", "current_observation_date", "warning",
     ]

@@ -166,6 +166,37 @@ def _write(frame: pd.DataFrame, name: str) -> None:
     frame.to_csv(PROGRAMME_ROOT / name, index=False, date_format="%Y-%m-%d")
 
 
+def _annotate_regime_peaks(peaks: pd.DataFrame, baseline: core.A4BSimulation) -> pd.DataFrame:
+    result = peaks.copy()
+    curve = baseline.curve.set_index("date")["portfolio_value"].astype(float)
+    for label, sessions in [("4w", 21), ("8w", 42)]:
+        returns: list[float] = []
+        adverse: list[float] = []
+        for row in result.itertuples():
+            date = pd.Timestamp(row.date)
+            dates = curve.index[curve.index >= date]
+            if len(dates) <= sessions:
+                returns.append(np.nan)
+                adverse.append(np.nan)
+                continue
+            end = pd.Timestamp(dates[sessions])
+            path = curve.loc[dates[0]:end] / float(curve.loc[dates[0]]) - 1.0
+            returns.append(float(path.iloc[-1]))
+            adverse.append(float(path.min()))
+        result[f"baseline_forward_return_{label}"] = returns
+        result[f"baseline_max_adverse_move_{label}"] = adverse
+        result[f"preceded_negative_portfolio_return_{label}"] = result[f"baseline_forward_return_{label}"].lt(0)
+    result["peak_evidence_classification"] = np.select(
+        [
+            result["preceded_negative_portfolio_return_4w"] & result["preceded_negative_portfolio_return_8w"],
+            result["preceded_negative_portfolio_return_4w"] | result["preceded_negative_portfolio_return_8w"],
+        ],
+        ["PRECEDED_4W_AND_8W_NEGATIVE_RETURN", "PRECEDED_ONE_NEGATIVE_HORIZON"],
+        default="DID_NOT_PRECEDE_NEGATIVE_RETURN",
+    )
+    return result
+
+
 def main() -> None:
     data = core.load_a4b_data()
     baseline_plan = build_plan(data, "A4_BASELINE_MONTHLY", frequency="MONTHLY_ONLY")
@@ -265,6 +296,7 @@ def main() -> None:
     state_columns = score_columns[:-1] + ["REGIME_STATE", "REGIME_PEAK_DETECTED", "REGIME_PEAK_DATE", "REGIME_PEAK_OR_MATURITY_FLAG", "warning"]
     _write(data.weekly_regime[[column for column in state_columns if column in data.weekly_regime.columns]], "UKACTIVE_A4B_REGIME_STATE_HISTORY.csv")
     peaks = data.weekly_regime.loc[data.weekly_regime["REGIME_PEAK_DETECTED"]].copy()
+    peaks = _annotate_regime_peaks(peaks, baseline)
     _write(peaks, "UKACTIVE_A4B_REGIME_PEAK_EVENTS.csv")
     _write(regime_results, "UKACTIVE_A4B_REGIME_SCALING_RESULTS.csv")
     regime_events = pd.concat(regime_event_parts, ignore_index=True) if regime_event_parts else pd.DataFrame()

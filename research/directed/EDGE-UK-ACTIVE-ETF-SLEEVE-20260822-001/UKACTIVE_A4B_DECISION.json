@@ -1,0 +1,23 @@
+{
+  "stage_id": "UKACTIVE-A4B",
+  "decision": "UKACTIVE_A4B_BASELINE_REMAINS_PREFERRED",
+  "decision_basis": "No preregistered lifecycle, profit-lock, or regime module passed the capital-preservation and return-retention gates. STARTER_B weekly improved return but not drawdown; it is not promoted.",
+  "baseline_status": "RESEARCH_REFERENCE_ONLY_FAILS_HARD_DRAWDOWN_GATE",
+  "scale_in": "SECONDARY_INCREMENTAL_RETURN_ONLY_NOT_PROMOTED",
+  "fast_taper": "REJECTED",
+  "mfe_giveback_lock": "REJECTED",
+  "strength_harvest": "REJECTED",
+  "strength_plus_deceleration": "REJECTED",
+  "binary_regime_defence": "REJECTED",
+  "gradual_regime_scaling": "REJECTED",
+  "combined_model": "REJECTED",
+  "hard_drawdown_gate_passed": false,
+  "preferred_drawdown_range_reached": false,
+  "a5_baseline_v1_status": "A5_BASELINE_V1_NOT_STARTED",
+  "a5_lifecycle_v2_created": false,
+  "start_a5": false,
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "mechanism_evidence_level": "E1_EXPLORATORY",
+  "independent_confirmation": false,
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}
