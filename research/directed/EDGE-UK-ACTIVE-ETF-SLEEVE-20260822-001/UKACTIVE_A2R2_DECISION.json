@@ -1,0 +1,30 @@
+{
+  "a3r1r1_authorised": true,
+  "a3r2_authorised": false,
+  "automated_tests": {
+    "PASS": 18
+  },
+  "decision": "UKACTIVE_A2R2_PASS",
+  "latest_eligible_family_counts": {
+    "126": 81,
+    "21": 81,
+    "252": 80,
+    "42": 81,
+    "63": 81
+  },
+  "lookahead_introduced": false,
+  "manual_validation": {
+    "PASS": 10
+  },
+  "old_five_horizon_composite_last_valid_date": "2017-08-25",
+  "old_rs_252_last_valid_date": "2017-11-03",
+  "prices_or_returns_forward_filled": false,
+  "root_cause": "OBSERVED_UNION_MASTER_CALENDAR_CONTAMINATION_PLUS_STRICT_CONSECUTIVE_DAILY_RETURN_ROLLING",
+  "run_id": "UKACTIVE-A2R2-20260823-001",
+  "stage_id": "UKACTIVE-A2R2",
+  "stale_observations_admitted": false,
+  "synthetic_tests": {
+    "PASS": 8
+  },
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+}

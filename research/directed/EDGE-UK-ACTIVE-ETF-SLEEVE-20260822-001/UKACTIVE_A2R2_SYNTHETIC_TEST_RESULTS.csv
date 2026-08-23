@@ -1,0 +1,9 @@
+test_id,description,result,observed
+A2R2-SYN-01,One missing master-calendar row does not permanently destroy a 252-session signal,PASS,0.2865960372848406
+A2R2-SYN-02,A stale observation is not treated as a fresh zero-return observation,PASS,[false]
+A2R2-SYN-03,A genuinely long suspension resets continuity,PASS,"[1, 1, 2]"
+A2R2-SYN-04,A short international fund holiday uses only the declared prior-endpoint tolerance,PASS,"""1"""
+A2R2-SYN-05,A benchmark missing observation creates no future leakage,PASS,"""False"""
+A2R2-SYN-06,An economically identical canonical implementation transition follows the lineage policy,PASS,"[{""continuity_segment_id"": 1, ""continuity_reason"": ""CONTINUITY_SEGMENT_START_OR_RESET""}, {""continuity_segment_id"": 1, ""continuity_reason"": ""EXACT_PREVIOUS_XLON_SESSION_ENDPOINT""}, {""continuity_segment_id"": 1, ""continuity_reason"": ""SEMANTICALLY_IDENTICAL_IMPLEMENTATION_TRANSITION""}]"
+A2R2-SYN-07,Pre-inception observations never enter,PASS,[false]
+A2R2-SYN-08,Date-T close never earns date-T forward return,PASS,"{""stored"": 0.010000000000000009, ""expected_t_plus_1"": 0.010000000000000009}"

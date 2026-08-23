@@ -1,0 +1,454 @@
+{
+  "a3r1r1_authorised": true,
+  "automated_test_results": [
+    {
+      "description": "Exact old RS_252 cutoff is reproduced",
+      "observed": "\"2017-11-03\"",
+      "result": "PASS",
+      "test_id": "A2R2-T01"
+    },
+    {
+      "description": "Exact old five-horizon cutoff is reproduced",
+      "observed": "\"2017-08-25\"",
+      "result": "PASS",
+      "test_id": "A2R2-T02"
+    },
+    {
+      "description": "Extraneous bank-holiday sessions are removed",
+      "observed": "{\"removed\": 29, \"contains_2017_08_28\": true}",
+      "result": "PASS",
+      "test_id": "A2R2-T03"
+    },
+    {
+      "description": "No endpoint marked valid is stale, missing or proxy",
+      "observed": "0",
+      "result": "PASS",
+      "test_id": "A2R2-T04"
+    },
+    {
+      "description": "No formation target uses a future or later-than-nominal endpoint",
+      "observed": "{\"21\": 2, \"32\": 2, \"42\": 2, \"50\": 2, \"52\": 2, \"63\": 2, \"75\": 2, \"126\": 2, \"252\": 2}",
+      "result": "PASS",
+      "test_id": "A2R2-T05"
+    },
+    {
+      "description": "Formation endpoint tolerance is fixed independently of signal results",
+      "observed": "{\"formation_value\": \"VALIDATED_ADJUSTED_WEALTH_GBP_ENDPOINT\", \"daily_return_validity_is_not_endpoint_validity\": true, \"latest_signal_endpoint\": \"EXACT_SIGNAL_DATE_ENDPOINT_REQUIRED\", \"target_endpoint\": \"NOMINAL_HORIZON_SESSION_OR_NEAREST_PREVIOUS_VALID_ENDPOINT_WITHIN_TOLERANCE\", \"target_backward_tolerance_xlon_sessions\": 3, \"maximum_continuity_gap_xlon_sessions\": 3, \"forward_endpoint\": \"EXACT_NOMINAL_FUTURE_XLON_SESSION_REQUIRED\", \"intervening_price_fill\": false, \"return_forward_fill\": false, \"manufactured_zero_returns\": false, \"future_interpolation\": false, \"proxy_history_allowed\": false, \"stale_endpoint_allowed\": false, \"pre_inception_endpoint_allowed\": false, \"long_gap_action\": \"RESET_CONTINUITY_SEGMENT\"}",
+      "result": "PASS",
+      "test_id": "A2R2-T06"
+    },
+    {
+      "description": "Long gaps reset continuity",
+      "observed": "3.0",
+      "result": "PASS",
+      "test_id": "A2R2-T07"
+    },
+    {
+      "description": "US defence pre-mandate history is excluded",
+      "observed": "0",
+      "result": "PASS",
+      "test_id": "A2R2-T08"
+    },
+    {
+      "description": "GLOBAL_BANKS is absent from the A3R1 ranking input",
+      "observed": "false",
+      "result": "PASS",
+      "test_id": "A2R2-T09"
+    },
+    {
+      "description": "Raw retained A2R panel values are unchanged",
+      "observed": "[{\"audit_scope\": \"RETAINED_RAW_DAILY_PANEL_ROWS\", \"compared_observations\": 704688, \"exact_matches\": 704688, \"expected_differences\": 0, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 0.0, \"audit_result\": \"PASS\"}, {\"audit_scope\": \"EXTRANEOUS_NON_XLON_ROWS_REMOVED\", \"compared_observations\": 29, \"exact_matches\": 0, \"expected_differences\": 29, \"unexplained_differences\": 0, \"maximum_absolute_difference\": NaN, \"audit_result\": \"PASS\"}]",
+      "result": "PASS",
+      "test_id": "A2R2-T10"
+    },
+    {
+      "description": "Pre-defect formation-return regression is clean",
+      "observed": "[{\"audit_scope\": \"PRE_DEFECT_FORMATION_RETURN_21\", \"compared_observations\": 61511, \"exact_matches\": 61496, \"expected_differences\": 15, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 0.022012152054401025, \"audit_result\": \"PASS\"}, {\"audit_scope\": \"PRE_DEFECT_FORMATION_RETURN_42\", \"compared_observations\": 57472, \"exact_matches\": 57446, \"expected_differences\": 26, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 0.030732517672848764, \"audit_result\": \"PASS\"}, {\"audit_scope\": \"PRE_DEFECT_FORMATION_RETURN_63\", \"compared_observations\": 54558, \"exact_matches\": 54543, \"expected_differences\": 15, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 0.031054475341474604, \"audit_result\": \"PASS\"}, {\"audit_scope\": \"PRE_DEFECT_FORMATION_RETURN_126\", \"compared_observations\": 47739, \"exact_matches\": 47739, \"expected_differences\": 0, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 2.5222879340702775e-15, \"audit_result\": \"PASS\"}, {\"audit_scope\": \"PRE_DEFECT_FORMATION_RETURN_252\", \"compared_observations\": 38289, \"exact_matches\": 38289, \"expected_differences\": 0, \"unexplained_differences\": 0, \"maximum_absolute_difference\": 3.3306690738754696e-15, \"audit_result\": \"PASS\"}]",
+      "result": "PASS",
+      "test_id": "A2R2-T11"
+    },
+    {
+      "description": "Modern 252-session coverage is restored wherever genuine histories exist",
+      "observed": "{\"604\": 51, \"634\": 62, \"664\": 67, \"694\": 72, \"724\": 73, \"754\": 75, \"784\": 80}",
+      "result": "PASS",
+      "test_id": "A2R2-T12"
+    },
+    {
+      "description": "GLOBAL_DEVELOPED_WORLD retains modern 252-session formation coverage",
+      "observed": "{\"20\": 254, \"21\": 253, \"22\": 250, \"23\": 251, \"24\": 254, \"25\": 253, \"26\": 162}",
+      "result": "PASS",
+      "test_id": "A2R2-T13"
+    },
+    {
+      "description": "All ten manual reconstructions pass",
+      "observed": "{\"PASS\": 10}",
+      "result": "PASS",
+      "test_id": "A2R2-T14"
+    },
+    {
+      "description": "All eight synthetic fixtures pass",
+      "observed": "{\"PASS\": 8}",
+      "result": "PASS",
+      "test_id": "A2R2-T15"
+    },
+    {
+      "description": "Signal endpoint grid is unique by date and economic family",
+      "observed": "0",
+      "result": "PASS",
+      "test_id": "A2R2-T16"
+    },
+    {
+      "description": "No implementation listing is a ranking identity",
+      "observed": "{\"families\": 84, \"matrix_columns\": 84}",
+      "result": "PASS",
+      "test_id": "A2R2-T17"
+    },
+    {
+      "description": "No same-close forward return construction",
+      "observed": "{\"5\": 0, \"10\": 0, \"21\": 0, \"42\": 0, \"63\": 0, \"126\": 0}",
+      "result": "PASS",
+      "test_id": "A2R2-T18"
+    }
+  ],
+  "calendar_statistics": {
+    "cutoff_measurement_source": "PRESERVED_UKACTIVE_A3R1_MULTI_HORIZON_RS_PARQUET",
+    "extraneous_non_session_count": 29,
+    "genuine_session_added_count": 1,
+    "old_five_horizon_composite_last_valid_weekly_date": "2017-08-25",
+    "old_rs_252_last_valid_weekly_date": "2017-11-03",
+    "raw_all_horizon_availability_last_date": "2017-11-03",
+    "raw_family_benchmark_rs252_last_date": "2026-08-21"
+  },
+  "created_at": "2026-08-23T02:11:32+00:00",
+  "decision": "UKACTIVE_A2R2_PASS",
+  "exact_command": "python \"D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a2r2.py\"",
+  "executed_code": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a2r2.py",
+      "sha256": "4bd8687187018517ec5a9e25c8d3fe45f569c025df9cb3a44aaba64125385d3d"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\ukactive_a2r2_core.py",
+      "sha256": "8b0c9b6ffa75c955374c92930adfb15861b7cef27acbf80d38bb8f03bda5c53d"
+    }
+  ],
+  "frozen_a3r1_policy_sha256": "55307bcadd924b4324384999ec09e5c53f4c1a1f492a0315aeba2231ad791d55",
+  "frozen_a3r1_registry_sha256": "9541dce60e0ff0c566ef55e8a9eeccea34fab6cdc138893c7885c69db5732943",
+  "git_branch": "research/ukactive-a3r1",
+  "git_remote": "NONE",
+  "inputs": [
+    {
+      "bytes": 4097,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A2R2_POLICY_v1.json",
+      "sha256": "dd22226b9bbab6741c6877a8d1dea2287cc3f8b43ed9789f7d912c7ad4cc9502"
+    },
+    {
+      "bytes": 14790,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A3R1_POLICY_v1.json",
+      "sha256": "55307bcadd924b4324384999ec09e5c53f4c1a1f492a0315aeba2231ad791d55"
+    },
+    {
+      "bytes": 66675408,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_INSTRUMENT_HISTORY_MASTER.parquet",
+      "sha256": "f3725e7532835f69f119ccfc4718b84d0f048c147358412cf5bb6693b45e47ee"
+    },
+    {
+      "bytes": 6863375,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R_CORRECTED_IMPLEMENTATION_HISTORY.parquet",
+      "sha256": "e29b50f82ed54cbc071bce82c628fcdaf9a538bb5cd07c76ea667d8ec200e780"
+    },
+    {
+      "bytes": 7119543,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+      "sha256": "9188b6ad0cda34944f5c260be6f224da56c9c288a362b0e3ba9250fbe5a5b2e3"
+    },
+    {
+      "bytes": 236050,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_XLON_RESEARCH_CALENDAR.csv",
+      "sha256": "ed3a65d8b203dcb7da9665e15634c726fa664500a273bf14cb9a0dff35211532"
+    },
+    {
+      "bytes": 4608,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R1_SIGNAL_REGISTRY.csv",
+      "sha256": "9541dce60e0ff0c566ef55e8a9eeccea34fab6cdc138893c7885c69db5732943"
+    }
+  ],
+  "latest_eligible_family_counts": {
+    "126": 81,
+    "21": 81,
+    "252": 80,
+    "42": 81,
+    "63": 81
+  },
+  "outputs": [
+    {
+      "bytes": 30242,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_2017_CUTOFF_FORENSIC_TRACE.csv",
+      "rows": 130,
+      "sha256": "52abde3523438d2368d3bc2b2c4dd732829dd4beed0814a6554eda168220fdab"
+    },
+    {
+      "bytes": 463252,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_XLON_RESEARCH_CALENDAR.csv",
+      "rows": 6678,
+      "sha256": "c211a3d3b0d7f93e5889c3dcafd0a3390adb24151277cb1b84265f213a776d95"
+    },
+    {
+      "bytes": 2720,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_BENCHMARK_VALIDITY_AUDIT.csv",
+      "rows": 27,
+      "sha256": "1ce7e08c2b100bc304de82c42e6bdce53a07c19f042cdae8e7c57197c81b1df4"
+    },
+    {
+      "bytes": 870303,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_IMPLEMENTATION_TRANSITION_AUDIT.csv",
+      "rows": 3849,
+      "sha256": "9f287cbbba1da5724b1a3e12e17e932c285f28572c334507887fd1e665ba8eb5"
+    },
+    {
+      "bytes": 75981,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_AFFECTED_FAMILY_AUDIT.csv",
+      "rows": 410,
+      "sha256": "3b9de96df680a8da0ff99e75a2c7de0c504c1e4793022a57c1677407a1243a78"
+    },
+    {
+      "bytes": 5579392,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+      "rows": 704688,
+      "sha256": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3"
+    },
+    {
+      "bytes": 12835450,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet",
+      "rows": 558516,
+      "sha256": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf"
+    },
+    {
+      "bytes": 39179317,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+      "rows": 558516,
+      "sha256": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff"
+    },
+    {
+      "bytes": 1448722,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_HORIZON_COVERAGE_HEATMAP.csv",
+      "rows": 41190,
+      "sha256": "cd1a015f4d0f181fe7a8ae3dca7dd8d6dabb5ade754f5ca196790627ee951c81"
+    },
+    {
+      "bytes": 28594,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_HORIZON_COVERAGE_BY_YEAR.csv",
+      "rows": 810,
+      "sha256": "78a07a0aeecacbd2a13aad56f8d972c2f8c5e054e70a89b7650fb98ba9199c05"
+    },
+    {
+      "bytes": 614,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_BEFORE_AFTER_DIFF_AUDIT.csv",
+      "rows": 7,
+      "sha256": "d9e0853aad30941482c46718bc32f98514d2fd62b6f260f52913c8667562c68f"
+    },
+    {
+      "bytes": 3596,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_MANUAL_VALIDATION_CASES.csv",
+      "rows": 10,
+      "sha256": "7fcea117848adb4b8a98b2b955c31e7df32d39aaa9cb25e5a1bd524a7b08b590"
+    },
+    {
+      "bytes": 1138,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SYNTHETIC_TEST_RESULTS.csv",
+      "rows": 8,
+      "sha256": "8c9d189e41349b0b5627596afd5c1a4945c75ffac5d787bfdded37119c3edeba"
+    },
+    {
+      "bytes": 4270,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_AUTOMATED_TEST_RESULTS.csv",
+      "rows": 18,
+      "sha256": "b40740b7e2118200c24cf0a20aa8b84e2dda10c9d2ac4a0f4821e8d975653b52"
+    },
+    {
+      "bytes": 1051,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SCOPE_AND_METHOD.md",
+      "rows": null,
+      "sha256": "e6eec0633c3ac3752452fcc48e096ed68d690dfb022596af6cfbcd1cde98f9b3"
+    },
+    {
+      "bytes": 1898,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_ROOT_CAUSE_REPORT.md",
+      "rows": null,
+      "sha256": "f2fe8719c9d57e955a84a1c596eb473cf39eab4fcec54518f892235e8cd54cd5"
+    },
+    {
+      "bytes": 1008,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SESSION_CALENDAR_POLICY.md",
+      "rows": null,
+      "sha256": "a0978050dc95202abedb7e437000fe06f8dfdc437731561b06f0d2566d4f85d8"
+    },
+    {
+      "bytes": 1113,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SIGNAL_HISTORY_POLICY.md",
+      "rows": null,
+      "sha256": "53c7d7fd26243eda87dae43ea0c268e0c6ca40d5a0689e402c4340482aa2df49"
+    },
+    {
+      "bytes": 997,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_GAP_AND_STALENESS_POLICY.md",
+      "rows": null,
+      "sha256": "4186102576de6440b1d070e8602ac3d3097cc1615f672c293aa705a52838e177"
+    },
+    {
+      "bytes": 4478,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_MANUAL_VALIDATION_CASES.md",
+      "rows": null,
+      "sha256": "e45a41e397b0119ff4333234a5553b01fa24f6763be8c6a03d7dc59e52fb6714"
+    },
+    {
+      "bytes": 692,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_DATA_QUALITY_REPORT.md",
+      "rows": null,
+      "sha256": "3e3118e6e2a18c044cee0ba1fe3198f325677d0f9334c503b901e613ebde5883"
+    },
+    {
+      "bytes": 619,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_A3R1R1_READINESS_REPORT.md",
+      "rows": null,
+      "sha256": "7366c0e5fcb26ee9a82cb0748a5d3a79ed66b110d1b2798cd625ae4b9c22e10b"
+    },
+    {
+      "bytes": 129,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_PRIOR_A3R1_STATUS.md",
+      "rows": null,
+      "sha256": "fe9be889b81d226ac8e9db33d940ee4ec781cf6dd62d18f2a375fa69f2c6e07e"
+    },
+    {
+      "bytes": 864,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_DECISION.json",
+      "rows": null,
+      "sha256": "547f090735e35b0f5f6c10fc7e061434ee3f44ff6316eda6eadf1e15fcb78c7f"
+    }
+  ],
+  "packages": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "policy": {
+    "a3r1r1": {
+      "authorised_only_after_a2r2_non_blocking_pass": true,
+      "experiment_id": "UKACTIVE-A3R1R1",
+      "specification_changes_allowed": false,
+      "specification_source": "UKACTIVE_A3R1_POLICY_v1.json_AND_UKACTIVE_A3R1_SIGNAL_REGISTRY.csv"
+    },
+    "authoritative_inputs": {
+      "a2_instrument_history": "UKACTIVE_A2_INSTRUMENT_HISTORY_MASTER.parquet",
+      "a2_observed_union_calendar": "UKACTIVE_A2_XLON_RESEARCH_CALENDAR.csv",
+      "a2r_corrected_instrument_history": "UKACTIVE_A2R_CORRECTED_IMPLEMENTATION_HISTORY.parquet",
+      "a2r_corrected_panel": "UKACTIVE_A2R_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+      "a2r_parent_benchmark_map": "UKACTIVE_A2R_A3R0_PARENT_BENCHMARK_MAP_POST_A2R.csv",
+      "a2r_role_master": "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+      "a3r1_failed_manifest": "UKACTIVE_A3R1_MANIFEST.json",
+      "a3r1_policy": "config/UKACTIVE_A3R1_POLICY_v1.json",
+      "a3r1_signal_registry": "UKACTIVE_A3R1_SIGNAL_REGISTRY.csv"
+    },
+    "canonical_selection_repair": {
+      "alternate_selection_based_on_returns_allowed": false,
+      "calendar_contamination_exception": "PAST_ONLY_CARRY_OF_PRIOR_TRUE_SESSION_SELECTION_ONLY_WHEN_AN_EXTRANEOUS_OLD_MASTER_DATE_INTERVENED",
+      "future_selection_information_allowed": false,
+      "maximum_selection_carry_true_sessions": 1,
+      "normal_rule": "PRESERVE_A2R_SELECTED_IMPLEMENTATION"
+    },
+    "declared_date": "2026-08-23",
+    "endpoint_policy": {
+      "daily_return_validity_is_not_endpoint_validity": true,
+      "formation_value": "VALIDATED_ADJUSTED_WEALTH_GBP_ENDPOINT",
+      "forward_endpoint": "EXACT_NOMINAL_FUTURE_XLON_SESSION_REQUIRED",
+      "future_interpolation": false,
+      "intervening_price_fill": false,
+      "latest_signal_endpoint": "EXACT_SIGNAL_DATE_ENDPOINT_REQUIRED",
+      "long_gap_action": "RESET_CONTINUITY_SEGMENT",
+      "manufactured_zero_returns": false,
+      "maximum_continuity_gap_xlon_sessions": 3,
+      "pre_inception_endpoint_allowed": false,
+      "proxy_history_allowed": false,
+      "return_forward_fill": false,
+      "stale_endpoint_allowed": false,
+      "target_backward_tolerance_xlon_sessions": 3,
+      "target_endpoint": "NOMINAL_HORIZON_SESSION_OR_NEAREST_PREVIOUS_VALID_ENDPOINT_WITHIN_TOLERANCE"
+    },
+    "formation_horizons_sessions": [
+      21,
+      32,
+      42,
+      50,
+      52,
+      63,
+      75,
+      126,
+      252
+    ],
+    "forward_horizons_sessions": [
+      5,
+      10,
+      21,
+      42,
+      63,
+      126
+    ],
+    "implementation_transition_policy": {
+      "continue_when": "BOTH_LINES_MAP_TO_THE_SAME_A2R_SEMANTIC_FINGERPRINT_AND_NEW_LINE_HAS_A_PRIOR_VALID_ENDPOINT_WITHIN_THREE_XLON_SESSIONS",
+      "pre_mandate_history_allowed": false,
+      "reset_when": "SEMANTIC_CONTINUITY_OR_RECENT_ENDPOINT_IS_UNAVAILABLE",
+      "return_similarity_is_not_evidence": true
+    },
+    "official_calendar_policy": {
+      "base_rule": "MONDAY_TO_FRIDAY_EXCLUDING_ENGLAND_WALES_PUBLIC_AND_BANK_HOLIDAYS",
+      "calendar_id": "XLON_ENGLAND_WALES_BUSINESS_DAY_RULES_v1",
+      "coverage_end": "INHERIT_A2_CALENDAR_MAX_DATE",
+      "coverage_start": "INHERIT_A2_CALENDAR_MIN_DATE",
+      "dated_exceptions": [
+        "2002_GOLDEN_JUBILEE",
+        "2011_ROYAL_WEDDING",
+        "2012_DIAMOND_JUBILEE",
+        "2020_VE_DAY_MOVE",
+        "2022_PLATINUM_JUBILEE",
+        "2022_STATE_FUNERAL",
+        "2023_CORONATION"
+      ],
+      "half_days_are_sessions": true,
+      "observed_vendor_union_is_not_authoritative": true,
+      "official_sources": [
+        "https://www.londonstockexchange.com/equities-trading/business-days",
+        "https://www.gov.uk/bank-holidays",
+        "https://www.londonstockexchange.com/resources/london-stock-exchange-notices"
+      ]
+    },
+    "policy_id": "UKACTIVE-A2R2-POLICY-v1.0.0",
+    "research_boundary": {
+      "a3r2_execution_allowed": false,
+      "data_engine_remediation_only": true,
+      "parameter_search_allowed": false,
+      "portfolio_research_allowed": false,
+      "remediation_may_use_a3r1_efficacy_results": false,
+      "signal_change_allowed": false,
+      "taxonomy_change_allowed": false,
+      "universe_redesign_allowed": false
+    },
+    "run_id": "UKACTIVE-A2R2-20260823-001",
+    "stage_id": "UKACTIVE-A2R2",
+    "weekly_observation_rule": "FINAL_ELIGIBLE_XLON_SESSION_OF_EACH_CALENDAR_WEEK"
+  },
+  "post_a2r2_commit": "PENDING_AFTER_EXECUTION",
+  "run_id": "UKACTIVE-A2R2-20260823-001",
+  "source_retrieval_date": "2026-08-23",
+  "source_urls": [
+    "https://www.londonstockexchange.com/equities-trading/business-days",
+    "https://www.gov.uk/bank-holidays",
+    "https://www.londonstockexchange.com/resources/london-stock-exchange-notices"
+  ],
+  "stage_id": "UKACTIVE-A2R2",
+  "started_from_git_commit": "f9597c3d3f95e5de5c55da92721a93771aeeadf6",
+  "unresolved_items": [
+    "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED"
+  ]
+}

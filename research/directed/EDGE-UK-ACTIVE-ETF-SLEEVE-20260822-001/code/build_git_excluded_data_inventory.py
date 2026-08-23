@@ -47,7 +47,7 @@ def sha256_file(path: Path) -> str:
 
 def policy_for(relative_path: str) -> str:
     name = relative_path.upper()
-    for stage in ("A3R1", "A2R", "A3R0", "A3", "A2", "A0A1"):
+    for stage in ("A3R1R1", "A2R2", "A3R1", "A2R", "A3R0", "A3", "A2", "A0A1"):
         if f"UKACTIVE_{stage}" in name:
             return f"UKACTIVE_{stage}_POLICY_OR_MANIFEST"
     if relative_path.lower().startswith("evidence/sources/"):

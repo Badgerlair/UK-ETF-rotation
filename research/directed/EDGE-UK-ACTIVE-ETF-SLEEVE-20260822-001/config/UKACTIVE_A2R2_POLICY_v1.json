@@ -1,0 +1,88 @@
+{
+  "stage_id": "UKACTIVE-A2R2",
+  "run_id": "UKACTIVE-A2R2-20260823-001",
+  "policy_id": "UKACTIVE-A2R2-POLICY-v1.0.0",
+  "declared_date": "2026-08-23",
+  "research_boundary": {
+    "data_engine_remediation_only": true,
+    "universe_redesign_allowed": false,
+    "taxonomy_change_allowed": false,
+    "signal_change_allowed": false,
+    "parameter_search_allowed": false,
+    "portfolio_research_allowed": false,
+    "a3r2_execution_allowed": false,
+    "remediation_may_use_a3r1_efficacy_results": false
+  },
+  "authoritative_inputs": {
+    "a2_instrument_history": "UKACTIVE_A2_INSTRUMENT_HISTORY_MASTER.parquet",
+    "a2r_corrected_instrument_history": "UKACTIVE_A2R_CORRECTED_IMPLEMENTATION_HISTORY.parquet",
+    "a2r_corrected_panel": "UKACTIVE_A2R_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+    "a2_observed_union_calendar": "UKACTIVE_A2_XLON_RESEARCH_CALENDAR.csv",
+    "a2r_role_master": "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+    "a2r_parent_benchmark_map": "UKACTIVE_A2R_A3R0_PARENT_BENCHMARK_MAP_POST_A2R.csv",
+    "a3r1_policy": "config/UKACTIVE_A3R1_POLICY_v1.json",
+    "a3r1_signal_registry": "UKACTIVE_A3R1_SIGNAL_REGISTRY.csv",
+    "a3r1_failed_manifest": "UKACTIVE_A3R1_MANIFEST.json"
+  },
+  "official_calendar_policy": {
+    "calendar_id": "XLON_ENGLAND_WALES_BUSINESS_DAY_RULES_v1",
+    "base_rule": "MONDAY_TO_FRIDAY_EXCLUDING_ENGLAND_WALES_PUBLIC_AND_BANK_HOLIDAYS",
+    "half_days_are_sessions": true,
+    "observed_vendor_union_is_not_authoritative": true,
+    "coverage_start": "INHERIT_A2_CALENDAR_MIN_DATE",
+    "coverage_end": "INHERIT_A2_CALENDAR_MAX_DATE",
+    "official_sources": [
+      "https://www.londonstockexchange.com/equities-trading/business-days",
+      "https://www.gov.uk/bank-holidays",
+      "https://www.londonstockexchange.com/resources/london-stock-exchange-notices"
+    ],
+    "dated_exceptions": [
+      "2002_GOLDEN_JUBILEE",
+      "2011_ROYAL_WEDDING",
+      "2012_DIAMOND_JUBILEE",
+      "2020_VE_DAY_MOVE",
+      "2022_PLATINUM_JUBILEE",
+      "2022_STATE_FUNERAL",
+      "2023_CORONATION"
+    ]
+  },
+  "endpoint_policy": {
+    "formation_value": "VALIDATED_ADJUSTED_WEALTH_GBP_ENDPOINT",
+    "daily_return_validity_is_not_endpoint_validity": true,
+    "latest_signal_endpoint": "EXACT_SIGNAL_DATE_ENDPOINT_REQUIRED",
+    "target_endpoint": "NOMINAL_HORIZON_SESSION_OR_NEAREST_PREVIOUS_VALID_ENDPOINT_WITHIN_TOLERANCE",
+    "target_backward_tolerance_xlon_sessions": 3,
+    "maximum_continuity_gap_xlon_sessions": 3,
+    "forward_endpoint": "EXACT_NOMINAL_FUTURE_XLON_SESSION_REQUIRED",
+    "intervening_price_fill": false,
+    "return_forward_fill": false,
+    "manufactured_zero_returns": false,
+    "future_interpolation": false,
+    "proxy_history_allowed": false,
+    "stale_endpoint_allowed": false,
+    "pre_inception_endpoint_allowed": false,
+    "long_gap_action": "RESET_CONTINUITY_SEGMENT"
+  },
+  "canonical_selection_repair": {
+    "normal_rule": "PRESERVE_A2R_SELECTED_IMPLEMENTATION",
+    "calendar_contamination_exception": "PAST_ONLY_CARRY_OF_PRIOR_TRUE_SESSION_SELECTION_ONLY_WHEN_AN_EXTRANEOUS_OLD_MASTER_DATE_INTERVENED",
+    "maximum_selection_carry_true_sessions": 1,
+    "alternate_selection_based_on_returns_allowed": false,
+    "future_selection_information_allowed": false
+  },
+  "implementation_transition_policy": {
+    "continue_when": "BOTH_LINES_MAP_TO_THE_SAME_A2R_SEMANTIC_FINGERPRINT_AND_NEW_LINE_HAS_A_PRIOR_VALID_ENDPOINT_WITHIN_THREE_XLON_SESSIONS",
+    "reset_when": "SEMANTIC_CONTINUITY_OR_RECENT_ENDPOINT_IS_UNAVAILABLE",
+    "return_similarity_is_not_evidence": true,
+    "pre_mandate_history_allowed": false
+  },
+  "formation_horizons_sessions": [21, 32, 42, 50, 52, 63, 75, 126, 252],
+  "forward_horizons_sessions": [5, 10, 21, 42, 63, 126],
+  "weekly_observation_rule": "FINAL_ELIGIBLE_XLON_SESSION_OF_EACH_CALENDAR_WEEK",
+  "a3r1r1": {
+    "authorised_only_after_a2r2_non_blocking_pass": true,
+    "experiment_id": "UKACTIVE-A3R1R1",
+    "specification_source": "UKACTIVE_A3R1_POLICY_v1.json_AND_UKACTIVE_A3R1_SIGNAL_REGISTRY.csv",
+    "specification_changes_allowed": false
+  }
+}
