@@ -1,0 +1,10 @@
+{
+  "best_scale_in_module": "STARTER_B",
+  "best_scale_in_source": "SCALE_IN_STARTER_B_WEEKLY",
+  "best_exit_or_profit_module": "NONE",
+  "best_exit_or_profit_source": "NO_EXIT_OR_PROFIT_MODULE_PASSED_SEQUENTIAL_GATE",
+  "best_regime_module": "CONTROL",
+  "best_regime_source": "NONE",
+  "combination_count": 8,
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}

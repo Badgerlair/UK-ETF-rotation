@@ -106,10 +106,16 @@ def build_plan(
     exit_module: str = "NONE",
     regime_module: str = "CONTROL",
     review_start: pd.Timestamp = LATEST5_REVIEW_START,
+    excluded_families: set[str] | None = None,
+    maturity_scope: str = "DYNAMIC_POINT_IN_TIME",
 ) -> core.PlannedPortfolio:
     """Build a single registered module without consulting its returns."""
 
-    leaders = core.monthly_leaders(data.monthly_features)
+    leaders = core.monthly_leaders(
+        data.monthly_features,
+        excluded_families=excluded_families,
+        maturity_scope=maturity_scope,
+    )
     dates = _target_dates(data, frequency, review_start)
     planner = core.TargetPlanner(data, module_id, frequency)
     decisions: list[dict[str, Any]] = []
@@ -123,6 +129,11 @@ def build_plan(
 
     for date in dates:
         frame = _feature_frame(data, date, frequency)
+        frame = core.filter_features(
+            frame,
+            excluded_families=excluded_families,
+            maturity_scope=maturity_scope,
+        )
         incumbent = _leader_at(leaders, date)
         if not incumbent:
             continue
@@ -255,8 +266,18 @@ def build_plan(
         regime = _regime_row(data, date)
         regime_state = str(regime.get("REGIME_STATE", "POSITIVE"))
         multiplier = float(data.policy["regime"]["multipliers"][regime_module].get(regime_state, 1.0))
+        pre_regime_target = dict(target)
         target = {family: weight * multiplier for family, weight in target.items() if weight * multiplier > 1e-12}
         target_risky = float(sum(target.values()))
+        if multiplier < 1.0 and pre_regime_target:
+            actions.append({
+                "module_id": module_id, "review_date": date,
+                "action_type": f"REGIME_SCALE_{regime_state}", "family": "TOTAL_RISKY_SLEEVE",
+                "from_weight": float(sum(pre_regime_target.values())), "to_weight": target_risky,
+                "leadership_state": "NOT_APPLICABLE", "position_return": np.nan,
+                "mfe": np.nan, "mae": np.nan, "giveback_ratio": np.nan,
+                "reason": f"REGIME_{regime_module}",
+            })
         execution = planner.submit(date, target, f"{scale_module}|{exit_module}|REGIME_{regime_module}")
         decisions.append({
             "module_id": module_id,
@@ -351,10 +372,25 @@ def _episodes(sim: core.A4BSimulation, data: core.A4BData) -> pd.DataFrame:
         returns = levels / float(episode["entry_level"]) - 1.0
         mfe = float(max(0.0, returns.max()))
         mae = float(min(0.0, returns.min()))
-        realised = float(returns.iloc[-1])
+        economic_return = float(returns.iloc[-1])
+        curve_block = sim.curve.loc[sim.curve["date"].between(start, end)]
+        entry_curve = curve_block.loc[curve_block["date"].eq(start)].head(1)
+        initial_family_value = (
+            float(json.loads(entry_curve.iloc[0]["family_values_json"]).get(family, np.nan))
+            if len(entry_curve) else np.nan
+        )
+        family_market_pnl = float(sum(
+            float(json.loads(value).get(family, 0.0))
+            for value in curve_block["family_market_pnl_json"]
+        ))
+        realised = family_market_pnl / initial_family_value if pd.notna(initial_family_value) and initial_family_value > 0 else economic_return
         output.append({
             "episode_id": f"{sim.module_id}-EP-{index:03d}", **episode,
-            "xlon_observations": int(len(levels)), "position_return_at_exit_or_cutoff": realised,
+            "xlon_observations": int(len(levels)),
+            "underlying_economic_return_at_exit_or_cutoff": economic_return,
+            "initial_family_value": initial_family_value,
+            "family_market_pnl": family_market_pnl,
+            "position_return_at_exit_or_cutoff": realised,
             "mfe": mfe, "mae": mae,
             "capture_ratio": realised / mfe if mfe > 0 else np.nan,
             "giveback_ratio": (mfe - realised) / mfe if mfe > 0 else np.nan,
@@ -575,7 +611,7 @@ def main() -> None:
 
     baseline_contributors = pd.read_csv(PROGRAMME_ROOT / "UKACTIVE_A4_RETURN_CONTRIBUTION_BY_FAMILY.csv")
     top_families = baseline_contributors.head(5)["family"].tolist()
-    right_tail_rows: list[dict[str, Any]] = []
+    contribution_by_module: dict[str, dict[str, float]] = {}
     for module_id, sim in simulations.items():
         curve = sim.curve.loc[sim.curve["date"].between(LATEST5_START, CUTOFF)]
         family_pnl = {family: 0.0 for family in top_families}
@@ -583,13 +619,19 @@ def main() -> None:
             parsed = json.loads(value)
             for family in family_pnl:
                 family_pnl[family] += float(parsed.get(family, 0.0))
+        contribution_by_module[module_id] = family_pnl
+    baseline_market = contribution_by_module["A4_BASELINE_MONTHLY"]
+    right_tail_rows: list[dict[str, Any]] = []
+    for module_id, family_pnl in contribution_by_module.items():
         for family, contribution in family_pnl.items():
             base = float(baseline_contributors.loc[baseline_contributors["family"].eq(family), "net_portfolio_pnl_contribution"].iloc[0])
+            same_method_base = float(baseline_market[family])
             right_tail_rows.append({
                 "module_id": module_id, "family": family,
                 "module_market_pnl_contribution": contribution,
                 "baseline_net_pnl_contribution": base,
-                "contribution_retention_ratio": contribution / base if base != 0 else np.nan,
+                "same_method_baseline_market_pnl_contribution": same_method_base,
+                "contribution_retention_ratio": contribution / same_method_base if same_method_base != 0 else np.nan,
                 "warning": core.WARNING,
             })
     right_tail = pd.DataFrame(right_tail_rows)

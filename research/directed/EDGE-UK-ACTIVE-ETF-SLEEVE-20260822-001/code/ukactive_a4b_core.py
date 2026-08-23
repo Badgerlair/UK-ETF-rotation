@@ -325,6 +325,8 @@ def build_regime_state_history(policy: dict[str, Any], monthly_dates: pd.Datetim
     source = pd.read_parquet(PROGRAMME_ROOT / "UKACTIVE_A3R2_REGIME_STATE_HISTORY.parquet")
     source["date"] = pd.to_datetime(source["date"])
     weekly = source.loc[source["pool_id"].eq("INDUSTRY_PLUS_THEME")].sort_values("date").reset_index(drop=True)
+    if "warning" in weekly.columns:
+        weekly = weekly.rename(columns={"warning": "A3R2_SOURCE_WARNING"})
     weekly["REGIME_SCORE"] = (
         weekly["global_trend_regime"].eq("ABOVE_200").astype(int)
         + weekly["dispersion_regime"].eq("HIGH").astype(int)
