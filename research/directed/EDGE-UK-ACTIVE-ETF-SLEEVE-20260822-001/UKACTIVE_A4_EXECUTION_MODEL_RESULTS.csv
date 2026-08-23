@@ -1,0 +1,4 @@
+execution_model,status,same_close_allowed,gross_cagr,net_cagr_20bps_250k,maximum_execution_lag_xlon_sessions,reason
+CANONICAL_NEXT_ELIGIBLE_SESSION_ENDPOINT,VALIDATED_AND_EXECUTED,False,0.26904013467202104,0.24861332935426628,3.0,Frozen A2R2/A3R2 next-eligible-session endpoint contract retained exactly.
+NEXT_OPEN,NOT_RUN_NO_VALIDATED_NEXT_OPEN_ROUTE,False,,,,Raw open fields have not passed an execution-price validation chain; no fabricated open result is reported.
+CONSERVATIVE_LATER_SESSION_PRICE,NOT_RUN_NOT_PREDECLARED_AND_NO_VALIDATED_FILL_POLICY,False,,,,A later-session fill policy was not invented after observing A3R2/A4 results.

@@ -1,0 +1,16 @@
+test_id,test,status,detail
+A4-I01,All five frozen implementation scopes were reconstructed,PASS,"['A4_CONCENTRATION_TOP_2', 'A4_CONCENTRATION_TOP_3', 'A4_NEIGHBOUR_1', 'A4_NEIGHBOUR_2', 'A4_PRIMARY']"
+A4-I02,All 22 historically selected economic families were investigated,PASS,families=22
+A4-I03,Executed selections retain exact A2R2 implementation IDs,PASS,executed_rows=480
+A4-I04,"Executed selections use valid non-stale, non-proxy A2R2 rows",PASS,executed_rows=480
+A4-I05,No current status is back-projected,PASS,all historical rows explicitly NO
+A4-I06,Current ii observations retain 2026-08-23 current-only metadata,PASS,confirmed=2
+A4-I07,LSE listing alone never creates verified ISA history,PASS,verified ISA count=0
+A4-I08,FCBR—not current CYSE—is preserved for the 2021 cybersecurity episode,PASS,exact historical line check
+A4-I09,Panel-end GLOBAL_GENOMICS decision is not fabricated as executed,PASS,2026-08-21 decision has no next session
+A4-I10,No same-close execution enters,PASS,trade_rows=22
+A4-I11,NEXT_OPEN results were not fabricated,PASS,validated open route absent
+A4-I12,Cost stress contains every frozen bps/sleeve combination,PASS,rows=9
+A4-I13,Current candidate universe plus two reference benchmarks is covered,PASS,rows=29; pool=27
+A4-I14,Implementation gaps are current signal-eligible and never silently dropped,PASS,gaps=24
+A4-I15,Current ii confirmation does not masquerade as historical platform evidence,PASS,all historical platform states uncertain

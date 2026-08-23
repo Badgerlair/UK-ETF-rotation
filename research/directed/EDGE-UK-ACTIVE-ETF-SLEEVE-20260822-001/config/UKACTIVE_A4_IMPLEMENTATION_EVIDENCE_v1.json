@@ -1,0 +1,180 @@
+{
+  "policy_version": "UKACTIVE_A4_IMPLEMENTATION_EVIDENCE_v1",
+  "observation_date": "2026-08-23",
+  "historical_classification_policy": {
+    "retail_verified": "A date-stamped official UK retail disclosure for the exact ISIN existed no later than the holding entry date.",
+    "retail_probable": "Exact UCITS/share-class and XLON lineage existed by entry and primary evidence supports the product, but a date-matched UK retail disclosure was not captured.",
+    "retail_uncertain": "Exact implementation history is validated, but date-matched public UK retail evidence is insufficient.",
+    "isa_verified": "Date-matched product-specific ISA evidence is captured.",
+    "isa_probable": "Exact legal structure plus exchange admission are consistent with contemporaneous HMRC qualifying-investment rules, but product/account-specific historical confirmation is absent.",
+    "warning": "Current eligibility and current ii observations must not be back-projected historically. LSE listing alone is never treated as ISA proof."
+  },
+  "exact_historical_isin_evidence": {
+    "IE00BF16M727": {
+      "product": "First Trust Nasdaq Cybersecurity UCITS ETF Class A USD Acc",
+      "historical_ticker": "FCBR",
+      "issue_date": "2020-05-29",
+      "ucits_status": "YES_OFFICIAL_PRODUCT_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN XLON issue date and official issuer product identity are evidenced; no entry-date UK KID capture was obtained.",
+      "isa_basis": "Exact Irish UCITS share class and recognised-exchange admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.londonstockexchange.com/stock/FCBR/first-trust-global-funds-icav/company-page",
+        "https://info.ftgportfolios.com/thematic_etf_cyber_security.html"
+      ]
+    },
+    "IE00B6R51Z18": {
+      "product": "iShares Oil & Gas Exploration & Production UCITS ETF",
+      "historical_ticker": "SPOG",
+      "issue_date": "2011-09-19",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN UK issuer page and XLON listing history are evidenced; no entry-date retail-document capture was obtained.",
+      "isa_basis": "Exact Irish UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.ishares.com/uk/individual/en/products/251909/ishares-oil-gas-exploration-production-ucits-etf?locale=en_GB"
+      ]
+    },
+    "IE00BMC38736": {
+      "product": "VanEck Semiconductor UCITS ETF USD A",
+      "historical_ticker": "SMGB",
+      "issue_date": "2020-12-03",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN issuer factsheet and GBP XLON line are evidenced; no entry-date UK retail-document capture was obtained.",
+      "isa_basis": "Exact Irish UCITS share class and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.vaneck.com/ucits/semiconductor-etf/en/",
+        "https://www.vaneck.com/uk/en/library/fact-sheets/smh-fact-sheet.pdf",
+        "https://www.londonstockexchange.com/stock/SMGB/van-eck-global"
+      ]
+    },
+    "IE00B1FZS467": {
+      "product": "iShares Global Infrastructure UCITS ETF USD (Dist)",
+      "historical_ticker": "INFR",
+      "issue_date": "2006-10-23",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN issuer and XLON lineage are evidenced, including the 2017 index change; no entry-date UK retail-document capture was obtained.",
+      "isa_basis": "Exact Irish UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.ishares.com/uk/individual/en/products/251809/ishares-global-infrastructure-ucits-etf?siteEntryPassthrough=true",
+        "https://www.londonstockexchange.com/stock/INFR/ishares/company-page"
+      ]
+    },
+    "IE00B3Q19T94": {
+      "product": "Invesco EURO STOXX Optimised Banks UCITS ETF Acc",
+      "historical_ticker": "S7XP",
+      "issue_date": "2014-10-24",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN issuer documents and XLON issue date are evidenced; no entry-date UK retail-document capture was obtained.",
+      "isa_basis": "Exact Irish UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.invesco.com/ie/en/financial-products/etfs/invesco-euro-stoxx-optimised-banks-ucits-etf-acc.html",
+        "https://www.londonstockexchange.com/stock/S7XP/invesco/company-page"
+      ]
+    },
+    "IE0005YK6564": {
+      "product": "Sprott Uranium Miners UCITS ETF Acc",
+      "historical_ticker": "URNP",
+      "issue_date": "2022-05-06",
+      "ucits_status": "YES_DATE_STAMPED_KIID",
+      "retail_document_date": "2023-07-14",
+      "historical_uk_retail_status": "HISTORICALLY_VERIFIED_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "A date-stamped English KIID for the exact ISIN predates the 2023-10-02 holding entry; exact GBP XLON listing is also evidenced.",
+      "isa_basis": "Exact Irish UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://hanetf.com/fund/urnm-uranium-miners-etf/",
+        "https://hanetf.com/wp-content/assets/upload/11-25-Factsheet-URNM-IE0005YK6564-en.pdf",
+        "https://dl.avl-investmentfonds.de/fds/IE0005YK6564-KID-EN-20230714.pdf",
+        "https://www.londonstockexchange.com/stock/URNP/hanetf/company-page"
+      ]
+    },
+    "IE000IM4K4K2": {
+      "product": "Franklin AI, Metaverse and Blockchain UCITS ETF",
+      "historical_ticker": "METU",
+      "issue_date": "2022-09-09",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Official launch evidence and exact GBP XLON listing predate entry; no entry-date retail-document capture was obtained.",
+      "isa_basis": "Exact Irish UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.franklintempleton.co.uk/our-funds/etf/price-and-performance/products/33308/SINGLCLASS/franklin-metaverse-ucits-etf",
+        "https://www.franklintempleton.com/press-releases/news-room/2022/franklin-templeton-launches-new-metaverse-etf-for-european-investors",
+        "https://www.londonstockexchange.com/stock/METU/franklin-libertyshares-icav/company-page"
+      ]
+    },
+    "IE00B3CNHG25": {
+      "product": "L&G Gold Mining UCITS ETF USD Acc",
+      "historical_ticker": "AUCP",
+      "issue_date": "2008-11-06",
+      "ucits_status": "YES_LOCAL_MASTER_AND_OFFICIAL_LSE_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN GBP XLON line and UCITS identity are evidenced; no entry-date UK retail-document capture was obtained.",
+      "isa_basis": "Exact UCITS structure and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.londonstockexchange.com/stock/AUCP/legal-and-general-asset-management/trade-recap"
+      ]
+    },
+    "IE00BFD2H405": {
+      "product": "First Trust Cloud Computing UCITS ETF Acc",
+      "historical_ticker": "FSKY",
+      "issue_date": "2018-12-28",
+      "ucits_status": "YES_EXACT_ISIN_EXCHANGE_AND_KIID_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN XLON issue date and an official-market 2020 KIID record are evidenced; a date-matched UK retail document was not captured.",
+      "isa_basis": "Exact Irish UCITS share class and XLON admission are evidenced; no product/account-specific historical ISA confirmation was obtained.",
+      "source_urls": [
+        "https://www.londonstockexchange.com/stock/FSKY/first-trust-global-funds-icav/company-page",
+        "https://www.borsaitaliana.it/borsa/etf/scheda/IE00BFD2H405-XAMS.html?lang=en"
+      ]
+    },
+    "IE000UL6CLP7": {
+      "product": "Global X Silver Miners UCITS ETF USD Acc",
+      "historical_ticker": "SILG",
+      "issue_date": "2022-05-06",
+      "ucits_status": "YES_OFFICIAL_ISSUER_EVIDENCE",
+      "historical_uk_retail_status": "HISTORICALLY_PROBABLE_UK_RETAIL",
+      "historical_isa_status": "HISTORICALLY_PROBABLE_ISA_ELIGIBLE",
+      "retail_basis": "Exact-ISIN issuer and GBP XLON listing evidence predate entry; the captured issuer factsheet is later than entry, so retail status is not upgraded to verified.",
+      "isa_basis": "Issuer states current ISA/SIPP eligibility and exact UCITS/XLON identity is evidenced; this current statement is not back-projected as verified historical eligibility.",
+      "source_urls": [
+        "https://globalxetfs.eu/funds/silv?download_full_holdings=true",
+        "https://www.londonstockexchange.com/stock/SILG/global-x-etfs-icav/company-page"
+      ]
+    }
+  },
+  "common_primary_sources": [
+    {
+      "source_id": "A4-SRC-II-CHARGES-20260823",
+      "publisher": "Interactive Investor",
+      "title": "Service plans and trading charges",
+      "url": "https://www.ii.co.uk/our-charges",
+      "supports": "Current fixed dealing charge and FX-cost modelling only; not historical platform availability."
+    },
+    {
+      "source_id": "A4-SRC-HMRC-ISA-20260823",
+      "publisher": "HM Revenue & Customs",
+      "title": "Stocks and shares investments for ISA managers",
+      "url": "https://www.gov.uk/guidance/stocks-and-shares-investments-for-isa-managers",
+      "supports": "Qualifying-investment rules; product-specific and account-specific evidence remains separate."
+    },
+    {
+      "source_id": "A4-SRC-HMRC-EXCHANGES-20260823",
+      "publisher": "HM Revenue & Customs",
+      "title": "Recognised stock exchanges",
+      "url": "https://www.gov.uk/guidance/recognised-stock-exchanges",
+      "supports": "Recognised-exchange rules; LSE presence alone is not ISA proof."
+    }
+  ]
+}

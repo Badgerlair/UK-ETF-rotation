@@ -1,0 +1,239 @@
+{
+  "automated_tests": [
+    {
+      "detail": "['A4_CONCENTRATION_TOP_2', 'A4_CONCENTRATION_TOP_3', 'A4_NEIGHBOUR_1', 'A4_NEIGHBOUR_2', 'A4_PRIMARY']",
+      "status": "PASS",
+      "test": "All five frozen implementation scopes were reconstructed",
+      "test_id": "A4-I01"
+    },
+    {
+      "detail": "families=22",
+      "status": "PASS",
+      "test": "All 22 historically selected economic families were investigated",
+      "test_id": "A4-I02"
+    },
+    {
+      "detail": "executed_rows=480",
+      "status": "PASS",
+      "test": "Executed selections retain exact A2R2 implementation IDs",
+      "test_id": "A4-I03"
+    },
+    {
+      "detail": "executed_rows=480",
+      "status": "PASS",
+      "test": "Executed selections use valid non-stale, non-proxy A2R2 rows",
+      "test_id": "A4-I04"
+    },
+    {
+      "detail": "all historical rows explicitly NO",
+      "status": "PASS",
+      "test": "No current status is back-projected",
+      "test_id": "A4-I05"
+    },
+    {
+      "detail": "confirmed=2",
+      "status": "PASS",
+      "test": "Current ii observations retain 2026-08-23 current-only metadata",
+      "test_id": "A4-I06"
+    },
+    {
+      "detail": "verified ISA count=0",
+      "status": "PASS",
+      "test": "LSE listing alone never creates verified ISA history",
+      "test_id": "A4-I07"
+    },
+    {
+      "detail": "exact historical line check",
+      "status": "PASS",
+      "test": "FCBR—not current CYSE—is preserved for the 2021 cybersecurity episode",
+      "test_id": "A4-I08"
+    },
+    {
+      "detail": "2026-08-21 decision has no next session",
+      "status": "PASS",
+      "test": "Panel-end GLOBAL_GENOMICS decision is not fabricated as executed",
+      "test_id": "A4-I09"
+    },
+    {
+      "detail": "trade_rows=22",
+      "status": "PASS",
+      "test": "No same-close execution enters",
+      "test_id": "A4-I10"
+    },
+    {
+      "detail": "validated open route absent",
+      "status": "PASS",
+      "test": "NEXT_OPEN results were not fabricated",
+      "test_id": "A4-I11"
+    },
+    {
+      "detail": "rows=9",
+      "status": "PASS",
+      "test": "Cost stress contains every frozen bps/sleeve combination",
+      "test_id": "A4-I12"
+    },
+    {
+      "detail": "rows=29; pool=27",
+      "status": "PASS",
+      "test": "Current candidate universe plus two reference benchmarks is covered",
+      "test_id": "A4-I13"
+    },
+    {
+      "detail": "gaps=24",
+      "status": "PASS",
+      "test": "Implementation gaps are current signal-eligible and never silently dropped",
+      "test_id": "A4-I14"
+    },
+    {
+      "detail": "all historical platform states uncertain",
+      "status": "PASS",
+      "test": "Current ii confirmation does not masquerade as historical platform evidence",
+      "test_id": "A4-I15"
+    }
+  ],
+  "evidence_counts": {
+    "current_ii_confirmed_pool": 2,
+    "current_signal_eligible_gaps": 24,
+    "primary_route_isa": {
+      "HISTORICALLY_PROBABLE_ISA_ELIGIBLE": 21
+    },
+    "primary_route_retail": {
+      "HISTORICALLY_PROBABLE_UK_RETAIL": 20,
+      "HISTORICALLY_VERIFIED_UK_RETAIL": 1
+    }
+  },
+  "generated_at": "2026-08-23T09:00:01+00:00",
+  "git_branch": "research/ukactive-a4",
+  "git_commit_at_execution": "94b4b20ca64ee9124d438b564a8724bb34f033f2",
+  "inputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\config\\UKACTIVE_A4_IMPLEMENTATION_EVIDENCE_v1.json",
+      "sha256": "d7c96deae0d52503f8c931761a0ec335b9b911c3913f2f9cebd287afb02fb972",
+      "size_bytes": 11251
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_FEATURE_PANEL.parquet",
+      "sha256": "9b700ce0803989c382d322f97ed0e0ea503d2e003cef54d53c942fe24e87e615",
+      "size_bytes": 30779957
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_CURRENT_UNIVERSE_SNAPSHOT.csv",
+      "sha256": "8f1e732272e502868133b05905467c528b5a0dd808b8cf642bc9721bb292a53a",
+      "size_bytes": 91303
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R0_CHATGPT_IBKR_VERIFICATION_QUEUE_POST_A2R.csv",
+      "sha256": "f2540488a3715ca718ac8967765e28971654e45166e24038e583764e1698a24e",
+      "size_bytes": 120839
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+      "sha256": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+      "size_bytes": 5579392
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet",
+      "sha256": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+      "size_bytes": 12835450
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2_INSTRUMENT_HISTORY_MASTER.parquet",
+      "sha256": "f3725e7532835f69f119ccfc4718b84d0f048c147358412cf5bb6693b45e47ee",
+      "size_bytes": 66675408
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R_CORRECTED_IMPLEMENTATION_HISTORY.parquet",
+      "sha256": "e29b50f82ed54cbc071bce82c628fcdaf9a538bb5cd07c76ea667d8ec200e780",
+      "size_bytes": 6863375
+    }
+  ],
+  "outputs": [
+    {
+      "columns": 52,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_SELECTED_INSTRUMENT_HISTORY.csv",
+      "rows": 488,
+      "sha256": "3b884892f9d953b93d8429dba18189fbc2e84bfc93b9b74f2fc7d26d9e07876c",
+      "size_bytes": 600684
+    },
+    {
+      "columns": 16,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_HISTORICAL_UK_RETAIL_EVIDENCE.csv",
+      "rows": 488,
+      "sha256": "9a646b94dde52ee10c75ed8cc98cd982bb287baccbcdba206a23cb5b3a8a8ee7",
+      "size_bytes": 253290
+    },
+    {
+      "columns": 16,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_HISTORICAL_ISA_EVIDENCE.csv",
+      "rows": 488,
+      "sha256": "9e4c16e1c78b281990045677b37dc9114f5898b05b821b13a1a6113b43c85fd7",
+      "size_bytes": 257000
+    },
+    {
+      "columns": 33,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CURRENT_II_IMPLEMENTATION.csv",
+      "rows": 29,
+      "sha256": "1a8f3673fb1ae466fde158a87ed6e7154552f02ddfce8f796ccf3a9b3749c660",
+      "size_bytes": 19037
+    },
+    {
+      "columns": 35,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_CURRENT_IMPLEMENTABILITY_GAPS.csv",
+      "rows": 24,
+      "sha256": "ac8a5a84d720512f555d2128a7ca1072ddca891153d1e6823962ead419f59fad",
+      "size_bytes": 19119
+    },
+    {
+      "columns": 7,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_EXECUTION_MODEL_RESULTS.csv",
+      "rows": 3,
+      "sha256": "30c4b534ec3c190b599cc470edfcbeaee1665b7237330c7c33e711d202b63f82",
+      "size_bytes": 642
+    },
+    {
+      "columns": 18,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_COST_STRESS_RESULTS.csv",
+      "rows": 9,
+      "sha256": "38d0fc84924f2b2b5e5e80aa340dc1331024dd5eaf1e2408144efe5e97cca167",
+      "size_bytes": 2997
+    },
+    {
+      "columns": 4,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_IMPLEMENTATION_CORRECTNESS_TEST_RESULTS.csv",
+      "rows": 15,
+      "sha256": "4a58c6f58292789c22812dbd572477b8fc2c42b358ded6cfa0b98c2420392d7d",
+      "size_bytes": 1489
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A4_IMPLEMENTATION_RECONSTRUCTION_REPORT.md",
+      "sha256": "96deccefd06396d6d4e712bfebd5fa81738d3a429e2e7bb6d8ba45ad70b98f96",
+      "size_bytes": 2393
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\evidence\\UKACTIVE_A4_EVIDENCE_LEDGER.jsonl",
+      "rows": 26,
+      "sha256": "b96a855e3a568898a191ac58b3c6fddbff7806f58787e78bbb85b37d28d6316f",
+      "size_bytes": 21620
+    }
+  ],
+  "package_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10"
+  },
+  "policies": {
+    "broker": "NO_BROKER_QUERY_OR_ORDER_ACTION",
+    "execution": "A2R2_FROZEN_NEXT_ELIGIBLE_SESSION_ENDPOINT",
+    "historical_eligibility": "NO_CURRENT_BACK_PROJECTION",
+    "next_open": "NOT_RUN_NO_VALIDATED_ROUTE"
+  },
+  "run_id": "UKACTIVE-A4-IMPLEMENTATION-20260823-001",
+  "scope": {
+    "current_industry_theme_pool_families": 27,
+    "current_signal_eligible_families": 25,
+    "historically_selected_families": 22
+  },
+  "stage": "UKACTIVE-A4_IMPLEMENTATION_RECONSTRUCTION",
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}
