@@ -1,0 +1,8 @@
+test_id,requirement,status,detail
+A3R2W-T01,A3R2S gate authorises weighting,PASS,A3R2S_PORTFOLIO_RESEARCH_CANDIDATE
+A3R2W-T02,Frozen architecture matches executable constants,PASS,INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|MONTHLY|TOP_1_2_3
+A3R2W-T03,TOP_1 weighting parity,PASS,All methods must reduce to 100% single position
+A3R2W-T04,All target weights respect 50% multi-position cap,PASS,Maximum target weight when selected count >1: 0.5
+A3R2W-T05,No same-close execution,PASS,All base weighting simulations
+A3R2W-T06,Volatility uses trailing valid observations with bounded endpoint alignment,PASS,63 valid returns; <=3 prior XLON sessions; no return filled
+A3R2W-T07,Complete frozen grid retained,PASS,results=15 costs=135

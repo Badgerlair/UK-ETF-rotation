@@ -1,0 +1,19 @@
+{
+  "correctness_tests_passed": 7,
+  "correctness_tests_total": 7,
+  "decision": "A3R2W_EQUAL_WEIGHT_RETAINED",
+  "deployment_candidate": false,
+  "frozen_cadence": "MONTHLY",
+  "frozen_pool": "INDUSTRY_PLUS_THEME",
+  "frozen_selection_rules": [
+    "TOP_1",
+    "TOP_2",
+    "TOP_3"
+  ],
+  "frozen_signal": "MH_LEVEL_3_6_12_REFERENCE",
+  "passing_non_equal_methods": [],
+  "preferred_weighting_method": "EQUAL",
+  "run_id": "UKACTIVE-A3R2W-20260823-001",
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
+  "work_package": "UKACTIVE-A3R2W"
+}

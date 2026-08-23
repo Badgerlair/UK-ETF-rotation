@@ -248,7 +248,8 @@ def selection_targets(
             weights = pd.Series(1.0 / len(raw_scores), index=raw_scores.index)
         elif weighting_method == "RANK_DECAY":
             ranks = pd.Series(np.arange(1, len(raw_scores) + 1), index=raw_scores.index, dtype=float)
-            weights = (1.0 / ranks) / (1.0 / ranks).sum()
+            raw_rank_weights = (1.0 / ranks) / (1.0 / ranks).sum()
+            weights = _cap_weights(raw_rank_weights, maximum_weight)
         elif weighting_method == "SCORE_PROPORTIONAL_CAPPED":
             threshold = 0.80 if selection_rule == "VARIABLE_THRESHOLD" else float(raw_scores.min()) - 1e-12
             conviction = (raw_scores - threshold).clip(lower=1e-9)

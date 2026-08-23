@@ -1,0 +1,149 @@
+{
+  "code": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\build_ukactive_a3r2w.py",
+    "sha256": "4143e2383b7f433f337a47519a8dc81fc5c18c65964650e0ab9c439680c9bb76",
+    "size_bytes": 19072
+  },
+  "correctness": [
+    {
+      "detail": "A3R2S_PORTFOLIO_RESEARCH_CANDIDATE",
+      "requirement": "A3R2S gate authorises weighting",
+      "status": "PASS",
+      "test_id": "A3R2W-T01"
+    },
+    {
+      "detail": "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|MONTHLY|TOP_1_2_3",
+      "requirement": "Frozen architecture matches executable constants",
+      "status": "PASS",
+      "test_id": "A3R2W-T02"
+    },
+    {
+      "detail": "All methods must reduce to 100% single position",
+      "requirement": "TOP_1 weighting parity",
+      "status": "PASS",
+      "test_id": "A3R2W-T03"
+    },
+    {
+      "detail": "Maximum target weight when selected count >1: 0.5",
+      "requirement": "All target weights respect 50% multi-position cap",
+      "status": "PASS",
+      "test_id": "A3R2W-T04"
+    },
+    {
+      "detail": "All base weighting simulations",
+      "requirement": "No same-close execution",
+      "status": "PASS",
+      "test_id": "A3R2W-T05"
+    },
+    {
+      "detail": "63 valid returns; <=3 prior XLON sessions; no return filled",
+      "requirement": "Volatility uses trailing valid observations with bounded endpoint alignment",
+      "status": "PASS",
+      "test_id": "A3R2W-T06"
+    },
+    {
+      "detail": "results=15 costs=135",
+      "requirement": "Complete frozen grid retained",
+      "status": "PASS",
+      "test_id": "A3R2W-T07"
+    }
+  ],
+  "created_at": "2026-08-23T07:59:29+00:00",
+  "decision": "A3R2W_EQUAL_WEIGHT_RETAINED",
+  "definitions": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_WEIGHTING_DEFINITIONS.md",
+    "sha256": "5e7bc92735ef9b153e2e06cc47e207b1d7604c85e8e0bce9a612a733b2de7225",
+    "size_bytes": 2130
+  },
+  "executed_from_commit": "d41a7f6744c613484894d7dd4da5e1d66718fd21",
+  "frozen_inputs": {
+    "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_SCOPE_AND_FROZEN_INPUTS.md",
+    "sha256": "bff75ae7064c797a066c6cb94a35fb2f967bd2b56238e6ce8b749e94f3247863",
+    "size_bytes": 1633
+  },
+  "input_hashes": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_FEATURE_PANEL.parquet",
+      "sha256": "9b700ce0803989c382d322f97ed0e0ea503d2e003cef54d53c942fe24e87e615"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+      "sha256": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+      "sha256": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff"
+    }
+  ],
+  "outputs": [
+    {
+      "columns": 85,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_WEIGHTING_RESULTS.csv",
+      "rows": 15,
+      "sha256": "50900b9de0ffd547e26090694cf5871cbdcdfb975a9ff5617096cc3dbac1af8e",
+      "size_bytes": 21580
+    },
+    {
+      "columns": 10,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_CONCENTRATION_RESULTS.csv",
+      "rows": 15,
+      "sha256": "0115d2622ab429b682f43c0123d993b449b13d6f69e6ced2d684c97bf871db9d",
+      "size_bytes": 3952
+    },
+    {
+      "columns": 12,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_COST_AND_TURNOVER_RESULTS.csv",
+      "rows": 135,
+      "sha256": "e192a9b1bc171d339ce024a57905e204fdc79ae5670dcc6e141c26ee256bdbef",
+      "size_bytes": 29056
+    },
+    {
+      "columns": 35,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_RECENT_FIVE_YEAR_RESULTS.csv",
+      "rows": 15,
+      "sha256": "d8ddcfc701b7b4805b2f9710f1e254b171070867e1010fda008bd201d0470a16",
+      "size_bytes": 9808
+    },
+    {
+      "columns": 32,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_FULL_HISTORY_CONTEXT.csv",
+      "rows": 15,
+      "sha256": "fe329efdfc244aa952e3cae30f61441c43327edc8d7d10acec547e95b3a804e8",
+      "size_bytes": 9567
+    },
+    {
+      "columns": 13,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_DECISION_RULE_ASSESSMENT.csv",
+      "rows": 8,
+      "sha256": "a9c9a910d8cfd1815266a07e9d297b9abc3b697b304117a9e7f1f06a5d6c8c0c",
+      "size_bytes": 1947
+    },
+    {
+      "columns": 4,
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_CORRECTNESS_TEST_RESULTS.csv",
+      "rows": 7,
+      "sha256": "6b8ee9770ac3d6fa4c87c919b780a2cf04044ac3023b4c11219336d4432548bd",
+      "size_bytes": 732
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_DECISION.json",
+      "sha256": "18405013f4809923aec59390e4fa0bc28b002fd860ed45c873a52293531723c7",
+      "size_bytes": 599
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2W_RESEARCH_DIRECTOR_REVIEW.md",
+      "sha256": "e5bff543f22c4137640b785bd0b5fb51af40eab10a7753cb1834825c3bbda484",
+      "size_bytes": 1421
+    }
+  ],
+  "package_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10"
+  },
+  "post_a3r2w_commit": "PENDING_AFTER_EXECUTION",
+  "run_id": "UKACTIVE-A3R2W-20260823-001",
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
+  "work_package": "UKACTIVE-A3R2W"
+}
