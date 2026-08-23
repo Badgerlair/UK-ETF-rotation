@@ -1,0 +1,41 @@
+{
+  "a3r2w_authorised": true,
+  "best_latest_five_year_net_excess_vs_pool_cagr": 0.13871368656975824,
+  "best_latest_five_year_specification": "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY",
+  "best_latest_three_year_net_excess_vs_pool_cagr": 0.17317468365350552,
+  "best_latest_three_year_specification": "THEME|MH_LEVEL_RECENCY_TILT|TOP_2|MONTHLY",
+  "correctness_tests_passed": 19,
+  "correctness_tests_total": 19,
+  "decision": "A3R2S_PORTFOLIO_RESEARCH_CANDIDATE",
+  "decision_timestamp": "2026-08-23T07:44:18+00:00",
+  "deployment_candidate": false,
+  "fdr_surviving_primary_count": 0,
+  "historically_verified_uk_investable_strategy": false,
+  "pool_decisions": {
+    "COUNTRY": "MARKET_INTELLIGENCE_ONLY",
+    "GEOGRAPHY": "MARKET_INTELLIGENCE_ONLY",
+    "INDUSTRY": "TRADE_RESEARCH_CANDIDATE",
+    "INDUSTRY_PLUS_THEME": "TRADE_RESEARCH_CANDIDATE",
+    "SECTOR": "MARKET_INTELLIGENCE_ONLY",
+    "THEME": "TRADE_RESEARCH_CANDIDATE"
+  },
+  "preregistered_primary_combination_count": 315,
+  "qualifying_specification_count": 12,
+  "qualifying_specification_ids": [
+    "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY",
+    "INDUSTRY|PAIRWISE_MAJORITY_5H|TOP_1|MONTHLY",
+    "INDUSTRY|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY",
+    "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_2|MONTHLY",
+    "INDUSTRY|MH_LEVEL_60D_CENTERED|TOP_1|MONTHLY",
+    "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_3|MONTHLY",
+    "THEME|MH_LEVEL_EQ|TOP_2|WEEKLY",
+    "THEME|MH_LEVEL_EQ|TOP_1|WEEKLY",
+    "THEME|MH_LEVEL_EQ|TOP_2|MONTHLY",
+    "THEME|MH_LEVEL_EQ|TOP_2|FORTNIGHTLY",
+    "INDUSTRY|PAIRWISE_MAJORITY_5H|TOP_2|MONTHLY",
+    "THEME|MH_LEVEL_EQ|TOP_3|MONTHLY"
+  ],
+  "run_id": "UKACTIVE-A3R2S-20260823-001",
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
+  "work_package": "UKACTIVE-A3R2S"
+}

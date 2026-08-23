@@ -1,0 +1,20 @@
+test_id,requirement,status,detail,critical
+A3R2-T01,No same-close execution,PASS,66 sample executions,YES
+A3R2-T02,Corrected XLON calendar remains authoritative,PASS,6649 sessions,YES
+A3R2-T03,No false holiday rows return,PASS,Exact deterministic A2R2 calendar equality,YES
+A3R2-T04,No forward-filled return enters,PASS,"Valid endpoints exclude stale, missing and proxy rows",YES
+A3R2-T05,Stale values remain invalid,PASS,All stale rows invalid,YES
+A3R2-T06,New ETFs enter after inception and signal warm-up,PASS,81 first short-signal admissions checked,YES
+A3R2-T07,Closed products do not survive beyond valid life,PASS,84 histories checked,YES
+A3R2-T08,Current eligibility is not back-projected,PASS,Current metadata remains current-only,YES
+A3R2-T09,Economic family is the unique opportunity identity,PASS,453816 feature rows,YES
+A3R2-T10,Common benchmark subtraction does not alter same-horizon ranks,PASS,Industry sample 2026-08-21,YES
+A3R2-T11,Short 1/2/3 composite is exact,PASS,Equal three-rank mean,YES
+A3R2-T12,Discrete monthly segments do not overlap,PASS,"[(0, 21), (21, 42), (42, 63)]",YES
+A3R2-T13,Review and execution dates are separated,PASS,All sample execution lags are 1-3 genuine XLON sessions,YES
+A3R2-T14,Transaction costs are charged on actual trade legs,PASS,20bp + £3.99/leg + applicable preferred-line FX,YES
+A3R2-T15,Equal pool uses contemporaneous membership,PASS,Pool target count equals contemporaneous signal-eligible count,YES
+A3R2-T16,Regime thresholds use only prior expanding information,PASS,First 52 weekly pool observations have no expanding threshold,YES
+A3R2-T17,ii confirmations remain current-only metadata,PASS,9 preferred lines,YES
+A3R2-T18,A2R2 corrected chain remains authoritative,PASS,UKACTIVE_A2R2_PASS,YES
+A3R2-T19,Large corrected panels remain Git-excluded,PASS,git check-ignore exit success is asserted by command wrapper,YES
