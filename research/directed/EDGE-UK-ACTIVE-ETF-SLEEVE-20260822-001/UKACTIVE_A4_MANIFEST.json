@@ -1,6 +1,8 @@
 {
   "a5": {
     "backfilled": false,
+    "freeze_commit": "29c2d14a347f4bc323119fe13ca4a3fb9ddc6fd7",
+    "freeze_tag": "ukactive-a5-frozen-candidate-v1-20260823",
     "minimum_decisions": 24,
     "specified": true,
     "started": false
@@ -330,12 +332,12 @@
   "git": {
     "a5_freeze_tag": "ukactive-a5-frozen-candidate-v1-20260823",
     "branch": "research/ukactive-a4",
-    "final_provenance_commit": "PENDING_FINAL_PROVENANCE_COMMIT",
-    "final_result_commit": "PENDING_FINAL_COMMIT",
+    "final_provenance_commit": "RESOLVE_AS_COMMIT_CONTAINING_THIS_MANIFEST",
+    "final_result_commit": "29c2d14a347f4bc323119fe13ca4a3fb9ddc6fd7",
     "freeze_commit": "f8c8b5e5c0e93396b83216b6e8bef11c94fd47a6",
     "implementation_commit": "5587d08",
     "preflight_commit": "6397c22e30d4fbe420ea3646348a3e4ac39c7e10",
-    "push_status": "PENDING_FINAL_PUSH",
+    "push_status": "RESULT_COMMIT_AND_A5_FREEZE_TAG_PUSHED",
     "remote": "https://github.com/Badgerlair/UK-ETF-rotation.git",
     "right_tail_commit": "94b4b20"
   },
@@ -605,7 +607,7 @@
     "python code/build_ukactive_a4_implementation.py",
     "python code/finalize_ukactive_a4.py"
   ],
-  "reproducibility_status": "PENDING_FINAL_COMMIT_PROVENANCE_UPDATE",
+  "reproducibility_status": "PASS_VERSIONED_SOURCE_AND_HASHED_LOCAL_LARGE_INPUTS",
   "run_id": "UKACTIVE-A4-20260823-001",
   "source_code": [
     {
