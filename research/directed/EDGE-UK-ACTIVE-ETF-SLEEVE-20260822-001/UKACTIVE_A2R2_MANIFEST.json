@@ -438,7 +438,7 @@
     "stage_id": "UKACTIVE-A2R2",
     "weekly_observation_rule": "FINAL_ELIGIBLE_XLON_SESSION_OF_EACH_CALENDAR_WEEK"
   },
-  "post_a2r2_commit": "PENDING_AFTER_EXECUTION",
+  "post_a2r2_commit": "0a5d32896e777c806dd3485650da1cd4d7660832",
   "run_id": "UKACTIVE-A2R2-20260823-001",
   "source_retrieval_date": "2026-08-23",
   "source_urls": [

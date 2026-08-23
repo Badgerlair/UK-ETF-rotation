@@ -61,6 +61,20 @@ def exclusion_reason(path: Path, relative_path: str) -> str | None:
         return "SOURCE_CAPTURE_NOT_REDISTRIBUTED"
     if path.suffix.lower() in EXCLUDED_SUFFIXES or path.name.lower().endswith(".bin.gz"):
         return "LARGE_OR_REPRODUCIBLE_BINARY_DATA"
+    name = path.name.upper()
+    if name.endswith("_SUBPERIOD_RESULTS.CSV") and name != "UKACTIVE_A3R1_SUBPERIOD_RESULTS.CSV":
+        return "REPRODUCIBLE_GENERATED_TABLE_EXCLUDED_BY_POLICY"
+    if name.endswith("_QUANTILE_FORWARD_RETURNS.CSV") or name.endswith("_TIME_SERIES.CSV"):
+        return "REPRODUCIBLE_GENERATED_TABLE_EXCLUDED_BY_POLICY"
+    if name in {
+        "UKACTIVE_A3R1_DYNAMIC_COHORT_COUNTS.CSV",
+        "UKACTIVE_A3R1_OVERLAP_DIAGNOSTICS.CSV",
+        "UKACTIVE_A3R1R1_DYNAMIC_COHORT_COUNTS.CSV",
+        "UKACTIVE_A3R1R1_OVERLAP_DIAGNOSTICS.CSV",
+        "UKACTIVE_A3R1R1_TOP_TAIL_RESULTS.CSV",
+        "UKACTIVE_A2R2_HORIZON_COVERAGE_HEATMAP.CSV",
+    }:
+        return "REPRODUCIBLE_GENERATED_TABLE_EXCLUDED_BY_POLICY"
     if path.stat().st_size > LARGE_FILE_BYTES:
         return "GENERATED_OUTPUT_OVER_5_MIB"
     return None

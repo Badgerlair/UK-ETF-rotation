@@ -1,0 +1,23 @@
+test_id,requirement,status,detail,critical,executed_at
+A3R1-T01,No date-T close earns date-T return,PASS,Synthetic date-t 50% return is excluded from date-t forward-1 return,YES,2026-08-23T03:32:06+00:00
+A3R1-T02,Next-session execution alignment is correct,PASS,1372 weekly signals map strictly to a later canonical session,YES,2026-08-23T03:32:06+00:00
+A3R1-T03,Only contemporaneously admitted economic families rank,PASS,Every rank row has one contemporaneous economic-family identity in its declared context,YES,2026-08-23T03:32:06+00:00
+A3R1-T04,Dynamic signal-specific warm-up is respected,PASS,"A2R2 endpoint formations require an exact valid signal-date endpoint, a same-segment historical endpoint, and horizon-specific 21/42/63/126/252 history; no 504 gate",YES,2026-08-23T03:32:06+00:00
+A3R1-T05,Mismatched pre-A2R histories never reappear,PASS,Only A2R2 endpoint history derived from the corrected A2R lineage enters A3R1R1,YES,2026-08-23T03:32:06+00:00
+A3R1-T06,US defence history before corrected mandate date never enters,PASS,US aerospace/defence cannot enter before corrected mandate history plus warm-up,YES,2026-08-23T03:32:06+00:00
+A3R1-T07,GLOBAL_BANKS never enters without valid history,PASS,GLOBAL_BANKS has no valid history and no rank row,YES,2026-08-23T03:32:06+00:00
+A3R1-T08,Duplicate ETF listings cannot receive separate ranks,PASS,Listing/provider duplication cannot enter the economic-family rank,YES,2026-08-23T03:32:06+00:00
+A3R1-T09,Common-benchmark arithmetic is not falsely claimed to alter order,PASS,Common benchmark subtraction/division preserves same-horizon order,YES,2026-08-23T03:32:06+00:00
+A3R1-T10,Relative segments are actually non-overlapping,PASS,Five impulse fixtures land in five distinct non-overlapping segments,YES,2026-08-23T03:32:06+00:00
+A3R1-T11,Pairwise uses only contemporaneously valid competitors,PASS,Pairwise denominator uses only the three contemporaneously complete competitors,YES,2026-08-23T03:32:06+00:00
+A3R1-T12,Parent mapping is frozen and does not use DeepVue/future data,PASS,Frozen semantic parent map is DeepVue-independent; returns require contemporaneous parent data,YES,2026-08-23T03:32:06+00:00
+A3R1-T13,Relative-price features use no future data,PASS,Changing observations after t cannot alter a relative-line feature at or before t,YES,2026-08-23T03:32:06+00:00
+A3R1-T14,Missing/stale/invalid observations remain excluded,PASS,"237159 valid A2R2 endpoints exclude every stale, missing and proxy row; daily-return invalidity remains separately represented",YES,2026-08-23T03:32:06+00:00
+A3R1-T15,No proxy history enters,PASS,No A2R proxy row is data-valid,YES,2026-08-23T03:32:06+00:00
+A3R1-T16,NEW-family admission follows genuine warm-up,PASS,404 first admissions have a valid contemporaneous endpoint and their exact signal-specific formation return,YES,2026-08-23T03:32:06+00:00
+A3R1-T17,Top-tail groups use only valid observations,PASS,372356 retained top-tail date diagnostics contain only valid selected returns,YES,2026-08-23T03:32:06+00:00
+A3R1-T18,All specifications appear in registry/ledger,PASS,All 23 registered signal/diagnostic IDs appear in the complete ledger,YES,2026-08-23T03:32:06+00:00
+A3R1-T19,Weekly observation rule is fixed,PASS,Observation schedule is the last canonical XLON session of each calendar week,YES,2026-08-23T03:32:06+00:00
+A3R1-T20,Current eligibility is not back-projected,PASS,"Research admission uses return availability, not current public/broker eligibility",YES,2026-08-23T03:32:06+00:00
+A3R1R1-T21,A2R2 modern long-horizon coverage enters the frozen rerun,PASS,82 required-family/benchmark 252-session formations are valid at the latest date,YES,2026-08-23T03:32:06+00:00
+A3R1R1-T22,Frozen A3R1 policy and registry hashes are unchanged,PASS,policy=55307bcadd924b4324384999ec09e5c53f4c1a1f492a0315aeba2231ad791d55|registry=9541dce60e0ff0c566ef55e8a9eeccea34fab6cdc138893c7885c69db5732943,YES,2026-08-23T03:32:06+00:00
