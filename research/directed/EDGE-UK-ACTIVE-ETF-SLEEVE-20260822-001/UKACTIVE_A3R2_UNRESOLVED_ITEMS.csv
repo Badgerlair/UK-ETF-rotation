@@ -1,0 +1,6 @@
+item_id,severity,status,item,next_control
+A3R2-OPEN-001,BLOCKS_DEPLOYMENT_NOT_RESEARCH,OPEN,"Historical UK retail, ISA/SIPP and broker availability remain unresolved",Point-in-time deployment eligibility reconstruction
+A3R2-OPEN-002,RESEARCH_LIMITATION,OPEN,"Recent five-year lifecycle census is substantially complete, not complete",Acquire authoritative historical LSE listing/closure feed or continue primary-source census
+A3R2-OPEN-003,CLAIM_LIMITATION,OPEN,No A3R2 primary specification survives FDR q=0.10,Independent or prospectively isolated confirmation
+A3R2-OPEN-004,CLAIM_LIMITATION,OPEN,Top-three-family removal erases the headline excess,Right-tail attribution and out-of-sample confirmation without refitting
+A3R2-OPEN-005,IMPLEMENTATION_LIMITATION,OPEN,Bid/ask and fixed-fee model is standardised; historical realised spreads are unavailable,Deployment-route quote/spread reconstruction

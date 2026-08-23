@@ -1,0 +1,45 @@
+{
+  "automatic_next_stage_authorised": false,
+  "best_cadence": "MONTHLY",
+  "best_final_five_year_specification": "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY",
+  "best_final_three_year_specification": "THEME|MH_LEVEL_RECENCY_TILT|TOP_2|MONTHLY",
+  "best_selection_count": "TOP_1",
+  "candidate_signals": [
+    "INDUSTRY_PLUS_THEME|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY|EQUAL",
+    "INDUSTRY|PAIRWISE_MAJORITY_5H|TOP_1|MONTHLY|EQUAL (SECONDARY)",
+    "INDUSTRY|MH_LEVEL_3_6_12_REFERENCE|TOP_1|MONTHLY|EQUAL (SECONDARY)",
+    "THEME|MH_LEVEL_EQ_OR_RECENCY_TILT|TOP_1_TO_2|MONTHLY (E1/E2-DEVELOPMENTAL)"
+  ],
+  "decision": "UKACTIVE_A3R2_REGIME_CONDITIONAL_CANDIDATE_FOUND",
+  "decision_timestamp": "2026-08-23T08:08:13+00:00",
+  "deployment_candidate": false,
+  "evidence_status": "E2_DEVELOPMENTAL_STATISTICALLY_UNRESOLVED_WITH_E1_REGIME_INTERPRETATION",
+  "fdr_surviving_specification_count": 0,
+  "historically_verified_uk_investable_strategy": false,
+  "pool_decisions": {
+    "ALL_EQUITY_OPPORTUNITIES": "MARKET_INTELLIGENCE_ONLY",
+    "COUNTRY": "MARKET_INTELLIGENCE_ONLY",
+    "GEOGRAPHY": "MARKET_INTELLIGENCE_ONLY",
+    "INDUSTRY": "REGIME_CONDITIONAL_RESEARCH_CANDIDATE",
+    "INDUSTRY_PLUS_THEME": "REGIME_CONDITIONAL_RESEARCH_CANDIDATE",
+    "SECTOR": "MARKET_INTELLIGENCE_ONLY",
+    "THEME": "REGIME_CONDITIONAL_RESEARCH_CANDIDATE"
+  },
+  "preferred_weighting_method": "EQUAL",
+  "query_engine_decision": "UKACTIVE_A3R2Q_PASS",
+  "rejected_claims_or_signal_families": [
+    "GENERAL_SHORT_RS_1_2_3_SUPERIORITY_AFTER_COSTS",
+    "GENERAL_60_DAY_CENTERED_SUPERIORITY",
+    "GEOGRAPHY_AS_AUTOMATED_TRADE_PORTFOLIO",
+    "BROAD_SECTOR_AS_AUTOMATED_TRADE_PORTFOLIO",
+    "NON_EQUAL_WEIGHTING_IMPROVEMENT",
+    "ACCELERATION_AS_PRIMARY_PORTFOLIO_SIGNAL"
+  ],
+  "run_id": "UKACTIVE-A3R2-20260823-001",
+  "signal_count_cadence_decision": "A3R2S_PORTFOLIO_RESEARCH_CANDIDATE",
+  "stage_id": "UKACTIVE-A3R2",
+  "supports_later_controlled_confirmation_and_eligibility_reconstruction": true,
+  "universe_refresh_decision": "UKACTIVE_A3R2U_PASS_WITH_OPEN_ITEMS",
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
+  "weighting_decision": "A3R2W_EQUAL_WEIGHT_RETAINED"
+}

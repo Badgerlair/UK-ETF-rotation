@@ -1,0 +1,9 @@
+test_id,requirement,status,detail
+A3R2Q-T01,Current query reproduces underlying panel values,PASS,25/25 sampled exact
+A3R2Q-T02,Historical as-of excludes future universe members,PASS,First valid dates <= resolved historical as-of
+A3R2Q-T03,ii confirmations remain current-only,PASS,Historical snapshot masks ii status and current line
+A3R2Q-T04,Economic family unique within canonical query pool,PASS,82 canonical rows
+A3R2Q-T05,All A3R2S data/timing controls remain passed,PASS,19/19 upstream
+A3R2Q-T06,Snapshot is versioned and immutable,PASS,2026-08-21
+A3R2Q-T07,DeepVue has no quantitative-control field,PASS,Display metadata only
+A3R2Q-T08,Large local Parquet inputs are not written into Git snapshot output,PASS,CSV/JSON snapshot; Parquet inputs remain hash-addressed

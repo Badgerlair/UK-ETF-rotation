@@ -142,7 +142,7 @@
     "pyarrow": "24.0.0",
     "python": "3.12.10"
   },
-  "post_a3r2w_commit": "PENDING_AFTER_EXECUTION",
+  "post_a3r2w_commit": "0898f509be951e9b792345aa1bcf7289e2133bac",
   "run_id": "UKACTIVE-A3R2W-20260823-001",
   "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
   "work_package": "UKACTIVE-A3R2W"

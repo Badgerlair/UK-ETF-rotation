@@ -1,0 +1,129 @@
+{
+  "as_of": "2026-08-21",
+  "code": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\refresh_ukactive_current_snapshot.py",
+      "sha256": "eea502598839de3cec26b2b9cc7bff0ac0f7d6864f157e00997031828ed1b25f",
+      "size_bytes": 11905
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\code\\query_ukactive_rotation.py",
+      "sha256": "2227d0a5e09f226cebf9586fa32e3fdca2391b4a1cf3a4e234dcdc38ef7196ca",
+      "size_bytes": 13248
+    }
+  ],
+  "created_at": "2026-08-23T08:04:17+00:00",
+  "current_outputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT.csv",
+      "sha256": "e073151ff1d9b522ffe34a9a11171b58bce1bfb5d86045d4effdc594620c008a",
+      "size_bytes": 85258
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_ROTATION_SNAPSHOT.json",
+      "sha256": "8f961c4d44ad7cf302cbd307220cdfed7bf81c507176d30c1cc5546503d5cb09",
+      "size_bytes": 210087
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_CURRENT_REGIME_STATE.json",
+      "sha256": "3af3a0f902248248afe2c5dc58910b64efb869851c6e4a9ebe6cf0958210de85",
+      "size_bytes": 1056
+    }
+  ],
+  "executed_from_commit": "0898f509be951e9b792345aa1bcf7289e2133bac",
+  "immutable_outputs": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21.csv",
+      "sha256": "e073151ff1d9b522ffe34a9a11171b58bce1bfb5d86045d4effdc594620c008a",
+      "size_bytes": 85258
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\snapshots\\UKACTIVE_ROTATION_SNAPSHOT_2026-08-21.json",
+      "sha256": "8f961c4d44ad7cf302cbd307220cdfed7bf81c507176d30c1cc5546503d5cb09",
+      "size_bytes": 210087
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_FEATURE_PANEL.parquet",
+      "sha256": "9b700ce0803989c382d322f97ed0e0ea503d2e003cef54d53c942fe24e87e615"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2_REGIME_STATE_HISTORY.parquet",
+      "sha256": "4f0c61830e59e3c6dc5c1968ba8f8da8880a66e696b5e89d21a7e90d7804a79b"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R1R1_RELATIVE_LINE_FEATURES.parquet",
+      "sha256": "d8336fd3db5069932969645413ce432a4bf8f05abd8d22f647b3ac9f6c996a70"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R1R1_DISCRETE_RELATIVE_SEGMENTS.parquet",
+      "sha256": "4b6c2b75cc461e290a15bf1a199d489a162b09abc9d1bb85e8ec6c70b9f09b50"
+    },
+    {
+      "path": "D:\\Codex\\equity_quant_research_platform\\research\\directed\\EDGE-UK-ACTIVE-ETF-SLEEVE-20260822-001\\UKACTIVE_A3R2U_CURRENT_UNIVERSE_SNAPSHOT.csv",
+      "sha256": "8f1e732272e502868133b05905467c528b5a0dd808b8cf642bc9721bb292a53a"
+    }
+  ],
+  "package_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "pyarrow": "24.0.0",
+    "python": "3.12.10"
+  },
+  "post_a3r2q_commit": "PENDING_AFTER_EXECUTION",
+  "run_id": "UKACTIVE-A3R2Q-20260823-001",
+  "snapshot_rows": 82,
+  "validation": [
+    {
+      "detail": "25/25 sampled exact",
+      "requirement": "Current query reproduces underlying panel values",
+      "status": "PASS",
+      "test_id": "A3R2Q-T01"
+    },
+    {
+      "detail": "First valid dates <= resolved historical as-of",
+      "requirement": "Historical as-of excludes future universe members",
+      "status": "PASS",
+      "test_id": "A3R2Q-T02"
+    },
+    {
+      "detail": "Historical snapshot masks ii status and current line",
+      "requirement": "ii confirmations remain current-only",
+      "status": "PASS",
+      "test_id": "A3R2Q-T03"
+    },
+    {
+      "detail": "82 canonical rows",
+      "requirement": "Economic family unique within canonical query pool",
+      "status": "PASS",
+      "test_id": "A3R2Q-T04"
+    },
+    {
+      "detail": "19/19 upstream",
+      "requirement": "All A3R2S data/timing controls remain passed",
+      "status": "PASS",
+      "test_id": "A3R2Q-T05"
+    },
+    {
+      "detail": "2026-08-21",
+      "requirement": "Snapshot is versioned and immutable",
+      "status": "PASS",
+      "test_id": "A3R2Q-T06"
+    },
+    {
+      "detail": "Display metadata only",
+      "requirement": "DeepVue has no quantitative-control field",
+      "status": "PASS",
+      "test_id": "A3R2Q-T07"
+    },
+    {
+      "detail": "CSV/JSON snapshot; Parquet inputs remain hash-addressed",
+      "requirement": "Large local Parquet inputs are not written into Git snapshot output",
+      "status": "PASS",
+      "test_id": "A3R2Q-T08"
+    }
+  ],
+  "warning": "HISTORICAL UK RETAIL, ACCOUNT AND BROKER ELIGIBILITY REMAIN UNRESOLVED",
+  "work_package": "UKACTIVE-A3R2Q"
+}
