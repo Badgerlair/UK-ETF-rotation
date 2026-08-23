@@ -57,6 +57,7 @@ temp/
 *.tar.gz
 research/**/evidence/sources/
 research/**/UKACTIVE_*_SUBPERIOD_RESULTS.csv
+!research/**/UKACTIVE_A3R1_SUBPERIOD_RESULTS.csv
 research/**/UKACTIVE_*_QUANTILE_FORWARD_RETURNS.csv
 research/**/UKACTIVE_*_TIME_SERIES.csv
 research/**/UKACTIVE_A3R1_DYNAMIC_COHORT_COUNTS.csv
