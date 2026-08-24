@@ -1,0 +1,83 @@
+{
+  "active_rotation_sleeve": {
+    "allocation": 0.0,
+    "architecture": "M2_BASE|TOP7|MONTHLY|CASH1|EQUAL",
+    "evidence": "E2_DEVELOPMENTAL",
+    "status": "SHADOW_OBSERVATION_ONLY"
+  },
+  "automatic_broker_execution": false,
+  "best_available_whole_sipp_strategy": {
+    "cash_rule": "Fixed strategic GBP cash weight for GLOBAL_CASH fallback; cash earns broker SIPP rate operationally and accepted GBP cash series in research",
+    "conservative_planning_range": {
+      "maximum_drawdown_less_severe": -0.15,
+      "maximum_drawdown_more_severe": -0.3,
+      "net_cagr_high": 0.09,
+      "net_cagr_low": 0.04,
+      "observed_annual_turnover_reference": 0.14125588705592645,
+      "status": "CONSERVATIVE_GOVERNANCE_RANGE_NOT_A_FORECAST_OR_GUARANTEE",
+      "strategic_cash_weight": 0.25
+    },
+    "cost_assumptions": "20 bp one-way + \u00a33.99 per trade leg historically; live ii platform/product costs added separately",
+    "no_leverage": true,
+    "no_shorting": true,
+    "permitted_instruments": [
+      "SWDA|IE00B4L5Y983",
+      "II_SIPP_GBP_BROKER_CASH"
+    ],
+    "portfolio_sleeves": [
+      {
+        "instrument": "SWDA|IE00B4L5Y983",
+        "sleeve": "GLOBAL_CORE",
+        "target_weight": 0.75
+      },
+      {
+        "instrument": "II_SIPP_GBP_BROKER_CASH",
+        "sleeve": "GBP_CASH",
+        "target_weight": 0.25
+      }
+    ],
+    "rebalance": "After the final valid XLON close of each calendar month; execute at first valid next XLON session within 3 sessions",
+    "replacement": "SWDA unavailable -> do not buy a discretionary world ETF; allocate affected core to GBP cash until a separately evidenced same-exposure alternate is frozen",
+    "risk_scaling": "NONE",
+    "strategy_id": "GLOBAL_CASH_75_25"
+  },
+  "decision_date": "2026-08-24",
+  "defensive_fallback": {
+    "cash_rule": "Fixed strategic GBP cash weight for GLOBAL_CASH fallback; cash earns broker SIPP rate operationally and accepted GBP cash series in research",
+    "conservative_planning_range": {
+      "maximum_drawdown_less_severe": -0.15,
+      "maximum_drawdown_more_severe": -0.3,
+      "net_cagr_high": 0.09,
+      "net_cagr_low": 0.04,
+      "observed_annual_turnover_reference": 0.14125588705592645,
+      "status": "CONSERVATIVE_GOVERNANCE_RANGE_NOT_A_FORECAST_OR_GUARANTEE",
+      "strategic_cash_weight": 0.25
+    },
+    "cost_assumptions": "20 bp one-way + \u00a33.99 per trade leg historically; live ii platform/product costs added separately",
+    "no_leverage": true,
+    "no_shorting": true,
+    "permitted_instruments": [
+      "SWDA|IE00B4L5Y983",
+      "II_SIPP_GBP_BROKER_CASH"
+    ],
+    "portfolio_sleeves": [
+      {
+        "instrument": "SWDA|IE00B4L5Y983",
+        "sleeve": "GLOBAL_CORE",
+        "target_weight": 0.75
+      },
+      {
+        "instrument": "II_SIPP_GBP_BROKER_CASH",
+        "sleeve": "GBP_CASH",
+        "target_weight": 0.25
+      }
+    ],
+    "rebalance": "After the final valid XLON close of each calendar month; execute at first valid next XLON session within 3 sessions",
+    "replacement": "SWDA unavailable -> do not buy a discretionary world ETF; allocate affected core to GBP cash until a separately evidenced same-exposure alternate is frozen",
+    "risk_scaling": "NONE",
+    "strategy_id": "GLOBAL_CASH_75_25"
+  },
+  "deployment_tier": "CORE_ONLY",
+  "historical_cutoff": "2026-08-21",
+  "stage_id": "UKACTIVE-A4E-SIPP"
+}

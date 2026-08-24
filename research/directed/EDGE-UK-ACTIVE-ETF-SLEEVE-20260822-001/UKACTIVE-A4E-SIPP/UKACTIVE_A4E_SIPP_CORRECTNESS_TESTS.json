@@ -1,0 +1,79 @@
+{
+  "stage_id": "UKACTIVE-A4E-SIPP",
+  "summary": {
+    "FAIL": 0,
+    "PASS": 14
+  },
+  "tests": [
+    {
+      "detail": "2026-08-21",
+      "status": "PASS",
+      "test_id": "AUTHORITATIVE_CUTOFF"
+    },
+    {
+      "detail": "720 deterministic comparisons",
+      "status": "PASS",
+      "test_id": "A4D_REPRODUCTION"
+    },
+    {
+      "detail": "2026-08-21",
+      "status": "PASS",
+      "test_id": "NO_POST_CUTOFF_TARGETS"
+    },
+    {
+      "detail": "lag >= 1",
+      "status": "PASS",
+      "test_id": "NEXT_SESSION_EXECUTION"
+    },
+    {
+      "detail": "lag <= 3",
+      "status": "PASS",
+      "test_id": "MAX_EXECUTION_LAG"
+    },
+    {
+      "detail": "selected whole SIPP",
+      "status": "PASS",
+      "test_id": "LONG_ONLY_NO_LEVERAGE"
+    },
+    {
+      "detail": "invested + cash = 1",
+      "status": "PASS",
+      "test_id": "CASH_RECONCILES"
+    },
+    {
+      "detail": "[0.1, 0.15, 0.25, 0.3, 0.2]",
+      "status": "PASS",
+      "test_id": "M2_WEIGHTS_FROZEN"
+    },
+    {
+      "detail": "5000 each",
+      "status": "PASS",
+      "test_id": "RANDOM_SEEDS_AND_COUNT"
+    },
+    {
+      "detail": "{\"UKACTIVE_A4D_DECISION.json\": \"6b72ec910b62505c3a83fb5f8c54ff2bb521579195c836b617fd4e450d245131\", \"UKACTIVE_A4D_MANIFEST.json\": \"a9770b7fca361fffd225df2f287efaef0e1019c4bdf516966192c5c134d04b0f\", \"UKACTIVE_A5_DECISION_LEDGER.csv\": \"68e9fb28d4acfb0be707ab313dc40d46158cb76aa789d1aed011d8e8b05eba67\", \"UKACTIVE_A5_EXECUTION_LEDGER.csv\": \"8c48625268167ff20f49cfcf7dd1859377469ac635cf3fc9e70d3a62d2cde200\", \"UKACTIVE_A5_NAV_HISTORY.csv\": \"3359a748cad99a56ee998b6471591a09191a3c814d239ce21238ce79c8e88c2d\"}",
+      "status": "PASS",
+      "test_id": "PRIOR_OUTPUTS_IMMUTABLE"
+    },
+    {
+      "detail": "A5 ledgers header-only",
+      "status": "PASS",
+      "test_id": "NO_A5_PROSPECTIVE_EVENT"
+    },
+    {
+      "detail": "25 signal-ready current implementations; 2 structural no-history families excluded",
+      "status": "PASS",
+      "test_id": "ACTIVE_CURRENT_MAP_25"
+    },
+    {
+      "detail": "SWDA exact",
+      "status": "PASS",
+      "test_id": "CORE_IMPLEMENTATION"
+    },
+    {
+      "detail": "GLOBAL_CASH_75_25",
+      "status": "PASS",
+      "test_id": "BALANCED_STRATEGY_IS_PREREGISTERED_CANDIDATE_NOT_FALSIFICATION_CONTROL"
+    }
+  ]
+}

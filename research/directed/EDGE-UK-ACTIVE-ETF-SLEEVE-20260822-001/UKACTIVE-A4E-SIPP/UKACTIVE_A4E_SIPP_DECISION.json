@@ -1,0 +1,33 @@
+{
+  "active_edge": false,
+  "balanced_research_candidate": "GLOBAL_CASH_75_25",
+  "cash1_advancement": "FAIL",
+  "cash1_gate_checks": {
+    "baseline_pool_excess": true,
+    "calmar_improvement": false,
+    "double_cost_pool_excess": true,
+    "exclude2025_drawdown_benefit": false,
+    "full_history_median_cagr_retention": false,
+    "latest5_median_cagr_retention": true,
+    "mdd_or_ulcer": true,
+    "multiple_defensive_episodes": true,
+    "worst6_not_worse": true
+  },
+  "decision": "UKACTIVE_A4E_SIPP_STRATEGY_SELECTED",
+  "deployment_strategy": "GLOBAL_CASH_75_25",
+  "deployment_tier": "CORE_ONLY",
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "historical_cutoff": "2026-08-21",
+  "no_broker_execution": true,
+  "reproduction_audit": "PASS",
+  "selected_core": "CORE_0_GLOBAL",
+  "selected_full_history_metrics": {
+    "annual_turnover": 0.14125588705592645,
+    "calmar": 0.47378159943194786,
+    "maximum_drawdown": -0.19551631373842515,
+    "net_cagr": 0.0926320318380296,
+    "ulcer_index": 0.0359925415591835
+  },
+  "selected_rotation_variant": "R0_EXACT_CASH1",
+  "stage_id": "UKACTIVE-A4E-SIPP"
+}
