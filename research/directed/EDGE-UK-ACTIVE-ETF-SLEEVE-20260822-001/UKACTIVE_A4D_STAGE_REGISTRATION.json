@@ -1,0 +1,16 @@
+{
+  "stage_id": "UKACTIVE-A4D",
+  "run_id": "UKACTIVE-A4D-20260824-001",
+  "registered_at": "2026-08-24T00:00:00+01:00",
+  "title": "MULTI-HORIZON RELATIVE MOMENTUM + LEADERSHIP DETERIORATION + PORTFOLIO BREADTH + REBALANCE FREQUENCY + CASH DEFENCE",
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "mechanism_evidence": "E1_EXPLORATORY",
+  "independent_confirmation": false,
+  "starting_git_commit": "68f91022e11a4085a3cf7fb545306c9f792b3d85",
+  "historical_cutoff": "2026-08-21",
+  "primary_pool": "INDUSTRY_PLUS_THEME",
+  "immutable_prior_outputs": true,
+  "a5_lineage_write_prohibited": true,
+  "prospective_test_started": false,
+  "warning": "RESEARCH ONLY; HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}

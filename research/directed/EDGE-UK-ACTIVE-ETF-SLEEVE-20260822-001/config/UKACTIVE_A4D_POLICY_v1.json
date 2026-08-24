@@ -1,0 +1,78 @@
+{
+  "stage_id": "UKACTIVE-A4D",
+  "run_id": "UKACTIVE-A4D-20260824-001",
+  "policy_version": "UKACTIVE-A4D-POLICY-v1.0.0",
+  "registered_before_outcomes": true,
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "authoritative_inputs": {
+    "corrected_panel": "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet",
+    "signal_eligibility": "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet",
+    "endpoint_history": "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet",
+    "calendar": "UKACTIVE_A2R2_XLON_RESEARCH_CALENDAR.csv",
+    "role_master": "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv",
+    "cash_series": "UKACTIVE_A2_CASH_SERIES.parquet"
+  },
+  "universe": {
+    "context_id": "INDUSTRY_PLUS_THEME",
+    "ranking_identity": "economic_exposure_family_id",
+    "dynamic_admission": true,
+    "required_horizons": [21, 42, 63, 126, 252]
+  },
+  "benchmarks": {
+    "global": "GLOBAL_DEVELOPED_WORLD",
+    "pool": "CONTEMPORANEOUS_EQUAL_WEIGHT_INDUSTRY_PLUS_THEME",
+    "cash": "ACTUAL_GBP_CASH"
+  },
+  "signals": {
+    "M1_EQUAL_5H": {"RS_21": 0.20, "RS_42": 0.20, "RS_63": 0.20, "RS_126": 0.20, "RS_252": 0.20},
+    "M2_INTERMEDIATE_5H": {"RS_21": 0.10, "RS_42": 0.15, "RS_63": 0.25, "RS_126": 0.30, "RS_252": 0.20},
+    "M3_STRUCTURAL_DETERIORATION": {
+      "structural": {"RS_63": 0.40, "RS_126": 0.35, "RS_252": 0.25},
+      "fast": {"RS_21": 0.50, "RS_42": 0.50},
+      "acceleration_coefficient": 0.20,
+      "deterioration_penalty_coefficient": 0.35,
+      "clip": [0.0, 1.0]
+    }
+  },
+  "leadership_states": {
+    "new": {"fast_min": 0.80, "structural_min": 0.50, "fast_minus_structural_min": 0.15, "score_change_21_min": 0.10},
+    "established": {"structural_min": 0.75, "fast_min": 0.55, "rs63_positive": true},
+    "mature_decelerating": {"structural_min": 0.75, "fast_below": 0.45, "fast_minus_structural_max": -0.20, "score_change_21_max": -0.10},
+    "failed": {"structural_below": 0.50, "fast_below": 0.50, "or_rs63_and_rs126_nonpositive": true}
+  },
+  "stage_a_gate": {"minimum_positive_ic_horizons": 2, "minimum_positive_top_quintile_horizons": 2, "maximum_carried_signals": 2, "anchor_signal": "M1_EQUAL_5H"},
+  "breadths": [3, 4, 5, 6, 7, 8, 9, 10],
+  "breadth_plateau": {"latest5_excess_within_best_percentage_points": 3.0, "maximum_drawdown_within_best_percentage_points": 5.0, "minimum_adjacent_breadths": 2, "require_positive_latest5_pool_excess": true, "require_positive_post2020_pool_excess": true},
+  "frequencies": ["DAILY", "WEEKLY", "MONTHLY"],
+  "cash_architectures": {
+    "CASH_0_ALWAYS_INVESTED": {},
+    "CASH_1_INDIVIDUAL_ABOVE_CASH_252": {"qualification": "ASSET_RETURN_252_GT_GBP_CASH_RETURN_252"},
+    "CASH_2_POOL_BREADTH": {"full_risk_min": 0.60, "half_risk_min": 0.35, "multipliers": [1.0, 0.5, 0.0]},
+    "CASH_3_GLOBAL_CONFIRMATION": {"global_return_252_above_cash": true, "global_above_sma_sessions": 200},
+    "CASH_4_PARSIMONIOUS_COMBINED": {"uses_individual": true, "uses_breadth": true, "uses_global": true}
+  },
+  "weighting": {
+    "W0_EQUAL": {},
+    "W1_RANK_DECAY": {"formula": "1/rank"},
+    "W2_FIXED_TOP_HEAVY": {"rank_1": 0.30, "rank_2": 0.22, "rank_3": 0.16, "remaining_total": 0.32}
+  },
+  "costs": {
+    "canonical_one_way_friction_bps": 20.0,
+    "canonical_fixed_fee_gbp_per_leg": 3.99,
+    "canonical_sleeve_size_gbp": 250000.0,
+    "double_one_way_friction_bps": 40.0,
+    "double_fixed_fee_gbp_per_leg": 7.98,
+    "non_gbp_fx_rate": 0.0075
+  },
+  "execution": {"same_close": false, "minimum_lag_xlon_sessions": 1, "maximum_lag_xlon_sessions": 3, "rebalance_same_members": false},
+  "windows": {
+    "LATEST_5Y_START": "2021-09-01",
+    "LATEST_3Y_START": "2023-08-21",
+    "POST_2020_START": "2020-01-02",
+    "PRE_2020_END": "2019-12-31",
+    "CUTOFF": "2026-08-21"
+  },
+  "rolling_months": [12, 24, 36],
+  "cash_promotion": {"minimum_drawdown_improvement_percentage_points": 5.0, "require_positive_excess_vs_global": true, "require_positive_excess_vs_pool": true, "require_positive_pool_excess_at_double_cost": true},
+  "classifications": ["A4D_STRONG_RESEARCH_CANDIDATE", "A4D_PROMISING_BUT_UNCONFIRMED", "A4D_WEAK_OR_REGIME_DEPENDENT", "A4D_NO_USEFUL_EDGE"]
+}
