@@ -1,6 +1,7 @@
 {
   "authoritative_cutoff": "2026-08-21",
   "branch": "research/ukactive-a4e-sipp",
+  "results_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
   "correctness": {
     "FAIL": 0,
     "PASS": 14
@@ -189,8 +190,8 @@
     },
     {
       "path": "UKACTIVE_A4E_SIPP_PROVENANCE.md",
-      "sha256": "58888c07f49c1a72d9158c42ab99135b10b47d82a4488ffd425fd8077a525881",
-      "size_bytes": 524
+      "sha256": "4633c37cbc241be7bf25159532f2577211e3e850c39b9e80e8c79ca3f468e170",
+      "size_bytes": 617
     },
     {
       "path": "UKACTIVE_A4E_SIPP_RANDOM_SELECTION_CONTROL.csv",

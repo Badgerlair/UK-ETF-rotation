@@ -2,7 +2,8 @@
 
 Parent commit: `48cb69ffbaae25eb0dccc3226f47f5a7491e8bd7`  
 Parent tag: `ukactive-a4d-v1-20260824`  
-Preregistration commit: `d49ee47`  
+Preregistration commit: `d49ee4748020bce8911244ba98430fe3b25c3366`  
+Results commit: `6eef0e413a2ee269bd5748cb244ce4f19577723a`  
 Branch: `research/ukactive-a4e-sipp`  
 Cutoff: `2026-08-21`
 
