@@ -1,0 +1,26 @@
+{
+  "stage_id": "UKACTIVE-A4E-SIPP",
+  "rotation": {
+    "signal": "M2_BASE",
+    "frequency": "MONTHLY",
+    "breadths": [6, 7, 8, 9],
+    "weighting": "EQUAL",
+    "cash": "CASH_1_INDIVIDUAL_ABOVE_CASH_252",
+    "variants": {
+      "R0_EXACT_CASH1": "monthly selection and qualification without buffer",
+      "R1_RANK_HYSTERESIS": "enter top 7; retain through rank 9 while qualified",
+      "R2_WEEKLY_EXIT_ONLY": "monthly construction; weekly cash1 failure exits; no mid-month replacement"
+    }
+  },
+  "matched_controls": ["ROTATION_STATIC_SAME_AVERAGE_EXPOSURE", "GLOBAL_STATIC_SAME_AVERAGE_EXPOSURE", "ROTATION_MATCHED_VOLATILITY", "GLOBAL_MATCHED_VOLATILITY", "GLOBAL_CASH_25_75", "GLOBAL_CASH_50_50", "GLOBAL_CASH_75_25", "GLOBAL_CASH_100_0"],
+  "core": {
+    "CORE_0_GLOBAL": "always hold GLOBAL_DEVELOPED_WORLD",
+    "CORE_1_GLOBAL_ABSOLUTE_MOMENTUM": "hold global only when global 252-session total return exceeds GBP cash 252-session return; otherwise cash"
+  },
+  "core_satellite_rotation_weights": [0.25, 0.50, 0.75, 1.00],
+  "volatility_targets": [0.10, 0.125, 0.15],
+  "volatility_lookback_sessions": 63,
+  "volatility_max_exposure": 1.0,
+  "withdrawal_stress": [0.00, 0.03, 0.04],
+  "deployment_tiers": ["CORE_ONLY", "CORE_PLUS_10_PERCENT_ROTATION_PILOT", "CORE_PLUS_25_PERCENT_ROTATION_PILOT", "SHADOW_ONLY_PENDING_IMPLEMENTATION"]
+}

@@ -1,0 +1,96 @@
+{
+  "stage_id": "UKACTIVE-A4E-SIPP",
+  "run_id": "UKACTIVE-A4E-SIPP-20260824-001",
+  "registered_before_new_results": true,
+  "authoritative_cutoff": "2026-08-21",
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "parent": {
+    "branch": "research/ukactive-a4d",
+    "commit": "48cb69ffbaae25eb0dccc3226f47f5a7491e8bd7",
+    "tag": "ukactive-a4d-v1-20260824"
+  },
+  "immutable_contract": {
+    "universe": "INDUSTRY_PLUS_THEME_27_FAMILY_POINT_IN_TIME",
+    "ranking_identity": "economic_exposure_family_id",
+    "global_benchmark": "GLOBAL_DEVELOPED_WORLD",
+    "pool_benchmark": "CONTEMPORANEOUS_EQUAL_WEIGHT_INDUSTRY_PLUS_THEME",
+    "cash": "ACTUAL_GBP_CASH",
+    "calendar": "DETERMINISTIC_XLON",
+    "execution": "FIRST_COMMON_VALID_ENDPOINT_1_TO_3_XLON_SESSIONS_AFTER_SIGNAL",
+    "same_close": false,
+    "common_causal_chain_start": "2017-02-03",
+    "first_expected_monthly_portfolio_date": "2017-03-01"
+  },
+  "signals": {
+    "M2_BASE": [0.10, 0.15, 0.25, 0.30, 0.20],
+    "M2_N1": [0.10, 0.15, 0.25, 0.25, 0.25],
+    "M2_N2": [0.10, 0.10, 0.25, 0.30, 0.25],
+    "M2_N3": [0.15, 0.15, 0.25, 0.25, 0.20],
+    "M1_EQUAL_CONTROL": [0.20, 0.20, 0.20, 0.20, 0.20]
+  },
+  "breadths": [6, 7, 8, 9],
+  "cash1_rule": "ASSET_TOTAL_RETURN_252_GT_CONTEMPORANEOUS_GBP_CASH_RETURN_252",
+  "rotation_variants": ["R0_EXACT_CASH1", "R1_RANK_HYSTERESIS", "R2_WEEKLY_EXIT_ONLY"],
+  "core_candidates": ["CORE_0_GLOBAL", "CORE_1_GLOBAL_ABSOLUTE_MOMENTUM"],
+  "static_global_weights": [0.25, 0.50, 0.75, 1.00],
+  "rotation_blend_weights": [0.25, 0.50, 0.75, 1.00],
+  "volatility_targets": [0.10, 0.125, 0.15],
+  "maximum_volatility_scaled_candidates": 3,
+  "costs": {
+    "BASE": {"one_way_bps": 20.0, "fixed_fee_per_leg_gbp": 3.99, "notional_gbp": 250000.0},
+    "DOUBLE": {"one_way_bps": 40.0, "fixed_fee_per_leg_gbp": 7.98, "notional_gbp": 250000.0}
+  },
+  "risk_targets": {
+    "preferred": {"maximum_drawdown_floor": -0.15, "ulcer_max": 0.08, "calmar_min": 0.75, "underwater_months_max": 36, "global_cagr_retention_min": 0.90},
+    "acceptable": {"maximum_drawdown_floor": -0.20, "global_cagr_shortfall_max": 0.01, "positive_real_return_required_if_inflation_available": true},
+    "whole_sipp_warning_drawdown": -0.20,
+    "active_sleeve_only_drawdown": -0.25
+  },
+  "cash1_advancement": {
+    "full_history_median_cagr_retention_min": 0.95,
+    "latest5_median_cagr_retention_min": 0.95,
+    "median_mdd_benefit_min": 0.03,
+    "alternative_median_ulcer_reduction_min": 0.15,
+    "median_calmar_improvement_min": 0.15,
+    "baseline_pool_excess_positive": true,
+    "double_cost_pool_excess_nonnegative": true,
+    "exclude_2025_drawdown_benefit_positive": true,
+    "minimum_beneficial_defensive_episodes": 2,
+    "worst_rolling_six_month_not_worse": true
+  },
+  "turnover_variant_advancement": {
+    "cagr_retention_min": 0.95,
+    "double_cost_excess_not_worse": true,
+    "exclude_2025_survival": true,
+    "breadth_consistency_required": true,
+    "single_event_dependency_prohibited": true
+  },
+  "core_selection": {
+    "core1_cagr_retention_min": 0.90,
+    "core1_mdd_benefit_min": 0.05,
+    "core1_alternative_ulcer_reduction_min": 0.20,
+    "fallback": "CORE_0_GLOBAL"
+  },
+  "randomisation": {"random_selection_seed": 20260824, "rank_shuffle_seed": 20260825, "simulation_count": 5000},
+  "windows": {
+    "full_history_start": "2017-02-03",
+    "pre_2020_end": "2019-12-31",
+    "post_2020_start": "2020-01-02",
+    "latest5_start": "2021-09-01",
+    "latest3_start": "2023-08-21",
+    "cutoff": "2026-08-21"
+  },
+  "source_hashes": {
+    "UKACTIVE_A4D_MANIFEST.json": "a9770b7fca361fffd225df2f287efaef0e1019c4bdf516966192c5c134d04b0f",
+    "UKACTIVE_A4D_DECISION.json": "6b72ec910b62505c3a83fb5f8c54ff2bb521579195c836b617fd4e450d245131",
+    "UKACTIVE_A4D_PRIMARY_ECONOMIC_SCORECARD.csv": "386e6732fc9ddd55d690849f3d07c9110daf6b127e414df91acb30fc807d328c",
+    "UKACTIVE_A4D_CASH_DEFENCE_RESULTS.csv": "7f79e100d233d2722be54283e4dfe18e7b38271646cf75a71147dd743c4f8e3a",
+    "UKACTIVE_A4D_CASH_DOUBLE_COST_RESULTS.csv": "d8a85e80c2bf104b88a38999f4916b4121580b06eb7f78690e788116d8fbca2e",
+    "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+    "UKACTIVE_A2_CASH_SERIES.parquet": "491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a"
+  },
+  "prohibited": ["post_cutoff_selection", "unrestricted_weights", "new_lookbacks", "daily_ranking", "leverage", "shorts", "inverse_etfs", "discretionary_exclusions", "fitted_stops", "black_box_models", "arbitrary_blends", "taxonomy_changes", "maximum_cagr_selection"],
+  "broker_execution_authorised": false
+}

@@ -1,0 +1,14 @@
+{
+  "stage_id": "UKACTIVE-A4E-SIPP",
+  "run_id": "UKACTIVE-A4E-SIPP-20260824-001",
+  "title": "Strategy Selection, Drawdown Engineering and Deployment Design",
+  "parent_stage": "UKACTIVE-A4D",
+  "parent_commit": "48cb69ffbaae25eb0dccc3226f47f5a7491e8bd7",
+  "parent_tag": "ukactive-a4d-v1-20260824",
+  "branch": "research/ukactive-a4e-sipp",
+  "registered_date": "2026-08-24",
+  "authoritative_cutoff": "2026-08-21",
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "prospective_data_prohibited": true,
+  "automatic_broker_execution_authorised": false
+}
