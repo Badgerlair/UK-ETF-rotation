@@ -312,12 +312,18 @@
   "pre_outcome_chain_amendment_commit": "b57a2ed2d02a257bb4225aac08b42d70027de783",
   "preregistration_commit": "31c665d118fc3a50dafbe19febc41cb6bd3f4dcc",
   "prior_outputs_unchanged": true,
+  "result_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
   "run_id": "UKACTIVE-A4D-20260824-001",
   "specification_count": 77,
   "stage_id": "UKACTIVE-A4D",
   "starting_commit": "68f91022e11a4085a3cf7fb545306c9f792b3d85",
   "test_summary": {
     "PASS": 15
+  },
+  "validation": {
+    "in_build_controls": "15/15 PASS",
+    "pytest_command": "python -m pytest tests/test_ukactive_a4d.py tests/test_ukactive_a5_shadow.py -q",
+    "pytest_result": "19 passed"
   },
   "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
 }
