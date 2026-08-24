@@ -1,0 +1,44 @@
+{
+  "acceptable_breadth_region": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "benchmark": "GLOBAL_DEVELOPED_WORLD",
+  "breadth": 7,
+  "cash": "ACTUAL_GBP_CASH",
+  "cash_architecture": "CASH_0_ALWAYS_INVESTED",
+  "costs": {
+    "canonical_fixed_fee_gbp_per_leg": 3.99,
+    "canonical_one_way_friction_bps": 20.0,
+    "canonical_sleeve_size_gbp": 250000.0,
+    "double_fixed_fee_gbp_per_leg": 7.98,
+    "double_one_way_friction_bps": 40.0,
+    "non_gbp_fx_rate": 0.0075
+  },
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "execution": {
+    "maximum_lag_xlon_sessions": 3,
+    "minimum_lag_xlon_sessions": 1,
+    "rebalance_same_members": false,
+    "same_close": false
+  },
+  "frequency": "MONTHLY",
+  "pool": "INDUSTRY_PLUS_THEME",
+  "pool_comparator": "CONTEMPORANEOUS_EQUAL_WEIGHT_INDUSTRY_PLUS_THEME",
+  "prospective_test_started": false,
+  "signal_definition": {
+    "RS_126": 0.3,
+    "RS_21": 0.1,
+    "RS_252": 0.2,
+    "RS_42": 0.15,
+    "RS_63": 0.25
+  },
+  "signal_id": "M2_INTERMEDIATE_5H",
+  "stage": "UKACTIVE-A4D",
+  "status": "DEVELOPMENTAL_REFERENCE_NOT_AUTHORISED_FOR_PROSPECTIVE_VALIDATION",
+  "untouched_historical_holdout_available": false,
+  "warning": "NOT AUTHORISED AND NOT STARTED; A4D disposition is insufficient to open a new prospective lineage. Existing A5 remains unchanged.",
+  "weighting_method": "W0_EQUAL"
+}

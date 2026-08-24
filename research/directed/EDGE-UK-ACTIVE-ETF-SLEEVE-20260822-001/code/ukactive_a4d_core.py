@@ -766,7 +766,8 @@ def capture_delay_sessions(data: A4DData, records: pd.DataFrame, signal_id: str,
     daily = data.daily_features.loc[data.daily_features[signal_id].notna(), ["date", "economic_exposure_family_id", f"{signal_id}_ORDINAL_RANK"]].copy()
     daily["in_top"] = daily[f"{signal_id}_ORDINAL_RANK"].le(int(breadth))
     daily = daily.sort_values(["economic_exposure_family_id", "date"])
-    daily["entry"] = daily["in_top"] & ~daily.groupby("economic_exposure_family_id", sort=False)["in_top"].shift(1).fillna(False)
+    prior = daily.groupby("economic_exposure_family_id", sort=False)["in_top"].shift(1).fillna(False).astype(bool)
+    daily["entry"] = daily["in_top"] & ~prior
     calendar_position = pd.Series(np.arange(len(data.base.research.calendar)), index=data.base.research.calendar)
     delays = []
     for row in records.itertuples(index=False):
@@ -794,21 +795,42 @@ def drawdown_response_days(simulation: a4b.A4BSimulation, threshold: float = -0.
     return float(np.mean(delays)) if delays else np.nan
 
 
-def contribution_tables(result: PlannedResult) -> tuple[pd.DataFrame, pd.DataFrame]:
+def contribution_tables(result: PlannedResult, calendar: pd.DatetimeIndex | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
     curve = result.simulation.curve
-    records = result.target_records.set_index("review_date") if len(result.target_records) else pd.DataFrame()
+    records = result.target_records.copy()
+    if len(records):
+        records["review_date"] = pd.to_datetime(records["review_date"])
+        if calendar is None:
+            effective = records["review_date"]
+        else:
+            calendar = pd.DatetimeIndex(calendar)
+            positions = calendar.searchsorted(records["review_date"].to_numpy(), side="right")
+            effective = pd.Series(
+                [calendar[position] if position < len(calendar) else pd.NaT for position in positions],
+                index=records.index,
+            )
+        records["effective_date"] = pd.to_datetime(effective)
+        records = records.sort_values(["effective_date", "review_date"]).reset_index(drop=True)
     family_pnl: dict[str, float] = {}
-    rank_pnl: dict[str, float] = {"RANK_1": 0.0, "RANK_2_3": 0.0, "RANK_4_5": 0.0, "RANK_6_10": 0.0}
-    current_review = pd.NaT
+    rank_pnl: dict[str, float] = {
+        "RANK_1": 0.0,
+        "RANK_2_3": 0.0,
+        "RANK_4_5": 0.0,
+        "RANK_6_10": 0.0,
+        "UNATTRIBUTED_HELD_OUTSIDE_CURRENT_SELECTED_RANKS": 0.0,
+    }
+    rank_map: dict[str, int] = {}
+    record_position = 0
     for row in curve.itertuples(index=False):
         pnl = json.loads(row.family_market_pnl_json) if isinstance(row.family_market_pnl_json, str) and row.family_market_pnl_json else {}
-        if pd.notna(row.decision_review_date):
-            current_review = pd.Timestamp(row.decision_review_date)
-        review = current_review
-        rank_map: dict[str, int] = {}
-        if pd.notna(review) and not records.empty and review in records.index:
-            selected = str(records.loc[review, "selected_families_rank_order"]).split(";")
+        row_date = pd.Timestamp(row.date)
+        # P&L booked at an execution close still belongs to the previously
+        # held rank state.  A review becomes effective for subsequent return
+        # accrual only after that next-session close.
+        while len(records) and record_position < len(records) and pd.Timestamp(records.iloc[record_position]["effective_date"]) < row_date:
+            selected = str(records.iloc[record_position]["selected_families_rank_order"]).split(";")
             rank_map = {family: index + 1 for index, family in enumerate(selected) if family}
+            record_position += 1
         for family, value in pnl.items():
             family_pnl[family] = family_pnl.get(family, 0.0) + float(value)
             rank = rank_map.get(family)
@@ -820,6 +842,12 @@ def contribution_tables(result: PlannedResult) -> tuple[pd.DataFrame, pd.DataFra
                 rank_pnl["RANK_4_5"] += float(value)
             elif rank is not None and rank <= 10:
                 rank_pnl["RANK_6_10"] += float(value)
+            else:
+                rank_pnl["UNATTRIBUTED_HELD_OUTSIDE_CURRENT_SELECTED_RANKS"] += float(value)
+        while len(records) and record_position < len(records) and pd.Timestamp(records.iloc[record_position]["effective_date"]) == row_date:
+            selected = str(records.iloc[record_position]["selected_families_rank_order"]).split(";")
+            rank_map = {family: index + 1 for index, family in enumerate(selected) if family}
+            record_position += 1
     family = pd.DataFrame([{"economic_exposure_family_id": key, "gross_market_pnl_return_units": value} for key, value in family_pnl.items()]).sort_values("gross_market_pnl_return_units", ascending=False)
     rank = pd.DataFrame([{"rank_bucket": key, "gross_market_pnl_return_units": value} for key, value in rank_pnl.items()])
     total = family["gross_market_pnl_return_units"].sum() if len(family) else np.nan

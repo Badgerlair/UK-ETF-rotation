@@ -1,0 +1,323 @@
+{
+  "authoritative_input_hashes": {
+    "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+    "UKACTIVE_A2R2_XLON_RESEARCH_CALENDAR.csv": "c211a3d3b0d7f93e5889c3dcafd0a3390adb24151277cb1b84265f213a776d95",
+    "UKACTIVE_A2R_A3R0_ROTATION_ROLE_MASTER_POST_A2R.csv": "8fd81aca2dd90ad2090282839243072dec276228d1c546559ffe3883dbb3c61b",
+    "UKACTIVE_A2_CASH_SERIES.parquet": "491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a"
+  },
+  "charts": [
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_COMPARATIVE_EQUITY_CURVES.png",
+      "sha256": "4a702b1b70b78d557fc774a4c38070ccb3db81e56648edc00786f49f1400d4ba",
+      "size_bytes": 206017
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_DRAWDOWN_CURVES.png",
+      "sha256": "b6489e76d0a8579b35c2b474c2cdcd1f987b1051d006c675920022eebaadcb45",
+      "size_bytes": 326296
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_BREADTH_FRONTIER.png",
+      "sha256": "4e6e203a4a6a84437e6cc502b806e4fd97bd80c0cbeff648459b980191d145cd",
+      "size_bytes": 95283
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_FREQUENCY_COMPARISON.png",
+      "sha256": "69f6d660281993aeaa88eaaa82a92ceb159533125c22fb2e34da14f2eef7af4a",
+      "size_bytes": 38725
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_ROLLING_EXCESS.png",
+      "sha256": "d6a6a8f0a70607ad2df1b55b8e67f5c9cc92c7688f3ab07de74c43c4d7a24fb5",
+      "size_bytes": 158894
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_INVESTED_FRACTION.png",
+      "sha256": "c7a4f414599a78726720c79d7dcd7232e4575c32f7eb9907117bd3c23298d3bc",
+      "size_bytes": 36192
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_CONTRIBUTION_BY_RANK.png",
+      "sha256": "8305ad09ac22196554ebcd7518d3c5fa4e20820f3775f5a8e3165a8a4bab149a",
+      "size_bytes": 35597
+    },
+    {
+      "path": "charts\\UKACTIVE_A4D\\UKACTIVE_A4D_CONTRIBUTION_BY_FAMILY.png",
+      "sha256": "faada8d9f74ed21693ca6050c687ef3cc40707a2156455adb0b5a36aa5a3dfcc",
+      "size_bytes": 72330
+    }
+  ],
+  "decision": "A4D_WEAK_OR_REGIME_DEPENDENT",
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "generated_at": "2026-08-24T00:00:00+01:00",
+  "git_branch": "research/ukactive-a4d",
+  "immutable_prior_hashes_after": {
+    "UKACTIVE_A4B_DECISION.json": "2345e6cff62e08a9a0dbbf1e9723b738461845108c96fb1a342511b319ade0d5",
+    "UKACTIVE_A4C_DECISION.json": "e92a53ee17327e456b9053f2547512c345ccdb4da670c42fc8ff9c5ec9378e9b",
+    "UKACTIVE_A4_DECISION.json": "fa9ae1387850b34c29a18e5cef18a3f29ee7a4beb28e927428eea1dffb56def7",
+    "UKACTIVE_A5_DECISION_LEDGER.csv": "68e9fb28d4acfb0be707ab313dc40d46158cb76aa789d1aed011d8e8b05eba67",
+    "UKACTIVE_A5_EXECUTION_LEDGER.csv": "8c48625268167ff20f49cfcf7dd1859377469ac635cf3fc9e70d3a62d2cde200",
+    "UKACTIVE_A5_NAV_HISTORY.csv": "3359a748cad99a56ee998b6471591a09191a3c814d239ce21238ce79c8e88c2d",
+    "UKACTIVE_A5_SETUP_DECISION.json": "5318190e293af11b9468614178773ba3c2dd06a2f4b6d00c22c08c1a2f63ccfc"
+  },
+  "immutable_prior_hashes_before": {
+    "UKACTIVE_A4B_DECISION.json": "2345e6cff62e08a9a0dbbf1e9723b738461845108c96fb1a342511b319ade0d5",
+    "UKACTIVE_A4C_DECISION.json": "e92a53ee17327e456b9053f2547512c345ccdb4da670c42fc8ff9c5ec9378e9b",
+    "UKACTIVE_A4_DECISION.json": "fa9ae1387850b34c29a18e5cef18a3f29ee7a4beb28e927428eea1dffb56def7",
+    "UKACTIVE_A5_DECISION_LEDGER.csv": "68e9fb28d4acfb0be707ab313dc40d46158cb76aa789d1aed011d8e8b05eba67",
+    "UKACTIVE_A5_EXECUTION_LEDGER.csv": "8c48625268167ff20f49cfcf7dd1859377469ac635cf3fc9e70d3a62d2cde200",
+    "UKACTIVE_A5_NAV_HISTORY.csv": "3359a748cad99a56ee998b6471591a09191a3c814d239ce21238ce79c8e88c2d",
+    "UKACTIVE_A5_SETUP_DECISION.json": "5318190e293af11b9468614178773ba3c2dd06a2f4b6d00c22c08c1a2f63ccfc"
+  },
+  "outputs": [
+    {
+      "path": "code\\build_ukactive_a4d.py",
+      "sha256": "7eef8699d3c0d276575bbaeb0e1cfbef5c15faea9e54316aede9e580ce14dbea",
+      "size_bytes": 84160
+    },
+    {
+      "path": "code\\ukactive_a4d_core.py",
+      "sha256": "f665f45a5e3ed74bdd7bea728cc48852dd1b774b092ea887ef0b5d40b16ef1e9",
+      "size_bytes": 43442
+    },
+    {
+      "path": "config\\UKACTIVE_A4D_POLICY_v1.json",
+      "sha256": "3bc815e457c7141038909617e67f6720d9df9c038826b4ae0eb7b522f0de869b",
+      "size_bytes": 4432
+    },
+    {
+      "path": "config\\UKACTIVE_A4D_REPRESENTATIVE_FORWARD_SPEC.json",
+      "sha256": "66e8a3591d9c7cc44fc3b845790eea074e56940489be0cd935c15f1fd43b2d3d",
+      "size_bytes": 1373
+    },
+    {
+      "path": "UKACTIVE_A4D_BREADTH_FRONTIER.csv",
+      "sha256": "d5ae0433b9b56c596b97e5e8882543314f8c63733611563144b5347aa3cbb757",
+      "size_bytes": 28937
+    },
+    {
+      "path": "UKACTIVE_A4D_BREADTH_MARGINAL_EFFECTS.csv",
+      "sha256": "48e131a7b04a6ecf3c125abf16c6162a386cb2fbf2a77289c335a4126dab262a",
+      "size_bytes": 3873
+    },
+    {
+      "path": "UKACTIVE_A4D_BREADTH_PLATEAU_AUDIT.csv",
+      "sha256": "1fba0d472e9696645ee882e9ac8572a02d3da256b1ec86c830689c75f28a8fe3",
+      "size_bytes": 2345
+    },
+    {
+      "path": "UKACTIVE_A4D_BREADTH_RESULTS.csv",
+      "sha256": "370a05c12fe239bb75482f865acfb74932f3dad6de2923b7cae3860e33d4c82c",
+      "size_bytes": 87739
+    },
+    {
+      "path": "UKACTIVE_A4D_CASH_DEFENCE_RESULTS.csv",
+      "sha256": "7f79e100d233d2722be54283e4dfe18e7b38271646cf75a71147dd743c4f8e3a",
+      "size_bytes": 116437
+    },
+    {
+      "path": "UKACTIVE_A4D_CASH_DOUBLE_COST_RESULTS.csv",
+      "sha256": "d8a85e80c2bf104b88a38999f4916b4121580b06eb7f78690e788116d8fbca2e",
+      "size_bytes": 117714
+    },
+    {
+      "path": "UKACTIVE_A4D_CASH_ECONOMIC_VALUE.csv",
+      "sha256": "a4ebf864f0ddc533853675a4fb92f90e14d2b8ba2503b424c1eb06ab41c7d24c",
+      "size_bytes": 1984
+    },
+    {
+      "path": "UKACTIVE_A4D_CASH_EXPOSURE_HISTORY.parquet",
+      "sha256": "d7ce0baaf95e5fa5d3525eeefe983e56169538cfa9d0d8e4dbbe749f5f508811",
+      "size_bytes": 86260
+    },
+    {
+      "path": "UKACTIVE_A4D_CASH_STRESS_EPISODES.csv",
+      "sha256": "c098f0c398fddfde864a216401bb7e95ea7f4abb6f191f99100bf4136dd174ae",
+      "size_bytes": 4253
+    },
+    {
+      "path": "UKACTIVE_A4D_CONTRIBUTION_BY_FAMILY.csv",
+      "sha256": "5e0355343c4e6f27b689de579ae2f59a50f752b75b7b0bcf27daa2dceeb46a3e",
+      "size_bytes": 3559
+    },
+    {
+      "path": "UKACTIVE_A4D_CONTRIBUTION_BY_RANK.csv",
+      "sha256": "09f26d865f70f82feff09aebeaf7fa900052c0c149ed784bb7e4a66f7d2e41e1",
+      "size_bytes": 789
+    },
+    {
+      "path": "UKACTIVE_A4D_CORRECTNESS_TEST_RESULTS.csv",
+      "sha256": "56c5b4a05e51fc84252954a881bf4a120bff65b05a9ba96a0f92012a3909a2b0",
+      "size_bytes": 2886
+    },
+    {
+      "path": "UKACTIVE_A4D_DATA_QUALITY_REPORT.md",
+      "sha256": "985e664e189485e05d8ee19f374b3e07ca0520417c1c39ef42401735a94c6c0c",
+      "size_bytes": 1380
+    },
+    {
+      "path": "UKACTIVE_A4D_DECISION.json",
+      "sha256": "6b72ec910b62505c3a83fb5f8c54ff2bb521579195c836b617fd4e450d245131",
+      "size_bytes": 1466
+    },
+    {
+      "path": "UKACTIVE_A4D_EQUITY_CURVES.parquet",
+      "sha256": "8791faa076e4016dc1c10e25b818d577b5b83bf27c612d7cc601fcc62b67ac8a",
+      "size_bytes": 2336423
+    },
+    {
+      "path": "UKACTIVE_A4D_FALSE_DEFENSIVE_PERIODS.csv",
+      "sha256": "39c52c62e51ed7ff65db07ff5470312fa53a4fc9c66a5608db8f1f3d14c2c449",
+      "size_bytes": 16891
+    },
+    {
+      "path": "UKACTIVE_A4D_FINAL_DECISION_REPORT.md",
+      "sha256": "6cddcd724a0e51ab4e413e2ce7435ea9c51c5e6a0c7934f9efe81e583d2fe21d",
+      "size_bytes": 16668
+    },
+    {
+      "path": "UKACTIVE_A4D_FREQUENCY_DOUBLE_COST_RESULTS.csv",
+      "sha256": "d14f80c4ecc2ea6e32407b51b598abeba525e61a20a977eb97efcec10c3c8353",
+      "size_bytes": 67314
+    },
+    {
+      "path": "UKACTIVE_A4D_FREQUENCY_RESULTS.csv",
+      "sha256": "c9832ae11e619f5d5ff57756f5f1243eaadf2c27549e0bb7a4a3439931fc98cc",
+      "size_bytes": 66528
+    },
+    {
+      "path": "UKACTIVE_A4D_FREQUENCY_SUMMARY.csv",
+      "sha256": "3925aaed526b9d596b66698308ae2f4f14332c63e215972a3e387d1033d1a47e",
+      "size_bytes": 789
+    },
+    {
+      "path": "UKACTIVE_A4D_LEADERSHIP_STATE_RESULTS.csv",
+      "sha256": "cd092f2cf3795e917bd7fe332939541628627eb206f917d58d6ff417836579ea",
+      "size_bytes": 4565
+    },
+    {
+      "path": "UKACTIVE_A4D_MOMENTUM_AGE_DIAGNOSTICS.csv",
+      "sha256": "b6efb5a12436f1efc3629bea65c241928b4c8c84e78d3e88543d60473e4f70a4",
+      "size_bytes": 4456
+    },
+    {
+      "path": "UKACTIVE_A4D_MULTIPLE_TESTING_LEDGER.csv",
+      "sha256": "c4d24644f85cb7e63e20b623230cf92160b5e7d4207adbb54861356bbe3a9613",
+      "size_bytes": 2309
+    },
+    {
+      "path": "UKACTIVE_A4D_PRIMARY_ECONOMIC_SCORECARD.csv",
+      "sha256": "386e6732fc9ddd55d690849f3d07c9110daf6b127e414df91acb30fc807d328c",
+      "size_bytes": 6850
+    },
+    {
+      "path": "UKACTIVE_A4D_PROVENANCE_AND_RESEARCH_DELTA.md",
+      "sha256": "3147b12a6a1de8afea8156c69b6711ae4fa1dae0c0e0fe9389f11eced4271a37",
+      "size_bytes": 5858
+    },
+    {
+      "path": "UKACTIVE_A4D_REPRESENTATIVE_BLOCK_BOOTSTRAP.csv",
+      "sha256": "24e734868c99f09e44666bb5c35324455fd515da6f487fa2e9816cb025e5aaec",
+      "size_bytes": 974
+    },
+    {
+      "path": "UKACTIVE_A4D_RESEARCH_DIRECTOR_REVIEW.md",
+      "sha256": "9ccc2eb0a135b646517aaa5fdaef5b773650970c3a44e8ffcce9446a28840c40",
+      "size_bytes": 991
+    },
+    {
+      "path": "UKACTIVE_A4D_ROBUSTNESS_RESULTS.csv",
+      "sha256": "a4a8d5924490ab6ef52a8363975a0f4012fb1fbc37d3c341fe4a7c6d18bb71a2",
+      "size_bytes": 57606
+    },
+    {
+      "path": "UKACTIVE_A4D_ROLLING_EXCESS_RESULTS.csv",
+      "sha256": "d21c807a62596c36fcc086ddfd48a2087c8acaa56263c9aebc82dff66fb9e4c1",
+      "size_bytes": 203957
+    },
+    {
+      "path": "UKACTIVE_A4D_ROLLING_EXCESS_SUMMARY.csv",
+      "sha256": "371002b8717c594c818986e3776f8afebaa8b0a148e3baf683f525594f79db10",
+      "size_bytes": 1220
+    },
+    {
+      "path": "UKACTIVE_A4D_SCOPE_AND_PREREGISTRATION.md",
+      "sha256": "75cf7b59313088c877190e795521b07cb29be5edda873df502feb9391f560337",
+      "size_bytes": 7430
+    },
+    {
+      "path": "UKACTIVE_A4D_SIGNAL_DATE_DIAGNOSTICS.parquet",
+      "sha256": "24ae0f83a4886f4c9053a4e0d545c20c7aeb8a1dee003eb203fc66b990feae2a",
+      "size_bytes": 149602
+    },
+    {
+      "path": "UKACTIVE_A4D_SIGNAL_DIAGNOSTICS.csv",
+      "sha256": "e69893ebaab277164adc04a50ed326070c1e8e7f3df1b713a0596a4909534692",
+      "size_bytes": 11097
+    },
+    {
+      "path": "UKACTIVE_A4D_SIGNAL_HAC_INFERENCE.csv",
+      "sha256": "0709ea2d87576f8fb3a08c0ad662eb7f54deb48a0e3c27f579c0e374f426d6b9",
+      "size_bytes": 25939
+    },
+    {
+      "path": "UKACTIVE_A4D_SPECIFICATION_REGISTRY.csv",
+      "sha256": "988094daf40ac9120f619fe3e86f46a78de48ba1976b54782d74cabe2684d3bb",
+      "size_bytes": 24215
+    },
+    {
+      "path": "UKACTIVE_A4D_STAGE_A_SIGNAL_GATE.csv",
+      "sha256": "afd192268e9c2d535783edb62d4866b4938ebf36796c20190d08cad3d7bb026c",
+      "size_bytes": 559
+    },
+    {
+      "path": "UKACTIVE_A4D_STAGE_REGISTRATION.json",
+      "sha256": "28287ec21aa05d4b440b1a92e62347501369ef496e0ba3c34de44f70b60553fd",
+      "size_bytes": 1030
+    },
+    {
+      "path": "UKACTIVE_A4D_STATISTICAL_INFERENCE.md",
+      "sha256": "9d23d7dd12d23d8e18ccfda0364b993317b16b333ddb106903802b0e131f1222",
+      "size_bytes": 1606
+    },
+    {
+      "path": "UKACTIVE_A4D_UNRESOLVED_ITEMS.csv",
+      "sha256": "7777fda6738e6971babd4d484a3bb705b97743e3f08e1ce6167186a12e124dae",
+      "size_bytes": 951
+    },
+    {
+      "path": "UKACTIVE_A4D_WEIGHTING_DECISION.csv",
+      "sha256": "9ba1ebfed2cb6bbf975d0e6d4a53e4e9d976df5980dd5d986597ecb1b457f93a",
+      "size_bytes": 7953
+    },
+    {
+      "path": "UKACTIVE_A4D_WEIGHTING_RESULTS.csv",
+      "sha256": "6135c5bd9905e944a1b1f74b44cd3530ae9bfeb0cadda098df395d4a08b1eaa8",
+      "size_bytes": 17886
+    },
+    {
+      "path": "UKACTIVE_A4D_YEAR_BY_YEAR_RESULTS.csv",
+      "sha256": "09ebeddfa373e2188f4510d49a977789673734ea8d9a4d97b371f48ebaf67ca2",
+      "size_bytes": 3875
+    }
+  ],
+  "pre_outcome_chain_amendment_commit": "b57a2ed2d02a257bb4225aac08b42d70027de783",
+  "preregistration_commit": "31c665d118fc3a50dafbe19febc41cb6bd3f4dcc",
+  "prior_outputs_unchanged": true,
+  "run_id": "UKACTIVE-A4D-20260824-001",
+  "specification_count": 77,
+  "stage_id": "UKACTIVE-A4D",
+  "starting_commit": "68f91022e11a4085a3cf7fb545306c9f792b3d85",
+  "test_summary": {
+    "PASS": 15
+  },
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+}

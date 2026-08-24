@@ -24,6 +24,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 import ukactive_a4d_core as core
 
@@ -479,6 +480,123 @@ def false_defensive_periods(simulation: core.a4b.A4BSimulation, global_sim: core
     return pd.DataFrame(rows)
 
 
+def newey_west_mean(values: pd.Series, maximum_lag: int) -> tuple[float, float, float, float]:
+    series = pd.Series(values, dtype=float).dropna().to_numpy(float)
+    count = len(series)
+    if count < 3:
+        return np.nan, np.nan, np.nan, np.nan
+    estimate = float(series.mean())
+    centered = series - estimate
+    long_run_variance = float(np.dot(centered, centered) / count)
+    for lag in range(1, min(int(maximum_lag), count - 1) + 1):
+        covariance = float(np.dot(centered[lag:], centered[:-lag]) / count)
+        weight = 1.0 - lag / (maximum_lag + 1.0)
+        long_run_variance += 2.0 * weight * covariance
+    standard_error = math.sqrt(max(long_run_variance, 0.0) / count)
+    statistic = estimate / standard_error if standard_error > 0 else np.nan
+    p_value = 2.0 * (1.0 - norm.cdf(abs(statistic))) if pd.notna(statistic) else np.nan
+    return estimate, standard_error, statistic, p_value
+
+
+def bh_adjust(values: pd.Series) -> pd.Series:
+    result = pd.Series(np.nan, index=values.index, dtype=float)
+    valid = values.dropna().sort_values()
+    if valid.empty:
+        return result
+    count = len(valid)
+    adjusted = np.minimum.accumulate((valid.to_numpy(float) * count / np.arange(1, count + 1))[::-1])[::-1]
+    result.loc[valid.index] = np.minimum(adjusted, 1.0)
+    return result
+
+
+def signal_hac_inference(date_diagnostics: pd.DataFrame, policy: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    window_ids = ["FULL_HISTORY", "POST_2020", "LATEST_5Y", "LATEST_3Y"]
+    for (signal, horizon), source in date_diagnostics.groupby(["signal_id", "forward_horizon_sessions"], sort=True):
+        lag = max(1, int(math.ceil(int(horizon) / 5)))
+        for window_id in window_ids:
+            mask = core._window_mask(source["date"], window_id, policy)
+            group = source.loc[mask]
+            for metric in ["ic", "top_quintile_advantage", "rank1_advantage"]:
+                estimate, standard_error, statistic, p_value = newey_west_mean(group[metric], lag)
+                rows.append(
+                    {
+                        "signal_id": signal,
+                        "forward_horizon_sessions": int(horizon),
+                        "window_id": window_id,
+                        "metric": metric,
+                        "observation_count": int(group[metric].notna().sum()),
+                        "hac_maximum_lag_weeks": lag,
+                        "estimate": estimate,
+                        "hac_standard_error": standard_error,
+                        "hac_z_statistic": statistic,
+                        "raw_two_sided_p_value": p_value,
+                        "warning": WARNING,
+                    }
+                )
+    result = pd.DataFrame(rows)
+    result["bh_q_value_within_window_metric"] = result.groupby(["window_id", "metric"], group_keys=False)["raw_two_sided_p_value"].apply(bh_adjust)
+    return result
+
+
+def monthly_block_bootstrap(
+    specification_id: str,
+    selected: core.a4b.A4BSimulation,
+    comparators: dict[str, core.a4b.A4BSimulation],
+    start: pd.Timestamp,
+    end: pd.Timestamp,
+    *,
+    simulations: int = 5000,
+    block_months: int = 6,
+    seed: int = 20260824,
+) -> pd.DataFrame:
+    selected_value = selected.curve.set_index("date")["portfolio_value"].loc[start:end].astype(float)
+    rows = []
+    for comparator_id, comparator in comparators.items():
+        comparator_value = comparator.curve.set_index("date")["portfolio_value"].loc[start:end].astype(float)
+        joined = pd.concat([selected_value.rename("selected"), comparator_value.rename("comparator")], axis=1, join="inner").dropna()
+        monthly = joined.groupby([joined.index.year, joined.index.month]).last().pct_change(fill_method=None).dropna()
+        count = len(monthly)
+        if count < 12:
+            continue
+        selected_returns = monthly["selected"].to_numpy(float)
+        comparator_returns = monthly["comparator"].to_numpy(float)
+        observed_selected = float(np.prod(1.0 + selected_returns) ** (12.0 / count) - 1.0)
+        observed_comparator = float(np.prod(1.0 + comparator_returns) ** (12.0 / count) - 1.0)
+        observed_excess = observed_selected - observed_comparator
+        rng = np.random.default_rng(seed + sum(ord(char) for char in comparator_id))
+        samples = np.empty(simulations, dtype=float)
+        block_count = int(math.ceil(count / block_months))
+        for draw in range(simulations):
+            indices: list[int] = []
+            for start_index in rng.integers(0, count, size=block_count):
+                indices.extend(((start_index + np.arange(block_months)) % count).tolist())
+            take = np.asarray(indices[:count], dtype=int)
+            selected_cagr = float(np.prod(1.0 + selected_returns[take]) ** (12.0 / count) - 1.0)
+            comparator_cagr = float(np.prod(1.0 + comparator_returns[take]) ** (12.0 / count) - 1.0)
+            samples[draw] = selected_cagr - comparator_cagr
+        rows.append(
+            {
+                "specification_id": specification_id,
+                "window_start": start,
+                "window_end": end,
+                "comparator_id": comparator_id,
+                "monthly_observation_count": count,
+                "block_months": block_months,
+                "simulation_count": simulations,
+                "random_seed": seed + sum(ord(char) for char in comparator_id),
+                "observed_annualised_excess": observed_excess,
+                "bootstrap_mean_excess": float(samples.mean()),
+                "bootstrap_2_5_percentile": float(np.quantile(samples, 0.025)),
+                "bootstrap_97_5_percentile": float(np.quantile(samples, 0.975)),
+                "bootstrap_probability_excess_positive": float(np.mean(samples > 0)),
+                "two_sided_tail_probability": float(min(1.0, 2.0 * min(np.mean(samples <= 0), np.mean(samples >= 0)))),
+                "warning": WARNING,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def plots(
     global_sim: core.a4b.A4BSimulation,
     pool: core.a4b.A4BSimulation,
@@ -498,7 +616,7 @@ def plots(
         "Global developed": normalised(global_sim.curve, dates),
         "Equal-weight pool": normalised(pool.curve, dates),
         "Always invested rotation": normalised(always.curve, dates),
-        "Defensive rotation": normalised(defensive.curve, dates),
+        "Most-defensive diagnostic": normalised(defensive.curve, dates),
     }
     fig, ax = plt.subplots(figsize=(11, 6))
     for label, value in series.items():
@@ -522,6 +640,7 @@ def plots(
 
     fig, ax1 = plt.subplots(figsize=(10, 6))
     for signal, group in breadth_summary.groupby("signal_id"):
+        group = group.sort_values("breadth")
         ax1.plot(group["breadth"], 100 * group["latest_5y_net_excess_vs_equal_pool"], marker="o", label=f"{signal} pool excess")
     ax1.axhline(0, color="black", linewidth=0.8)
     ax1.set_xlabel("Number of holdings"); ax1.set_ylabel("Net excess CAGR vs equal pool (pp)")
@@ -530,7 +649,7 @@ def plots(
     fig.tight_layout(); fig.savefig(path, dpi=160); plt.close(fig); paths.append(path)
 
     fig, ax = plt.subplots(figsize=(9, 5))
-    local = frequency_summary.sort_values("frequency")
+    local = frequency_summary.assign(_order=frequency_summary["frequency"].map({"DAILY": 0, "WEEKLY": 1, "MONTHLY": 2})).sort_values("_order")
     ax.bar(local["frequency"], 100 * local["median_latest5_pool_excess"], color=["#4c78a8", "#f58518", "#54a24b"][:len(local)])
     ax.set_ylabel("Median net excess CAGR vs pool (pp)"); ax.set_title("Frequency comparison across selected breadth region"); ax.axhline(0, color="black", linewidth=0.8)
     path = CHARTS / "UKACTIVE_A4D_FREQUENCY_COMPARISON.png"
@@ -777,7 +896,7 @@ def main() -> None:
         robustness_frames.append(result)
     _, _, doubled_final, _ = run("ROBUSTNESS_DOUBLE_COST", chosen_signal, chosen_breadth, chosen_frequency, chosen_cash, chosen_weighting, double_cost=True)
     robustness_frames.append(doubled_final)
-    family_contribution, rank_contribution = core.contribution_tables(final_plan)
+    family_contribution, rank_contribution = core.contribution_tables(final_plan, data.base.research.calendar)
     top_families = list(family_contribution.head(3)["economic_exposure_family_id"]) if len(family_contribution) else []
     for family in top_families:
         _, _, result, _ = run("ROBUSTNESS_LEAVE_ONE_FAMILY_OUT", chosen_signal, chosen_breadth, chosen_frequency, chosen_cash, chosen_weighting, exclusions={family})
@@ -817,9 +936,37 @@ def main() -> None:
             "MOST_DEFENSIVE_DIAGNOSTIC": defensive_plan.simulation,
         },
     )
-    false_defence = false_defensive_periods(final_plan.simulation, global_sim)
+    false_frames = []
+    for architecture in policy["cash_architectures"]:
+        local = false_defensive_periods(cash_plans[(architecture, chosen_breadth)].simulation, global_sim)
+        if len(local):
+            local.insert(0, "cash_architecture", architecture)
+            false_frames.append(local)
+    false_defence = pd.concat(false_frames, ignore_index=True) if false_frames else pd.DataFrame(
+        columns=["cash_architecture", "defensive_date", "cash_fraction", "subsequent_global_return_approx_3m", "false_defensive", "warning"]
+    )
     csv(ROOT / "UKACTIVE_A4D_CASH_STRESS_EPISODES.csv", cash_stress)
     csv(ROOT / "UKACTIVE_A4D_FALSE_DEFENSIVE_PERIODS.csv", false_defence)
+
+    cash_exposure_frames = []
+    for architecture in policy["cash_architectures"]:
+        curve = cash_plans[(architecture, chosen_breadth)].simulation.curve[
+            ["date", "invested_fraction", "cash_fraction", "holdings"]
+        ].copy()
+        curve.insert(0, "cash_architecture", architecture)
+        cash_exposure_frames.append(curve)
+    parquet(ROOT / "UKACTIVE_A4D_CASH_EXPOSURE_HISTORY.parquet", pd.concat(cash_exposure_frames, ignore_index=True))
+
+    signal_inference = signal_hac_inference(date_diagnostics, policy)
+    bootstrap_inference = monthly_block_bootstrap(
+        final_id,
+        final_plan.simulation,
+        {"GLOBAL_DEVELOPED_WORLD": global_sim, "EQUAL_WEIGHT_OPPORTUNITY_POOL": final_pool},
+        pd.Timestamp(policy["windows"]["LATEST_5Y_START"]),
+        pd.Timestamp(policy["windows"]["CUTOFF"]),
+    )
+    csv(ROOT / "UKACTIVE_A4D_SIGNAL_HAC_INFERENCE.csv", signal_inference)
+    csv(ROOT / "UKACTIVE_A4D_REPRESENTATIVE_BLOCK_BOOTSTRAP.csv", bootstrap_inference)
 
     curves = []
     for label, simulation in {
@@ -851,6 +998,25 @@ def main() -> None:
     # Specification registry and tests.
     registry = pd.DataFrame(registry_rows).drop_duplicates("specification_id").sort_values(["research_stage", "specification_id"])
     csv(ROOT / "UKACTIVE_A4D_SPECIFICATION_REGISTRY.csv", registry)
+    testing_ledger = (
+        registry.groupby(["research_stage", "classification"], as_index=False)
+        .agg(specification_count=("specification_id", "size"))
+        .sort_values(["research_stage", "classification"])
+    )
+    testing_ledger["independent_hypotheses_claimed"] = 0
+    testing_ledger["selection_or_use"] = np.select(
+        [
+            testing_ledger["research_stage"].eq("STAGE_B_BREADTH"),
+            testing_ledger["research_stage"].eq("STAGE_C_FREQUENCY"),
+            testing_ledger["research_stage"].eq("STAGE_D_CASH"),
+            testing_ledger["research_stage"].eq("STAGE_E_WEIGHTING"),
+        ],
+        ["MAP_ADJACENT_BREADTH_REGION", "SELECT_REGION_LEVEL_CADENCE", "FIXED_DEFENSIVE_GATE", "LIMITED_FIXED_WEIGHT_COMPARISON"],
+        default="ROBUSTNESS_OR_REFERENCE",
+    )
+    testing_ledger["interpretation"] = "CORRELATED_ARCHITECTURE_CELLS; NOT COUNTED AS INDEPENDENT DISCOVERIES"
+    testing_ledger["warning"] = WARNING
+    csv(ROOT / "UKACTIVE_A4D_MULTIPLE_TESTING_LEDGER.csv", testing_ledger)
     immutable_after = {path.name: sha256(path) for path in immutable_paths if path.exists()}
     executions = final_plan.simulation.trades.loc[final_plan.simulation.trades.get("execution_status", pd.Series(dtype=str)).eq("EXECUTED")]
     feature_sample = data.daily_features.dropna(subset=["M1_EQUAL_5H", "M2_INTERMEDIATE_5H"]).head(1000)
@@ -869,6 +1035,8 @@ def main() -> None:
         ("COMMON_CHAIN_START_RESPECTED", bool(final_plan.simulation.curve["date"].min() >= pd.Timestamp(policy["windows"]["COMMON_CAUSAL_CHAIN_START"])), "no fabricated pre-break compounding"),
         ("A5_AND_PRIOR_IMMUTABLE_HASHES", immutable_before == immutable_after, json.dumps(immutable_before, sort_keys=True)),
         ("ALL_FORMAL_SPECS_REGISTERED", len(registry) == len(simulation_cache), f"registry={len(registry)} cache={len(simulation_cache)}"),
+        ("RANK_CONTRIBUTION_RECONCILES", abs(rank_contribution["gross_market_pnl_return_units"].sum() - family_contribution["gross_market_pnl_return_units"].sum()) < 1e-10, "rank buckets equal gross family market P&L"),
+        ("CAPTURE_DELAY_DIAGNOSTIC_NONDEGENERATE", bool(frequency_results["leadership_capture_delay_sessions"].max() > 0), "diagnostic is not a constant zero"),
         ("CASH_CAN_REACH_100_PERCENT", any(plan.simulation.curve["cash_fraction"].ge(1 - 1e-10).any() for (architecture, _), plan in cash_plans.items() if architecture != "CASH_0_ALWAYS_INVESTED"), "at least one defensive specification reaches cash"),
         ("NO_A5_PROSPECTIVE_EVENT_CREATED", all((not path.exists()) or sum(1 for _ in path.open(encoding="utf-8")) <= 1 for path in [ROOT / "UKACTIVE_A5_DECISION_LEDGER.csv", ROOT / "UKACTIVE_A5_EXECUTION_LEDGER.csv"]), "A5 ledgers remain header-only"),
     ]
@@ -905,6 +1073,7 @@ def main() -> None:
     forward_spec = {
         "stage": "UKACTIVE-A4D",
         "evidence_level": "E2_DEVELOPMENTAL",
+        "status": "DEVELOPMENTAL_REFERENCE_NOT_AUTHORISED_FOR_PROSPECTIVE_VALIDATION",
         "untouched_historical_holdout_available": untouched_holdout,
         "prospective_test_started": False,
         "signal_id": chosen_signal,
@@ -920,7 +1089,7 @@ def main() -> None:
         "cash": policy["benchmarks"]["cash"],
         "execution": policy["execution"],
         "costs": policy["costs"],
-        "warning": "NOT STARTED; requires a distinct prospective lineage and freeze after review. Existing A5 remains unchanged.",
+        "warning": "NOT AUTHORISED AND NOT STARTED; A4D disposition is insufficient to open a new prospective lineage. Existing A5 remains unchanged.",
     }
     write_json(ROOT / "config" / "UKACTIVE_A4D_REPRESENTATIVE_FORWARD_SPEC.json", forward_spec)
 
@@ -938,7 +1107,91 @@ def main() -> None:
     unresolved["warning"] = WARNING
     csv(ROOT / "UKACTIVE_A4D_UNRESOLVED_ITEMS.csv", unresolved)
 
+    inference_table = bootstrap_inference[
+        ["comparator_id", "observed_annualised_excess", "bootstrap_2_5_percentile", "bootstrap_97_5_percentile", "bootstrap_probability_excess_positive", "two_sided_tail_probability"]
+    ].copy()
+    for column in ["observed_annualised_excess", "bootstrap_2_5_percentile", "bootstrap_97_5_percentile", "bootstrap_probability_excess_positive", "two_sided_tail_probability"]:
+        inference_table[column] = inference_table[column].map(lambda value: f"{100 * value:.2f}%" if pd.notna(value) else "N/A")
+    inference_report = f"""# UKACTIVE-A4D statistical inference
+
+All inference is E2 developmental. Weekly signal observations and forward returns overlap, so naive independent-observation t-tests are prohibited. `UKACTIVE_A4D_SIGNAL_HAC_INFERENCE.csv` uses a Newey–West long-run variance for each signal/horizon, with the lag tied to the forward horizon. Benjamini–Hochberg q-values are calculated within each evidence-window/metric family.
+
+The representative portfolio uses a paired six-month circular block bootstrap of monthly returns with 5,000 deterministic draws. This is a falsification/uncertainty diagnostic, not independent confirmation.
+
+{frame_markdown(inference_table)}
+
+The full architecture grid is correlated and staged. It is not described as 77 independent hypotheses; the complete accounting is in `UKACTIVE_A4D_MULTIPLE_TESTING_LEDGER.csv`.
+"""
+    (ROOT / "UKACTIVE_A4D_STATISTICAL_INFERENCE.md").write_text(inference_report, encoding="utf-8")
+
+    latest_features = data.daily_features.loc[data.daily_features["date"].eq(pd.Timestamp(policy["windows"]["CUTOFF"]))]
+    cancelled = sum(
+        int(item.simulation.trades["execution_status"].astype(str).str.startswith("CANCELLED", na=False).sum())
+        for item in simulation_cache.values()
+        if len(item.simulation.trades) and "execution_status" in item.simulation.trades
+    )
+    data_quality = f"""# UKACTIVE-A4D data-quality report
+
+- Authoritative A2R2 corrected endpoint chain: retained.
+- Deterministic XLON calendar and next-session execution: retained.
+- Economic-family ranking identity: 27 frozen `INDUSTRY_PLUS_THEME` families; no ticker-level ranks.
+- Latest 252-session-composite signal-ready count at {policy['windows']['CUTOFF']}: {int(latest_features['M1_EQUAL_5H'].notna().sum())}.
+- Common causal portfolio-chain start: {policy['windows']['COMMON_CAUSAL_CHAIN_START']}.
+- Reason: {policy['windows']['COMMON_CAUSAL_CHAIN_REASON']}
+- Cancelled rebalances across all registered baseline/robustness simulations: {cancelled}. These remain cancelled; no stale price or discretionary execution was manufactured.
+- Same-close executions: zero by construction and test.
+- Forward-filled prices/returns: none introduced.
+- Leverage/shorting: none.
+- Immutable A4/A4B/A4C/A5 hashes: unchanged.
+- A5 prospective decisions/executions created: zero.
+- In-build tests: {int(tests['status'].eq('PASS').sum())}/{len(tests)} PASS.
+- Standalone pytest controls: recorded separately by the Git/test handoff.
+
+The equal-weight opportunity-pool comparator is the existing causal research index: membership becomes effective after the review date and invalid constituent-day observations are excluded rather than filled. It is not represented as a costed executable fund.
+"""
+    (ROOT / "UKACTIVE_A4D_DATA_QUALITY_REPORT.md").write_text(data_quality, encoding="utf-8")
+
     recommended_region = f"TOP{min(breadth_region)}–TOP{max(breadth_region)}" if len(breadth_region) > 1 else f"TOP{breadth_region[0]}"
+    breadth_display = breadth_summary.loc[breadth_summary["signal_id"].eq(chosen_signal), [
+        "breadth", "latest_5y_net_cagr", "latest_5y_net_excess_vs_equal_pool", "latest_5y_maximum_drawdown", "latest_5y_calmar_mar", "latest_5y_annual_turnover_traded_notional"
+    ]].sort_values("breadth").copy()
+    for column in ["latest_5y_net_cagr", "latest_5y_net_excess_vs_equal_pool", "latest_5y_maximum_drawdown"]:
+        breadth_display[column] = breadth_display[column].map(pct)
+    breadth_display["latest_5y_calmar_mar"] = breadth_display["latest_5y_calmar_mar"].map(number)
+    breadth_display["latest_5y_annual_turnover_traded_notional"] = breadth_display["latest_5y_annual_turnover_traded_notional"].map(lambda value: number(value) + "x")
+    frequency_display = frequency_summary[["frequency", "median_latest5_pool_excess", "median_latest5_mdd", "median_turnover", "positive_double_cost_pool_gate_fraction", "passes_frequency_gate"]].copy()
+    frequency_display["_order"] = frequency_display["frequency"].map({"DAILY": 0, "WEEKLY": 1, "MONTHLY": 2})
+    frequency_display = frequency_display.sort_values("_order").drop(columns="_order")
+    for column in ["median_latest5_pool_excess", "median_latest5_mdd", "positive_double_cost_pool_gate_fraction"]:
+        frequency_display[column] = frequency_display[column].map(pct)
+    frequency_display["median_turnover"] = frequency_display["median_turnover"].map(lambda value: number(value) + "x")
+    cash_display = cash_summary[["cash_architecture", "median_latest5_net_cagr", "median_latest5_return_sacrifice_vs_always_invested", "median_latest5_drawdown_avoided", "median_latest5_pool_excess", "double_cost_pool_excess", "median_latest5_calmar", "median_latest5_ulcer", "median_average_cash_weight", "passes_cash_promotion_gate"]].copy()
+    for column in ["median_latest5_net_cagr", "median_latest5_return_sacrifice_vs_always_invested", "median_latest5_drawdown_avoided", "median_latest5_pool_excess", "double_cost_pool_excess", "median_latest5_ulcer", "median_average_cash_weight"]:
+        cash_display[column] = cash_display[column].map(pct)
+    cash_display["median_latest5_calmar"] = cash_display["median_latest5_calmar"].map(number)
+    year_display = year[["calendar_year", "partial_year", "net_return_or_cagr", "excess_vs_global", "excess_vs_pool", "maximum_drawdown"]].copy()
+    for column in ["net_return_or_cagr", "excess_vs_global", "excess_vs_pool", "maximum_drawdown"]:
+        year_display[column] = year_display[column].map(pct)
+    contribution_display = family_contribution.head(10)[["economic_exposure_family_id", "gross_market_pnl_return_units", "share_of_gross_family_market_pnl"]].copy()
+    contribution_display["gross_market_pnl_return_units"] = contribution_display["gross_market_pnl_return_units"].map(number)
+    contribution_display["share_of_gross_family_market_pnl"] = contribution_display["share_of_gross_family_market_pnl"].map(pct)
+    defensive_candidates = cash_summary.loc[
+        cash_summary["cash_architecture"].ne("CASH_0_ALWAYS_INVESTED")
+        & cash_summary["median_latest5_pool_excess"].gt(0)
+        & cash_summary["double_cost_pool_excess"].gt(0)
+    ].sort_values(["median_latest5_calmar", "median_latest5_ulcer"], ascending=[False, True])
+    defensive_research_lead = str(defensive_candidates.iloc[0]["cash_architecture"]) if len(defensive_candidates) else "NONE"
+    defensive_lead_row = cash_flat.loc[(cash_flat["cash_architecture"].eq(defensive_research_lead)) & cash_flat["breadth"].eq(chosen_breadth)]
+    defensive_lead_row = defensive_lead_row.iloc[0] if len(defensive_lead_row) else None
+    top_three_suffix = "EXCLUDE_" + "_".join(sorted(top_families)) if top_families else ""
+    top_three_exclusion = robustness.loc[
+        robustness["window_id"].eq("LATEST_5Y")
+        & robustness["cost_scenario"].eq(top_three_suffix)
+    ]
+    top_three_exclusion_pool_excess = float(top_three_exclusion.iloc[0]["net_excess_vs_equal_pool"]) if len(top_three_exclusion) else np.nan
+    rank_display = rank_contribution[["rank_bucket", "gross_market_pnl_return_units", "share_of_gross_family_market_pnl"]].copy()
+    rank_display["gross_market_pnl_return_units"] = rank_display["gross_market_pnl_return_units"].map(number)
+    rank_display["share_of_gross_family_market_pnl"] = rank_display["share_of_gross_family_market_pnl"].map(pct)
     report = f"""# UKACTIVE-A4D — final research report
 
 Decision: **{classification}**  
@@ -956,27 +1209,51 @@ Final-five-year representative economics: net CAGR **{pct(final_l5['net_cagr'])}
 
 ## Direct answers
 
-1. **Multi-horizon rank versus prior A3:** M1 is the prior equal-five-horizon signal, not new evidence. M2/M3 were evaluated under a pre-outcome gate. `{chosen_signal}` provided the strongest broad, gated evidence; see `UKACTIVE_A4D_SIGNAL_DIAGNOSTICS.csv`. This is developmental comparison, not independent confirmation.
-2. **Repeatable cross-sectional edge:** weekly top-quintile/IC evidence and forward portfolio evidence are reported separately. The representative's positive rolling-12m pool-excess frequency was **{pct(rolling12_positive)}**.
-3. **Breadth TOP3–TOP10:** the complete frontier is in `UKACTIVE_A4D_BREADTH_FRONTIER.csv`.
+1. **Multi-horizon rank versus prior A3:** M1 is the prior equal-five-horizon signal, not new evidence. M2 passed the frozen Stage-A gate and improved the same TOP7/monthly five-year pool excess from **0.08%** under M1 to **2.63%** under M2. M3's deterioration penalty did not add portfolio value. This is developmental comparison, not independent confirmation.
+2. **Repeatable cross-sectional edge:** M2's full-history mean IC was positive at 21/42/63 sessions, but its mean top-quintile advantages were only **0.07% / −0.05% / 0.18%**. The representative's positive rolling-12m excess frequency was only **{pct(rolling12_positive)}** versus the pool and **40.20%** versus global. That is not persistent enough for a strong claim.
+3. **Breadth TOP3–TOP10:** TOP3–TOP5 generally diluted net selection economics; TOP6–TOP9 formed the M2 plateau; TOP10 lost pool excess. The table below is the five-year, after-cost frontier.
+
+{frame_markdown(breadth_display)}
+
 4. **Plateau:** **{'Yes: ' + recommended_region if plateau_found else 'No; TOP5/TOP6 were used only as a diagnostic fallback.'}**
-5. **Ranks creating excess:** see `UKACTIVE_A4D_CONTRIBUTION_BY_RANK.csv`; family contributors are separately disclosed.
-6. **Diversification and drawdown:** marginal changes for every added holding are reported rather than selecting the highest CAGR.
-7. **Cadence:** `{chosen_frequency}` was preferred on the frozen region-level gate; daily, weekly and monthly remain visible.
-8. **Costs:** baseline and doubled-cost results are both retained. No gross-only result is promoted.
-9. **Cash:** **{'Promoted because it passed the fixed drawdown and excess gates.' if cash_promoted else 'No tested cash architecture passed the fixed promotion gate; lower drawdown alone was not rewarded.'}**
-10. **Defensive mechanism:** `{chosen_cash}` is the representative; comparative economics and false-defensive periods are explicit.
-11. **CAGR sacrificed per drawdown reduction:** reported per architecture in `UKACTIVE_A4D_CASH_ECONOMIC_VALUE.csv`.
+5. **Ranks creating excess:** ranks 4–5 contributed the most gross family market P&L, followed by ranks 6–10; the exact reconciled attribution is below.
+
+{frame_markdown(rank_display)}
+
+6. **Diversification and drawdown:** the representative TOP7 reduced concentration versus TOP1, but five-year drawdown remained **{pct(final_l5['maximum_drawdown'])}**. Marginal changes for every added holding are retained.
+7. **Cadence:** weekly looked best before full cost stress, but doubled costs erased pool excess across all four breadths. Monthly retained positive doubled-cost pool excess in two of four breadths and therefore won the frozen region-level gate. Daily was dominated by noise and roughly **36.9x** median annual turnover.
+
+{frame_markdown(frequency_display)}
+
+8. **Costs:** baseline and doubled-cost results are both retained. At TOP7/monthly the pool excess fell from **2.63%** to **0.96%** under doubled costs. No gross-only result is promoted.
+9. **Cash:** **{'Promoted because it passed the fixed drawdown and excess gates.' if cash_promoted else 'No tested cash architecture passed the complete preregistered promotion gate.'}** Individual asset qualification (`{defensive_research_lead}`) was the best defensive research lead: at representative TOP7 it produced net CAGR **{pct(defensive_lead_row['latest_5y_net_cagr']) if defensive_lead_row is not None else 'N/A'}**, pool excess **{pct(defensive_lead_row['latest_5y_net_excess_vs_equal_pool']) if defensive_lead_row is not None else 'N/A'}** and MDD **{pct(defensive_lead_row['latest_5y_maximum_drawdown']) if defensive_lead_row is not None else 'N/A'}**, but its region-level drawdown improvement missed the fixed five-point gate.
+10. **Defensive mechanism:** C1 preserved return best; C2 reduced drawdown more but its median doubled-cost pool excess turned negative; global confirmation and the combined rule sacrificed too much return. Always-invested therefore remains the representative, while C1 is a future preregistration lead—not a promoted A4D rule.
+
+{frame_markdown(cash_display)}
+
+11. **CAGR sacrificed per drawdown reduction:** C1's region median sacrificed about **0.01 percentage point** of CAGR for **4.15 points** of MDD improvement. C2 sacrificed about **0.97 point** for **5.77 points**. The full arithmetic is retained in `UKACTIVE_A4D_CASH_ECONOMIC_VALUE.csv`.
 12. **Versus global:** final-five-year excess was **{pct(final_l5['net_excess_vs_global'])}**.
 13. **Versus equal pool:** final-five-year excess was **{pct(final_l5['net_excess_vs_equal_pool'])}**.
-14. **Winner dependence:** the top three family share of gross family market P&L was **{pct(top3_share)}**; leave-one/top-three exclusions are in robustness outputs.
-15. **Subperiod/neighbour stability:** full, pre-2020, post-2020, five-year, three-year, rolling and parameter-neighbour evidence is retained; pre-2017 breadth compounding is intentionally unavailable.
+14. **Winner dependence:** the top three family share of gross family market P&L was **{pct(top3_share)}**. Removing all three changed five-year pool excess to **{pct(top_three_exclusion_pool_excess)}**, so the edge remains materially right-tail dependent even though removing any single contributor left positive excess.
+15. **Subperiod/neighbour stability:** pre-2020 pool excess was **{pct(final_results.loc[final_results['window_id'].eq('PRE_2020'), 'net_excess_vs_equal_pool'].iloc[0])}**, post-2020 **{pct(final_post['net_excess_vs_equal_pool'])}**. Calendar-year pool excess was positive in only five of ten displayed years, and 2025 supplied a disproportionate gain. MATURE and MATURE+DEVELOPING sensitivities were positive, so launch cohorts do not explain the whole result. Pre-2017 breadth compounding is intentionally unavailable.
 16. **Simplest architecture:** `{chosen_signal} | TOP_{chosen_breadth} | {chosen_frequency} | {chosen_cash} | {chosen_weighting}`.
-17. **Prospective freeze:** a representative specification is registered but **not started**. No untouched historical holdout exists.
+17. **Prospective freeze:** **not authorised from A4D**. A reproducible developmental reference specification is written, but no untouched historical holdout exists and the weak/regime-dependent disposition does not justify opening a new validation lineage.
+
+## Statistical uncertainty
+
+No Stage-A IC, top-quintile or rank-1 effect survived the within-window/metric HAC–BH screen at q < 0.10. The paired six-month block-bootstrap 95% interval for five-year annualised excess was **−9.04% to 16.20%** versus global and **−5.61% to 12.73%** versus the equal pool; both include zero. Positive-excess bootstrap probabilities were **59.86%** and **73.80%**, respectively. This supports the weak/regime-dependent disposition rather than a strong claim.
+
+## Calendar-year stability
+
+{frame_markdown(year_display)}
+
+## Largest gross family contributors
+
+{frame_markdown(contribution_display)}
 
 ## Leadership deterioration and momentum age
 
-The fixed state definitions and high-rank age buckets are diagnostics only. No age rule, fast exit or discretionary override was added to the final portfolio. This prevents a mechanism diagnostic from silently becoming another fitted trading branch.
+The fixed state definitions and high-rank age buckets are diagnostics only. `MATURE_DECELERATING` did not underperform established leadership; in the latest five years its mean 42-session forward return was higher. Momentum age was not monotonic. Therefore no deterioration exit, age rule, fast exit or discretionary override was added.
 
 ## Data-lineage limitation
 
@@ -988,21 +1265,21 @@ The last unreconstructed `GLOBAL_GOLD_MINERS` implementation gap makes broad-por
 - Acceptable breadth range: `{recommended_region}`.
 - Preferred rebalance frequency: `{chosen_frequency}`.
 - Acceptable neighbouring frequency: see the complete gate in `UKACTIVE_A4D_FREQUENCY_SUMMARY.csv`; no neighbour is implied if it failed.
-- Cash/risk-state mechanism: `{chosen_cash}`.
+- Cash/risk-state mechanism: `{chosen_cash}` for the representative; `CASH_1_INDIVIDUAL_ABOVE_CASH_252` is the best unpromoted defensive research lead.
 - Weighting: `{chosen_weighting}`.
 - Expected historical CAGR range across the breadth region: **{pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_net_cagr'].min())} to {pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_net_cagr'].max())}**.
 - Excess CAGR versus equal pool: **{pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_net_excess_vs_equal_pool'].min())} to {pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_net_excess_vs_equal_pool'].max())}**.
 - Maximum drawdown range: **{pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_maximum_drawdown'].min())} to {pct(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_maximum_drawdown'].max())}**.
 - Calmar range: **{number(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_calmar_mar'].min())} to {number(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_calmar_mar'].max())}**.
 - Turnover range: **{number(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_annual_turnover_traded_notional'].min())}x to {number(breadth_summary.loc[(breadth_summary['signal_id'].eq(chosen_signal)) & breadth_summary['breadth'].isin(breadth_region), 'latest_5y_annual_turnover_traded_notional'].max())}x**.
-- Principal failure modes: right-tail/family dependence, short modern sample, possible cadence fragility, false-defensive opportunity cost, and incomplete historical implementation eligibility evidence.
+- Principal failure modes: top-three removal turns excess negative; only 50% of rolling 12-month pool-excess windows are positive; pre-2020 weakness; cost-fragile weekly results; 2025 concentration; and incomplete historical implementation eligibility evidence.
 - Remaining evidence gap: genuinely prospective data after a separately approved freeze.
 
 ## REPRESENTATIVE SPECIFICATION FOR FORWARD TESTING
 
 `{chosen_signal} | TOP_{chosen_breadth} | {chosen_frequency} | {chosen_cash} | {chosen_weighting}`
 
-This is the middle of the selected breadth region, uses the region-level cadence decision, and retains the simplest weight/cash choice that passed its gate. It is not the maximum-CAGR cell. The exact frozen candidate is in `config/UKACTIVE_A4D_REPRESENTATIVE_FORWARD_SPEC.json`. A4D does not start it and does not modify the existing A5 lineages.
+This is the middle of the selected breadth region, uses the region-level cadence decision, and retains the simplest weight/cash choice that passed its gate. It is not the maximum-CAGR cell. It is stored only as a **developmental reference** in `config/UKACTIVE_A4D_REPRESENTATIVE_FORWARD_SPEC.json`; A4D does not authorise or start it and does not modify the existing A5 lineages.
 """
     (ROOT / "UKACTIVE_A4D_FINAL_DECISION_REPORT.md").write_text(report, encoding="utf-8")
 
@@ -1010,7 +1287,7 @@ This is the middle of the selected breadth region, uses the region-level cadence
 
 The stage followed the registered signal → breadth → frequency → cash → weighting sequence. Failed and non-selected cells remain in the registry and result tables. Selection was made from adjacent regions and fixed gates, not the maximum historical CAGR.
 
-Scientific disposition: **{classification}**. Evidence cannot exceed E2 because every historical interval was already observable to the programme. The representative may be frozen in a new prospective lineage only after governance review. Existing A5 remains immutable and not started.
+Scientific disposition: **{classification}**. Evidence cannot exceed E2 because every historical interval was already observable to the programme. A4D does **not** authorise a new prospective lineage: rolling consistency, pre-2020 evidence and top-three-contributor dependence remain too weak. The written representative is a reproducibility reference only. Existing A5 remains immutable and not started.
 
 The main data limitation is explicit: broad portfolios cannot be compounded through the 2016–2017 gold-miners implementation gap without inventing proceeds. The 2017-02-03 common-chain start was registered during engine validation before formal A4D outcomes.
 """
@@ -1030,12 +1307,14 @@ The main data limitation is explicit: broad portfolios cannot be compounded thro
         "frequency": chosen_frequency,
         "cash_architecture": chosen_cash,
         "cash_architecture_promoted": cash_promoted,
+        "best_unpromoted_defensive_research_lead": defensive_research_lead,
         "weighting": chosen_weighting,
         "common_causal_chain_start": policy["windows"]["COMMON_CAUSAL_CHAIN_START"],
         "latest5": {key: final_l5.get(key) for key in ["net_cagr", "net_excess_vs_global", "net_excess_vs_equal_pool", "maximum_drawdown", "calmar_mar", "ulcer_index", "annual_turnover_traded_notional"]},
         "post2020_pool_excess": final_post["net_excess_vs_equal_pool"],
         "top_three_family_pnl_share": top3_share,
-        "prospective_spec_registered_not_started": True,
+        "representative_reference_spec_written": True,
+        "prospective_validation_authorised": False,
         "existing_a5_modified": False,
         "warning": WARNING,
     }
@@ -1052,7 +1331,7 @@ The main data limitation is explicit: broad portfolios cannot be compounded thro
         "git_branch": git("branch", "--show-current"),
         "starting_commit": json.loads((ROOT / "UKACTIVE_A4D_STAGE_REGISTRATION.json").read_text(encoding="utf-8"))["starting_git_commit"],
         "preregistration_commit": "31c665d118fc3a50dafbe19febc41cb6bd3f4dcc",
-        "pre_outcome_chain_amendment_commit": "b57a2ed",
+        "pre_outcome_chain_amendment_commit": "b57a2ed2d02a257bb4225aac08b42d70027de783",
         "authoritative_input_hashes": {
             name: sha256(ROOT / name)
             for name in [

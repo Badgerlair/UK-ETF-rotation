@@ -1,0 +1,38 @@
+{
+  "best_unpromoted_defensive_research_lead": "CASH_1_INDIVIDUAL_ABOVE_CASH_252",
+  "breadth_plateau_found": true,
+  "breadth_region": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "cash_architecture": "CASH_0_ALWAYS_INVESTED",
+  "cash_architecture_promoted": false,
+  "common_causal_chain_start": "2017-02-03",
+  "decision": "A4D_WEAK_OR_REGIME_DEPENDENT",
+  "evidence_level": "E2_DEVELOPMENTAL",
+  "existing_a5_modified": false,
+  "frequency": "MONTHLY",
+  "latest5": {
+    "annual_turnover_traded_notional": 6.925927114696822,
+    "calmar_mar": 0.6097974507479275,
+    "maximum_drawdown": -0.22335553364971406,
+    "net_cagr": 0.13620163503003857,
+    "net_excess_vs_equal_pool": 0.026301992245530537,
+    "net_excess_vs_global": 0.021037086817125017,
+    "ulcer_index": 0.10130850086434587
+  },
+  "post2020_pool_excess": 0.04056448001892732,
+  "prospective_validation_authorised": false,
+  "representative_breadth": 7,
+  "representative_reference_spec_written": true,
+  "representative_specification_id": "M2_INTERMEDIATE_5H|TOP_7|MONTHLY|CASH_0_ALWAYS_INVESTED|W0_EQUAL|DYNAMIC_POINT_IN_TIME|BASE",
+  "run_id": "UKACTIVE-A4D-20260824-001",
+  "selected_signal": "M2_INTERMEDIATE_5H",
+  "stage_id": "UKACTIVE-A4D",
+  "top_three_family_pnl_share": 0.445691773567234,
+  "untouched_historical_holdout": false,
+  "warning": "HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED",
+  "weighting": "W0_EQUAL"
+}

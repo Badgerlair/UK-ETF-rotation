@@ -1,0 +1,5 @@
+item_id,status,item,blocking_for_research_disposition,warning
+A4D-OPEN-001,OPEN_NON_BLOCKING,No untouched historical interval remains; confirmation must be prospective.,False,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4D-OPEN-002,OPEN_NON_BLOCKING,"Historical UK retail, ISA, account and broker eligibility remain partly unresolved.",False,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4D-OPEN-003,DISCLOSED_LIMITATION,Broad-portfolio efficacy before 2017-02-03 cannot be compounded without fabricating the GLOBAL_GOLD_MINERS continuity break.,False,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
+A4D-OPEN-004,OPEN_NON_BLOCKING,"Equal-weight opportunity-pool benchmark is a causal research index, not a fully costed implementation claim.",False,"HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
