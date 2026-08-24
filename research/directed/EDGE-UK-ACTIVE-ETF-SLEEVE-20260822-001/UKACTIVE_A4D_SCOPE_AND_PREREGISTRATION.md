@@ -71,5 +71,6 @@ No fitted weights, leverage, shorts or volatility optimiser are allowed.
 
 Report full history, pre-2020, 2020 onward, final five years (2021-09-01 onward), final three years (2023-08-21 onward), calendar years, and rolling 12/24/36-month excess. Serious candidates receive neighbouring-breadth, frequency, M1/M2/M3, doubled-cost, MATURE-only and leave-one-major-family-out checks.
 
-No historical interval is untouched. Any representative forward specification is a new prospective registration only; A4D does not start it and does not amend A5.
+During pre-outcome engine validation, the breadth engine encountered the already-evidenced unreconstructed `GLOBAL_GOLD_MINERS` continuity break from 2016-03-01 through 2017-02-02. Unlike the historical TOP-1 candidate, a broad portfolio can hold that family across the break. A4D therefore fixes 2017-02-03—the first valid endpoint of its final admitted continuity segment—as the common causal-chain start. This lineage-based restriction was registered before formal outcomes were run; it avoids inventing liquidation proceeds, splicing segments, or selecting a start date from performance. Pre-2017 signal diagnostics remain descriptive, but portfolio efficacy before this date is not causally testable with the accepted implementation panel.
 
+No historical interval is untouched. Any representative forward specification is a new prospective registration only; A4D does not start it and does not amend A5.

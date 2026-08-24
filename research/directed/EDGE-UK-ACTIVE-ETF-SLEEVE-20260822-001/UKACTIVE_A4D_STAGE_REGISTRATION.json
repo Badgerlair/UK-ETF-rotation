@@ -12,5 +12,10 @@
   "immutable_prior_outputs": true,
   "a5_lineage_write_prohibited": true,
   "prospective_test_started": false,
+  "policy_version": "UKACTIVE-A4D-POLICY-v1.0.1",
+  "pre_outcome_engine_validation_amendment": {
+    "common_causal_chain_start": "2017-02-03",
+    "reason": "Avoid the evidenced unreconstructed GLOBAL_GOLD_MINERS continuity break; no formal A4D portfolio outcomes had been run."
+  },
   "warning": "RESEARCH ONLY; HISTORICAL UK RETAIL, ISA, ACCOUNT AND BROKER ELIGIBILITY REMAIN PARTLY UNRESOLVED"
 }
