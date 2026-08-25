@@ -1642,7 +1642,7 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
         dominant=state_counts.index[0] if len(state_counts) else "NO_COMMON_DECISIONS"
         trend_positive = float((~year_ledger.global_126_adverse.astype(bool) & ~year_ledger.global_252_adverse.astype(bool)).mean()) if len(year_ledger) else np.nan
         high_vol = float(year_ledger.high_volatility.astype(bool).mean()) if len(year_ledger) else np.nan
-        support = float(year_ledger.absolute_support_count.mean()) if len(year_ledger) else np.nan
+        support = float(year_ledger.absolute_leadership_support.mean()) if len(year_ledger) else np.nan
         breadth_label = "broad" if np.isfinite(support) and support >= 5 else "concentrated/weak"
         state_episode_rows = regime_summary.loc[regime_summary.regime.eq(dominant)]
         dominant_episodes = int(state_episode_rows.episodes.iloc[0]) if len(state_episode_rows) else 0
