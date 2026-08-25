@@ -1749,7 +1749,7 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
             "cash_rule":"CASH0_ALWAYS_INVESTED_EXCEPT_IMPLEMENTATION_OR_DATA_BLOCK",
             "review":"FINAL_VALID_XLON_SESSION_OF_CALENDAR_MONTH",
             "replacement_rule":"AT_EACH_MONTH_END_REPLACE_NON_TOP7_FAMILIES_WITH_CURRENT_POINT_IN_TIME_TOP7;ECONOMIC_FAMILY_DUPLICATE_SUPPRESSION",
-            "point_in_time_universe":"AUTHORITATIVE_A2R2_A3R2_DYNAMIC_SIGNAL_READY_INDUSTRY_THEME_UNIVERSE",
+            "point_in_time_universe":"AUTHORITATIVE_A2R2_A3R2_DYNAMIC_POINT_IN_TIME_SIGNAL_READY_INDUSTRY_THEME_UNIVERSE",
             "current_implementation_map":"25_OF_25_USER_CONFIRMED_2026-08-23;CURRENT_ONLY_NOT_BACK_PROJECTED",
         },
         "regime_state_machine":"UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",
