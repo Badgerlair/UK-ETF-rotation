@@ -597,6 +597,21 @@ def test_holding_spell_and_long_core_audits_are_complete() -> None:
     )
     long_core = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv")
     assert len(spells) > 0
+    assert spells["holding_spell_id"].tolist() == [
+        f"SPELL-{index:04d}" for index in range(1, len(spells) + 1)
+    ]
+    expected_order = spells.sort_values(
+        ["gross_market_pnl_return_units", "entry_date", "family", "exit_date"],
+        ascending=[False, True, True, True],
+        kind="mergesort",
+        na_position="last",
+    ).reset_index(drop=True)
+    pd.testing.assert_frame_equal(spells.reset_index(drop=True), expected_order)
+    assert spells["pre_entry_126_valid_observation_return"].notna().any()
+    assert spells["held_family_total_return"].notna().all()
+    assert spells["entry_timing_diagnostic_status"].eq(
+        "EX_POST_MECHANISM_DIAGNOSTIC_NOT_USED_IN_SELECTION"
+    ).all()
     assert set(spells["winner_class"]) == {"WINNER", "FALSE_OR_LOSING_LEADER"}
     assert set(comparison["winner_class"]) == set(spells["winner_class"])
     assert len(long_core) == 8

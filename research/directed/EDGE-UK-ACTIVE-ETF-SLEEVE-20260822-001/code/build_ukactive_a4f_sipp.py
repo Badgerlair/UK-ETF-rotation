@@ -1008,9 +1008,53 @@ def family_contributions(result: Any, members: set[str]) -> pd.DataFrame:
     return pd.DataFrame([{"family": family, "contribution": value} for family, value in totals.items()]).sort_values("contribution", ascending=False).reset_index(drop=True)
 
 
+def deterministic_holding_spell_ledger(result: Any, data: Any) -> pd.DataFrame:
+    """Canonicalise spell IDs and add causal pre-entry/held-move forensics."""
+
+    spells = core.a4e.holding_spell_ledger(result).copy()
+    if spells.empty:
+        return spells
+    spells = spells.sort_values(
+        ["gross_market_pnl_return_units", "entry_date", "family", "exit_date"],
+        ascending=[False, True, True, True],
+        kind="mergesort",
+        na_position="last",
+    ).reset_index(drop=True)
+    spells["holding_spell_id"] = [
+        f"SPELL-{index:04d}" for index in range(1, len(spells) + 1)
+    ]
+    pre63: list[float] = []
+    pre126: list[float] = []
+    held: list[float] = []
+    before_majority: list[bool | float] = []
+    for row in spells.itertuples(index=False):
+        series = data.base.research.wealth[row.family].dropna().sort_index()
+        entry_date = pd.Timestamp(row.entry_date)
+        exit_date = pd.Timestamp(row.exit_date) if pd.notna(row.exit_date) else CUTOFF
+        through_entry = series.loc[series.index <= entry_date]
+        through_exit = series.loc[series.index <= exit_date]
+        if through_entry.empty or through_exit.empty:
+            pre63.append(np.nan); pre126.append(np.nan); held.append(np.nan); before_majority.append(np.nan)
+            continue
+        entry_value = float(through_entry.iloc[-1])
+        exit_value = float(through_exit.iloc[-1])
+        move63 = entry_value / float(through_entry.iloc[-64]) - 1.0 if len(through_entry) >= 64 else np.nan
+        move126 = entry_value / float(through_entry.iloc[-127]) - 1.0 if len(through_entry) >= 127 else np.nan
+        held_move = exit_value / entry_value - 1.0
+        positive_total = max(float(move126), 0.0) + max(held_move, 0.0) if np.isfinite(move126) else np.nan
+        pre63.append(move63); pre126.append(move126); held.append(held_move)
+        before_majority.append(bool(positive_total > 0 and max(held_move, 0.0) / positive_total >= 0.5) if np.isfinite(positive_total) else np.nan)
+    spells["pre_entry_63_valid_observation_return"] = pre63
+    spells["pre_entry_126_valid_observation_return"] = pre126
+    spells["held_family_total_return"] = held
+    spells["selected_before_majority_of_pre126_plus_held_positive_move"] = before_majority
+    spells["entry_timing_diagnostic_status"] = "EX_POST_MECHANISM_DIAGNOSTIC_NOT_USED_IN_SELECTION"
+    return spells
+
+
 def holding_spell_influence_rows(data: Any, policy_id: str, policy_records: pd.DataFrame, baseline: Any) -> pd.DataFrame:
     m2_base = core.a4e.simulate_rotation(data, "M2_BASE", 7, False, cost_scenario="BASE")
-    spells = core.a4e.holding_spell_ledger(m2_base).sort_values("gross_market_pnl_return_units", ascending=False)
+    spells = deterministic_holding_spell_ledger(m2_base, data)
     base_metrics = metric_pack(baseline)
     rows = []
     for count in [1, 3, 5]:
@@ -1494,7 +1538,7 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
     write_csv("UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv",direct_m2)
     spell_influence=holding_spell_influence_rows(data,"POLICY_3_BALANCED_REGIME_STRATEGY",policy_records[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY")],policy_results[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY","BASE")])
     write_csv("UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",spell_influence)
-    holding_spells = core.a4e.holding_spell_ledger(m2_result)
+    holding_spells = deterministic_holding_spell_ledger(m2_result, data)
     write_csv("UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv", holding_spells)
     winner_false_comparison = (
         holding_spells.groupby("winner_class", as_index=False)
@@ -1507,6 +1551,9 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
             mean_days_held=("days_held", "mean"),
             median_days_held=("days_held", "median"),
             share_of_positive_spell_pnl=("share_of_positive_spell_pnl", "sum"),
+            mean_pre_entry_126_return=("pre_entry_126_valid_observation_return", "mean"),
+            mean_held_family_total_return=("held_family_total_return", "mean"),
+            selected_before_majority_frequency=("selected_before_majority_of_pre126_plus_held_positive_move", "mean"),
         )
     )
     winner_false_comparison["interpretation"] = "E2_DEVELOPMENTAL_HOLDING_SPELL_MECHANISM_DIAGNOSTIC"
@@ -1881,13 +1928,17 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
         if len(selected_joint_exclusion)
         else "not applicable"
     )
+    top_spell_timing_text = "; ".join(
+        f"{row.family}: pre-entry 126-session {row.pre_entry_126_valid_observation_return:.1%}, held {row.held_family_total_return:.1%}, before-majority={bool(row.selected_before_majority_of_pre126_plus_held_positive_move)}"
+        for row in holding_spells.head(3).itertuples(index=False)
+    )
     regime_best_text = "; ".join(
         f"{row.regime}: {row.strategy_id}"
         for row in top_regime.itertuples(index=False)
     ) or "No regime has sufficient sample for a strong strategy-ranking claim"
     direct_answers = f"""## DIRECT ANSWERS TO THE 25 FINAL QUESTIONS
 
-1. **Why M2 varied by year:** M2 beat SWDA in {m2_help_years}; it lagged in {m2_hurt_years}. The holding-spell ledger shows a positively skewed process: persistent independent leaders help, false leaders and broad-market dominance hurt.
+1. **Why M2 varied by year:** M2 beat SWDA in {m2_help_years}; it lagged in {m2_hurt_years}. The holding-spell ledger shows a positively skewed process: persistent independent leaders help, false leaders and broad-market dominance hurt. Top-spell entry diagnostics were {top_spell_timing_text}; these are ex-post mechanism diagnostics and never entered the rule.
 2. **Observable positive-M2 states:** see `UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv`; only states meeting the frozen sample rule support a claim. Adequately sampled states: {sufficient_state_text}.
 3. **Recurrence:** the episode ledger records every recurrence; sparse regimes are not promoted regardless of favourable averages.
 4. **Post-2020 versus date split:** the regime sample is not broad enough to attribute the post-2020 difference causally; `UNRESOLVED_REGIME_VERSUS_DATE_SPLIT` is the defensible conclusion.
@@ -1906,7 +1957,7 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
 17. **Asymmetric re-risking:** Policy 3 CAGR changed from {p3_full.net_cagr:.2%} immediate to {p3_hyst.net_cagr:.2%} hysteretic; it did not rescue the policy.
 18. **2025 exclusion:** {selected_direct_text}. Excluding both 2020 and 2025 produces {selected_joint_exclusion_text}; this is material two-regime fragility.
 19. **Doubled costs:** the selected static M2 replacement comparison remained non-negative but thin; dynamic policy gates are shown explicitly in the cost-stress file.
-20. **Major contributors:** the selected static blend passed every leave-one-family-out gate, but its incremental CAGR reversed to {selected_top3_text} and {selected_top5_text}. This is material right-tail fragility even though no single family alone explains the full result.
+20. **Major contributors:** the selected static blend passed every leave-one-family-out gate, but its incremental CAGR reversed to {selected_top3_text} and {selected_top5_text}. The pre-entry/held-move fields in the spell ledger show whether each winner was selected before a majority of its combined positive 126-session pre-entry plus held move. This is material right-tail fragility even though no single family alone explains the full result.
 21. **Best strategy by regime:** {regime_best_text}. Insufficient states are explicitly excluded from strong inference.
 22. **Switching versus static:** no selectable dynamic policy passed all gates; the static portfolio is superior under the frozen hierarchy.
 23. **Exact SIPP research strategy:** `{selected_id}` / `{selected_switch}`; deployment remains `{deployment_tier}` rather than live authorisation.
@@ -1938,7 +1989,7 @@ Gradual score-based risk scaling was compared with 100% global, static 75/25, ma
 
 ## BEST AVAILABLE WHOLE-SIPP STRATEGY
 
-The selected **research/shadow whole-SIPP architecture** is `{selected_id}` using `{selected_switch}`: SWDA {selected_alloc['global_weight']:.1%}, M2 {selected_alloc['m2_weight']:.1%}, cash {selected_alloc['cash_weight']:.1%}. Exact state allocations are in the state-machine JSON and table below. It is not authorised for live deployment at this evidence grade. The currently usable capital-protection fallback remains the explicit static **75% SWDA / 25% GBP cash** core, reviewed monthly; it is not misrepresented as having an active M2 edge.
+There is one A4F-selected strategy: the **research/shadow whole-SIPP architecture** `{selected_id}` using `{selected_switch}`: SWDA {selected_alloc['global_weight']:.1%}, M2 {selected_alloc['m2_weight']:.1%}, cash {selected_alloc['cash_weight']:.1%}. Exact state allocations are in the state-machine JSON and table below. Its permitted action is shadow observation only; no pension capital is authorised by A4F. The static **75% SWDA / 25% GBP cash** core is documented solely as the current operational continuity fallback while the selected architecture remains shadow-only—not as a second A4F research selection.
 
 ## REGIME STATE MACHINE
 
