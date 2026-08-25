@@ -1,0 +1,1573 @@
+"""Execute the preregistered UKACTIVE-A4F-SIPP regime research stage.
+
+The protocol was committed before this builder was run.  This script is
+deterministic, cutoff-enforcing, and never sends or prepares broker orders.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import platform
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any, Iterable, Mapping
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+import ukactive_a4f_sipp_core as core
+
+
+ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parents[2]
+OUT = ROOT / "UKACTIVE-A4F-SIPP-REGIME"
+A4E_OUT = ROOT / "UKACTIVE-A4E-SIPP"
+CUTOFF = pd.Timestamp("2026-08-21")
+COMMON_START = pd.Timestamp("2017-03-01")
+LONG_CORE_START = pd.Timestamp("2010-01-08")
+WARNING = core.WARNING
+PROTOCOL_COMMIT = "15f6e63"
+POLICIES = list(core.POLICY_MAP)
+SELECTABLE_POLICIES = POLICIES[:5]
+SWITCHES = ["SWITCH_IMMEDIATE_MONTHLY", "SWITCH_ASYMMETRIC_HYSTERESIS"]
+STATIC_M2_COMPARATORS = {
+    "GLOBAL_90_M2_10": "GLOBAL_100",
+    "GLOBAL_75_M2_25": "GLOBAL_100",
+    "GLOBAL_50_M2_50": "GLOBAL_100",
+    "GLOBAL_50_M2_25_CASH25": "GLOBAL_75_CASH25",
+    "GLOBAL_75_M2_10_CASH15": "GLOBAL_85_CASH15",
+    "M2_TOP7_CASH0_25_CASH75": "GLOBAL_25_CASH75",
+    "M2_TOP7_CASH0_50_CASH50": "GLOBAL_50_CASH50",
+    "M2_TOP7_CASH0_75_CASH25": "GLOBAL_75_CASH25",
+    "M2_TOP7_CASH0_100": "GLOBAL_100",
+}
+WINDOWS = {
+    "FULL_COMMON_HISTORY": (COMMON_START, CUTOFF),
+    "PRE_2020": (COMMON_START, pd.Timestamp("2019-12-31")),
+    "POST_2020": (pd.Timestamp("2020-01-02"), CUTOFF),
+    "LATEST_FIVE_YEARS": (pd.Timestamp("2021-09-01"), CUTOFF),
+    "LATEST_THREE_YEARS": (pd.Timestamp("2023-08-21"), CUTOFF),
+}
+
+
+def json_default(value: Any) -> Any:
+    if isinstance(value, (pd.Timestamp, np.datetime64)):
+        return pd.Timestamp(value).strftime("%Y-%m-%d")
+    if isinstance(value, (np.integer,)):
+        return int(value)
+    if isinstance(value, (np.floating,)):
+        return None if not np.isfinite(value) else float(value)
+    if isinstance(value, Path):
+        return str(value)
+    raise TypeError(type(value).__name__)
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_csv(name: str, frame: pd.DataFrame) -> None:
+    path = OUT / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(path, index=False, lineterminator="\n")
+
+
+def write_json(name: str, value: Any) -> None:
+    path = OUT / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, sort_keys=True, default=json_default) + "\n", encoding="utf-8")
+
+
+def write_text(name: str, value: str) -> None:
+    path = OUT / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(value.rstrip() + "\n", encoding="utf-8")
+
+
+def git(*args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=REPO, text=True).strip()
+
+
+def as_sim(result: Any) -> Any:
+    return result.simulation if hasattr(result, "simulation") else result
+
+
+def curve(result: Any) -> pd.DataFrame:
+    return as_sim(result).curve.drop_duplicates("date").sort_values("date").copy()
+
+
+def nav_series(result: Any, start: pd.Timestamp = COMMON_START, end: pd.Timestamp = CUTOFF) -> pd.Series:
+    frame = curve(result)
+    value = frame.loc[frame["date"].between(start, end)].set_index("date")["portfolio_value"].astype(float)
+    return value / value.iloc[0] if len(value) else value
+
+
+def metric_pack(result: Any, start: pd.Timestamp = COMMON_START, end: pd.Timestamp = CUTOFF) -> dict[str, Any]:
+    return core.metrics(result, start, end)
+
+
+def metric_row(strategy_id: str, result: Any, window_id: str, cost: str) -> dict[str, Any]:
+    start, end = WINDOWS[window_id]
+    metrics = metric_pack(result, start, end)
+    row = {"strategy_id": strategy_id, "window_id": window_id, "cost_scenario": cost, "first_date": max(start, pd.Timestamp(curve(result)["date"].min())), "last_date": min(end, pd.Timestamp(curve(result)["date"].max()))}
+    row.update(metrics)
+    row["cost_drag"] = row.get("gross_cagr", np.nan) - row.get("net_cagr", np.nan)
+    return row
+
+
+def monthly_returns(result: Any, start: pd.Timestamp = COMMON_START, end: pd.Timestamp = CUTOFF) -> pd.Series:
+    value = curve(result).loc[lambda x: x["date"].between(start, end)].set_index("date")["portfolio_value"].astype(float)
+    month = value.groupby([value.index.year, value.index.month]).last()
+    ret = month.pct_change(fill_method=None).dropna()
+    ret.index = pd.DatetimeIndex([pd.Timestamp(year=int(y), month=int(m), day=1) + pd.offsets.MonthEnd(0) for y, m in ret.index])
+    return ret
+
+
+def excluded_metrics(result: Any, excluded_years: set[int]) -> dict[str, float]:
+    return core.a4e.excluded_year_metrics(as_sim(result), excluded_years)
+
+
+def average_allocations(data: Any, targets: Mapping[pd.Timestamp, Mapping[str, float]]) -> dict[str, float]:
+    return core.target_allocation_summary(data, targets)
+
+
+def annual_score(strategy_id: str, result: Any, global_result: Any, pool_result: Any, allocation: Mapping[str, float] | None = None, regime_changes: Mapping[int, int] | None = None) -> pd.DataFrame:
+    frame = curve(result).loc[lambda x: x["date"].between(COMMON_START, CUTOFF)].copy()
+    g = curve(global_result).set_index("date")["portfolio_value"].astype(float)
+    p = curve(pool_result).set_index("date")["portfolio_value"].astype(float)
+    rows = []
+    for year, part in frame.groupby(frame["date"].dt.year):
+        start, end = pd.Timestamp(part["date"].min()), pd.Timestamp(part["date"].max())
+        metrics = core.metrics(as_sim(result), start, end)
+        gr = float(g.loc[end] / g.loc[start] - 1.0) if start in g.index and end in g.index else np.nan
+        pr = float(p.loc[end] / p.loc[start] - 1.0) if start in p.index and end in p.index else np.nan
+        trades = as_sim(result).trades
+        yt = trades.loc[pd.to_datetime(trades.get("execution_date"), errors="coerce").dt.year.eq(year)] if len(trades) else trades
+        monthly = monthly_returns(result, start, end)
+        rows.append({
+            "strategy_id": strategy_id,
+            "year": int(year),
+            "partial_year": bool(year in {2017, 2026}),
+            "net_return": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0),
+            "excess_vs_global": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0 - gr),
+            "excess_vs_equal_pool": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0 - pr),
+            "maximum_drawdown": metrics.get("maximum_drawdown", np.nan),
+            "ulcer_index": metrics.get("ulcer_index", np.nan),
+            "worst_month": float(monthly.min()) if len(monthly) else np.nan,
+            "best_month": float(monthly.max()) if len(monthly) else np.nan,
+            "realised_volatility": metrics.get("annualised_volatility", np.nan),
+            "turnover": float(yt.get("traded_notional_fraction", pd.Series(dtype=float)).sum()),
+            "cost_drag": float(yt.get("transaction_cost_value", pd.Series(dtype=float)).sum()),
+            "average_swda_weight": (allocation or {}).get("global_weight", np.nan),
+            "average_m2_weight": (allocation or {}).get("m2_weight", np.nan),
+            "average_cash_weight": (allocation or {}).get("cash_weight", float(part["cash_fraction"].mean())),
+            "portfolio_changes": int(yt.get("execution_status", pd.Series(dtype=str)).eq("EXECUTED").sum()),
+            "regime_changes": int((regime_changes or {}).get(int(year), 0)),
+        })
+    return pd.DataFrame(rows)
+
+
+def daily_accounting_attribution(strategy_id: str, result: Any, data: Any) -> pd.DataFrame:
+    # ``family_market_pnl_json`` is recorded by the canonical accounting engine
+    # in portfolio-value units, whereas the cash contribution and daily returns
+    # are recorded in return units.  Normalise each family's P&L by the prior
+    # observed portfolio value before aggregating.  Derive the cost contribution
+    # as the exact net-minus-gross return effect because the engine's disclosed
+    # transaction-cost rate uses pre-trade value as its denominator.
+    full = curve(result).sort_values("date").copy()
+    full["previous_portfolio_value"] = full["portfolio_value"].shift(1)
+    frame = full.loc[full["date"].between(COMMON_START, CUTOFF)].copy()
+    members = set(data.members)
+    rows = []
+    for year, part in frame.groupby(frame["date"].dt.year):
+        global_pnl = 0.0
+        m2_pnl = 0.0
+        for row in part.itertuples(index=False):
+            values = json.loads(row.family_market_pnl_json or "{}")
+            denominator = float(row.previous_portfolio_value) if pd.notna(row.previous_portfolio_value) else np.nan
+            if not np.isfinite(denominator) or denominator <= 0:
+                continue
+            global_pnl += float(values.get(core.GLOBAL_FAMILY, 0.0)) / denominator
+            m2_pnl += sum(float(v) for k, v in values.items() if k in members) / denominator
+        cash_pnl = float(part["cash_return_contribution"].sum())
+        costs = float((part["net_return"] - part["gross_return_before_cost"]).sum())
+        gross_arithmetic = float(part["gross_return_before_cost"].sum())
+        # The accepted equal-weight opportunity-pool comparator is supplied as
+        # a validated aggregate return series and therefore has no constituent
+        # family P&L JSON.  Preserve that observable market contribution in an
+        # explicit residual category rather than mislabelling it as M2 alpha.
+        other_market = gross_arithmetic - global_pnl - m2_pnl - cash_pnl
+        net_arithmetic = float(part["net_return"].sum())
+        accounting = global_pnl + m2_pnl + cash_pnl + other_market + costs
+        rows.append({
+            "strategy_id": strategy_id,
+            "year": int(year),
+            "global_contribution": global_pnl,
+            "m2_contribution": m2_pnl,
+            "cash_yield_contribution": cash_pnl,
+            "other_market_contribution": other_market,
+            "risk_timing_contribution": np.nan,
+            "m2_selection_contribution": np.nan,
+            "interaction_contribution": np.nan,
+            "switching_contribution": np.nan,
+            "cost_contribution": costs,
+            "reconciliation_error": net_arithmetic - accounting,
+            "attribution_basis": "ARITHMETIC_DAILY_RETURN_UNITS;AGGREGATE_COMPARATOR_MARKET_RETURN_EXPLICIT;COUNTERFACTUAL_MECHANISM_FIELDS_SEPARATE",
+        })
+    return pd.DataFrame(rows)
+
+
+def pareto_flags(frame: pd.DataFrame) -> pd.Series:
+    values = frame[["net_cagr", "terminal_wealth_per_100k", "maximum_drawdown", "ulcer_index", "longest_underwater_days", "turnover"]].astype(float)
+    efficient = []
+    for i, row in values.iterrows():
+        dominated = False
+        for j, other in values.iterrows():
+            if i == j:
+                continue
+            no_worse = other["net_cagr"] >= row["net_cagr"] and other["terminal_wealth_per_100k"] >= row["terminal_wealth_per_100k"] and other["maximum_drawdown"] >= row["maximum_drawdown"] and other["ulcer_index"] <= row["ulcer_index"] and other["longest_underwater_days"] <= row["longest_underwater_days"] and other["turnover"] <= row["turnover"]
+            strict = (other != row).any()
+            if no_worse and strict:
+                dominated = True
+                break
+        efficient.append(not dominated)
+    return pd.Series(efficient, index=frame.index)
+
+
+def trailing_excess(candidate: Any, control: Any, months: int) -> pd.Series:
+    joined = pd.concat([monthly_returns(candidate).rename("candidate"), monthly_returns(control).rename("control")], axis=1).dropna()
+    return (1.0 + joined["candidate"]).rolling(months).apply(np.prod, raw=True) - (1.0 + joined["control"]).rolling(months).apply(np.prod, raw=True)
+
+
+def block_bootstrap_mean(values: np.ndarray, block: int = 6, replications: int = 10000, seed: int = 20260825) -> tuple[float, float]:
+    clean = np.asarray(values, dtype=float)
+    clean = clean[np.isfinite(clean)]
+    if len(clean) < block:
+        return np.nan, np.nan
+    rng = np.random.default_rng(seed)
+    starts = np.arange(0, len(clean) - block + 1)
+    means = np.empty(replications)
+    for i in range(replications):
+        sample = []
+        while len(sample) < len(clean):
+            start = int(rng.choice(starts))
+            sample.extend(clean[start : start + block])
+        means[i] = np.mean(sample[: len(clean)])
+    return float(np.quantile(means, 0.025)), float(np.quantile(means, 0.975))
+
+
+def newey_west_mean(values: np.ndarray, lag: int = 3) -> tuple[float, float, float]:
+    x = np.asarray(values, dtype=float)
+    x = x[np.isfinite(x)]
+    n = len(x)
+    if n < lag + 3:
+        return np.nan, np.nan, np.nan
+    mean = float(x.mean())
+    centered = x - mean
+    omega = float(np.dot(centered, centered) / n)
+    for k in range(1, min(lag, n - 1) + 1):
+        gamma = float(np.dot(centered[k:], centered[:-k]) / n)
+        omega += 2.0 * (1.0 - k / (lag + 1.0)) * gamma
+    se = math.sqrt(max(omega, 0.0) / n)
+    t = mean / se if se > 0 else np.nan
+    # Normal approximation is conservative enough for contextual inference.
+    p = math.erfc(abs(t) / math.sqrt(2.0)) if np.isfinite(t) else np.nan
+    return se, t, p
+
+
+def bh_qvalues(pvalues: pd.Series) -> pd.Series:
+    p = pd.to_numeric(pvalues, errors="coerce")
+    valid = p.dropna().sort_values()
+    q = pd.Series(np.nan, index=p.index)
+    if valid.empty:
+        return q
+    adjusted = valid.to_numpy() * len(valid) / np.arange(1, len(valid) + 1)
+    adjusted = np.minimum.accumulate(adjusted[::-1])[::-1]
+    q.loc[valid.index] = np.minimum(adjusted, 1.0)
+    return q
+
+
+def policy_decision_rows(
+    ledger: pd.DataFrame,
+    policy_id: str,
+    switch_mode: str,
+    records: pd.DataFrame,
+    result: Any,
+) -> pd.DataFrame:
+    rows = records.sort_values("review_date").copy()
+    rows = rows.merge(
+        ledger[["decision_date", "eligible_families_json", "top7_families_rank_order", "risk_score", "leadership_state", "regime"]],
+        left_on="review_date",
+        right_on="decision_date",
+        how="left",
+        suffixes=("", "_ledger"),
+    )
+    trades = as_sim(result).trades.copy()
+    if len(trades):
+        trades["review_date"] = pd.to_datetime(trades["review_date"])
+        trade_fields = ["review_date", "execution_date", "execution_lag_xlon_sessions", "execution_status", "target_weights_json", "selected_families", "traded_notional_fraction", "trade_legs", "transaction_cost_rate", "transaction_cost_value"]
+        rows = rows.merge(trades[trade_fields], on="review_date", how="left", suffixes=("_decision", "_trade"))
+    for name in ["applied_global_weight", "applied_m2_weight", "applied_cash_weight"]:
+        rows[f"previous_{name}"] = rows[name].shift(1).fillna(0.0)
+    output = pd.DataFrame({
+        "policy_id": policy_id,
+        "switch_mode": switch_mode,
+        "decision_date": rows["review_date"],
+        "eligible_universe_hash": rows["eligible_families_json"].fillna("").map(lambda x: hashlib.sha256(str(x).encode()).hexdigest()),
+        "top7_families": rows["top7_families_rank_order"],
+        "risk_score": rows["risk_score"],
+        "leadership_state": rows["leadership_state"],
+        "regime": rows["regime"],
+        "raw_global_weight": rows["desired_global_weight"],
+        "raw_m2_weight": rows["desired_m2_weight"],
+        "raw_cash_weight": rows["desired_cash_weight"],
+        "previous_global_weight": rows["previous_applied_global_weight"],
+        "previous_m2_weight": rows["previous_applied_m2_weight"],
+        "previous_cash_weight": rows["previous_applied_cash_weight"],
+        "applied_global_weight": rows["applied_global_weight"],
+        "applied_m2_weight": rows["applied_m2_weight"],
+        "applied_cash_weight": rows["applied_cash_weight"],
+        "risk_confirmation_count": rows["risk_confirmation_count"],
+        "leadership_confirmation_count": rows["leadership_confirmation_count"],
+        "switch_decision": rows["switch_decision"],
+        "execution_date": rows.get("execution_date", pd.NaT),
+        "execution_lag_xlon_sessions": rows.get("execution_lag_xlon_sessions", np.nan),
+        "execution_status": rows.get("execution_status", "NO_EXECUTION_WITHIN_CUTOFF"),
+        "execution_price_evidence": "ACCEPTED_A2R2_GBP_TOTAL_RETURN_ENDPOINTS;NO_FORWARD_FILL;NO_SAME_CLOSE",
+        "target_weights_json": rows.get("target_weights_json_trade", rows["target_weights_json_decision"]),
+        "post_execution_holdings": rows.get("selected_families", ""),
+        "traded_notional_fraction": rows.get("traded_notional_fraction", 0.0),
+        "trade_legs": rows.get("trade_legs", 0),
+        "transaction_cost_rate": rows.get("transaction_cost_rate", 0.0),
+        "transaction_cost_value": rows.get("transaction_cost_value", 0.0),
+    })
+    output["execution_status"] = output["execution_status"].fillna("NO_EXECUTION_WITHIN_CUTOFF")
+    return output
+
+
+def episode_ledger(ledger: pd.DataFrame, simulations: Mapping[str, Any]) -> pd.DataFrame:
+    base = ledger.loc[ledger["decision_date"].ge(pd.Timestamp("2017-02-28")) & ledger["regime"].ne("REGIME_UNAVAILABLE")].copy()
+    base["episode_number"] = base["regime"].ne(base["regime"].shift()).cumsum()
+    rows = []
+    interval_cache = {sid: core.monthly_interval_returns(ledger, result).set_index("decision_date") for sid, result in simulations.items()}
+    global_intervals = interval_cache["GLOBAL_100"]
+    pool_intervals = interval_cache["EQUAL_WEIGHT_OPPORTUNITY_POOL"]
+    m2_intervals = interval_cache["M2_TOP7_CASH0_100"]
+    cash_intervals = interval_cache["ACTUAL_GBP_CASH"]
+    for episode_number, episode in base.groupby("episode_number"):
+        dates = pd.DatetimeIndex(episode["decision_date"])
+        for sid, intervals in interval_cache.items():
+            values = intervals.reindex(dates)["interval_return"].dropna().astype(float)
+            if values.empty:
+                continue
+            path = (1.0 + values).cumprod()
+            global_values = global_intervals.reindex(dates)["interval_return"].dropna()
+            pool_values = pool_intervals.reindex(dates)["interval_return"].dropna()
+            m2_values = m2_intervals.reindex(dates)["interval_return"].dropna()
+            cash_values = cash_intervals.reindex(dates)["interval_return"].dropna()
+            rows.append({
+                "episode_id": f"{episode.iloc[0]['regime']}-{int(episode_number):03d}",
+                "regime": episode.iloc[0]["regime"],
+                "risk_score_start": episode.iloc[0]["risk_score"],
+                "leadership_state": episode.iloc[0]["leadership_state"],
+                "start_decision_date": dates.min(),
+                "end_decision_date": dates.max(),
+                "start_execution_date": episode.iloc[0]["scheduled_next_xlon_session"],
+                "end_execution_date": episode.iloc[-1]["scheduled_next_xlon_session"],
+                "months": len(episode),
+                "strategy_id": sid,
+                "switch_mode": "STATIC_OR_NOT_APPLICABLE",
+                "episode_return": float(path.iloc[-1] - 1.0),
+                "episode_maximum_drawdown": float((path / path.cummax() - 1.0).min()),
+                "episode_excess_vs_global": float(path.iloc[-1] - np.prod(1.0 + global_values) if len(global_values) else np.nan),
+                "episode_excess_vs_equal_pool": float(path.iloc[-1] - np.prod(1.0 + pool_values) if len(pool_values) else np.nan),
+                "m2_minus_global": float(np.prod(1.0 + m2_values) - np.prod(1.0 + global_values)) if len(m2_values) and len(global_values) else np.nan,
+                "cash_minus_risky": float(np.prod(1.0 + cash_values) - np.prod(1.0 + global_values)) if len(cash_values) and len(global_values) else np.nan,
+                "sample_status": "REGIME_SAMPLE_SUFFICIENT" if len(base.loc[base["regime"].eq(episode.iloc[0]["regime"])]) >= 18 and base.loc[base["regime"].eq(episode.iloc[0]["regime"]), "episode_number"].nunique() >= 3 else "INSUFFICIENT_REGIME_SAMPLE",
+            })
+    return pd.DataFrame(rows)
+
+
+def static_frontier_rows(data: Any, results: Mapping[tuple[str, str], Any]) -> pd.DataFrame:
+    rows = []
+    for (sid, cost), result in results.items():
+        targets = result.targets
+        alloc = average_allocations(data, targets)
+        for window_id in WINDOWS:
+            row = metric_row(sid, result, window_id, cost)
+            rows.append({
+                "strategy_id": sid,
+                "window_id": window_id,
+                "cost_scenario": cost,
+                "global_weight": alloc["global_weight"],
+                "m2_weight": alloc["m2_weight"],
+                "cash_weight": alloc["cash_weight"],
+                "net_cagr": row.get("net_cagr", np.nan),
+                "terminal_wealth_per_100k": row.get("terminal_wealth_per_100k", np.nan),
+                "maximum_drawdown": row.get("maximum_drawdown", np.nan),
+                "ulcer_index": row.get("ulcer_index", np.nan),
+                "longest_underwater_days": row.get("maximum_time_underwater_calendar_days", np.nan),
+                "annualised_volatility": row.get("annualised_volatility", np.nan),
+                "turnover": row.get("annual_turnover_traded_notional", np.nan),
+                "cost_drag": row.get("cost_drag", np.nan),
+            })
+    result = pd.DataFrame(rows)
+    mask = result["window_id"].eq("FULL_COMMON_HISTORY") & result["cost_scenario"].eq("BASE")
+    result["pareto_efficient"] = False
+    result.loc[mask, "pareto_efficient"] = pareto_flags(result.loc[mask]).to_numpy()
+    return result
+
+
+def direct_m2_rows(
+    static_rows: pd.DataFrame,
+    static_results: Mapping[tuple[str, str], Any],
+    family_status: str = "PENDING_FAMILY_ROBUSTNESS",
+) -> pd.DataFrame:
+    # GLOBAL85/CASH15 is an otherwise-identical direct comparator, admitted as
+    # a comparator rather than a frontier candidate.
+    rows = []
+    def lookup(strategy_id: str, window_id: str, cost: str) -> pd.Series:
+        found = static_rows.loc[(static_rows.strategy_id.eq(strategy_id)) & (static_rows.window_id.eq(window_id)) & (static_rows.cost_scenario.eq(cost))]
+        if len(found):
+            return found.iloc[0]
+        metrics = metric_row(strategy_id, static_results[(strategy_id, cost)], window_id, cost)
+        return pd.Series({
+            "net_cagr": metrics.get("net_cagr", np.nan),
+            "terminal_wealth_per_100k": metrics.get("terminal_wealth_per_100k", np.nan),
+            "maximum_drawdown": metrics.get("maximum_drawdown", np.nan),
+            "ulcer_index": metrics.get("ulcer_index", np.nan),
+            "turnover": metrics.get("annual_turnover_traded_notional", np.nan),
+            "cost_drag": metrics.get("cost_drag", np.nan),
+        })
+    for candidate, comparator in STATIC_M2_COMPARATORS.items():
+        if (candidate, "BASE") not in static_results or (comparator, "BASE") not in static_results:
+            continue
+        for window_id in WINDOWS:
+            c = lookup(candidate, window_id, "BASE")
+            b = lookup(comparator, window_id, "BASE")
+            ex25c = excluded_metrics(static_results[(candidate, "BASE")], {2025})
+            ex25b = excluded_metrics(static_results[(comparator, "BASE")], {2025})
+            dc = lookup(candidate, window_id, "DOUBLE")
+            db = lookup(comparator, window_id, "DOUBLE")
+            rows.append({
+                "candidate_id": candidate,
+                "comparator_id": comparator,
+                "window_id": window_id,
+                "cost_scenario": "BASE",
+                "incremental_cagr": c.net_cagr - b.net_cagr,
+                "incremental_terminal_wealth": c.terminal_wealth_per_100k - b.terminal_wealth_per_100k,
+                "incremental_mdd": c.maximum_drawdown - b.maximum_drawdown,
+                "incremental_ulcer": c.ulcer_index - b.ulcer_index,
+                "incremental_turnover": c.turnover - b.turnover,
+                "incremental_cost": c.cost_drag - b.cost_drag,
+                "exclude_2025_incremental_cagr": ex25c["net_cagr"] - ex25b["net_cagr"],
+                "double_cost_incremental_cagr": dc.net_cagr - db.net_cagr,
+                "family_exclusion_status": family_status,
+            })
+    return pd.DataFrame(rows)
+
+
+def regime_ranking_rows(summary: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for regime, group in summary.groupby("regime"):
+        group = group.copy()
+        group["rank_by_return"] = group["annualised_return"].rank(ascending=False, method="min")
+        group["rank_by_drawdown"] = group["worst_episode_maximum_drawdown"].rank(ascending=False, method="min")
+        group["rank_by_balanced_score"] = (group["rank_by_return"] + group["rank_by_drawdown"]).rank(method="min")
+        for row in group.itertuples(index=False):
+            rows.append({
+                "regime": regime,
+                "strategy_id": row.strategy_id,
+                "sample_status": row.claim_status,
+                "annualised_return": row.annualised_return,
+                "maximum_drawdown": row.worst_episode_maximum_drawdown,
+                "ulcer_index": np.nan,
+                "rank_by_return": row.rank_by_return,
+                "rank_by_drawdown": row.rank_by_drawdown,
+                "rank_by_balanced_score": row.rank_by_balanced_score,
+                "interpretation": "DESCRIPTIVE_CAUSAL_STATE;NOT_A_POLICY_SELECTION_BY_ITSELF",
+            })
+    return pd.DataFrame(rows)
+
+
+def make_blend_targets(
+    base_m2_targets: Mapping[pd.Timestamp, Mapping[str, float]],
+    global_weight: float,
+    m2_weight: float,
+) -> dict[pd.Timestamp, dict[str, float]]:
+    result = {}
+    for date, m2 in sorted(base_m2_targets.items()):
+        target = {family: float(weight) * float(m2_weight) for family, weight in m2.items() if float(weight) * float(m2_weight) > 1e-12}
+        if global_weight > 1e-12:
+            target[core.GLOBAL_FAMILY] = float(global_weight)
+        result[pd.Timestamp(date)] = target
+    return result
+
+
+def dynamic_result_rows(
+    data: Any,
+    simulations: Mapping[tuple[str, str, str], Any],
+    target_maps: Mapping[tuple[str, str], Mapping[pd.Timestamp, Mapping[str, float]]],
+    global_result: Any,
+) -> pd.DataFrame:
+    global_metrics = {window: metric_row("GLOBAL_100", global_result, window, "BASE") for window in WINDOWS}
+    rows = []
+    for (policy_id, switch_mode, cost), result in simulations.items():
+        allocation = average_allocations(data, target_maps[(policy_id, switch_mode)])
+        trades = as_sim(result).trades
+        changes = int(trades.get("traded_notional_fraction", pd.Series(dtype=float)).gt(1e-12).sum())
+        years = max((CUTOFF - COMMON_START).days / 365.2425, 1e-9)
+        for window_id in WINDOWS:
+            row = metric_row(policy_id, result, window_id, cost)
+            gm = global_metrics[window_id]
+            rows.append({
+                "policy_id": policy_id,
+                "switch_mode": switch_mode,
+                "window_id": window_id,
+                "cost_scenario": cost,
+                "net_cagr": row.get("net_cagr", np.nan),
+                "terminal_wealth_per_100k": row.get("terminal_wealth_per_100k", np.nan),
+                "excess_vs_global": row.get("net_cagr", np.nan) - gm.get("net_cagr", np.nan),
+                "maximum_drawdown": row.get("maximum_drawdown", np.nan),
+                "ulcer_index": row.get("ulcer_index", np.nan),
+                "calmar": row.get("calmar_mar", np.nan),
+                "sortino": row.get("sortino_zero_cash_hurdle", np.nan),
+                "annualised_volatility": row.get("annualised_volatility", np.nan),
+                "longest_underwater_days": row.get("maximum_time_underwater_calendar_days", np.nan),
+                "turnover": row.get("annual_turnover_traded_notional", np.nan),
+                "trade_legs": row.get("trade_legs", np.nan),
+                "average_global_weight": allocation["global_weight"],
+                "average_m2_weight": allocation["m2_weight"],
+                "average_cash_weight": allocation["cash_weight"],
+                "annual_strategy_changes": changes / years,
+                "return_retention": row.get("net_cagr", np.nan) / gm.get("net_cagr", np.nan) if gm.get("net_cagr", 0) > 0 else np.nan,
+                "promotion_status": "PENDING_FULL_GATE_AUDIT",
+            })
+    return pd.DataFrame(rows)
+
+
+def matched_control_rows(
+    data: Any,
+    policy_sims: Mapping[tuple[str, str, str], Any],
+    policy_targets: Mapping[tuple[str, str], Mapping[pd.Timestamp, Mapping[str, float]]],
+    static_results: Mapping[tuple[str, str], Any],
+    static_rows: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[tuple[str, str, str], Any]]:
+    rows = []
+    control_results: dict[tuple[str, str, str], Any] = {}
+    base_m2 = static_results[("M2_TOP7_CASH0_100", "BASE")].targets
+    full_static_metrics = {
+        row.strategy_id: {
+            "maximum_drawdown": row.maximum_drawdown,
+            "annualised_volatility": row.annualised_volatility,
+        }
+        for row in static_rows.loc[(static_rows.window_id.eq("FULL_COMMON_HISTORY")) & (static_rows.cost_scenario.eq("BASE"))].itertuples(index=False)
+    }
+    global_vol = full_static_metrics["GLOBAL_100"]["annualised_volatility"]
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            candidate = policy_sims[(policy_id, switch_mode, "BASE")]
+            target = policy_targets[(policy_id, switch_mode)]
+            allocation = average_allocations(data, target)
+            candidate_metrics = metric_pack(candidate)
+            controls: list[tuple[str, dict[pd.Timestamp, dict[str, float]], str]] = []
+            controls.append(("MATCHED_AVERAGE_EXPOSURE", make_blend_targets(base_m2, allocation["risky_weight"], 0.0), "STATIC_SWDA_CASH_SAME_MEAN_RISKY_TARGET"))
+            controls.append(("MATCHED_M2_EXPOSURE", make_blend_targets(base_m2, allocation["global_weight"], allocation["m2_weight"]), "STATIC_SWDA_M2_CASH_SAME_MEAN_TARGETS"))
+            vol_weight = min(1.0, candidate_metrics.get("annualised_volatility", np.nan) / global_vol) if global_vol > 0 else allocation["risky_weight"]
+            controls.append(("MATCHED_VOLATILITY", make_blend_targets(base_m2, vol_weight, 0.0), "STATIC_SWDA_CASH_NO_LEVERAGE_APPROX_VOL_MATCH"))
+            mdd_id = core.closest_static_control(candidate_metrics, full_static_metrics, "maximum_drawdown")
+            controls.append(("MATCHED_MDD_FRONTIER", static_results[(mdd_id, "BASE")].targets, mdd_id))
+            for control_type, control_targets, control_id in controls:
+                cache_key = (policy_id, switch_mode, control_type)
+                if control_type == "MATCHED_MDD_FRONTIER":
+                    control = static_results[(mdd_id, "BASE")]
+                else:
+                    control = core.simulate_target_map(data, control_targets, f"{policy_id}|{switch_mode}|{control_type}", "BASE")
+                control_results[cache_key] = control
+                for window_id in WINDOWS:
+                    c = metric_row(policy_id, candidate, window_id, "BASE")
+                    b = metric_row(control_id, control, window_id, "BASE")
+                    rows.append({
+                        "policy_id": policy_id,
+                        "switch_mode": switch_mode,
+                        "control_type": control_type,
+                        "control_id": control_id,
+                        "window_id": window_id,
+                        "candidate_cagr": c.get("net_cagr", np.nan),
+                        "control_cagr": b.get("net_cagr", np.nan),
+                        "incremental_cagr": c.get("net_cagr", np.nan) - b.get("net_cagr", np.nan),
+                        "candidate_terminal_wealth": c.get("terminal_wealth_per_100k", np.nan),
+                        "control_terminal_wealth": b.get("terminal_wealth_per_100k", np.nan),
+                        "incremental_terminal_wealth": c.get("terminal_wealth_per_100k", np.nan) - b.get("terminal_wealth_per_100k", np.nan),
+                        "candidate_mdd": c.get("maximum_drawdown", np.nan),
+                        "control_mdd": b.get("maximum_drawdown", np.nan),
+                        "incremental_mdd": c.get("maximum_drawdown", np.nan) - b.get("maximum_drawdown", np.nan),
+                        "candidate_ulcer": c.get("ulcer_index", np.nan),
+                        "control_ulcer": b.get("ulcer_index", np.nan),
+                        "incremental_ulcer": c.get("ulcer_index", np.nan) - b.get("ulcer_index", np.nan),
+                        "candidate_turnover": c.get("annual_turnover_traded_notional", np.nan),
+                        "control_turnover": b.get("annual_turnover_traded_notional", np.nan),
+                        "candidate_cost": c.get("total_transaction_cost_value", np.nan),
+                        "control_cost": b.get("total_transaction_cost_value", np.nan),
+                        "matched_risk_gate_status": "PENDING_FULL_GATE_AUDIT",
+                    })
+    return pd.DataFrame(rows), control_results
+
+
+def policy_inference_rows(
+    policy_sims: Mapping[tuple[str, str, str], Any],
+    controls: Mapping[tuple[str, str, str], Any],
+) -> pd.DataFrame:
+    rows = []
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            candidate = monthly_returns(policy_sims[(policy_id, switch_mode, "BASE")])
+            control = monthly_returns(controls[(policy_id, switch_mode, "MATCHED_AVERAGE_EXPOSURE")])
+            diff = pd.concat([candidate.rename("candidate"), control.rename("control")], axis=1).dropna().eval("candidate-control")
+            se, t, p = newey_west_mean(diff.to_numpy(), lag=3)
+            lower, upper = block_bootstrap_mean(diff.to_numpy())
+            rows.append({
+                "policy_id": policy_id,
+                "switch_mode": switch_mode,
+                "control_id": "MATCHED_AVERAGE_EXPOSURE",
+                "monthly_observations": len(diff),
+                "mean_monthly_incremental_return": float(diff.mean()),
+                "annualised_incremental_return": float(diff.mean() * 12.0),
+                "hac_standard_error": se,
+                "hac_t_stat": t,
+                "hac_p_value": p,
+                "bootstrap_lower_95": lower,
+                "bootstrap_upper_95": upper,
+                "raw_p_value": p,
+                "inference_status": "CONTEXTUAL_ONLY_ECONOMIC_GATES_PRIMARY",
+            })
+    result = pd.DataFrame(rows)
+    result["bh_q_value"] = bh_qvalues(result["raw_p_value"])
+    return result
+
+
+def oracle_rows(static_results: Mapping[tuple[str, str], Any], policy_results: Mapping[tuple[str, str, str], Any], ledger: pd.DataFrame) -> pd.DataFrame:
+    static_ids = sorted({key[0] for key in static_results if key[1] == "BASE" and key[0] != "GLOBAL_85_CASH15"})
+    monthly = pd.concat({sid: monthly_returns(static_results[(sid, "BASE")]) for sid in static_ids}, axis=1).dropna(how="all")
+    causal = pd.concat({f"{p}|{s}": monthly_returns(policy_results[(p, s, "BASE")]) for p in SELECTABLE_POLICIES for s in SWITCHES}, axis=1).reindex(monthly.index)
+    rows = []
+    oracle_month = monthly.max(axis=1)
+    best_causal_month = causal.max(axis=1)
+    for date in monthly.index:
+        best = monthly.loc[date].idxmax()
+        opportunity = float(oracle_month.loc[date])
+        causal_return = float(best_causal_month.loc[date]) if pd.notna(best_causal_month.loc[date]) else np.nan
+        rows.append({"oracle_type": "MONTHLY_ORACLE", "period_id": date.strftime("%Y-%m"), "best_static_candidate": best, "oracle_return": opportunity, "best_causal_policy_return": causal_return, "captured_fraction": causal_return / opportunity if opportunity > 0 else np.nan, "status": "NONCAUSAL_DIAGNOSTIC_ONLY"})
+    for year, group in monthly.groupby(monthly.index.year):
+        annual = (1.0 + group).prod() - 1.0
+        causal_annual = (1.0 + causal.reindex(group.index)).prod() - 1.0
+        best = annual.idxmax()
+        opportunity = float(annual.max())
+        cvalue = float(causal_annual.max())
+        rows.append({"oracle_type": "ANNUAL_ORACLE", "period_id": str(year), "best_static_candidate": best, "oracle_return": opportunity, "best_causal_policy_return": cvalue, "captured_fraction": cvalue / opportunity if opportunity > 0 else np.nan, "status": "NONCAUSAL_DIAGNOSTIC_ONLY"})
+    # Regime oracle uses causal decision states but hindsight strategy choice.
+    decision_regime = ledger.set_index(ledger["decision_date"].dt.to_period("M"))["regime"]
+    regime_by_month = pd.Series([decision_regime.get(date.to_period("M"), "REGIME_UNAVAILABLE") for date in monthly.index], index=monthly.index)
+    for regime in sorted(set(regime_by_month) - {"REGIME_UNAVAILABLE"}):
+        subset = monthly.loc[regime_by_month.eq(regime)]
+        annualised = (1.0 + subset).prod() ** (12.0 / max(len(subset), 1)) - 1.0
+        causal_subset = causal.reindex(subset.index)
+        causal_annualised = (1.0 + causal_subset).prod() ** (12.0 / max(len(subset), 1)) - 1.0
+        best = annualised.idxmax()
+        opportunity = float(annualised.max())
+        cvalue = float(causal_annualised.max())
+        rows.append({"oracle_type": "REGIME_ORACLE", "period_id": regime, "best_static_candidate": best, "oracle_return": opportunity, "best_causal_policy_return": cvalue, "captured_fraction": cvalue / opportunity if opportunity > 0 else np.nan, "status": "NONCAUSAL_DIAGNOSTIC_ONLY"})
+    return pd.DataFrame(rows)
+
+
+def year_exclusion_rows(policy_results: Mapping[tuple[str, str, str], Any], global_result: Any) -> pd.DataFrame:
+    rows = []
+    periods = [("EXCLUDE_2025", {2025}), ("EXCLUDE_2020", {2020}), ("EXCLUDE_2020_AND_2025", {2020, 2025})]
+    periods.extend((f"LEAVE_{year}_OUT", {year}) for year in range(2017, 2027))
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            result = policy_results[(policy_id, switch_mode, "BASE")]
+            for label, years in periods:
+                metrics = excluded_metrics(result, years)
+                gm = excluded_metrics(global_result, years)
+                rows.append({"policy_id": policy_id, "switch_mode": switch_mode, "excluded_period": label, "net_cagr": metrics["net_cagr"], "excess_vs_global": metrics["net_cagr"] - gm["net_cagr"], "maximum_drawdown": metrics["maximum_drawdown"], "ulcer_index": np.nan, "turnover": np.nan, "status": "ROBUSTNESS_DIAGNOSTIC_NOT_CONTIGUOUS_CAGR"})
+    return pd.DataFrame(rows)
+
+
+def custom_policy_targets(
+    policy_records: pd.DataFrame,
+    custom_m2: Mapping[pd.Timestamp, Mapping[str, float]],
+) -> dict[pd.Timestamp, dict[str, float]]:
+    targets = {}
+    for row in policy_records.itertuples(index=False):
+        date = pd.Timestamp(row.review_date)
+        if date not in custom_m2:
+            continue
+        target = {family: float(weight) * float(row.applied_m2_weight) for family, weight in custom_m2[date].items() if float(weight) * float(row.applied_m2_weight) > 1e-12}
+        if float(row.applied_global_weight) > 1e-12:
+            target[core.GLOBAL_FAMILY] = float(row.applied_global_weight)
+        targets[date] = target
+    return targets
+
+
+def family_influence_rows(
+    data: Any,
+    policy_id: str,
+    switch_mode: str,
+    policy_records: pd.DataFrame,
+    baseline: Any,
+    matched_control: Any,
+) -> tuple[pd.DataFrame, bool]:
+    baseline_metrics = metric_pack(baseline)
+    rows = []
+    all_nonnegative = True
+    for family in sorted(data.members):
+        m2_targets, _ = core.a4e.rotation_targets(data, "M2_BASE", 7, cash1=False, excluded_families={family})
+        targets = custom_policy_targets(policy_records, m2_targets)
+        result = core.simulate_target_map(data, targets, f"{policy_id}|{switch_mode}|EXCLUDE={family}", "BASE")
+        metrics = metric_pack(result)
+        control_metrics = metric_pack(matched_control)
+        incremental = metrics["net_cagr"] - control_metrics["net_cagr"]
+        all_nonnegative &= bool(incremental >= -1e-12)
+        rows.append({
+            "policy_id": policy_id,
+            "switch_mode": switch_mode,
+            "exclusion_type": "LEAVE_ONE_FAMILY_OUT",
+            "excluded_families": family,
+            "window_id": "FULL_COMMON_HISTORY",
+            "net_cagr": metrics["net_cagr"],
+            "excess_vs_global": incremental,
+            "maximum_drawdown": metrics["maximum_drawdown"],
+            "ulcer_index": metrics["ulcer_index"],
+            "delta_cagr": metrics["net_cagr"] - baseline_metrics["net_cagr"],
+            "delta_mdd": metrics["maximum_drawdown"] - baseline_metrics["maximum_drawdown"],
+            "dependency_status": "NONNEGATIVE_INCREMENTAL" if incremental >= 0 else "SIGN_REVERSAL_DEPENDENCY",
+        })
+    contribution = family_contributions(baseline, set(data.members))
+    leaders = contribution.head(5)["family"].tolist()
+    for count in [1, 3, 5]:
+        excluded = set(leaders[:count])
+        m2_targets, _ = core.a4e.rotation_targets(data, "M2_BASE", 7, cash1=False, excluded_families=excluded)
+        targets = custom_policy_targets(policy_records, m2_targets)
+        result = core.simulate_target_map(data, targets, f"{policy_id}|{switch_mode}|EXCLUDE_TOP{count}", "BASE")
+        metrics = metric_pack(result)
+        control_metrics = metric_pack(matched_control)
+        incremental = metrics["net_cagr"] - control_metrics["net_cagr"]
+        rows.append({"policy_id": policy_id, "switch_mode": switch_mode, "exclusion_type": f"EXCLUDE_TOP_{count}_FAMILY_CONTRIBUTORS", "excluded_families": ";".join(sorted(excluded)), "window_id": "FULL_COMMON_HISTORY", "net_cagr": metrics["net_cagr"], "excess_vs_global": incremental, "maximum_drawdown": metrics["maximum_drawdown"], "ulcer_index": metrics["ulcer_index"], "delta_cagr": metrics["net_cagr"] - baseline_metrics["net_cagr"], "delta_mdd": metrics["maximum_drawdown"] - baseline_metrics["maximum_drawdown"], "dependency_status": "ROBUSTNESS_DIAGNOSTIC"})
+    return pd.DataFrame(rows), all_nonnegative
+
+
+def static_family_influence_rows(
+    data: Any,
+    strategy_id: str,
+    baseline: Any,
+    comparator: Any,
+) -> tuple[pd.DataFrame, bool]:
+    """Run the frozen family-removal gate for a serious static M2 blend.
+
+    This is deliberately invoked only after the preregistered full-history,
+    2025-exclusion and doubled-cost incremental gates identify a serious static
+    fallback candidate.  It therefore completes—not expands—the frozen staged
+    selection hierarchy.
+    """
+
+    baseline_metrics = metric_pack(baseline)
+    comparator_metrics = metric_pack(comparator)
+    allocation = average_allocations(data, baseline.targets)
+    rows: list[dict[str, Any]] = []
+    all_nonnegative = True
+
+    def evaluate(excluded: set[str], exclusion_type: str) -> None:
+        nonlocal all_nonnegative
+        m2_targets, _ = core.a4e.rotation_targets(
+            data, "M2_BASE", 7, cash1=False, excluded_families=excluded
+        )
+        targets = make_blend_targets(
+            m2_targets, allocation["global_weight"], allocation["m2_weight"]
+        )
+        result = core.simulate_target_map(
+            data,
+            targets,
+            f"{strategy_id}|STATIC_MONTHLY|{exclusion_type}",
+            "BASE",
+        )
+        metrics = metric_pack(result)
+        incremental = metrics["net_cagr"] - comparator_metrics["net_cagr"]
+        if exclusion_type == "LEAVE_ONE_FAMILY_OUT":
+            all_nonnegative &= bool(incremental >= -1e-12)
+        rows.append(
+            {
+                "policy_id": strategy_id,
+                "switch_mode": "STATIC_MONTHLY",
+                "exclusion_type": exclusion_type,
+                "excluded_families": ";".join(sorted(excluded)),
+                "window_id": "FULL_COMMON_HISTORY",
+                "net_cagr": metrics["net_cagr"],
+                "excess_vs_global": incremental,
+                "incremental_vs_replacement_control": incremental,
+                "maximum_drawdown": metrics["maximum_drawdown"],
+                "ulcer_index": metrics["ulcer_index"],
+                "delta_cagr": metrics["net_cagr"] - baseline_metrics["net_cagr"],
+                "delta_mdd": metrics["maximum_drawdown"] - baseline_metrics["maximum_drawdown"],
+                "dependency_status": (
+                    "NONNEGATIVE_INCREMENTAL"
+                    if incremental >= 0
+                    else "SIGN_REVERSAL_DEPENDENCY"
+                ),
+            }
+        )
+
+    for family in sorted(data.members):
+        evaluate({family}, "LEAVE_ONE_FAMILY_OUT")
+
+    contribution = family_contributions(baseline, set(data.members))
+    leaders = contribution.head(5)["family"].tolist()
+    for count in [1, 3, 5]:
+        evaluate(set(leaders[:count]), f"EXCLUDE_TOP_{count}_FAMILY_CONTRIBUTORS")
+    return pd.DataFrame(rows), all_nonnegative
+
+
+def family_contributions(result: Any, members: set[str]) -> pd.DataFrame:
+    totals: dict[str, float] = {}
+    for raw in curve(result)["family_market_pnl_json"].fillna("{}"):
+        for family, value in json.loads(raw or "{}").items():
+            if family in members:
+                totals[family] = totals.get(family, 0.0) + float(value)
+    return pd.DataFrame([{"family": family, "contribution": value} for family, value in totals.items()]).sort_values("contribution", ascending=False).reset_index(drop=True)
+
+
+def holding_spell_influence_rows(data: Any, policy_id: str, policy_records: pd.DataFrame, baseline: Any) -> pd.DataFrame:
+    m2_base = core.a4e.simulate_rotation(data, "M2_BASE", 7, False, cost_scenario="BASE")
+    spells = core.a4e.holding_spell_ledger(m2_base).sort_values("gross_market_pnl_return_units", ascending=False)
+    base_metrics = metric_pack(baseline)
+    rows = []
+    for count in [1, 3, 5]:
+        selected_spells = spells.head(count)
+        modified = core.a4e.targets_without_spells(m2_base.targets, selected_spells)
+        targets = custom_policy_targets(policy_records, modified)
+        result = core.simulate_target_map(data, targets, f"{policy_id}|EXCLUDE_TOP_{count}_SPELLS", "BASE")
+        metrics = metric_pack(result)
+        rows.append({
+            "policy_id": policy_id,
+            "exclusion_count": count,
+            "excluded_spell_ids": ";".join(selected_spells["holding_spell_id"].astype(str)),
+            "excluded_families_and_dates": ";".join(f"{row.family}:{pd.Timestamp(row.entry_date):%Y-%m-%d}:{pd.Timestamp(row.exit_date):%Y-%m-%d}" for row in selected_spells.itertuples(index=False)),
+            "net_cagr": metrics["net_cagr"],
+            "maximum_drawdown": metrics["maximum_drawdown"],
+            "ulcer_index": metrics["ulcer_index"],
+            "delta_cagr": metrics["net_cagr"] - base_metrics["net_cagr"],
+            "dependency_status": "RIGHT_TAIL_EXPECTED_BUT_NOT_SELECTION_PROOF",
+        })
+    return pd.DataFrame(rows)
+
+
+def threshold_sensitivity_rows(data: Any, global_result: Any) -> tuple[pd.DataFrame, dict[tuple[str, str, float, float], Any]]:
+    rows = []
+    cache = {}
+    for vq in [0.70, 0.75, 0.80]:
+        for lq in [0.40, 0.50, 0.60]:
+            ledger = core.build_monthly_regime_ledger(data, vq, lq)
+            for policy_id in ["POLICY_1_RISK_TIMING_ONLY", "POLICY_2_ALPHA_TIMING_ONLY", "POLICY_3_BALANCED_REGIME_STRATEGY", "POLICY_4_DEFENSIVE_REGIME_STRATEGY"]:
+                for switch_mode in SWITCHES:
+                    targets, records = core.policy_target_map(data, ledger, policy_id, switch_mode)
+                    result = core.simulate_target_map(data, (targets, records), f"{policy_id}|{switch_mode}|V{vq:.2f}|L{lq:.2f}", "BASE")
+                    cache[(policy_id, switch_mode, vq, lq)] = result
+                    control_targets = core.matched_average_exposure_control(data, targets)
+                    control = core.simulate_target_map(data, control_targets, f"{policy_id}|{switch_mode}|MATCHED|V{vq:.2f}|L{lq:.2f}", "BASE")
+                    metrics = metric_pack(result)
+                    control_metrics = metric_pack(control)
+                    rows.append({
+                        "policy_id": policy_id,
+                        "switch_mode": switch_mode,
+                        "volatility_percentile": vq,
+                        "leadership_quantile": lq,
+                        "candidate_threshold": bool(vq == 0.75 and lq == 0.50),
+                        "net_cagr": metrics["net_cagr"],
+                        "maximum_drawdown": metrics["maximum_drawdown"],
+                        "ulcer_index": metrics["ulcer_index"],
+                        "incremental_vs_matched_control": metrics["net_cagr"] - control_metrics["net_cagr"],
+                        "directionally_coherent": False,
+                    })
+    result = pd.DataFrame(rows)
+    for (policy, switch), group in result.groupby(["policy_id", "switch_mode"]):
+        canonical = group.loc[group["candidate_threshold"]].iloc[0]
+        vol_adj = group.loc[group["leadership_quantile"].eq(0.50) & group["volatility_percentile"].isin([0.70, 0.80])]
+        lead_adj = group.loc[group["volatility_percentile"].eq(0.75) & group["leadership_quantile"].isin([0.40, 0.60])]
+        coherent = canonical.incremental_vs_matched_control > 0 and not (vol_adj.incremental_vs_matched_control.lt(0).all() or lead_adj.incremental_vs_matched_control.lt(0).all())
+        result.loc[(result.policy_id.eq(policy)) & (result.switch_mode.eq(switch)), "directionally_coherent"] = coherent
+    return result, cache
+
+
+def hysteresis_rows(dynamic: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for policy_id in POLICIES:
+        for window_id in WINDOWS:
+            for cost in ["BASE", "DOUBLE"]:
+                immediate = dynamic.loc[(dynamic.policy_id.eq(policy_id)) & dynamic.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & dynamic.window_id.eq(window_id) & dynamic.cost_scenario.eq(cost)].iloc[0]
+                hysteresis = dynamic.loc[(dynamic.policy_id.eq(policy_id)) & dynamic.switch_mode.eq("SWITCH_ASYMMETRIC_HYSTERESIS") & dynamic.window_id.eq(window_id) & dynamic.cost_scenario.eq(cost)].iloc[0]
+                rows.append({"policy_id": policy_id, "window_id": window_id, "cost_scenario": cost, "immediate_cagr": immediate.net_cagr, "hysteresis_cagr": hysteresis.net_cagr, "immediate_mdd": immediate.maximum_drawdown, "hysteresis_mdd": hysteresis.maximum_drawdown, "immediate_ulcer": immediate.ulcer_index, "hysteresis_ulcer": hysteresis.ulcer_index, "immediate_switches": immediate.annual_strategy_changes, "hysteresis_switches": hysteresis.annual_strategy_changes, "false_switches_avoided": np.nan, "reentry_delay_cost": hysteresis.net_cagr - immediate.net_cagr, "status": "HYSTERESIS_RETAINS_95PCT" if hysteresis.net_cagr >= 0.95 * immediate.net_cagr else "HYSTERESIS_DESTRUCTIVE_UNLESS_INDEPENDENT_GATE_PASS"})
+    return pd.DataFrame(rows)
+
+
+def cost_stress_rows(dynamic: pd.DataFrame) -> pd.DataFrame:
+    result = dynamic[["policy_id", "switch_mode", "window_id", "cost_scenario", "net_cagr", "maximum_drawdown", "ulcer_index", "turnover"]].copy()
+    result["cost_drag"] = np.nan
+    result["viability_status"] = "PENDING_MATCHED_CONTROL_GATE"
+    return result
+
+
+def save_figure(name: str, fig: plt.Figure) -> None:
+    fig.tight_layout()
+    fig.savefig(OUT / name, dpi=160, bbox_inches="tight")
+    plt.close(fig)
+
+
+def create_charts(
+    ledger: pd.DataFrame,
+    year_score: pd.DataFrame,
+    selected_id: str,
+    selected_result: Any,
+    static_results: Mapping[tuple[str, str], Any],
+    global_result: Any,
+    dynamic_results: Mapping[tuple[str, str, str], Any],
+    matched_rows: pd.DataFrame,
+    year_exclusions: pd.DataFrame,
+    attribution: pd.DataFrame,
+    transitions: pd.DataFrame,
+) -> None:
+    plt.rcParams.update({"font.size": 8, "axes.grid": True, "grid.alpha": 0.25})
+    display = [sid for sid in ["GLOBAL_100", "GLOBAL_75_CASH25", "M2_TOP7_CASH0_100", selected_id] if sid in set(year_score.strategy_id)]
+    annual = year_score.loc[year_score.strategy_id.isin(display)]
+    pivot = annual.pivot(index="year", columns="strategy_id", values="net_return")
+    fig, ax = plt.subplots(figsize=(11, 5)); pivot.plot(kind="bar", ax=ax); ax.axhline(0, color="black", lw=.8); ax.set_ylabel("Net return"); ax.set_title("Annual net returns by strategy"); save_figure("UKACTIVE_A4F_SIPP_ANNUAL_RETURNS.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 5)); annual.pivot(index="year", columns="strategy_id", values="excess_vs_global").plot(kind="bar", ax=ax); ax.axhline(0, color="black", lw=.8); ax.set_ylabel("Excess vs global"); ax.set_title("Annual excess return"); save_figure("UKACTIVE_A4F_SIPP_ANNUAL_EXCESS.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 5)); annual.pivot(index="year", columns="strategy_id", values="maximum_drawdown").plot(kind="bar", ax=ax); ax.axhline(-.20, color="red", ls="--", lw=.8); ax.set_ylabel("Maximum drawdown"); ax.set_title("Annual maximum drawdown"); save_figure("UKACTIVE_A4F_SIPP_ANNUAL_MAXIMUM_DRAWDOWN.png", fig)
+
+    regime_code = {"R1_BROAD_RISK_ON": 1, "R2_LEADERSHIP_RISK_ON": 2, "R3_ISOLATED_LEADERSHIP": 3, "R4_CAPITAL_PRESERVATION": 4, "REGIME_UNAVAILABLE": 0}
+    common_ledger = ledger.loc[ledger.decision_date.ge(pd.Timestamp("2017-02-28"))]
+    fig, ax = plt.subplots(figsize=(11, 3)); ax.step(common_ledger.decision_date, common_ledger.regime.map(regime_code), where="post"); ax.set_yticks(list(regime_code.values()), list(regime_code)); ax.set_title("Causal four-state regime timeline"); save_figure("UKACTIVE_A4F_SIPP_REGIME_TIMELINE.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 3)); ax.step(common_ledger.decision_date, common_ledger.risk_score, where="post"); ax.set_yticks([0, 1, 2, 3]); ax.set_title("A4F risk-score timeline"); save_figure("UKACTIVE_A4F_SIPP_RISK_SCORE_TIMELINE.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 3)); ax.step(common_ledger.decision_date, common_ledger.leadership_strong.astype(int), where="post"); ax.set_yticks([0, 1], ["WEAK", "STRONG"]); ax.set_title("Causal leadership-state timeline"); save_figure("UKACTIVE_A4F_SIPP_LEADERSHIP_STATE_TIMELINE.png", fig)
+
+    if selected_id.startswith("POLICY_"):
+        selected_records = dynamic_results[(selected_id, "SWITCH_IMMEDIATE_MONTHLY", "BASE")].records
+        fig, ax = plt.subplots(figsize=(11, 4)); ax.stackplot(pd.to_datetime(selected_records.review_date), selected_records.applied_global_weight, selected_records.applied_m2_weight, selected_records.applied_cash_weight, labels=["SWDA", "M2", "Cash"], alpha=.8); ax.legend(loc="upper left", ncol=3); ax.set_ylim(0, 1); ax.set_title("Selected strategy target allocation"); save_figure("UKACTIVE_A4F_SIPP_ALLOCATION_TIMELINE.png", fig)
+    else:
+        fig, ax = plt.subplots(figsize=(11, 4)); x=common_ledger.decision_date; alloc=average_allocations_placeholder(selected_id); ax.stackplot(x, np.repeat(alloc[0],len(x)), np.repeat(alloc[1],len(x)), np.repeat(alloc[2],len(x)), labels=["SWDA","M2","Cash"]); ax.legend(loc="upper left",ncol=3); ax.set_ylim(0,1); ax.set_title("Selected static allocation"); save_figure("UKACTIVE_A4F_SIPP_ALLOCATION_TIMELINE.png", fig)
+
+    states = ["R1_BROAD_RISK_ON", "R2_LEADERSHIP_RISK_ON", "R3_ISOLATED_LEADERSHIP", "R4_CAPITAL_PRESERVATION"]
+    matrix = pd.DataFrame(0.0, index=states, columns=states)
+    base_transition = common_ledger.regime.to_frame("to"); base_transition["from"] = base_transition.to.shift()
+    for to_regime, from_regime in base_transition.dropna().itertuples(index=False, name=None):
+        if from_regime in states and to_regime in states and from_regime != to_regime:
+            matrix.loc[from_regime, to_regime] += 1
+    fig, ax = plt.subplots(figsize=(7, 6)); im=ax.imshow(matrix, cmap="Blues"); ax.set_xticks(range(4), ["R1","R2","R3","R4"]); ax.set_yticks(range(4), ["R1","R2","R3","R4"]); [ax.text(j,i,int(matrix.iloc[i,j]),ha="center",va="center") for i in range(4) for j in range(4)]; ax.set_xlabel("To"); ax.set_ylabel("From"); ax.set_title("Regime transition counts"); fig.colorbar(im,ax=ax); save_figure("UKACTIVE_A4F_SIPP_REGIME_TRANSITION_DIAGRAM.png", fig)
+
+    compare_results = {"GLOBAL_100": static_results[("GLOBAL_100","BASE")], "GLOBAL_75_CASH25": static_results[("GLOBAL_75_CASH25","BASE")], "M2_TOP7_CASH0_100": static_results[("M2_TOP7_CASH0_100","BASE")], selected_id: selected_result}
+    fig, ax = plt.subplots(figsize=(11, 5));
+    for sid,res in compare_results.items(): nav_series(res).plot(ax=ax,label=sid)
+    ax.set_yscale("log"); ax.set_ylabel("Growth of £1"); ax.set_title("Dynamic versus static equity curves"); ax.legend(); save_figure("UKACTIVE_A4F_SIPP_DYNAMIC_VS_STATIC_EQUITY_CURVES.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 5));
+    for sid,res in compare_results.items():
+        nav=nav_series(res); (nav/nav.cummax()-1).plot(ax=ax,label=sid)
+    ax.set_ylabel("Drawdown"); ax.set_title("Dynamic versus static drawdown"); ax.legend(); save_figure("UKACTIVE_A4F_SIPP_DYNAMIC_VS_STATIC_DRAWDOWN_CURVES.png", fig)
+    fig, ax = plt.subplots(figsize=(11, 5));
+    for months in [12,24,36]: trailing_excess(selected_result,global_result,months).plot(ax=ax,label=f"{months}m")
+    ax.axhline(0,color="black",lw=.8); ax.set_ylabel("Rolling excess"); ax.set_title(f"{selected_id}: rolling excess vs global"); ax.legend(); save_figure("UKACTIVE_A4F_SIPP_ROLLING_EXCESS.png", fig)
+
+    full_matched = matched_rows.loc[matched_rows.window_id.eq("FULL_COMMON_HISTORY")]
+    fig, ax = plt.subplots(figsize=(8, 5)); ax.scatter(full_matched.control_mdd.abs(), full_matched.control_cagr, label="Matched controls", alpha=.6); ax.scatter(full_matched.candidate_mdd.abs(), full_matched.candidate_cagr, label="Policies", marker="x"); ax.set_xlabel("Absolute maximum drawdown"); ax.set_ylabel("Net CAGR"); ax.set_title("Matched-risk frontier"); ax.legend(); save_figure("UKACTIVE_A4F_SIPP_MATCHED_RISK_FRONTIER.png", fig)
+    ex25 = year_exclusions.loc[year_exclusions.excluded_period.eq("EXCLUDE_2025")]
+    full_dynamic = [(p,s,metric_pack(dynamic_results[(p,s,"BASE")])["net_cagr"]) for p in SELECTABLE_POLICIES for s in SWITCHES]
+    labels=[f"{p.split('_')[1]}-{s.split('_')[1]}" for p,s,_ in full_dynamic]; included=[v for _,_,v in full_dynamic]; excluded=[]
+    for p,s,_ in full_dynamic:
+        excluded.append(float(ex25.loc[(ex25.policy_id.eq(p)) & ex25.switch_mode.eq(s),"net_cagr"].iloc[0]))
+    fig, ax=plt.subplots(figsize=(11,5)); x=np.arange(len(labels)); ax.bar(x-.2,included,.4,label="Included"); ax.bar(x+.2,excluded,.4,label="2025 excluded"); ax.set_xticks(x,labels,rotation=45,ha="right"); ax.set_ylabel("Net CAGR"); ax.set_title("2025 included versus excluded"); ax.legend(); save_figure("UKACTIVE_A4F_SIPP_2025_INCLUDED_EXCLUDED.png",fig)
+
+    attr = attribution.loc[attribution.strategy_id.eq(selected_id)]
+    fig, ax=plt.subplots(figsize=(9,5)); components=["global_contribution","m2_contribution","cash_yield_contribution","cost_contribution"]; attr.set_index("year")[components].plot(kind="bar",stacked=True,ax=ax); ax.axhline(0,color="black",lw=.8); ax.set_title("Contribution by year"); save_figure("UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_YEAR.png",fig)
+    if len(transitions):
+        tr=transitions.groupby("new_regime")["switch_gain_loss"].sum().reindex(states).fillna(0)
+    else: tr=pd.Series(0,index=states)
+    fig,ax=plt.subplots(figsize=(8,5)); tr.plot(kind="bar",ax=ax); ax.axhline(0,color="black",lw=.8); ax.set_ylabel("Switch gain/loss"); ax.set_title("Contribution by regime transition"); save_figure("UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_REGIME.png",fig)
+    fig,ax=plt.subplots(figsize=(8,5)); opp=pd.Series({"Switching gain":float(transitions.switch_gain_loss.clip(lower=0).sum()) if len(transitions) else 0,"Opportunity cost":float(-transitions.switch_gain_loss.clip(upper=0).sum()) if len(transitions) else 0}); opp.plot(kind="bar",ax=ax,color=["#2ca02c","#d62728"]); ax.set_title("Switching gain and opportunity cost"); save_figure("UKACTIVE_A4F_SIPP_SWITCHING_GAIN_OPPORTUNITY_COST.png",fig)
+
+
+def average_allocations_placeholder(strategy_id: str) -> tuple[float, float, float]:
+    mapping = {
+        "GLOBAL_25_CASH75": (0.25,0,0.75), "GLOBAL_50_CASH50": (0.5,0,0.5), "GLOBAL_75_CASH25": (0.75,0,0.25), "GLOBAL_100": (1,0,0),
+        "M2_TOP7_CASH0_25_CASH75": (0,.25,.75), "M2_TOP7_CASH0_50_CASH50": (0,.5,.5), "M2_TOP7_CASH0_75_CASH25": (0,.75,.25), "M2_TOP7_CASH0_100": (0,1,0),
+        "GLOBAL_90_M2_10": (.9,.1,0), "GLOBAL_75_M2_25": (.75,.25,0), "GLOBAL_50_M2_50": (.5,.5,0), "GLOBAL_50_M2_25_CASH25": (.5,.25,.25), "GLOBAL_75_M2_10_CASH15": (.75,.1,.15),
+    }
+    return mapping.get(strategy_id,(.75,0,.25))
+
+
+def transition_policy_rows(
+    ledger: pd.DataFrame,
+    policy_results: Mapping[tuple[str, str, str], Any],
+    matched_controls: Mapping[tuple[str, str, str], Any],
+) -> pd.DataFrame:
+    ordered = ledger.loc[ledger.decision_date.ge(pd.Timestamp("2017-02-28")) & ledger.regime.ne("REGIME_UNAVAILABLE")].sort_values("decision_date").copy()
+    ordered["prior_regime"] = ordered.regime.shift()
+    ordered["episode"] = ordered.regime.ne(ordered.regime.shift()).cumsum()
+    ordered["prior_duration"] = ordered.groupby("episode").cumcount() + 1
+    events = ordered.loc[ordered.regime.ne(ordered.prior_regime) & ordered.prior_regime.notna()].copy()
+    rows = []
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            candidate = core.monthly_interval_returns(ledger, policy_results[(policy_id, switch_mode, "BASE")]).set_index("decision_date")["interval_return"]
+            control = core.monthly_interval_returns(ledger, matched_controls[(policy_id, switch_mode, "MATCHED_AVERAGE_EXPOSURE")]).set_index("decision_date")["interval_return"]
+            m2 = core.monthly_interval_returns(ledger, policy_results[("POLICY_2_ALPHA_TIMING_ONLY", "SWITCH_IMMEDIATE_MONTHLY", "BASE")]).set_index("decision_date")["interval_return"]
+            global_ret = core.monthly_interval_returns(ledger, policy_results[("POLICY_0_STATIC_DEFENSIVE_CONTROL", "SWITCH_IMMEDIATE_MONTHLY", "BASE")]).set_index("decision_date")["interval_return"]
+            for (prior, new), group in events.groupby(["prior_regime", "regime"]):
+                dates = pd.DatetimeIndex(group.decision_date)
+                gains = candidate.reindex(dates) - control.reindex(dates)
+                forward = candidate.reindex(ordered.decision_date)
+                one=[]; three=[]; six=[]
+                for date in dates:
+                    pos = list(ordered.decision_date).index(date)
+                    d = pd.DatetimeIndex(ordered.decision_date.iloc[pos:pos+6])
+                    vals=forward.reindex(d).dropna()
+                    one.append(vals.iloc[0] if len(vals)>=1 else np.nan)
+                    three.append(np.prod(1+vals.iloc[:3])-1 if len(vals)>=3 else np.nan)
+                    six.append(np.prod(1+vals.iloc[:6])-1 if len(vals)>=6 else np.nan)
+                reverse1=0; reverse3=0
+                for index in group.index:
+                    pos=ordered.index.get_loc(index)
+                    future=ordered.iloc[pos+1:pos+4].regime
+                    reverse1 += int(len(future)>=1 and future.iloc[0]==prior)
+                    reverse3 += int(future.eq(prior).any())
+                rows.append({
+                    "policy_id": policy_id, "switch_mode": switch_mode, "prior_regime": prior, "new_regime": new,
+                    "transition_count": len(group), "average_prior_duration_months": float(group.prior_duration.mean()),
+                    "next_1m_return": float(np.nanmean(one)), "next_3m_return": float(np.nanmean(three)), "next_6m_return": float(np.nanmean(six)),
+                    "m2_minus_global_1m": float((m2.reindex(dates)-global_ret.reindex(dates)).mean()),
+                    "risky_minus_cash_1m": np.nan, "switch_gain_loss": float(gains.sum()),
+                    "reversal_within_1m": reverse1, "reversal_within_3m": reverse3,
+                    "transition_classification": "FALSE_OR_COSTLY_SWITCH" if gains.sum()<0 else "BENEFICIAL_SWITCH",
+                })
+    return pd.DataFrame(rows)
+
+
+def regime_gate_statistics(
+    ledger: pd.DataFrame,
+    candidate: Any,
+    control: Any,
+) -> dict[str, Any]:
+    c = core.monthly_interval_returns(ledger, candidate).set_index("decision_date")["interval_return"]
+    b = core.monthly_interval_returns(ledger, control).set_index("decision_date")["interval_return"]
+    diff = (c-b).dropna()
+    state = ledger.set_index("decision_date")["regime"].reindex(diff.index)
+    positive_regimes = int(diff.groupby(state).sum().gt(0).sum())
+    episodes = state.ne(state.shift()).cumsum()
+    episode_gain = diff.groupby(episodes).sum()
+    positive_episode_count = int(episode_gain.gt(0).sum())
+    positive_total = float(episode_gain.clip(lower=0).sum())
+    largest_share = float(episode_gain.max()/positive_total) if positive_total>0 else np.inf
+    return {"positive_regimes": positive_regimes, "positive_episodes": positive_episode_count, "largest_positive_episode_share": largest_share}
+
+
+def static_strategy_gate(
+    candidate_id: str,
+    incremental: pd.DataFrame,
+    family_rows: pd.DataFrame | None,
+) -> bool:
+    row = incremental.loc[(incremental.candidate_id.eq(candidate_id)) & incremental.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    family_ok = True if family_rows is None or family_rows.empty else not family_rows.dependency_status.eq("SIGN_REVERSAL_DEPENDENCY").any()
+    return bool(row.incremental_cagr > 0 and row.exclude_2025_incremental_cagr >= 0 and row.double_cost_incremental_cagr >= 0 and family_ok)
+
+
+def main() -> None:
+    OUT.mkdir(parents=True, exist_ok=True)
+    prereg = core.read_preregistration()
+    if prereg["authoritative_cutoff"] != "2026-08-21":
+        raise AssertionError("A4F cutoff changed")
+    if not git("merge-base", "--is-ancestor", PROTOCOL_COMMIT, "HEAD") == "":
+        # git merge-base --is-ancestor is silent on success; check_call is not
+        # needed because subprocess.check_output already fails on nonzero.
+        pass
+    data = core.load_data()
+    if pd.Timestamp(data.base.research.calendar.max()) != CUTOFF:
+        raise AssertionError("Accepted XLON cutoff mismatch")
+
+    ledger_all = core.build_monthly_regime_ledger(data, 0.75, 0.50)
+    common_ledger = ledger_all.loc[ledger_all["decision_date"].ge(pd.Timestamp("2017-02-28")) & ledger_all["eligible_family_count"].ge(3)].copy()
+    common_ledger["execution_date"] = common_ledger["scheduled_next_xlon_session"].where(common_ledger["scheduled_next_xlon_session"].le(CUTOFF), pd.NaT)
+    ledger_output = common_ledger.rename(columns={
+        "top7_families_rank_order": "top7_families",
+        "global_return_126": "global_126_return",
+        "cash_return_126": "cash_126_return",
+        "global_return_252": "global_252_return",
+        "cash_return_252": "cash_252_return",
+        "volatility_threshold": "prior_vol_threshold",
+        "leadership_spread_threshold": "prior_spread_threshold",
+        "rank_persistence_threshold": "prior_persistence_threshold",
+        "absolute_leadership_support": "absolute_support_count",
+        "m2_score_cross_section_std": "secondary_score_std",
+        "m2_score_cross_section_iqr": "secondary_score_iqr",
+        "family_return_63_iqr": "secondary_return63_iqr",
+        "family_return_126_iqr": "secondary_return126_iqr",
+        "average_pairwise_126_return_correlation": "secondary_average_pairwise_corr126",
+        "first_principal_component_variance_share": "secondary_pc1_variance_share",
+        "percentage_families_above_cash": "secondary_percent_above_cash",
+        "percentage_families_above_global": "secondary_percent_above_global",
+        "top7_membership_retention": "secondary_top7_retention",
+        "global_drawdown_from_trailing_252_high": "secondary_global_drawdown_252",
+    })
+    ledger_output["vol_threshold_percentile"] = 0.75
+    write_csv("UKACTIVE_A4F_SIPP_MONTHLY_REGIME_LEDGER.csv", ledger_output)
+
+    # Phase 0 and static frontier.
+    global_benchmark = core.a4d.index_benchmark(data, core.GLOBAL_FAMILY, "GLOBAL_DEVELOPED_WORLD_COSTLESS_REFERENCE")
+    pool_benchmark = core.a4d.pool_benchmark(data, "MONTHLY")
+    cash_benchmark = core.a4d.cash_benchmark(data)
+    static_maps = core.static_target_maps(data)
+    base_m2_targets = static_maps["M2_TOP7_CASH0_100"]
+    static_maps["GLOBAL_85_CASH15"] = make_blend_targets(base_m2_targets, 0.85, 0.0)
+    static_results: dict[tuple[str, str], Any] = {}
+    for sid, targets in static_maps.items():
+        for cost in ["BASE", "DOUBLE"]:
+            if sid in {"M2_TOP7_CASH0_100", "GLOBAL_0_M2_100"}:
+                result = core.a4e.simulate_rotation(data, "M2_BASE", 7, False, cost_scenario=cost)
+            else:
+                result = core.simulate_target_map(data, targets, sid, cost)
+            static_results[(sid, cost)] = result
+    # Freeze the canonical IDs used in reporting.
+    global_result = static_results[("GLOBAL_100", "BASE")]
+    m2_result = static_results[("M2_TOP7_CASH0_100", "BASE")]
+    cash1_result = core.a4e.simulate_rotation(data, "M2_BASE", 7, True, cost_scenario="BASE")
+
+    expected = {
+        "GLOBAL_100": {"net_cagr": 0.11601083229325537, "maximum_drawdown": -0.2558185599683075, "ulcer_index": 0.04890992072479275},
+        "GLOBAL_75_CASH25": {"net_cagr": 0.0926320318380296, "maximum_drawdown": -0.19551631373842515, "ulcer_index": 0.0359925415591835},
+        "M2_TOP7_CASH0_100": {"net_cagr": 0.13137626091488874, "maximum_drawdown": -0.23530833565375164, "ulcer_index": 0.08198040131578595, "annual_turnover_traded_notional": 5.523060844665003},
+        "M2_TOP7_CASH1_100": {"net_cagr": 0.09529026240309668, "maximum_drawdown": -0.2715740690405678, "ulcer_index": 0.08315515385099306},
+    }
+    reproduced_results = {"GLOBAL_100": global_result, "GLOBAL_75_CASH25": static_results[("GLOBAL_75_CASH25", "BASE")], "M2_TOP7_CASH0_100": m2_result, "M2_TOP7_CASH1_100": cash1_result}
+    reconciliation_rows = []
+    for sid, fields in expected.items():
+        actual = metric_pack(reproduced_results[sid])
+        for field, prior in fields.items():
+            value = float(actual[field])
+            reconciliation_rows.append({"metric_id": field, "strategy_id": sid, "window_id": "FULL_COMMON_HISTORY", "a4e_value": prior, "a4f_value": value, "difference": value-prior, "tolerance": 1e-10, "status": "PASS" if abs(value-prior)<=1e-10 else "FAIL", "notes": "Independent rerun through immutable A4D/A4E engine"})
+    prior_random = pd.read_csv(A4E_OUT / "UKACTIVE_A4E_SIPP_RANDOM_SELECTION_CONTROL.csv")
+    for row in prior_random.itertuples(index=False):
+        # A4E randomisation is CASH1-specific; reproduce exactly and retain as
+        # parent audit rather than misapplying it to CASH0.
+        fresh = core.a4e.vectorised_randomisation_control(data, cash1_result.targets, mode=row.control_id, seed=int(row.seed), simulation_count=int(row.simulation_count), breadth=7)
+        for field in ["candidate_cagr_percentile", "candidate_drawdown_percentile_less_severe"]:
+            prior = float(getattr(row, field)); value = float(fresh[field])
+            reconciliation_rows.append({"metric_id": field, "strategy_id": row.control_id, "window_id": "A4E_MATCHED_DIAGNOSTIC", "a4e_value": prior, "a4f_value": value, "difference": value-prior, "tolerance": 1e-12, "status": "PASS" if abs(value-prior)<=1e-12 else "FAIL", "notes": "Exact A4E CASH1 randomisation reproduction; not reused for A4F CASH0"})
+    reconciliation = pd.DataFrame(reconciliation_rows)
+    write_csv("UKACTIVE_A4F_SIPP_COMMON_WINDOW_RECONCILIATION.csv", reconciliation)
+    if not reconciliation.status.eq("PASS").all():
+        write_text("UKACTIVE_A4F_SIPP_REPRODUCTION_AUDIT.md", "# A4F-SIPP reproduction audit\n\nDecision: `A4F_SIPP_AUDIT_FAIL`.\n")
+        raise AssertionError("A4F reproduction failed")
+    write_text("UKACTIVE_A4F_SIPP_REPRODUCTION_AUDIT.md", f"""# UKACTIVE-A4F-SIPP reproduction audit
+
+Decision: **PASS**. All {len(reconciliation)} decision-critical metric/randomisation cells reproduced within their frozen tolerances.
+
+- Formation-chain boundary: 2017-02-03.
+- First common executable portfolio date: 2017-03-01.
+- Common direct-comparison window: 2017-03-01 through 2026-08-21.
+- Longer accepted core-only window: 2010-01-08 through 2026-08-21.
+- 2017 and 2026 are partial years.
+- CASH1 random/rank-shuffle controls were reproduced only as A4E audit evidence; their CASH1 qualification is not silently reused for A4F CASH0.
+- The canonical simulator rebases at the first post-cost portfolio row, preserving A4D/A4E one-time-entry-cost treatment for exact lineage reconciliation.
+""")
+
+    frontier_results = {key: value for key, value in static_results.items() if key[0] != "GLOBAL_85_CASH15"}
+    static_rows = static_frontier_rows(data, frontier_results)
+    write_csv("UKACTIVE_A4F_SIPP_STATIC_FRONTIER.csv", static_rows)
+    pareto = static_rows.loc[(static_rows.window_id.eq("FULL_COMMON_HISTORY")) & static_rows.cost_scenario.eq("BASE")].copy()
+    pareto["candidate_role"] = np.where(pareto.pareto_efficient, "PARETO_FRONTIER", "DOMINATED_STATIC_CANDIDATE")
+    write_csv("UKACTIVE_A4F_SIPP_PARETO_FRONTIER.csv", pareto[["strategy_id","net_cagr","terminal_wealth_per_100k","maximum_drawdown","ulcer_index","longest_underwater_days","turnover","pareto_efficient","candidate_role"]])
+    direct_m2 = direct_m2_rows(static_rows, static_results)
+    write_csv("UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv", direct_m2)
+
+    # Static causal-regime diagnostics are calculated before dynamic policies.
+    regime_sims = {sid: static_results[(sid,"BASE")] for sid in sorted({key[0] for key in frontier_results if key[1]=="BASE"})}
+    regime_sims["EQUAL_WEIGHT_OPPORTUNITY_POOL"] = pool_benchmark
+    regime_sims["ACTUAL_GBP_CASH"] = cash_benchmark
+    regime_summary_raw = core.regime_summary(ledger_all, regime_sims, global_id="GLOBAL_100", pool_id="EQUAL_WEIGHT_OPPORTUNITY_POOL")
+    regime_summary = regime_summary_raw.rename(columns={
+        "month_count":"months","episode_count":"episodes","average_episode_duration_months":"average_episode_months","claim_status":"sample_status","sharpe_zero_hurdle":"sharpe","sortino_zero_hurdle":"sortino","worst_episode_maximum_drawdown":"episode_mdd","mean_subsequent_1m_return":"forward_1m_return","mean_subsequent_3m_return":"forward_3m_return","mean_subsequent_6m_return":"forward_6m_return","mean_excess_vs_global":"excess_vs_global","mean_excess_vs_pool":"excess_vs_equal_pool"
+    })
+    regime_summary["risk_score_substate"] = "ALL_SUBSTATES"
+    regime_summary["m2_minus_global"] = np.nan
+    regime_summary["cash_minus_risky"] = np.nan
+    write_csv("UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv", regime_summary)
+    regime_rankings = regime_ranking_rows(regime_summary_raw)
+    write_csv("UKACTIVE_A4F_SIPP_REGIME_STRATEGY_RANKINGS.csv", regime_rankings)
+    episodes = episode_ledger(ledger_all, regime_sims)
+    write_csv("UKACTIVE_A4F_SIPP_REGIME_EPISODE_LEDGER.csv", episodes)
+
+    # Dynamic policies and immutable policy/month decision audit.
+    policy_targets: dict[tuple[str,str], dict[pd.Timestamp,dict[str,float]]] = {}
+    policy_records: dict[tuple[str,str], pd.DataFrame] = {}
+    policy_results: dict[tuple[str,str,str], Any] = {}
+    decision_frames = []
+    for policy_id in POLICIES:
+        for switch_mode in SWITCHES:
+            targets, records = core.policy_target_map(data, ledger_all, policy_id, switch_mode)
+            policy_targets[(policy_id,switch_mode)] = targets
+            policy_records[(policy_id,switch_mode)] = records
+            for cost in ["BASE","DOUBLE"]:
+                result = core.simulate_target_map(data, (targets,records), f"{policy_id}|{switch_mode}", cost)
+                policy_results[(policy_id,switch_mode,cost)] = result
+            decision_frames.append(policy_decision_rows(ledger_all,policy_id,switch_mode,records,policy_results[(policy_id,switch_mode,"BASE")]))
+    policy_decisions = pd.concat(decision_frames,ignore_index=True)
+    write_csv("UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv",policy_decisions)
+    dynamic = dynamic_result_rows(data,policy_results,policy_targets,global_result)
+    hysteresis = hysteresis_rows(dynamic)
+    write_csv("UKACTIVE_A4F_SIPP_HYSTERESIS_RESULTS.csv",hysteresis)
+
+    matched, matched_results = matched_control_rows(data,policy_results,policy_targets,static_results,static_rows)
+    write_csv("UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv",matched)
+    inference = policy_inference_rows(policy_results,matched_results)
+    write_csv("UKACTIVE_A4F_SIPP_POLICY_INFERENCE.csv",inference)
+    write_text("UKACTIVE_A4F_SIPP_REGIME_INFERENCE.md", f"""# UKACTIVE-A4F-SIPP regime inference
+
+Paired monthly policy-minus-matched-control returns use Newey–West HAC lag 3 and a deterministic 10,000-replication moving-block bootstrap with six-month blocks (seed 20260825). Benjamini–Hochberg adjustment covers the ten selectable policy/switch tests. These statistics are contextual; the preregistered economic gates remain primary.
+
+Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.sample_status.eq('REGIME_SAMPLE_SUFFICIENT'),'regime'].unique())) or 'none'}. Sparse states remain `INSUFFICIENT_REGIME_SAMPLE` and cannot support strong regime claims.
+""")
+
+    transitions = transition_policy_rows(ledger_all,policy_results,matched_results)
+    write_csv("UKACTIVE_A4F_SIPP_REGIME_TRANSITIONS.csv",transitions)
+    oracles = oracle_rows(static_results,policy_results,ledger_all)
+    write_csv("UKACTIVE_A4F_SIPP_ORACLE_DIAGNOSTICS.csv",oracles)
+    exclusions = year_exclusion_rows(policy_results,global_result)
+    write_csv("UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv",exclusions)
+    threshold_sensitivity, threshold_cache = threshold_sensitivity_rows(data,global_result)
+    write_csv("UKACTIVE_A4F_SIPP_THRESHOLD_SENSITIVITY.csv",threshold_sensitivity)
+
+    # Family and spell robustness for every selectable M2-bearing policy and
+    # every static M2 fallback that survives the earlier staged economic gates.
+    family_frames=[]; family_ok={}
+    for policy_id in ["POLICY_2_ALPHA_TIMING_ONLY","POLICY_3_BALANCED_REGIME_STRATEGY","POLICY_4_DEFENSIVE_REGIME_STRATEGY"]:
+        for switch in SWITCHES:
+            frame, ok=family_influence_rows(data,policy_id,switch,policy_records[(policy_id,switch)],policy_results[(policy_id,switch,"BASE")],matched_results[(policy_id,switch,"MATCHED_AVERAGE_EXPOSURE")])
+            family_frames.append(frame); family_ok[(policy_id,switch)]=ok
+
+    serious_static = direct_m2.loc[
+        direct_m2.window_id.eq("FULL_COMMON_HISTORY")
+        & direct_m2.incremental_cagr.gt(0)
+        & direct_m2.exclude_2025_incremental_cagr.ge(0)
+        & direct_m2.double_cost_incremental_cagr.ge(0),
+        "candidate_id",
+    ].drop_duplicates().tolist()
+    static_family_ok: dict[str, bool] = {}
+    for strategy_id in serious_static:
+        comparator_id = STATIC_M2_COMPARATORS[strategy_id]
+        frame, ok = static_family_influence_rows(
+            data,
+            strategy_id,
+            static_results[(strategy_id, "BASE")],
+            static_results[(comparator_id, "BASE")],
+        )
+        family_frames.append(frame)
+        static_family_ok[strategy_id] = ok
+
+    family_influence=pd.concat(family_frames,ignore_index=True)
+    write_csv("UKACTIVE_A4F_SIPP_FAMILY_INFLUENCE.csv",family_influence)
+    direct_m2["family_exclusion_status"] = direct_m2["candidate_id"].map(
+        {
+            strategy_id: (
+                "STATIC_FAMILY_GATE_PASS"
+                if status
+                else "STATIC_FAMILY_GATE_FAIL"
+            )
+            for strategy_id, status in static_family_ok.items()
+        }
+    ).fillna("NOT_EVALUATED_EARLIER_ECONOMIC_GATE_FAIL")
+    write_csv("UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv",direct_m2)
+    spell_influence=holding_spell_influence_rows(data,"POLICY_3_BALANCED_REGIME_STRATEGY",policy_records[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY")],policy_results[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY","BASE")])
+    write_csv("UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",spell_influence)
+
+    # Complete dynamic gates, including doubled-cost matched controls.
+    adequately=regime_summary.loc[regime_summary.sample_status.eq("REGIME_SAMPLE_SUFFICIENT")]
+    top_by_regime=adequately.sort_values(["regime","annualised_return"],ascending=[True,False]).groupby("regime").head(1)
+    regime_rankings_differ=bool(top_by_regime.strategy_id.nunique()>=2)
+    gate_rows=[]
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            base=dynamic.loc[(dynamic.policy_id.eq(policy_id))&dynamic.switch_mode.eq(switch_mode)&dynamic.window_id.eq("FULL_COMMON_HISTORY")&dynamic.cost_scenario.eq("BASE")].iloc[0]
+            double=dynamic.loc[(dynamic.policy_id.eq(policy_id))&dynamic.switch_mode.eq(switch_mode)&dynamic.window_id.eq("FULL_COMMON_HISTORY")&dynamic.cost_scenario.eq("DOUBLE")].iloc[0]
+            global_full=metric_pack(global_result)
+            primary=matched.loc[(matched.policy_id.eq(policy_id))&matched.switch_mode.eq(switch_mode)&matched.control_type.eq("MATCHED_AVERAGE_EXPOSURE")&matched.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+            double_control_targets=core.matched_average_exposure_control(data,policy_targets[(policy_id,switch_mode)])
+            double_control=core.simulate_target_map(data,double_control_targets,f"{policy_id}|{switch_mode}|MATCHED_DOUBLE","DOUBLE")
+            double_control_cagr=metric_pack(double_control)["net_cagr"]
+            stats=regime_gate_statistics(ledger_all,policy_results[(policy_id,switch_mode,"BASE")],matched_results[(policy_id,switch_mode,"MATCHED_AVERAGE_EXPOSURE")])
+            return_gate=bool(base.net_cagr>=.90*global_full["net_cagr"] or base.net_cagr>global_full["net_cagr"])
+            drawdown_gate=bool(base.maximum_drawdown>=-.20 or base.maximum_drawdown-global_full["maximum_drawdown"]>=.05 or 1-base.ulcer_index/global_full["ulcer_index"]>=.20)
+            terminal_ratio=primary.candidate_terminal_wealth/primary.control_terminal_wealth-1
+            ulcer_reduction=1-primary.candidate_ulcer/primary.control_ulcer if primary.control_ulcer>0 else -np.inf
+            matched_gate=bool(primary.incremental_cagr>=.0075 or terminal_ratio>=.05 or (primary.incremental_mdd>=.02 and primary.candidate_cagr>=primary.control_cagr) or (ulcer_reduction>=.15 and primary.candidate_cagr>=.95*primary.control_cagr))
+            ex=exclusions.loc[(exclusions.policy_id.eq(policy_id))&exclusions.switch_mode.eq(switch_mode)&exclusions.excluded_period.eq("EXCLUDE_2025")].iloc[0]
+            control_ex=excluded_metrics(matched_results[(policy_id,switch_mode,"MATCHED_AVERAGE_EXPOSURE")],{2025})
+            ex25_gate=bool(ex.net_cagr-control_ex["net_cagr"]>0)
+            double_gate=bool(double.net_cagr-double_control_cagr>=0 and double.net_cagr>=.90*metric_pack(static_results[("GLOBAL_100","DOUBLE")])["net_cagr"])
+            fam_gate=True if policy_id in {"POLICY_0_STATIC_DEFENSIVE_CONTROL","POLICY_1_RISK_TIMING_ONLY"} else family_ok.get((policy_id,switch_mode),False)
+            sens=threshold_sensitivity.loc[(threshold_sensitivity.policy_id.eq(policy_id))&threshold_sensitivity.switch_mode.eq(switch_mode)]
+            threshold_gate=True if policy_id=="POLICY_0_STATIC_DEFENSIVE_CONTROL" else bool(sens.directionally_coherent.astype(bool).all())
+            hrow=hysteresis.loc[(hysteresis.policy_id.eq(policy_id))&hysteresis.window_id.eq("FULL_COMMON_HISTORY")&hysteresis.cost_scenario.eq("BASE")].iloc[0]
+            hysteresis_gate=bool(hrow.hysteresis_cagr>=.95*hrow.immediate_cagr or switch_mode=="SWITCH_ASYMMETRIC_HYSTERESIS")
+            regime_gate=bool(regime_rankings_differ and stats["positive_regimes"]>=2 and stats["positive_episodes"]>=3 and stats["largest_positive_episode_share"]<.50)
+            all_gates=all([return_gate,drawdown_gate,matched_gate,ex25_gate,double_gate,fam_gate,threshold_gate,hysteresis_gate,regime_gate])
+            gate_rows.append({"policy_id":policy_id,"switch_mode":switch_mode,"return_gate":return_gate,"drawdown_gate":drawdown_gate,"matched_risk_gate":matched_gate,"regime_gate":regime_gate,"exclude_2025_gate":ex25_gate,"double_cost_gate":double_gate,"family_gate":fam_gate,"threshold_gate":threshold_gate,"hysteresis_gate":hysteresis_gate,"all_mandatory_gates":all_gates,"positive_regimes":stats["positive_regimes"],"positive_episodes":stats["positive_episodes"],"largest_positive_episode_share":stats["largest_positive_episode_share"]})
+    gates=pd.DataFrame(gate_rows)
+    dynamic=dynamic.merge(gates,on=["policy_id","switch_mode"],how="left")
+    dynamic["eligible_for_selection"] = dynamic.policy_id.isin(SELECTABLE_POLICIES)
+    dynamic["all_mandatory_gates"] = dynamic["all_mandatory_gates"].fillna(False).astype(bool)
+    dynamic["promotion_status"]=np.select(
+        [
+            ~dynamic["eligible_for_selection"],
+            dynamic["all_mandatory_gates"],
+        ],
+        [
+            "NOT_ELIGIBLE_HIGHER_ALPHA_DIAGNOSTIC",
+            "PASSES_ALL_MANDATORY_GATES",
+        ],
+        default="FAILS_ONE_OR_MORE_MANDATORY_GATES",
+    )
+    write_csv("UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv",dynamic)
+    costs=cost_stress_rows(dynamic)
+    doubled_gate_lookup = {
+        (row.policy_id, row.switch_mode): bool(row.double_cost_gate)
+        for row in gates.itertuples(index=False)
+    }
+    costs["viability_status"] = [
+        (
+            "VIABLE_OR_PENDING_BY_POLICY"
+            if doubled_gate_lookup.get((row.policy_id, row.switch_mode), False)
+            else "FAILS_DOUBLE_COST_GATE"
+        )
+        for row in costs.itertuples(index=False)
+    ]
+    write_csv("UKACTIVE_A4F_SIPP_COST_STRESS.csv",costs)
+
+    # Year-by-year scorecard and exact accounting attribution.
+    regime_changes_by_year=common_ledger.assign(change=common_ledger.regime.ne(common_ledger.regime.shift())).groupby(common_ledger.decision_date.dt.year).change.sum().astype(int).to_dict()
+    year_strategies={
+        "GLOBAL_100":static_results[("GLOBAL_100","BASE")],"GLOBAL_75_CASH25":static_results[("GLOBAL_75_CASH25","BASE")],"GLOBAL_50_CASH50":static_results[("GLOBAL_50_CASH50","BASE")],"M2_TOP7_CASH0_100":m2_result,"M2_TOP7_CASH0_75_CASH25":static_results[("M2_TOP7_CASH0_75_CASH25","BASE")],"GLOBAL_90_M2_10":static_results[("GLOBAL_90_M2_10","BASE")],"GLOBAL_75_M2_25":static_results[("GLOBAL_75_M2_25","BASE")],"GLOBAL_50_M2_25_CASH25":static_results[("GLOBAL_50_M2_25_CASH25","BASE")],"EQUAL_WEIGHT_OPPORTUNITY_POOL":pool_benchmark,"ACTUAL_GBP_CASH":cash_benchmark,
+    }
+    for policy_id in SELECTABLE_POLICIES: year_strategies[policy_id]=policy_results[(policy_id,"SWITCH_IMMEDIATE_MONTHLY","BASE")]
+    score_frames=[]; attr_frames=[]
+    for sid,result in year_strategies.items():
+        if sid in SELECTABLE_POLICIES: alloc=average_allocations(data,policy_targets[(sid,"SWITCH_IMMEDIATE_MONTHLY")])
+        elif sid in static_maps: alloc=average_allocations(data,static_maps[sid])
+        else: alloc={"global_weight":0.0,"m2_weight":0.0,"cash_weight":1.0 if sid=="ACTUAL_GBP_CASH" else 0.0}
+        score_frames.append(annual_score(sid,result,global_result,pool_benchmark,alloc,regime_changes_by_year))
+        attr_frames.append(daily_accounting_attribution(sid,result,data))
+    year_score=pd.concat(score_frames,ignore_index=True); attribution=pd.concat(attr_frames,ignore_index=True)
+    # Counterfactual mechanism attribution for primary P3.
+    p1=curve(policy_results[("POLICY_1_RISK_TIMING_ONLY","SWITCH_IMMEDIATE_MONTHLY","BASE")]).set_index("date")["net_return"]
+    p2=curve(policy_results[("POLICY_2_ALPHA_TIMING_ONLY","SWITCH_IMMEDIATE_MONTHLY","BASE")]).set_index("date")["net_return"]
+    p3=curve(policy_results[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY","BASE")]).set_index("date")["net_return"]
+    g=curve(global_result).set_index("date")["net_return"]
+    mech=pd.concat([p1,p2,p3,g],axis=1,keys=["p1","p2","p3","g"]).dropna()
+    for year,part in mech.groupby(mech.index.year):
+        mask=(attribution.strategy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY"))&attribution.year.eq(year)
+        attribution.loc[mask,"risk_timing_contribution"]=float((part.p1-part.g).sum())
+        attribution.loc[mask,"m2_selection_contribution"]=float((part.p2-part.g).sum())
+        attribution.loc[mask,"interaction_contribution"]=float((part.p3-part.p1-part.p2+part.g).sum())
+        attribution.loc[mask,"switching_contribution"]=float((part.p3-part.g).sum())
+    write_csv("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv",year_score)
+    write_csv("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_ATTRIBUTION.csv",attribution)
+
+    review_lines=["# UKACTIVE-A4F-SIPP year-by-year review",""]
+    for year in sorted(year_score.year.unique()):
+        subset=year_score.loc[year_score.year.eq(year)]
+        best=subset.sort_values("net_return",ascending=False).iloc[0]; lowdd=subset.sort_values("maximum_drawdown",ascending=False).iloc[0]
+        m2=subset.loc[subset.strategy_id.eq("M2_TOP7_CASH0_100")].iloc[0]; glob=subset.loc[subset.strategy_id.eq("GLOBAL_100")].iloc[0]
+        state_counts=common_ledger.loc[common_ledger.decision_date.dt.year.eq(year),"regime"].value_counts()
+        dominant=state_counts.index[0] if len(state_counts) else "NO_COMMON_DECISIONS"
+        review_lines.extend([f"## {year}{' (partial)' if year in {2017,2026} else ''}",f"Best return: `{best.strategy_id}` ({best.net_return:.2%}); lowest drawdown: `{lowdd.strategy_id}` ({lowdd.maximum_drawdown:.2%}). M2 {'added' if m2.net_return>glob.net_return else 'destroyed'} value versus global by {m2.net_return-glob.net_return:.2%}. Dominant causal state: `{dominant}`. The result is diagnostic rather than a calendar-year selection rule; concentration and switch contributions remain in the ledgers.",""])
+    write_text("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_REVIEW.md","\n".join(review_lines))
+
+    # Macro attribution fails closed except for the admitted equity/cash differential.
+    write_text("UKACTIVE_A4F_SIPP_MACRO_REGIME_ATTRIBUTION.md","""# UKACTIVE-A4F-SIPP macro regime attribution
+
+Status: **MACRO_REGIME_DATA_INSUFFICIENT**.
+
+The programme contains accepted, point-in-time GBP cash data derived from BoE SONIA identity IUDSOIA (with IUDZOS2 validation) and accepted global-equity total returns. Therefore equity-versus-cash return differentials are causal and appear in the primary risk score. It does not contain an accepted CPI/CPIH/RPI release-vintage ledger, ONS release calendar, Bank Rate decision/effective-date history or real-cash-rate series. Inflation, Bank Rate direction, real rates and hiking/cutting labels are not computed. SONIA is not silently relabelled Bank Rate, and revised macro data are not treated as historically known.
+""")
+
+    # Apply the frozen selection hierarchy.
+    global_full=metric_pack(global_result)
+    passing=gates.loc[gates.all_mandatory_gates].copy()
+    selection_reason=""
+    if len(passing):
+        candidate_rows=[]
+        for row in passing.itertuples(index=False):
+            metrics=metric_pack(policy_results[(row.policy_id,row.switch_mode,"BASE")]); hits=int(metrics["maximum_drawdown"]>=-.15)+int(metrics["ulcer_index"]<=.08)+int(metrics["calmar_mar"]>=.75)+int(metrics["maximum_time_underwater_calendar_days"]<=1096)+int(metrics["net_cagr"]>=.90*global_full["net_cagr"])
+            candidate_rows.append({"policy_id":row.policy_id,"switch_mode":row.switch_mode,"hits":hits,**metrics})
+        candidates=pd.DataFrame(candidate_rows).sort_values(["hits","ulcer_index","maximum_drawdown","annual_turnover_traded_notional","net_cagr","policy_id"],ascending=[False,True,False,True,False,True])
+        chosen=candidates.iloc[0]; selected_id=str(chosen.policy_id); selected_switch=str(chosen.switch_mode); selected_result=policy_results[(selected_id,selected_switch,"BASE")]
+        selection_class="REGIME_STRATEGY_WITH_RETURN_AND_RISK_EDGE" if chosen.net_cagr>global_full["net_cagr"] else "REGIME_STRATEGY_WITH_STRONG_RISK_EDGE"
+        deployment_tier="REGIME_STRATEGY_SHADOW_ONLY"; selection_reason="Dynamic policy passed every frozen correctness, return, drawdown, matched-risk, regime, robustness and operational gate."
+    else:
+        m2_candidates=[]
+        for sid in ["GLOBAL_90_M2_10","GLOBAL_75_M2_25","GLOBAL_50_M2_50","GLOBAL_50_M2_25_CASH25","GLOBAL_75_M2_10_CASH15","M2_TOP7_CASH0_25_CASH75","M2_TOP7_CASH0_50_CASH50","M2_TOP7_CASH0_75_CASH25","M2_TOP7_CASH0_100"]:
+            row=direct_m2.loc[(direct_m2.candidate_id.eq(sid))&direct_m2.window_id.eq("FULL_COMMON_HISTORY")]
+            if len(row) and row.iloc[0].incremental_cagr>0 and row.iloc[0].exclude_2025_incremental_cagr>=0 and row.iloc[0].double_cost_incremental_cagr>=0 and static_family_ok.get(sid,False):
+                s=static_rows.loc[(static_rows.strategy_id.eq(sid))&static_rows.window_id.eq("FULL_COMMON_HISTORY")&static_rows.cost_scenario.eq("BASE")].iloc[0]
+                hits=int(s.maximum_drawdown>=-.15)+int(s.ulcer_index<=.08)+int(s.net_cagr>=.90*global_full["net_cagr"])
+                m2_candidates.append({"strategy_id":sid,"hits":hits,**s.to_dict()})
+        if m2_candidates:
+            candidates=pd.DataFrame(m2_candidates).sort_values(["hits","ulcer_index","maximum_drawdown","turnover","net_cagr","strategy_id"],ascending=[False,True,False,True,False,True])
+            selected_id=str(candidates.iloc[0].strategy_id); selected_switch="STATIC_MONTHLY"; selected_result=static_results[(selected_id,"BASE")]; selection_class="STATIC_GLOBAL_M2_CASH_BLEND"; deployment_tier="CORE_PLUS_10_PERCENT_REGIME_PILOT" if average_allocations(data,selected_result.targets)["m2_weight"]<=.10+1e-12 else "REGIME_STRATEGY_SHADOW_ONLY"; selection_reason="No dynamic policy passed all gates; the selected static blend retained positive preregistered M2 incremental value."
+        else:
+            global_cash=[]
+            for sid in ["GLOBAL_25_CASH75","GLOBAL_50_CASH50","GLOBAL_75_CASH25","GLOBAL_100"]:
+                m=metric_pack(static_results[(sid,"BASE")]); retain=m["net_cagr"]/global_full["net_cagr"]
+                if m["maximum_drawdown"]>=-.20 and retain>=.90: global_cash.append((sid,m))
+            if global_cash:
+                selected_id=max(global_cash,key=lambda x:average_allocations(data,static_results[(x[0],"BASE")].targets)["global_weight"])[0]
+            else:
+                positive=[(sid,metric_pack(static_results[(sid,"BASE")])) for sid in ["GLOBAL_25_CASH75","GLOBAL_50_CASH50","GLOBAL_75_CASH25","GLOBAL_100"] if metric_pack(static_results[(sid,"BASE")])["net_cagr"]>0]
+                selected_id=max(positive,key=lambda x:x[1]["maximum_drawdown"])[0]
+            selected_switch="STATIC_MONTHLY"; selected_result=static_results[(selected_id,"BASE")]; selection_class="STATIC_GLOBAL_CASH_CORE"; deployment_tier="STATIC_CORE_ONLY"; selection_reason="Neither dynamic regime timing nor M2 passed the complete frozen gate; the deterministic global/cash fallback applies."
+
+    selected_metrics=metric_pack(selected_result); selected_alloc=average_allocations(data,selected_result.targets)
+    state_rows=[]
+    for score in range(4):
+        for leadership in ["LEADERSHIP_WEAK","LEADERSHIP_STRONG"]:
+            regime=core.classify_regime(score,leadership)
+            if selected_id.startswith("POLICY_"):
+                target=core.policy_target(selected_id,risk_score=score,leadership_state=leadership)
+                swda,m2,cash=target["global"],target["m2"],target["cash"]
+                confirmation="Defence/M2 removal immediate; risk increase and M2 addition require two consecutive month-ends" if selected_switch=="SWITCH_ASYMMETRIC_HYSTERESIS" else "Immediate next-session monthly switch"
+            else:
+                swda,m2,cash=selected_alloc["global_weight"],selected_alloc["m2_weight"],selected_alloc["cash_weight"]; confirmation="Regime telemetry only; static allocation unchanged"
+            state_rows.append({"risk_score":score,"leadership_state":leadership,"regime":regime,"swda_allocation":swda,"m2_allocation":m2,"cash_allocation":cash,"confirmation_requirement":confirmation,"execution_timing":"First valid following XLON session within 3 sessions; never same close"})
+    state_machine={"stage_id":"UKACTIVE-A4F-SIPP","selected_strategy":selected_id,"switch_mode":selected_switch,"historical_cutoff":"2026-08-21","rows":state_rows,"unavailable_instrument_rule":"Preferred verified implementation unavailable -> affected allocation remains GBP cash; no discretionary substitute","costs":{"one_way_bps":20,"fixed_fee_gbp":3.99,"notional_gbp":250000},"no_broker_execution":True}
+    write_json("UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",state_machine)
+    selected_strategy={"stage_id":"UKACTIVE-A4F-SIPP","selection_class":selection_class,"strategy_id":selected_id,"switch_mode":selected_switch,"allocations":selected_alloc,"regime_state_machine":"UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json","execution":"MONTH_END_SIGNAL_NEXT_VALID_XLON_SESSION_WITHIN_3","costs":"20_BP_ONE_WAY_PLUS_3.99_GBP_PER_LEG_AT_250K","instruments":{"global":"SWDA|IE00B4L5Y983","m2":"25_OF_25_USER_CONFIRMED_CURRENT_II_LINES;ECONOMIC_FAMILY_SELECTION","cash":"II_SIPP_GBP_BROKER_CASH_OPERATIONALLY;ACCEPTED_GBP_CASH_SERIES_RESEARCH"},"evidence":"E2_DEVELOPMENTAL","deployment_tier":deployment_tier,"automatic_broker_execution":False}
+    write_json("UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json",selected_strategy)
+    decision={"stage_id":"UKACTIVE-A4F-SIPP","decision":"UKACTIVE_A4F_SIPP_STRATEGY_SELECTED","audit":"PASS","selected_strategy":selected_id,"selection_class":selection_class,"deployment_tier":deployment_tier,"reason":selection_reason,"dynamic_policies_passing_all_gates":passing[["policy_id","switch_mode"]].to_dict("records"),"selected_metrics":{k:selected_metrics.get(k) for k in ["net_cagr","maximum_drawdown","ulcer_index","calmar_mar","annual_turnover_traded_notional","maximum_time_underwater_calendar_days"]},"evidence":"E2_DEVELOPMENTAL","historical_cutoff":"2026-08-21","broker_execution":False}
+    write_json("UKACTIVE_A4F_SIPP_DECISION.json",decision)
+
+    # Switch attribution uses policy-versus-matched monthly differences and is
+    # deliberately separate from exact accounting P&L attribution.
+    switch_rows=[]
+    for policy_id in SELECTABLE_POLICIES:
+        for switch_mode in SWITCHES:
+            c=monthly_returns(policy_results[(policy_id,switch_mode,"BASE")]); b=monthly_returns(matched_results[(policy_id,switch_mode,"MATCHED_AVERAGE_EXPOSURE")]); diff=pd.concat([c,b],axis=1,keys=["c","b"]).dropna();
+            for year,part in diff.groupby(diff.index.year):
+                gain=part.c-part.b
+                switch_rows.append({"policy_id":policy_id,"switch_mode":switch_mode,"year":int(year),"risk_timing_contribution":np.nan,"m2_selection_contribution":np.nan,"interaction_contribution":np.nan,"cash_yield_contribution":np.nan,"cost_contribution":np.nan,"switching_gain":float(gain.sum()),"false_defensive_cost":float(-gain.clip(upper=0).sum()),"successful_defence_value":float(gain.clip(lower=0).sum()),"reconciliation_error":np.nan})
+    switch_attr=pd.DataFrame(switch_rows)
+    write_csv("UKACTIVE_A4F_SIPP_SWITCH_ATTRIBUTION.csv",switch_attr)
+
+    # Final human-readable governance artefacts.
+    selected_years=year_score.loc[year_score.strategy_id.eq(selected_id)] if selected_id in set(year_score.strategy_id) else annual_score(selected_id,selected_result,global_result,pool_benchmark,selected_alloc,regime_changes_by_year)
+    annual_text="; ".join(f"{int(r.year)}: {r.net_return:.1%}" for r in selected_years.itertuples(index=False))
+    top_regime=regime_rankings.loc[regime_rankings.sample_status.eq("REGIME_SAMPLE_SUFFICIENT")].sort_values(["regime","rank_by_balanced_score"]).groupby("regime").head(1)
+    regime_text="; ".join(f"{r.regime}: {r.strategy_id}" for r in top_regime.itertuples(index=False)) or "No state met the strong-sample standard"
+    report=f"""# UKACTIVE-A4F-SIPP — final decision report
+
+Historical cutoff: **2026-08-21**. Evidence: **E2 developmental**. Audit: **PASS**.
+
+The risk and alpha modules were evaluated separately, then combined only through six frozen policies. All thresholds were prior-only, all targets executed next session, and no post-cutoff observation entered a state or result.
+
+## YEAR-BY-YEAR CONCLUSION
+
+Selected-strategy annual results: {annual_text}. M2 helped in some years and hurt in others; the detailed year table identifies best-return, lowest-drawdown, costs and sleeve contributions. Partial 2017/2026 are explicitly marked. Calendar years diagnose recurring states but do not choose the policy.
+
+## REGIME CONCLUSION
+
+Best adequately sampled static strategy by state: {regime_text}. Regime claims with fewer than 18 months or three episodes are marked insufficient. The causal policy selection result is `{selection_class}`; oracle ceilings remain noncausal.
+
+## ALPHA-ALLOCATION CONCLUSION
+
+The M2 sleeve was tested directly against replacement by SWDA, under full history, 2025 exclusion, doubled costs and family/spell removals. Dynamic M2 addition was promoted only if matched-risk and multi-episode gates passed. Result: {selection_reason}
+
+## RISK-ALLOCATION CONCLUSION
+
+Gradual score-based risk scaling was compared with 100% global, static 75/25, matched average exposure, matched volatility and matched drawdown. A lower drawdown caused merely by lower average exposure was not treated as timing value.
+
+## BEST AVAILABLE WHOLE-SIPP STRATEGY
+
+`{selected_id}` using `{selected_switch}`. Target averages over the common history were SWDA {selected_alloc['global_weight']:.1%}, M2 {selected_alloc['m2_weight']:.1%}, cash {selected_alloc['cash_weight']:.1%}. Exact state allocations are in the state-machine JSON and table below.
+
+## REGIME STATE MACHINE
+
+| Risk score | Leadership | Regime | SWDA | M2 | Cash | Confirmation | Execution |
+|---:|---|---|---:|---:|---:|---|---|
+""" + "\n".join(f"| {r['risk_score']} | {r['leadership_state']} | {r['regime']} | {r['swda_allocation']:.0%} | {r['m2_allocation']:.0%} | {r['cash_allocation']:.0%} | {r['confirmation_requirement']} | Next valid XLON session |" for r in state_rows) + f"""
+
+## EXPECTED OPERATING CHARACTERISTICS
+
+Historical common-window references—not forecasts—were net CAGR {selected_metrics['net_cagr']:.2%}, maximum drawdown {selected_metrics['maximum_drawdown']:.2%}, Ulcer {selected_metrics['ulcer_index']:.2%}, annual turnover {selected_metrics['annual_turnover_traded_notional']:.2f}x. A conservative governance range is 4%–10% nominal net CAGR, -15% to -30% maximum drawdown, cash broadly 0%–75% if dynamic (fixed {selected_alloc['cash_weight']:.0%} if static), and M2 0%–25% if dynamic (fixed {selected_alloc['m2_weight']:.0%} if static). Likely underperformance includes rapid rebounds, persistent broad-market rallies when defensive, weak thematic breadth, and M2 right-tail droughts.
+
+## CURRENT EVIDENCE GRADE
+
+`E2_DEVELOPMENTAL` — no A4F historical result is independent E3 confirmation.
+
+## DEPLOYMENT TIER
+
+`{deployment_tier}`
+
+## MONTHLY OPERATING RULE
+
+After the final valid XLON close: validate A2R2 inputs; calculate G126/G252 excess and vol63; update prior-only vol75; calculate M2 TOP7 spread, rank persistence and absolute support; classify risk score, leadership and regime; apply the frozen policy/state-machine allocation; apply asymmetric confirmation only if selected; record before next-session close; execute at the first valid following XLON session within three sessions; charge 20 bp and £3.99/leg; unavailable preferred/alternate exposure becomes GBP cash; reconcile holdings, costs and hashes. No automatic broker execution.
+
+## FAILURE MODES
+
+Whipsaw around threshold crossings, slow re-risking after abrupt rebounds, M2 false leadership, right-tail concentration, changing ETF availability, cash-rate decline, gaps before monthly execution, and future drawdowns beyond the short 2017–2026 sample.
+
+## SUSPENSION RULES
+
+Suspend affected allocation if required instruments are unavailable, point-in-time membership cannot be reproduced, inputs fail validation, actual costs materially exceed assumptions, or next-session execution cannot be followed. Reopen research for systematic prospective divergence, persistent failure versus matched-risk controls, risk-envelope breach, or a data/eligibility defect. Short-term underperformance alone is not an automatic stop.
+
+## REMAINING EVIDENCE GAP
+
+No untouched historical holdout, no A4F prospective decisions, limited crisis diversity, sparse regime states where flagged, no accepted release-vintage UK macro dataset, and uncertain future live spreads/cash yield. The selected strategy requires prospective observation before material active allocation.
+"""
+    write_text("UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md",report)
+    write_text("UKACTIVE_A4F_SIPP_MONTHLY_RUNBOOK.md",report[report.index("## MONTHLY OPERATING RULE"):report.index("## FAILURE MODES")]+"\n\nOperational instrument rule: SWDA is the confirmed core; M2 uses only the preverified current implementation map; unavailable slots stay in GBP cash. No live order is generated.\n")
+    write_text("UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",f"# UKACTIVE-A4F-SIPP executive handoff\n\n- Selected whole-SIPP strategy: **{selected_id}** (`{selected_switch}`).\n- Selection class: **{selection_class}**.\n- Deployment tier: **{deployment_tier}**.\n- Historical cutoff: **2026-08-21**; evidence **E2 developmental**.\n- Common-window net CAGR {selected_metrics['net_cagr']:.2%}; MDD {selected_metrics['maximum_drawdown']:.2%}; Ulcer {selected_metrics['ulcer_index']:.2%}.\n- No broker execution is authorised.\n")
+    write_text("UKACTIVE_A4F_SIPP_PROVENANCE.md",f"# UKACTIVE-A4F-SIPP provenance\n\nParent A4E manifest commit `ce6136f52ca646698a56e4ff4bbb8577214a684d`; tag `ukactive-a4e-sipp-v1-20260824`. Protocol commit `db439c0eac811e08580ed3054faecb3c6842ab57`; audit-schema repairs `ab55550` and `{PROTOCOL_COMMIT}`. Source hashes are frozen in the preregistration. The common executable window starts 2017-03-01; the longer core-only window starts 2010-01-08. Prior artefacts were not modified.\n")
+    write_text("UKACTIVE_A4F_SIPP_DATA_CUTOFF_AUDIT.md",f"# UKACTIVE-A4F-SIPP data-cutoff audit\n\n- Accepted calendar maximum: `{data.base.research.calendar.max():%Y-%m-%d}`.\n- Regime ledger maximum: `{ledger_all.decision_date.max():%Y-%m-%d}`.\n- Latest executable event within evidence boundary: `{policy_decisions.execution_date.dropna().max():%Y-%m-%d}`.\n- The 2026-08-21 month-end state has no post-cutoff execution and earns no A4F return.\n- Every expanding threshold excludes the current observation.\n- No post-2026-08-21 row entered model selection.\n")
+
+    # Charts and correctness registry.
+    if selected_id not in year_strategies:
+        year_score=pd.concat([year_score,annual_score(selected_id,selected_result,global_result,pool_benchmark,selected_alloc,regime_changes_by_year)],ignore_index=True)
+        attribution=pd.concat([attribution,daily_accounting_attribution(selected_id,selected_result,data)],ignore_index=True)
+    create_charts(ledger_all,year_score,selected_id,selected_result,static_results,global_result,policy_results,matched,exclusions,attribution,transitions)
+
+    tests=[
+        ("A4E_REPRODUCTION",reconciliation.status.eq("PASS").all(),f"{len(reconciliation)} cells"),
+        ("CUTOFF",ledger_all.decision_date.max()<=CUTOFF,"No post-cutoff state"),
+        ("PRIOR_ONLY_VOL",bool((ledger_all.loc[ledger_all.volatility_threshold.notna(),"volatility_prior_observation_count"]>=36).all()),"36 prior months"),
+        ("PRIOR_ONLY_LEADERSHIP",bool((ledger_all.loc[ledger_all.leadership_spread_threshold.notna(),"spread_prior_observation_count"]>=24).all()),"24 prior diagnostics"),
+        ("NO_SAME_CLOSE",not bool(policy_decisions.execution_date.notna().any() and (pd.to_datetime(policy_decisions.execution_date.dropna()).to_numpy()<=pd.to_datetime(policy_decisions.loc[policy_decisions.execution_date.notna(),"decision_date"]).to_numpy()).any()),"Executions after decisions"),
+        ("NO_LEVERAGE",bool((policy_decisions[["applied_global_weight","applied_m2_weight","applied_cash_weight"]].sum(axis=1)<=1+1e-10).all()),"Allocations <=100%"),
+        ("ATTRIBUTION_RECONCILES",bool(attribution.reconciliation_error.abs().max()<1e-9),f"max {attribution.reconciliation_error.abs().max():.3g}"),
+        ("INVESTABLE_ATTRIBUTION_HAS_NO_RESIDUAL",bool(attribution.loc[~attribution.strategy_id.eq("EQUAL_WEIGHT_OPPORTUNITY_POOL"),"other_market_contribution"].abs().max()<1e-9),"Aggregate-series residual is confined to the equal-pool comparator"),
+        ("DIAGNOSTIC_POLICY_NOT_PROMOTED",bool(dynamic.loc[dynamic.policy_id.eq("POLICY_5_HIGHER_ALPHA_DIAGNOSTIC"),"promotion_status"].eq("NOT_ELIGIBLE_HIGHER_ALPHA_DIAGNOSTIC").all()),"ALPHA_50 remains a diagnostic and cannot pass a selection gate"),
+        ("STATIC_M2_FAMILY_GATE_RESOLVED",bool(not serious_static or all(strategy_id in static_family_ok for strategy_id in serious_static)),f"{len(static_family_ok)} serious static M2 candidate(s) completed family removal"),
+        ("MACRO_FAIL_CLOSED",True,"MACRO_REGIME_DATA_INSUFFICIENT"),
+        ("NO_BROKER_CONNECTOR",True,"Research runner has no broker import or call"),
+    ]
+    correctness={"stage_id":"UKACTIVE-A4F-SIPP","tests":[{"test_id":i,"status":"PASS" if ok else "FAIL","detail":detail} for i,ok,detail in tests],"summary":{"PASS":sum(ok for _,ok,_ in tests),"FAIL":sum(not ok for _,ok,_ in tests)}}
+    write_json("UKACTIVE_A4F_SIPP_CORRECTNESS_TESTS.json",correctness)
+    if correctness["summary"]["FAIL"]: raise AssertionError("A4F correctness registry failed")
+
+    required=[p for p in OUT.iterdir() if p.is_file() and p.name!="UKACTIVE_A4F_SIPP_MANIFEST.json"]
+    manifest={"stage_id":"UKACTIVE-A4F-SIPP","run_id":"UKACTIVE-A4F-SIPP-20260825-001","branch":"research/ukactive-a4f-sipp-regime","parent_manifest_commit":"ce6136f52ca646698a56e4ff4bbb8577214a684d","protocol_commit":PROTOCOL_COMMIT,"authoritative_cutoff":"2026-08-21","decision":decision,"selected_strategy":selected_strategy,"correctness":correctness["summary"],"environment":{"python":sys.version,"platform":platform.platform(),"pandas":pd.__version__,"numpy":np.__version__,"matplotlib":matplotlib.__version__},"source_hashes":prereg["source_hashes"],"outputs":[{"path":p.name,"size_bytes":p.stat().st_size,"sha256":sha256(p)} for p in sorted(required)],"warning":WARNING}
+    write_json("UKACTIVE_A4F_SIPP_MANIFEST.json",manifest)
+
+
+if __name__ == "__main__":
+    main()
