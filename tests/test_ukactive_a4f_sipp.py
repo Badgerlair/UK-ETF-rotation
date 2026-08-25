@@ -513,6 +513,99 @@ def test_serious_static_m2_candidate_family_gate_is_complete() -> None:
         assert rows["exclusion_type"].eq("EXCLUDE_TOP_5_FAMILY_CONTRIBUTORS").any()
 
 
+def test_selected_static_m2_strategy_passes_family_gate() -> None:
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    if selected["switch_mode"] != "STATIC_MONTHLY" or selected["allocations"]["m2_weight"] <= 0:
+        pytest.skip("Selected strategy is not a static M2 blend")
+    incremental = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv")
+    rows = incremental.loc[
+        incremental["candidate_id"].eq(selected["strategy_id"])
+        & incremental["window_id"].eq("FULL_COMMON_HISTORY")
+    ]
+    assert len(rows) == 1
+    assert rows.iloc[0]["family_exclusion_status"] == "STATIC_FAMILY_GATE_PASS"
+
+
+def test_selected_strategy_embeds_exact_frozen_m2_operating_rule() -> None:
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    spec = selected["m2_specification"]
+    assert spec["signal_id"] == "M2_BASE"
+    assert spec["relative_strength_weights"] == EXPECTED_M2_WEIGHTS
+    assert spec["breadth"] == 7
+    assert spec["within_sleeve_weighting"] == "EQUAL_WEIGHT"
+    assert "POINT_IN_TIME" in spec["point_in_time_universe"]
+    assert "TOP7" in spec["replacement_rule"]
+    assert selected["current_operational_fallback"]["strategy_id"] == "GLOBAL_75_CASH25"
+
+
+def test_selected_state_machine_reconciles_exactly() -> None:
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    state_machine = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json")
+    rows = state_machine["rows"]
+    assert len(rows) == 8
+    assert state_machine["selected_strategy"] == selected["strategy_id"]
+    assert state_machine["switch_mode"] == selected["switch_mode"]
+    expected_regime = {
+        (0, "LEADERSHIP_WEAK"): "R1_BROAD_RISK_ON",
+        (1, "LEADERSHIP_WEAK"): "R1_BROAD_RISK_ON",
+        (0, "LEADERSHIP_STRONG"): "R2_LEADERSHIP_RISK_ON",
+        (1, "LEADERSHIP_STRONG"): "R2_LEADERSHIP_RISK_ON",
+        (2, "LEADERSHIP_STRONG"): "R3_ISOLATED_LEADERSHIP",
+        (3, "LEADERSHIP_STRONG"): "R3_ISOLATED_LEADERSHIP",
+        (2, "LEADERSHIP_WEAK"): "R4_CAPITAL_PRESERVATION",
+        (3, "LEADERSHIP_WEAK"): "R4_CAPITAL_PRESERVATION",
+    }
+    allocations = selected["allocations"]
+    for row in rows:
+        assert row["regime"] == expected_regime[(row["risk_score"], row["leadership_state"])]
+        assert row["swda_allocation"] + row["m2_allocation"] + row["cash_allocation"] == pytest.approx(1.0)
+        assert min(row["swda_allocation"], row["m2_allocation"], row["cash_allocation"]) >= 0
+        if selected["switch_mode"] == "STATIC_MONTHLY":
+            assert row["swda_allocation"] == pytest.approx(allocations["global_weight"])
+            assert row["m2_allocation"] == pytest.approx(allocations["m2_weight"])
+            assert row["cash_allocation"] == pytest.approx(allocations["cash_weight"])
+
+
+def test_all_generated_scientific_dates_respect_cutoff() -> None:
+    observed = 0
+    for path in STAGE_ROOT.glob("*.csv"):
+        frame = pd.read_csv(path)
+        for column in frame.columns:
+            if column == "date" or column.endswith("_date"):
+                parsed = pd.to_datetime(frame[column], errors="coerce").dropna()
+                observed += len(parsed)
+                assert parsed.le(CUTOFF).all(), f"{path.name}:{column} exceeds cutoff"
+    assert observed > 0
+
+
+def test_policy_execution_endpoint_evidence_is_complete() -> None:
+    decisions = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv")
+    assert "execution_total_return_endpoints_gbp_json" in decisions
+    executable = decisions.loc[decisions["execution_date"].notna()]
+    assert len(executable) > 0
+    for row in executable.itertuples(index=False):
+        target = json.loads(row.target_weights_json)
+        endpoints = json.loads(row.execution_total_return_endpoints_gbp_json)
+        risky_families = [family for family, weight in target.items() if float(weight) > 0]
+        assert set(risky_families).issubset(endpoints)
+
+
+def test_holding_spell_and_long_core_audits_are_complete() -> None:
+    spells = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv")
+    comparison = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_WINNER_FALSE_LEADER_COMPARISON.csv"
+    )
+    long_core = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv")
+    assert len(spells) > 0
+    assert set(spells["winner_class"]) == {"WINNER", "FALSE_OR_LOSING_LEADER"}
+    assert set(comparison["winner_class"]) == set(spells["winner_class"])
+    assert len(long_core) == 8
+    assert set(long_core["cost_scenario"]) == {"BASE", "DOUBLE"}
+    assert long_core["comparison_status"].eq(
+        "CORE_ONLY_CONTEXT_NOT_DIRECTLY_RANKED_AGAINST_2017_ROTATION"
+    ).all()
+
+
 def test_strategy_switch_counts_and_matched_gate_labels_are_resolved() -> None:
     dynamic = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv")
     fixed = dynamic.loc[
@@ -537,6 +630,81 @@ def test_strategy_switch_counts_and_matched_gate_labels_are_resolved() -> None:
             encoding="utf-8"
         )
         assert "Regime fields are recorded as telemetry only" in runbook
+
+
+def test_transition_ledger_uses_prior_episode_duration_and_real_cash_comparison() -> None:
+    transitions = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_REGIME_TRANSITIONS.csv")
+    assert transitions["average_prior_duration_months"].gt(0).all()
+    assert transitions["risky_minus_cash_1m"].notna().all()
+    fixed = transitions.loc[
+        transitions["policy_id"].eq("POLICY_0_STATIC_DEFENSIVE_CONTROL")
+    ]
+    assert len(fixed) > 0
+    assert fixed["allocation_switch_count"].eq(0).all()
+    assert fixed["transition_classification"].eq("NO_ALLOCATION_SWITCH").all()
+
+    ledger = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_MONTHLY_REGIME_LEDGER.csv",
+        parse_dates=["decision_date"],
+    )
+    ordered = ledger.loc[
+        ledger["decision_date"].ge(pd.Timestamp("2017-02-28"))
+        & ledger["regime"].ne("REGIME_UNAVAILABLE")
+    ].sort_values("decision_date").reset_index(drop=True)
+    ordered["prior_regime"] = ordered["regime"].shift()
+    ordered["episode"] = ordered["regime"].ne(ordered["regime"].shift()).cumsum()
+    ordered["position"] = ordered.groupby("episode").cumcount() + 1
+    ordered["expected_prior_duration"] = ordered["position"].shift(1)
+    events = ordered.loc[
+        ordered["regime"].ne(ordered["prior_regime"])
+        & ordered["prior_regime"].notna()
+    ]
+    expected = (
+        events.groupby(["prior_regime", "regime"])["expected_prior_duration"]
+        .mean()
+        .rename("expected")
+    )
+    observed = fixed.set_index(["prior_regime", "new_regime"])[
+        "average_prior_duration_months"
+    ]
+    pd.testing.assert_series_equal(
+        observed.sort_index(), expected.reindex(observed.index).sort_index(), check_names=False
+    )
+
+
+def test_year_scorecard_has_true_sleeve_weights_and_selected_exclusions() -> None:
+    score = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv")
+    global_rows = score.loc[score["strategy_id"].eq("GLOBAL_100")]
+    assert global_rows["average_swda_weight"].eq(1.0).all()
+    assert global_rows["average_m2_weight"].eq(0.0).all()
+    assert global_rows["average_cash_weight"].eq(0.0).all()
+    risk_rows = score.loc[score["strategy_id"].eq("POLICY_1_RISK_TIMING_ONLY")]
+    assert risk_rows["average_cash_weight"].round(8).nunique() > 1
+
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    exclusions = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv")
+    rows = exclusions.loc[
+        exclusions["policy_id"].eq(selected["strategy_id"])
+        & exclusions["switch_mode"].eq(selected["switch_mode"])
+    ]
+    if selected["allocations"]["m2_weight"] > 0:
+        assert len(rows) == 13
+        assert {"EXCLUDE_2025", "EXCLUDE_2020", "EXCLUDE_2020_AND_2025"}.issubset(
+            set(rows["excluded_period"])
+        )
+        assert rows["excluded_period"].str.startswith("LEAVE_").sum() == 10
+
+
+def test_switch_attribution_is_scoped_to_actual_allocation_events() -> None:
+    attribution = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SWITCH_ATTRIBUTION.csv")
+    assert attribution["counterfactual_scope"].eq(
+        "ONE_MONTH_AFTER_ACTUAL_ALLOCATION_SWITCH_VS_STATIC_MATCHED_CONTROL;NOT_DRAWDOWN_ATTRIBUTION"
+    ).all()
+    fixed = attribution.loc[
+        attribution["policy_id"].eq("POLICY_0_STATIC_DEFENSIVE_CONTROL")
+    ]
+    assert fixed["switch_event_count"].eq(0).all()
+    assert fixed["switching_gain"].abs().le(1e-12).all()
 
 
 def test_manifest_hashes_reproduce_all_listed_outputs() -> None:

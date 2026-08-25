@@ -166,37 +166,103 @@ def aggregate_allocation_change_count(
 
 def annual_score(strategy_id: str, result: Any, global_result: Any, pool_result: Any, allocation: Mapping[str, float] | None = None, regime_changes: Mapping[int, int] | None = None) -> pd.DataFrame:
     frame = curve(result).loc[lambda x: x["date"].between(COMMON_START, CUTOFF)].copy()
-    g = curve(global_result).set_index("date")["portfolio_value"].astype(float)
-    p = curve(pool_result).set_index("date")["portfolio_value"].astype(float)
+    global_daily = curve(global_result).set_index("date")["net_return"].astype(float)
+    pool_daily = curve(pool_result).set_index("date")["net_return"].astype(float)
+    full_monthly = monthly_returns(result, COMMON_START, CUTOFF)
     rows = []
     for year, part in frame.groupby(frame["date"].dt.year):
         start, end = pd.Timestamp(part["date"].min()), pd.Timestamp(part["date"].max())
         metrics = core.metrics(as_sim(result), start, end)
-        gr = float(g.loc[end] / g.loc[start] - 1.0) if start in g.index and end in g.index else np.nan
-        pr = float(p.loc[end] / p.loc[start] - 1.0) if start in p.index and end in p.index else np.nan
+        dates = pd.DatetimeIndex(part["date"])
+        gr_values = global_daily.reindex(dates).dropna()
+        pr_values = pool_daily.reindex(dates).dropna()
+        gr = float(np.prod(1.0 + gr_values) - 1.0) if len(gr_values) else np.nan
+        pr = float(np.prod(1.0 + pr_values) - 1.0) if len(pr_values) else np.nan
+        net_return = float(np.prod(1.0 + part["net_return"].astype(float)) - 1.0)
+        annual_path = pd.Series(
+            np.r_[1.0, np.cumprod(1.0 + part["net_return"].astype(float).to_numpy())]
+        )
+        annual_drawdown = annual_path / annual_path.cummax() - 1.0
+        annual_mdd = float(annual_drawdown.min())
+        annual_ulcer = float(np.sqrt(np.mean(np.square(annual_drawdown.to_numpy()))))
+        annual_volatility = float(part["net_return"].astype(float).std(ddof=1) * math.sqrt(252.0)) if len(part) > 1 else np.nan
+        daily_allocations = []
+        for row in part.itertuples(index=False):
+            weights = json.loads(row.weights_json or "{}")
+            daily_allocations.append(
+                {
+                    "global_weight": float(weights.get(core.GLOBAL_FAMILY, 0.0)),
+                    "m2_weight": float(sum(float(value) for family, value in weights.items() if family != core.GLOBAL_FAMILY)),
+                    "cash_weight": float(row.cash_fraction),
+                }
+            )
+        annual_allocations = pd.DataFrame(daily_allocations).mean() if daily_allocations else pd.Series(dtype=float)
         trades = as_sim(result).trades
         yt = trades.loc[pd.to_datetime(trades.get("execution_date"), errors="coerce").dt.year.eq(year)] if len(trades) else trades
-        monthly = monthly_returns(result, start, end)
+        monthly = full_monthly.loc[full_monthly.index.year == int(year)]
         rows.append({
             "strategy_id": strategy_id,
             "year": int(year),
             "partial_year": bool(year in {2017, 2026}),
-            "net_return": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0),
-            "excess_vs_global": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0 - gr),
-            "excess_vs_equal_pool": float(part.iloc[-1]["portfolio_value"] / part.iloc[0]["portfolio_value"] - 1.0 - pr),
-            "maximum_drawdown": metrics.get("maximum_drawdown", np.nan),
-            "ulcer_index": metrics.get("ulcer_index", np.nan),
+            "net_return": net_return,
+            "excess_vs_global": net_return - gr,
+            "excess_vs_equal_pool": net_return - pr,
+            "maximum_drawdown": annual_mdd,
+            "ulcer_index": annual_ulcer,
             "worst_month": float(monthly.min()) if len(monthly) else np.nan,
             "best_month": float(monthly.max()) if len(monthly) else np.nan,
-            "realised_volatility": metrics.get("annualised_volatility", np.nan),
+            "realised_volatility": annual_volatility,
             "turnover": float(yt.get("traded_notional_fraction", pd.Series(dtype=float)).sum()),
             "cost_drag": float(yt.get("transaction_cost_value", pd.Series(dtype=float)).sum()),
-            "average_swda_weight": (allocation or {}).get("global_weight", np.nan),
-            "average_m2_weight": (allocation or {}).get("m2_weight", np.nan),
-            "average_cash_weight": (allocation or {}).get("cash_weight", float(part["cash_fraction"].mean())),
+            "average_swda_weight": float(annual_allocations.get("global_weight", (allocation or {}).get("global_weight", np.nan))),
+            "average_m2_weight": float(annual_allocations.get("m2_weight", (allocation or {}).get("m2_weight", np.nan))),
+            "average_cash_weight": float(annual_allocations.get("cash_weight", (allocation or {}).get("cash_weight", np.nan))),
             "portfolio_changes": int(yt.get("execution_status", pd.Series(dtype=str)).eq("EXECUTED").sum()),
             "regime_changes": int((regime_changes or {}).get(int(year), 0)),
         })
+    return pd.DataFrame(rows)
+
+
+def annual_m2_concentration(result: Any, data: Any) -> pd.DataFrame:
+    """Describe calendar-year concentration without using it for selection."""
+
+    full = curve(result).sort_values("date").copy()
+    full["previous_portfolio_value"] = full["portfolio_value"].shift(1)
+    members = set(data.members)
+    full_monthly = monthly_returns(result, COMMON_START, CUTOFF)
+    rows: list[dict[str, Any]] = []
+    for year, part in full.loc[full.date.between(COMMON_START, CUTOFF)].groupby(
+        full.loc[full.date.between(COMMON_START, CUTOFF), "date"].dt.year
+    ):
+        family_totals: dict[str, float] = {}
+        for row in part.itertuples(index=False):
+            denominator = float(row.previous_portfolio_value) if pd.notna(row.previous_portfolio_value) else np.nan
+            if not np.isfinite(denominator) or denominator <= 0:
+                continue
+            for family, value in json.loads(row.family_market_pnl_json or "{}").items():
+                if family in members:
+                    family_totals[family] = family_totals.get(family, 0.0) + float(value) / denominator
+        top_family, top_family_contribution = ("NONE", np.nan)
+        if family_totals:
+            top_family, top_family_contribution = max(family_totals.items(), key=lambda item: item[1])
+        monthly = full_monthly.loc[full_monthly.index.year == int(year)]
+        top_month = monthly.idxmax() if len(monthly) else pd.NaT
+        top_month_return = float(monthly.max()) if len(monthly) else np.nan
+        positive_month_sum = float(monthly.clip(lower=0).sum()) if len(monthly) else np.nan
+        rows.append(
+            {
+                "year": int(year),
+                "top_family": top_family,
+                "top_family_contribution": top_family_contribution,
+                "top_month": top_month,
+                "top_month_return": top_month_return,
+                "top_month_share_of_positive_month_sum": (
+                    top_month_return / positive_month_sum
+                    if positive_month_sum and positive_month_sum > 0
+                    else np.nan
+                ),
+            }
+        )
     return pd.DataFrame(rows)
 
 
@@ -321,6 +387,7 @@ def bh_qvalues(pvalues: pd.Series) -> pd.Series:
 
 
 def policy_decision_rows(
+    data: Any,
     ledger: pd.DataFrame,
     policy_id: str,
     switch_mode: str,
@@ -340,6 +407,22 @@ def policy_decision_rows(
         trades["review_date"] = pd.to_datetime(trades["review_date"])
         trade_fields = ["review_date", "execution_date", "execution_lag_xlon_sessions", "execution_status", "target_weights_json", "selected_families", "traded_notional_fraction", "trade_legs", "transaction_cost_rate", "transaction_cost_value"]
         rows = rows.merge(trades[trade_fields], on="review_date", how="left", suffixes=("_decision", "_trade"))
+
+    def execution_endpoints(row: pd.Series) -> str:
+        execution_date = pd.to_datetime(row.get("execution_date"), errors="coerce")
+        if pd.isna(execution_date):
+            return "{}"
+        raw_target = row.get("target_weights_json_trade", row.get("target_weights_json_decision", "{}"))
+        target = json.loads(raw_target or "{}")
+        endpoints = {
+            family: float(data.base.research.wealth.loc[pd.Timestamp(execution_date), family])
+            for family in target
+            if family in data.base.research.wealth.columns
+            and pd.notna(data.base.research.wealth.loc[pd.Timestamp(execution_date), family])
+        }
+        return json.dumps(endpoints, sort_keys=True)
+
+    rows["execution_total_return_endpoints_gbp_json"] = rows.apply(execution_endpoints, axis=1)
     for name in ["applied_global_weight", "applied_m2_weight", "applied_cash_weight"]:
         rows[f"previous_{name}"] = rows[name].shift(1).fillna(0.0)
     output = pd.DataFrame({
@@ -367,6 +450,7 @@ def policy_decision_rows(
         "execution_lag_xlon_sessions": rows.get("execution_lag_xlon_sessions", np.nan),
         "execution_status": rows.get("execution_status", "NO_EXECUTION_WITHIN_CUTOFF"),
         "execution_price_evidence": "ACCEPTED_A2R2_GBP_TOTAL_RETURN_ENDPOINTS;NO_FORWARD_FILL;NO_SAME_CLOSE",
+        "execution_total_return_endpoints_gbp_json": rows["execution_total_return_endpoints_gbp_json"],
         "target_weights_json": rows.get("target_weights_json_trade", rows["target_weights_json_decision"]),
         "post_execution_holdings": rows.get("selected_families", ""),
         "traded_notional_fraction": rows.get("traded_notional_fraction", 0.0),
@@ -535,6 +619,49 @@ def make_blend_targets(
             target[core.GLOBAL_FAMILY] = float(global_weight)
         result[pd.Timestamp(date)] = target
     return result
+
+
+def longer_core_only_rows(data: Any) -> pd.DataFrame:
+    """Evaluate global/cash controls on their longer accepted implementation window."""
+
+    review_dates = [
+        pd.Timestamp(date)
+        for date in core.a4d.schedule_dates(data.base.research.calendar, "MONTHLY")
+        if pd.Timestamp(date) >= LONG_CORE_START and pd.Timestamp(date) <= CUTOFF
+    ]
+    rows: list[dict[str, Any]] = []
+    for global_weight in [0.25, 0.50, 0.75, 1.00]:
+        strategy_id = f"LONG_CORE_GLOBAL_{int(global_weight * 100)}_CASH_{int((1-global_weight) * 100)}"
+        targets = {
+            date: {core.GLOBAL_FAMILY: global_weight}
+            for date in review_dates
+        }
+        for cost in ["BASE", "DOUBLE"]:
+            result = core.simulate_target_map(data, targets, strategy_id, cost)
+            first = max(LONG_CORE_START, pd.Timestamp(curve(result)["date"].min()))
+            metrics = core.metrics(result, first, CUTOFF)
+            rows.append(
+                {
+                    "strategy_id": strategy_id,
+                    "evidence_window": "LONGER_CORE_ONLY_WINDOW",
+                    "cost_scenario": cost,
+                    "first_formation_date": review_dates[0],
+                    "first_executable_date": first,
+                    "last_date": min(CUTOFF, pd.Timestamp(curve(result)["date"].max())),
+                    "global_weight": global_weight,
+                    "cash_weight": 1.0 - global_weight,
+                    "net_cagr": metrics.get("net_cagr", np.nan),
+                    "terminal_wealth_per_100k": metrics.get("terminal_wealth_per_100k", np.nan),
+                    "maximum_drawdown": metrics.get("maximum_drawdown", np.nan),
+                    "ulcer_index": metrics.get("ulcer_index", np.nan),
+                    "calmar_mar": metrics.get("calmar_mar", np.nan),
+                    "annualised_volatility": metrics.get("annualised_volatility", np.nan),
+                    "maximum_time_underwater_calendar_days": metrics.get("maximum_time_underwater_calendar_days", np.nan),
+                    "annual_turnover_traded_notional": metrics.get("annual_turnover_traded_notional", np.nan),
+                    "comparison_status": "CORE_ONLY_CONTEXT_NOT_DIRECTLY_RANKED_AGAINST_2017_ROTATION",
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def dynamic_result_rows(
@@ -715,7 +842,11 @@ def oracle_rows(static_results: Mapping[tuple[str, str], Any], policy_results: M
     return pd.DataFrame(rows)
 
 
-def year_exclusion_rows(policy_results: Mapping[tuple[str, str, str], Any], global_result: Any) -> pd.DataFrame:
+def year_exclusion_rows(
+    policy_results: Mapping[tuple[str, str, str], Any],
+    global_result: Any,
+    static_results: Mapping[tuple[str, str], Any],
+) -> pd.DataFrame:
     rows = []
     periods = [("EXCLUDE_2025", {2025}), ("EXCLUDE_2020", {2020}), ("EXCLUDE_2020_AND_2025", {2020, 2025})]
     periods.extend((f"LEAVE_{year}_OUT", {year}) for year in range(2017, 2027))
@@ -726,6 +857,12 @@ def year_exclusion_rows(policy_results: Mapping[tuple[str, str, str], Any], glob
                 metrics = excluded_metrics(result, years)
                 gm = excluded_metrics(global_result, years)
                 rows.append({"policy_id": policy_id, "switch_mode": switch_mode, "excluded_period": label, "net_cagr": metrics["net_cagr"], "excess_vs_global": metrics["net_cagr"] - gm["net_cagr"], "maximum_drawdown": metrics["maximum_drawdown"], "ulcer_index": np.nan, "turnover": np.nan, "status": "ROBUSTNESS_DIAGNOSTIC_NOT_CONTIGUOUS_CAGR"})
+    for strategy_id in STATIC_M2_COMPARATORS:
+        result = static_results[(strategy_id, "BASE")]
+        for label, years in periods:
+            metrics = excluded_metrics(result, years)
+            gm = excluded_metrics(global_result, years)
+            rows.append({"policy_id": strategy_id, "switch_mode": "STATIC_MONTHLY", "excluded_period": label, "net_cagr": metrics["net_cagr"], "excess_vs_global": metrics["net_cagr"] - gm["net_cagr"], "maximum_drawdown": metrics["maximum_drawdown"], "ulcer_index": np.nan, "turnover": np.nan, "status": "STATIC_M2_ROBUSTNESS_DIAGNOSTIC_NOT_CONTIGUOUS_CAGR"})
     return pd.DataFrame(rows)
 
 
@@ -969,6 +1106,7 @@ def create_charts(
     year_exclusions: pd.DataFrame,
     attribution: pd.DataFrame,
     transitions: pd.DataFrame,
+    selected_switch: str,
 ) -> None:
     plt.rcParams.update({"font.size": 8, "axes.grid": True, "grid.alpha": 0.25})
     display = [sid for sid in ["GLOBAL_100", "GLOBAL_75_CASH25", "M2_TOP7_CASH0_100", selected_id] if sid in set(year_score.strategy_id)]
@@ -1021,11 +1159,18 @@ def create_charts(
 
     attr = attribution.loc[attribution.strategy_id.eq(selected_id)]
     fig, ax=plt.subplots(figsize=(9,5)); components=["global_contribution","m2_contribution","cash_yield_contribution","cost_contribution"]; attr.set_index("year")[components].plot(kind="bar",stacked=True,ax=ax); ax.axhline(0,color="black",lw=.8); ax.set_title("Contribution by year"); save_figure("UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_YEAR.png",fig)
-    if len(transitions):
-        tr=transitions.groupby("new_regime")["switch_gain_loss"].sum().reindex(states).fillna(0)
-    else: tr=pd.Series(0,index=states)
-    fig,ax=plt.subplots(figsize=(8,5)); tr.plot(kind="bar",ax=ax); ax.axhline(0,color="black",lw=.8); ax.set_ylabel("Switch gain/loss"); ax.set_title("Contribution by regime transition"); save_figure("UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_REGIME.png",fig)
-    fig,ax=plt.subplots(figsize=(8,5)); opp=pd.Series({"Switching gain":float(transitions.switch_gain_loss.clip(lower=0).sum()) if len(transitions) else 0,"Opportunity cost":float(-transitions.switch_gain_loss.clip(upper=0).sum()) if len(transitions) else 0}); opp.plot(kind="bar",ax=ax,color=["#2ca02c","#d62728"]); ax.set_title("Switching gain and opportunity cost"); save_figure("UKACTIVE_A4F_SIPP_SWITCHING_GAIN_OPPORTUNITY_COST.png",fig)
+    selected_transitions = transitions.loc[
+        transitions.policy_id.eq(selected_id) & transitions.switch_mode.eq(selected_switch)
+    ] if selected_id.startswith("POLICY_") else transitions.iloc[0:0]
+    if len(selected_transitions):
+        tr=selected_transitions.groupby("new_regime")["switch_gain_loss"].sum().reindex(states).fillna(0)
+        transition_title = f"{selected_id}: transition-month gain/loss versus matched control"
+    else:
+        tr=pd.Series(0.0,index=states)
+        transition_title = "Selected static strategy: regimes are telemetry; no strategy-switch contribution"
+    fig,ax=plt.subplots(figsize=(8,5)); tr.plot(kind="bar",ax=ax); ax.axhline(0,color="black",lw=.8); ax.set_ylabel("Transition-month return difference"); ax.set_title(transition_title); save_figure("UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_REGIME.png",fig)
+    opp=pd.Series({"Positive transition-month effect":float(selected_transitions.switch_gain_loss.clip(lower=0).sum()) if len(selected_transitions) else 0,"Negative transition-month effect":float(-selected_transitions.switch_gain_loss.clip(upper=0).sum()) if len(selected_transitions) else 0})
+    fig,ax=plt.subplots(figsize=(8,5)); opp.plot(kind="bar",ax=ax,color=["#2ca02c","#d62728"]); ax.set_title(transition_title); save_figure("UKACTIVE_A4F_SIPP_SWITCHING_GAIN_OPPORTUNITY_COST.png",fig)
 
 
 def average_allocations_placeholder(strategy_id: str) -> tuple[float, float, float]:
@@ -1041,22 +1186,36 @@ def transition_policy_rows(
     ledger: pd.DataFrame,
     policy_results: Mapping[tuple[str, str, str], Any],
     matched_controls: Mapping[tuple[str, str, str], Any],
+    policy_records: Mapping[tuple[str, str], pd.DataFrame],
+    global_result: Any,
+    m2_result: Any,
+    cash_result: Any,
 ) -> pd.DataFrame:
     ordered = ledger.loc[ledger.decision_date.ge(pd.Timestamp("2017-02-28")) & ledger.regime.ne("REGIME_UNAVAILABLE")].sort_values("decision_date").copy()
     ordered["prior_regime"] = ordered.regime.shift()
     ordered["episode"] = ordered.regime.ne(ordered.regime.shift()).cumsum()
-    ordered["prior_duration"] = ordered.groupby("episode").cumcount() + 1
+    ordered["position_in_episode"] = ordered.groupby("episode").cumcount() + 1
+    # On the first row of a new episode, the preceding row's position is the
+    # complete duration of the state that has just ended.
+    ordered["prior_duration"] = ordered["position_in_episode"].shift(1)
     events = ordered.loc[ordered.regime.ne(ordered.prior_regime) & ordered.prior_regime.notna()].copy()
     rows = []
+    global_ret = core.monthly_interval_returns(ledger, global_result).set_index("decision_date")["interval_return"]
+    m2_ret = core.monthly_interval_returns(ledger, m2_result).set_index("decision_date")["interval_return"]
+    cash_ret = core.monthly_interval_returns(ledger, cash_result).set_index("decision_date")["interval_return"]
     for policy_id in SELECTABLE_POLICIES:
         for switch_mode in SWITCHES:
             candidate = core.monthly_interval_returns(ledger, policy_results[(policy_id, switch_mode, "BASE")]).set_index("decision_date")["interval_return"]
             control = core.monthly_interval_returns(ledger, matched_controls[(policy_id, switch_mode, "MATCHED_AVERAGE_EXPOSURE")]).set_index("decision_date")["interval_return"]
-            m2 = core.monthly_interval_returns(ledger, policy_results[("POLICY_2_ALPHA_TIMING_ONLY", "SWITCH_IMMEDIATE_MONTHLY", "BASE")]).set_index("decision_date")["interval_return"]
-            global_ret = core.monthly_interval_returns(ledger, policy_results[("POLICY_0_STATIC_DEFENSIVE_CONTROL", "SWITCH_IMMEDIATE_MONTHLY", "BASE")]).set_index("decision_date")["interval_return"]
+            records = policy_records[(policy_id, switch_mode)].copy().sort_values("review_date")
+            records["review_date"] = pd.to_datetime(records["review_date"])
+            allocation_columns = ["applied_global_weight", "applied_m2_weight", "applied_cash_weight"]
+            records["allocation_changed"] = records[allocation_columns].diff().abs().sum(axis=1).gt(1e-12)
+            allocation_changed = records.set_index("review_date")["allocation_changed"]
             for (prior, new), group in events.groupby(["prior_regime", "regime"]):
                 dates = pd.DatetimeIndex(group.decision_date)
                 gains = candidate.reindex(dates) - control.reindex(dates)
+                switch_count = int(allocation_changed.reindex(dates).fillna(False).sum())
                 forward = candidate.reindex(ordered.decision_date)
                 one=[]; three=[]; six=[]
                 for date in dates:
@@ -1076,10 +1235,17 @@ def transition_policy_rows(
                     "policy_id": policy_id, "switch_mode": switch_mode, "prior_regime": prior, "new_regime": new,
                     "transition_count": len(group), "average_prior_duration_months": float(group.prior_duration.mean()),
                     "next_1m_return": float(np.nanmean(one)), "next_3m_return": float(np.nanmean(three)), "next_6m_return": float(np.nanmean(six)),
-                    "m2_minus_global_1m": float((m2.reindex(dates)-global_ret.reindex(dates)).mean()),
-                    "risky_minus_cash_1m": np.nan, "switch_gain_loss": float(gains.sum()),
+                    "m2_minus_global_1m": float((m2_ret.reindex(dates)-global_ret.reindex(dates)).mean()),
+                    "risky_minus_cash_1m": float((global_ret.reindex(dates)-cash_ret.reindex(dates)).mean()),
+                    "allocation_switch_count": switch_count,
+                    "switch_gain_loss": float(gains.sum()),
                     "reversal_within_1m": reverse1, "reversal_within_3m": reverse3,
-                    "transition_classification": "FALSE_OR_COSTLY_SWITCH" if gains.sum()<0 else "BENEFICIAL_SWITCH",
+                    "transition_classification": (
+                        "NO_ALLOCATION_SWITCH" if switch_count == 0
+                        else "FALSE_OR_COSTLY_SWITCH" if gains.sum() < -1e-12
+                        else "BENEFICIAL_SWITCH" if gains.sum() > 1e-12
+                        else "NEUTRAL_SWITCH"
+                    ),
                 })
     return pd.DataFrame(rows)
 
@@ -1210,6 +1376,7 @@ Decision: **PASS**. All {len(reconciliation)} decision-critical metric/randomisa
 - CASH1 random/rank-shuffle controls were reproduced only as A4E audit evidence; their CASH1 qualification is not silently reused for A4F CASH0.
 - The canonical simulator rebases at the first post-cost portfolio row, preserving A4D/A4E one-time-entry-cost treatment for exact lineage reconciliation.
 """)
+    write_csv("UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv", longer_core_only_rows(data))
 
     frontier_results = {key: value for key, value in static_results.items() if key[0] != "GLOBAL_85_CASH15"}
     static_rows = static_frontier_rows(data, frontier_results)
@@ -1250,7 +1417,7 @@ Decision: **PASS**. All {len(reconciliation)} decision-critical metric/randomisa
             for cost in ["BASE","DOUBLE"]:
                 result = core.simulate_target_map(data, (targets,records), f"{policy_id}|{switch_mode}", cost)
                 policy_results[(policy_id,switch_mode,cost)] = result
-            decision_frames.append(policy_decision_rows(ledger_all,policy_id,switch_mode,records,policy_results[(policy_id,switch_mode,"BASE")]))
+            decision_frames.append(policy_decision_rows(data,ledger_all,policy_id,switch_mode,records,policy_results[(policy_id,switch_mode,"BASE")]))
     policy_decisions = pd.concat(decision_frames,ignore_index=True)
     write_csv("UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv",policy_decisions)
     dynamic = dynamic_result_rows(data,policy_results,policy_targets,global_result)
@@ -1268,11 +1435,19 @@ Paired monthly policy-minus-matched-control returns use Newey–West HAC lag 3 a
 Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.sample_status.eq('REGIME_SAMPLE_SUFFICIENT'),'regime'].unique())) or 'none'}. Sparse states remain `INSUFFICIENT_REGIME_SAMPLE` and cannot support strong regime claims.
 """)
 
-    transitions = transition_policy_rows(ledger_all,policy_results,matched_results)
+    transitions = transition_policy_rows(
+        ledger_all,
+        policy_results,
+        matched_results,
+        policy_records,
+        global_result,
+        m2_result,
+        cash_benchmark,
+    )
     write_csv("UKACTIVE_A4F_SIPP_REGIME_TRANSITIONS.csv",transitions)
     oracles = oracle_rows(static_results,policy_results,ledger_all)
     write_csv("UKACTIVE_A4F_SIPP_ORACLE_DIAGNOSTICS.csv",oracles)
-    exclusions = year_exclusion_rows(policy_results,global_result)
+    exclusions = year_exclusion_rows(policy_results,global_result,static_results)
     write_csv("UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv",exclusions)
     threshold_sensitivity, threshold_cache = threshold_sensitivity_rows(data,global_result)
     write_csv("UKACTIVE_A4F_SIPP_THRESHOLD_SENSITIVITY.csv",threshold_sensitivity)
@@ -1319,6 +1494,23 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
     write_csv("UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv",direct_m2)
     spell_influence=holding_spell_influence_rows(data,"POLICY_3_BALANCED_REGIME_STRATEGY",policy_records[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY")],policy_results[("POLICY_3_BALANCED_REGIME_STRATEGY","SWITCH_IMMEDIATE_MONTHLY","BASE")])
     write_csv("UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",spell_influence)
+    holding_spells = core.a4e.holding_spell_ledger(m2_result)
+    write_csv("UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv", holding_spells)
+    winner_false_comparison = (
+        holding_spells.groupby("winner_class", as_index=False)
+        .agg(
+            holding_spells=("holding_spell_id", "count"),
+            distinct_families=("family", "nunique"),
+            total_gross_market_pnl_return_units=("gross_market_pnl_return_units", "sum"),
+            mean_gross_market_pnl_return_units=("gross_market_pnl_return_units", "mean"),
+            median_gross_market_pnl_return_units=("gross_market_pnl_return_units", "median"),
+            mean_days_held=("days_held", "mean"),
+            median_days_held=("days_held", "median"),
+            share_of_positive_spell_pnl=("share_of_positive_spell_pnl", "sum"),
+        )
+    )
+    winner_false_comparison["interpretation"] = "E2_DEVELOPMENTAL_HOLDING_SPELL_MECHANISM_DIAGNOSTIC"
+    write_csv("UKACTIVE_A4F_SIPP_WINNER_FALSE_LEADER_COMPARISON.csv", winner_false_comparison)
 
     # Complete dynamic gates, including doubled-cost matched controls.
     adequately=regime_summary.loc[regime_summary.sample_status.eq("REGIME_SAMPLE_SUFFICIENT")]
@@ -1429,14 +1621,51 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
     write_csv("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv",year_score)
     write_csv("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_ATTRIBUTION.csv",attribution)
 
-    review_lines=["# UKACTIVE-A4F-SIPP year-by-year review",""]
+    annual_concentration = annual_m2_concentration(m2_result, data).set_index("year")
+    spell_review = holding_spells.copy()
+    spell_review["entry_date"] = pd.to_datetime(spell_review["entry_date"])
+    review_lines=[
+        "# UKACTIVE-A4F-SIPP year-by-year review",
+        "",
+        "Calendar years are causal diagnostics, never optimisation units. Concentration figures use the frozen M2 portfolio; a spell can cross a year boundary, so the spell figure is explicitly the full P&L of the largest spell entering that year rather than a year-sliced attribution.",
+        "",
+    ]
     for year in sorted(year_score.year.unique()):
         subset=year_score.loc[year_score.year.eq(year)]
         best=subset.sort_values("net_return",ascending=False).iloc[0]; lowdd=subset.sort_values("maximum_drawdown",ascending=False).iloc[0]
         m2=subset.loc[subset.strategy_id.eq("M2_TOP7_CASH0_100")].iloc[0]; glob=subset.loc[subset.strategy_id.eq("GLOBAL_100")].iloc[0]
-        state_counts=common_ledger.loc[common_ledger.decision_date.dt.year.eq(year),"regime"].value_counts()
+        p1_year=subset.loc[subset.strategy_id.eq("POLICY_1_RISK_TIMING_ONLY")].iloc[0]
+        p3_year=subset.loc[subset.strategy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY")].iloc[0]
+        static75_year=subset.loc[subset.strategy_id.eq("GLOBAL_75_CASH25")].iloc[0]
+        year_ledger=common_ledger.loc[common_ledger.decision_date.dt.year.eq(year)]
+        state_counts=year_ledger["regime"].value_counts()
         dominant=state_counts.index[0] if len(state_counts) else "NO_COMMON_DECISIONS"
-        review_lines.extend([f"## {year}{' (partial)' if year in {2017,2026} else ''}",f"Best return: `{best.strategy_id}` ({best.net_return:.2%}); lowest drawdown: `{lowdd.strategy_id}` ({lowdd.maximum_drawdown:.2%}). M2 {'added' if m2.net_return>glob.net_return else 'destroyed'} value versus global by {m2.net_return-glob.net_return:.2%}. Dominant causal state: `{dominant}`. The result is diagnostic rather than a calendar-year selection rule; concentration and switch contributions remain in the ledgers.",""])
+        trend_positive = float((~year_ledger.global_126_adverse.astype(bool) & ~year_ledger.global_252_adverse.astype(bool)).mean()) if len(year_ledger) else np.nan
+        high_vol = float(year_ledger.high_volatility.astype(bool).mean()) if len(year_ledger) else np.nan
+        support = float(year_ledger.absolute_support_count.mean()) if len(year_ledger) else np.nan
+        breadth_label = "broad" if np.isfinite(support) and support >= 5 else "concentrated/weak"
+        state_episode_rows = regime_summary.loc[regime_summary.regime.eq(dominant)]
+        dominant_episodes = int(state_episode_rows.episodes.iloc[0]) if len(state_episode_rows) else 0
+        recurring = "recurring state" if dominant_episodes >= 3 else "sparse/possibly unique state"
+        concentration = annual_concentration.loc[int(year)] if int(year) in annual_concentration.index else pd.Series(dtype=float)
+        entering_spells = spell_review.loc[spell_review.entry_date.dt.year.eq(year)]
+        top_spell_text = "none"
+        if len(entering_spells):
+            top_spell = entering_spells.sort_values("gross_market_pnl_return_units", ascending=False).iloc[0]
+            top_spell_text = f"{top_spell.family} ({top_spell.gross_market_pnl_return_units:.2%} full-spell return units)"
+        defence_delta = p1_year.net_return - glob.net_return
+        balanced_vs_static = p3_year.net_return - static75_year.net_return
+        review_lines.extend([
+            f"## {year}{' (partial)' if year in {2017,2026} else ''}",
+            f"1. Best return: `{best.strategy_id}` ({best.net_return:.2%}); lowest drawdown: `{lowdd.strategy_id}` ({lowdd.maximum_drawdown:.2%}).",
+            f"2. M2 {'added' if m2.net_return>glob.net_return else 'destroyed'} value versus global by {m2.net_return-glob.net_return:.2%}.",
+            f"3. Leadership support averaged {support:.1f}/7 ({breadth_label}); global 126/252 excess was jointly positive at {trend_positive:.0%} of decisions; high volatility appeared at {high_vol:.0%} of decisions.",
+            f"4. Risk timing {'helped' if defence_delta>0 else 'created opportunity cost'} versus global by {defence_delta:.2%}. The balanced causal policy {'beat' if balanced_vs_static>0 else 'lagged'} static 75/25 by {balanced_vs_static:.2%}; this is the frozen rule's contemporaneous result, not a hindsight year label.",
+            f"5. Dominant causal state: `{dominant}` ({recurring}; {dominant_episodes} total episodes in the common history).",
+            f"6. Largest M2 month: {pd.Timestamp(concentration.get('top_month')).strftime('%Y-%m') if pd.notna(concentration.get('top_month')) else 'N/A'} at {float(concentration.get('top_month_return', np.nan)):.2%}, {float(concentration.get('top_month_share_of_positive_month_sum', np.nan)):.1%} of positive monthly-return sum. Largest family contribution: `{concentration.get('top_family', 'N/A')}` ({float(concentration.get('top_family_contribution', np.nan)):.2%} return units). Largest full holding spell entering the year: {top_spell_text}.",
+            "7. This year remains a diagnostic observation. It neither changes thresholds nor selects a policy; complete sleeve, switch and transaction-cost attribution is in the CSV ledgers.",
+            "",
+        ])
     write_text("UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_REVIEW.md","\n".join(review_lines))
 
     # Macro attribution fails closed except for the admitted equity/cash differential.
@@ -1497,20 +1726,70 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
             state_rows.append({"risk_score":score,"leadership_state":leadership,"regime":regime,"swda_allocation":swda,"m2_allocation":m2,"cash_allocation":cash,"confirmation_requirement":confirmation,"execution_timing":"First valid following XLON session within 3 sessions; never same close"})
     state_machine={"stage_id":"UKACTIVE-A4F-SIPP","selected_strategy":selected_id,"switch_mode":selected_switch,"historical_cutoff":"2026-08-21","rows":state_rows,"unavailable_instrument_rule":"Preferred verified implementation unavailable -> affected allocation remains GBP cash; no discretionary substitute","costs":{"one_way_bps":20,"fixed_fee_gbp":3.99,"notional_gbp":250000},"no_broker_execution":True}
     write_json("UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",state_machine)
-    selected_strategy={"stage_id":"UKACTIVE-A4F-SIPP","selection_class":selection_class,"strategy_id":selected_id,"switch_mode":selected_switch,"allocations":selected_alloc,"regime_state_machine":"UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json","execution":"MONTH_END_SIGNAL_NEXT_VALID_XLON_SESSION_WITHIN_3","costs":"20_BP_ONE_WAY_PLUS_3.99_GBP_PER_LEG_AT_250K","instruments":{"global":"SWDA|IE00B4L5Y983","m2":"25_OF_25_USER_CONFIRMED_CURRENT_II_LINES;ECONOMIC_FAMILY_SELECTION","cash":"II_SIPP_GBP_BROKER_CASH_OPERATIONALLY;ACCEPTED_GBP_CASH_SERIES_RESEARCH"},"evidence":"E2_DEVELOPMENTAL","deployment_tier":deployment_tier,"automatic_broker_execution":False}
+    selected_years_equivalent=max(float(selected_metrics.get("observation_count",0))/252.0,1e-12)
+    selected_trade_rows=as_sim(selected_result).trades
+    selected_annual_rebalances=float(selected_trade_rows.get("execution_status",pd.Series(dtype=str)).eq("EXECUTED").sum()/selected_years_equivalent) if len(selected_trade_rows) else 0.0
+    if selected_id.startswith("POLICY_"):
+        selected_dynamic_row=dynamic.loc[(dynamic.policy_id.eq(selected_id))&dynamic.switch_mode.eq(selected_switch)&dynamic.window_id.eq("FULL_COMMON_HISTORY")&dynamic.cost_scenario.eq("BASE")].iloc[0]
+        selected_annual_strategy_changes=float(selected_dynamic_row.annual_strategy_changes)
+    else:
+        selected_annual_strategy_changes=0.0
+    selected_strategy={
+        "stage_id":"UKACTIVE-A4F-SIPP",
+        "selection_class":selection_class,
+        "strategy_id":selected_id,
+        "switch_mode":selected_switch,
+        "allocations":selected_alloc,
+        "m2_specification":{
+            "pool":"INDUSTRY_PLUS_THEME",
+            "signal_id":"M2_BASE",
+            "relative_strength_weights":core.M2_WEIGHTS,
+            "breadth":int(core.ROTATION_BREADTH),
+            "within_sleeve_weighting":"EQUAL_WEIGHT",
+            "cash_rule":"CASH0_ALWAYS_INVESTED_EXCEPT_IMPLEMENTATION_OR_DATA_BLOCK",
+            "review":"FINAL_VALID_XLON_SESSION_OF_CALENDAR_MONTH",
+            "replacement_rule":"AT_EACH_MONTH_END_REPLACE_NON_TOP7_FAMILIES_WITH_CURRENT_POINT_IN_TIME_TOP7;ECONOMIC_FAMILY_DUPLICATE_SUPPRESSION",
+            "point_in_time_universe":"AUTHORITATIVE_A2R2_A3R2_DYNAMIC_SIGNAL_READY_INDUSTRY_THEME_UNIVERSE",
+            "current_implementation_map":"25_OF_25_USER_CONFIRMED_2026-08-23;CURRENT_ONLY_NOT_BACK_PROJECTED",
+        },
+        "regime_state_machine":"UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",
+        "execution":"MONTH_END_SIGNAL_NEXT_VALID_XLON_SESSION_WITHIN_3",
+        "costs":"20_BP_ONE_WAY_PLUS_3.99_GBP_PER_LEG_AT_250K",
+        "instruments":{"global":"SWDA|IE00B4L5Y983","m2":"25_OF_25_USER_CONFIRMED_CURRENT_II_LINES;ECONOMIC_FAMILY_SELECTION","cash":"II_SIPP_GBP_BROKER_CASH_OPERATIONALLY;ACCEPTED_GBP_CASH_SERIES_RESEARCH"},
+        "operating_characteristics":{"annual_strategy_switches":selected_annual_strategy_changes,"annual_rebalance_events":selected_annual_rebalances,"annual_turnover_traded_notional":selected_metrics.get("annual_turnover_traded_notional")},
+        "risk_edge_status":"NOT_DEMONSTRATED_SELECTED_RETURN_ORIENTED_SHADOW_ARCHITECTURE",
+        "current_operational_fallback":{"strategy_id":"GLOBAL_75_CASH25","swda_weight":0.75,"cash_weight":0.25,"review":"MONTHLY","status":"STATIC_CORE_FALLBACK_NOT_A4F_ACTIVE_DEPLOYMENT"},
+        "evidence":"E2_DEVELOPMENTAL",
+        "deployment_tier":deployment_tier,
+        "automatic_broker_execution":False,
+    }
     write_json("UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json",selected_strategy)
-    decision={"stage_id":"UKACTIVE-A4F-SIPP","decision":"UKACTIVE_A4F_SIPP_STRATEGY_SELECTED","audit":"PASS","selected_strategy":selected_id,"selection_class":selection_class,"deployment_tier":deployment_tier,"reason":selection_reason,"dynamic_policies_passing_all_gates":passing[["policy_id","switch_mode"]].to_dict("records"),"selected_metrics":{k:selected_metrics.get(k) for k in ["net_cagr","maximum_drawdown","ulcer_index","calmar_mar","annual_turnover_traded_notional","maximum_time_underwater_calendar_days"]},"evidence":"E2_DEVELOPMENTAL","historical_cutoff":"2026-08-21","broker_execution":False}
+    decision={"stage_id":"UKACTIVE-A4F-SIPP","decision":"UKACTIVE_A4F_SIPP_STRATEGY_SELECTED","audit":"PASS","selected_strategy":selected_id,"selection_class":selection_class,"deployment_tier":deployment_tier,"reason":selection_reason,"risk_edge_status":"NOT_DEMONSTRATED" if selected_id=="GLOBAL_50_M2_50" else "SEE_FINAL_GATES","operational_static_core_fallback":"GLOBAL_75_CASH25","dynamic_policies_passing_all_gates":passing[["policy_id","switch_mode"]].to_dict("records"),"selected_metrics":{k:selected_metrics.get(k) for k in ["net_cagr","maximum_drawdown","ulcer_index","calmar_mar","annual_turnover_traded_notional","maximum_time_underwater_calendar_days"]},"evidence":"E2_DEVELOPMENTAL","historical_cutoff":"2026-08-21","broker_execution":False}
     write_json("UKACTIVE_A4F_SIPP_DECISION.json",decision)
 
-    # Switch attribution uses policy-versus-matched monthly differences and is
-    # deliberately separate from exact accounting P&L attribution.
+    # Switch attribution uses only intervals following an actual aggregate
+    # SWDA/M2/cash allocation change. It remains a one-month policy-versus-
+    # matched-control counterfactual, not an assertion of realised drawdown
+    # avoided. Exact accounting P&L attribution is reported separately.
     switch_rows=[]
     for policy_id in SELECTABLE_POLICIES:
         for switch_mode in SWITCHES:
             c=monthly_returns(policy_results[(policy_id,switch_mode,"BASE")]); b=monthly_returns(matched_results[(policy_id,switch_mode,"MATCHED_AVERAGE_EXPOSURE")]); diff=pd.concat([c,b],axis=1,keys=["c","b"]).dropna();
+            records=policy_records[(policy_id,switch_mode)].copy().sort_values("review_date")
+            records["review_date"]=pd.to_datetime(records["review_date"])
+            records["risky_weight"]=records.applied_global_weight+records.applied_m2_weight
+            records["prior_risky_weight"]=records.risky_weight.shift(1)
+            records["allocation_changed"]=records[["applied_global_weight","applied_m2_weight","applied_cash_weight"]].diff().abs().sum(axis=1).gt(1e-12)
+            records["defensive_switch"]=records.allocation_changed & records.risky_weight.lt(records.prior_risky_weight-1e-12)
+            records["risk_on_switch"]=records.allocation_changed & records.risky_weight.gt(records.prior_risky_weight+1e-12)
+            switch_flags=records.set_index("review_date")[["allocation_changed","defensive_switch","risk_on_switch"]]
             for year,part in diff.groupby(diff.index.year):
                 gain=part.c-part.b
-                switch_rows.append({"policy_id":policy_id,"switch_mode":switch_mode,"year":int(year),"risk_timing_contribution":np.nan,"m2_selection_contribution":np.nan,"interaction_contribution":np.nan,"cash_yield_contribution":np.nan,"cost_contribution":np.nan,"switching_gain":float(gain.sum()),"false_defensive_cost":float(-gain.clip(upper=0).sum()),"successful_defence_value":float(gain.clip(lower=0).sum()),"reconciliation_error":np.nan})
+                flags=switch_flags.reindex(part.index).fillna(False)
+                event_gain=gain.loc[flags.allocation_changed]
+                defensive_gain=gain.loc[flags.defensive_switch]
+                risk_on_gain=gain.loc[flags.risk_on_switch]
+                switch_rows.append({"policy_id":policy_id,"switch_mode":switch_mode,"year":int(year),"risk_timing_contribution":np.nan,"m2_selection_contribution":np.nan,"interaction_contribution":np.nan,"cash_yield_contribution":np.nan,"cost_contribution":np.nan,"switch_event_count":int(flags.allocation_changed.sum()),"defensive_switch_count":int(flags.defensive_switch.sum()),"risk_on_switch_count":int(flags.risk_on_switch.sum()),"switching_gain":float(event_gain.sum()),"false_defensive_cost":float(-defensive_gain.clip(upper=0).sum()),"successful_defence_value":float(defensive_gain.clip(lower=0).sum()),"false_risk_on_cost":float(-risk_on_gain.clip(upper=0).sum()),"successful_risk_on_value":float(risk_on_gain.clip(lower=0).sum()),"counterfactual_scope":"ONE_MONTH_AFTER_ACTUAL_ALLOCATION_SWITCH_VS_STATIC_MATCHED_CONTROL;NOT_DRAWDOWN_ATTRIBUTION","reconciliation_error":np.nan})
     switch_attr=pd.DataFrame(switch_rows)
     write_csv("UKACTIVE_A4F_SIPP_SWITCH_ATTRIBUTION.csv",switch_attr)
 
@@ -1521,7 +1800,9 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
     regime_text="; ".join(f"{r.regime}: {r.strategy_id}" for r in top_regime.itertuples(index=False)) or "No state met the strong-sample standard"
     if selected_switch == "STATIC_MONTHLY":
         operating_rule = (
-            f"After the final valid XLON close, validate the A2R2 inputs and calculate the frozen M2_BASE TOP7 ranking. "
+            f"After the final valid XLON close, validate the A2R2 inputs and calculate M2_BASE as the cross-sectional percentile-rank composite "
+            f"RS21 10% + RS42 15% + RS63 25% + RS126 30% + RS252 20% over the point-in-time, duplicate-suppressed INDUSTRY_PLUS_THEME universe. "
+            f"Select the current TOP7 economic families and weight them equally within the M2 sleeve, replacing prior families that are no longer TOP7. "
             f"Target SWDA {selected_alloc['global_weight']:.0%}, the seven equal-weight M2 families in aggregate {selected_alloc['m2_weight']:.0%}, "
             f"and GBP cash {selected_alloc['cash_weight']:.0%}. Regime fields are recorded as telemetry only and never change these strategic weights. "
             "Record the decision before the next-session close; execute at the first valid following XLON session within three sessions; "
@@ -1535,13 +1816,100 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
             "apply asymmetric confirmation only where selected; record before the next-session close; execute at the first valid following XLON session within three sessions; "
             "charge 20 bp and £3.99 per leg; unavailable preferred/alternate exposure becomes GBP cash; reconcile holdings, costs and hashes. No automatic broker execution."
         )
+    annual_pair = year_score.loc[
+        year_score.strategy_id.isin(["M2_TOP7_CASH0_100", "GLOBAL_100"]),
+        ["strategy_id", "year", "net_return"],
+    ].pivot(index="year", columns="strategy_id", values="net_return").dropna()
+    annual_pair["m2_minus_global"] = annual_pair["M2_TOP7_CASH0_100"] - annual_pair["GLOBAL_100"]
+    m2_help_years = ", ".join(str(int(year)) for year in annual_pair.index[annual_pair.m2_minus_global.gt(0)]) or "none"
+    m2_hurt_years = ", ".join(str(int(year)) for year in annual_pair.index[annual_pair.m2_minus_global.le(0)]) or "none"
+    sufficient_states = regime_summary.loc[
+        regime_summary.sample_status.eq("REGIME_SAMPLE_SUFFICIENT"),
+        ["regime", "months", "episodes"],
+    ].drop_duplicates()
+    sufficient_state_text = "; ".join(
+        f"{row.regime} ({int(row.months)} months/{int(row.episodes)} episodes)"
+        for row in sufficient_states.itertuples(index=False)
+    ) or "none"
+    p1_full = dynamic.loc[(dynamic.policy_id.eq("POLICY_1_RISK_TIMING_ONLY")) & dynamic.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & dynamic.window_id.eq("FULL_COMMON_HISTORY") & dynamic.cost_scenario.eq("BASE")].iloc[0]
+    p2_full = dynamic.loc[(dynamic.policy_id.eq("POLICY_2_ALPHA_TIMING_ONLY")) & dynamic.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & dynamic.window_id.eq("FULL_COMMON_HISTORY") & dynamic.cost_scenario.eq("BASE")].iloc[0]
+    p3_full = dynamic.loc[(dynamic.policy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY")) & dynamic.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & dynamic.window_id.eq("FULL_COMMON_HISTORY") & dynamic.cost_scenario.eq("BASE")].iloc[0]
+    p3_hyst = dynamic.loc[(dynamic.policy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY")) & dynamic.switch_mode.eq("SWITCH_ASYMMETRIC_HYSTERESIS") & dynamic.window_id.eq("FULL_COMMON_HISTORY") & dynamic.cost_scenario.eq("BASE")].iloc[0]
+    p1_matched = matched.loc[(matched.policy_id.eq("POLICY_1_RISK_TIMING_ONLY")) & matched.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & matched.control_type.eq("MATCHED_AVERAGE_EXPOSURE") & matched.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    p2_matched = matched.loc[(matched.policy_id.eq("POLICY_2_ALPHA_TIMING_ONLY")) & matched.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & matched.control_type.eq("MATCHED_AVERAGE_EXPOSURE") & matched.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    p3_matched = matched.loc[(matched.policy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY")) & matched.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY") & matched.control_type.eq("MATCHED_AVERAGE_EXPOSURE") & matched.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    m2_10 = direct_m2.loc[(direct_m2.candidate_id.eq("GLOBAL_90_M2_10")) & direct_m2.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    m2_25 = direct_m2.loc[(direct_m2.candidate_id.eq("GLOBAL_75_M2_25")) & direct_m2.window_id.eq("FULL_COMMON_HISTORY")].iloc[0]
+    selected_direct = direct_m2.loc[(direct_m2.candidate_id.eq(selected_id)) & direct_m2.window_id.eq("FULL_COMMON_HISTORY")]
+    selected_direct_text = (
+        f"full {selected_direct.iloc[0].incremental_cagr:.2%}, excluding 2025 {selected_direct.iloc[0].exclude_2025_incremental_cagr:.2%}, doubled cost {selected_direct.iloc[0].double_cost_incremental_cagr:.2%}"
+        if len(selected_direct)
+        else "not applicable to the selected non-M2 fallback"
+    )
+    p3_switch = switch_attr.loc[(switch_attr.policy_id.eq("POLICY_3_BALANCED_REGIME_STRATEGY")) & switch_attr.switch_mode.eq("SWITCH_IMMEDIATE_MONTHLY")]
+    p3_false_cost = float(p3_switch.false_defensive_cost.sum())
+    p3_defence_value = float(p3_switch.successful_defence_value.sum())
+    p3_mdd_benefit = float(p3_matched.candidate_mdd - p3_matched.control_mdd)
+    selected_family_rows = family_influence.loc[
+        family_influence.policy_id.eq(selected_id)
+        & family_influence.switch_mode.eq(selected_switch)
+    ]
+    selected_top3 = selected_family_rows.loc[
+        selected_family_rows.exclusion_type.eq("EXCLUDE_TOP_3_FAMILY_CONTRIBUTORS")
+    ]
+    selected_top5 = selected_family_rows.loc[
+        selected_family_rows.exclusion_type.eq("EXCLUDE_TOP_5_FAMILY_CONTRIBUTORS")
+    ]
+    selected_top3_text = (
+        f"{selected_top3.iloc[0].incremental_vs_replacement_control:.2%} after removing {selected_top3.iloc[0].excluded_families}"
+        if len(selected_top3)
+        else "not applicable"
+    )
+    selected_top5_text = (
+        f"{selected_top5.iloc[0].incremental_vs_replacement_control:.2%} after removing {selected_top5.iloc[0].excluded_families}"
+        if len(selected_top5)
+        else "not applicable"
+    )
+    regime_best_text = "; ".join(
+        f"{row.regime}: {row.strategy_id}"
+        for row in top_regime.itertuples(index=False)
+    ) or "No regime has sufficient sample for a strong strategy-ranking claim"
+    direct_answers = f"""## DIRECT ANSWERS TO THE 25 FINAL QUESTIONS
+
+1. **Why M2 varied by year:** M2 beat SWDA in {m2_help_years}; it lagged in {m2_hurt_years}. The holding-spell ledger shows a positively skewed process: persistent independent leaders help, false leaders and broad-market dominance hurt.
+2. **Observable positive-M2 states:** see `UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv`; only states meeting the frozen sample rule support a claim. Adequately sampled states: {sufficient_state_text}.
+3. **Recurrence:** the episode ledger records every recurrence; sparse regimes are not promoted regardless of favourable averages.
+4. **Post-2020 versus date split:** the regime sample is not broad enough to attribute the post-2020 difference causally; `UNRESOLVED_REGIME_VERSUS_DATE_SPLIT` is the defensible conclusion.
+5. **2025:** exceptional, but not the sole sign of M2 value. The selected replacement test is {selected_direct_text}; its ex-2025 margin is economically thin.
+6. **Strong global/weak thematic leadership:** SWDA is preferred by the alpha rule; the selected static fallback nevertheless holds its fixed blend because dynamic timing failed its gates.
+7. **10%/25% M2 sleeve:** static incremental CAGR was {m2_10.incremental_cagr:.2%} at 10% and {m2_25.incremental_cagr:.2%} at 25%; both failed the doubled-cost incremental gate. Conditional 25% alpha timing delivered {p2_matched.incremental_cagr:.2%} versus matched exposure and was not promoted.
+8. **Weak global/strong selected leadership:** R3 evidence remains sample-qualified only where its row meets 18 months and three episodes; no live retention rule is promoted from sparse evidence.
+9. **Both weak:** experimental policies allocated 50% cash at risk score 2 and 75% cash at score 3, but those policies failed. The selected static strategy holds {selected_alloc['cash_weight']:.0%} strategic cash.
+10. **Gradual versus binary defence:** gradual risk timing was not superior; Policy 1 returned {p1_full.net_cagr:.2%} with MDD {p1_full.maximum_drawdown:.2%}.
+11. **Risk module versus matched exposure:** Policy 1 incremental CAGR was {p1_matched.incremental_cagr:.2%}; it failed the matched-risk gate.
+12. **Alpha module versus static exposure:** Policy 2 incremental CAGR was {p2_matched.incremental_cagr:.2%}; the edge was insufficiently robust for promotion.
+13. **Combined modules:** Policy 3 returned {p3_full.net_cagr:.2%} versus matched-control {p3_matched.control_cagr:.2%}; combination did not add value beyond simpler controls.
+14. **Strategy switches:** Policy 3 immediate averaged {p3_full.annual_strategy_changes:.2f} aggregate allocation changes per year; ordinary M2 rebalances are reported separately.
+15. **False-defensive opportunity cost:** at actual Policy 3 defensive-switch intervals, the summed negative next-month policy-minus-matched-control effect was {p3_false_cost:.2%} return units.
+16. **Successful-defence value:** at actual defensive-switch intervals, the summed positive next-month effect was {p3_defence_value:.2%}; full-chain MDD improved by {p3_mdd_benefit:.2%} versus its matched control. These are counterfactual diagnostics, not a claim that the entire MDD difference was caused by those individual switches.
+17. **Asymmetric re-risking:** Policy 3 CAGR changed from {p3_full.net_cagr:.2%} immediate to {p3_hyst.net_cagr:.2%} hysteretic; it did not rescue the policy.
+18. **2025 exclusion:** {selected_direct_text}.
+19. **Doubled costs:** the selected static M2 replacement comparison remained non-negative but thin; dynamic policy gates are shown explicitly in the cost-stress file.
+20. **Major contributors:** the selected static blend passed every leave-one-family-out gate, but its incremental CAGR reversed to {selected_top3_text} and {selected_top5_text}. This is material right-tail fragility even though no single family alone explains the full result.
+21. **Best strategy by regime:** {regime_best_text}. Insufficient states are explicitly excluded from strong inference.
+22. **Switching versus static:** no selectable dynamic policy passed all gates; the static portfolio is superior under the frozen hierarchy.
+23. **Exact SIPP research strategy:** `{selected_id}` / `{selected_switch}`; deployment remains `{deployment_tier}` rather than live authorisation.
+24. **Exact allocations:** SWDA {selected_alloc['global_weight']:.0%}, M2 {selected_alloc['m2_weight']:.0%}, cash {selected_alloc['cash_weight']:.0%} in every regime because the selected rule is static.
+25. **Suspension:** unavailable instruments, unreproducible membership, invalid inputs, materially excessive costs, or inability to execute next-session timing suspend affected allocations; a data/eligibility defect or systematic prospective matched-control failure reopens research.
+
+"""
     report=f"""# UKACTIVE-A4F-SIPP — final decision report
 
 Historical cutoff: **2026-08-21**. Evidence: **E2 developmental**. Audit: **PASS**.
 
 The risk and alpha modules were evaluated separately, then combined only through six frozen policies. All thresholds were prior-only, all targets executed next session, and no post-cutoff observation entered a state or result.
 
-## YEAR-BY-YEAR CONCLUSION
+{direct_answers}## YEAR-BY-YEAR CONCLUSION
 
 Selected-strategy annual results: {annual_text}. M2 helped in some years and hurt in others; the detailed year table identifies best-return, lowest-drawdown, costs and sleeve contributions. Partial 2017/2026 are explicitly marked. Calendar years diagnose recurring states but do not choose the policy.
 
@@ -1551,15 +1919,15 @@ Best adequately sampled static strategy by state: {regime_text}. Regime claims w
 
 ## ALPHA-ALLOCATION CONCLUSION
 
-The M2 sleeve was tested directly against replacement by SWDA, under full history, 2025 exclusion, doubled costs and family/spell removals. Dynamic M2 addition was promoted only if matched-risk and multi-episode gates passed. Result: {selection_reason}
+The M2 sleeve was tested directly against replacement by SWDA, under full history, 2025 exclusion, doubled costs and family/spell removals. Dynamic M2 addition was promoted only if matched-risk and multi-episode gates passed. Result: {selection_reason} For an M2 selection, the top-three removal result is {selected_top3_text}. This is not robust alpha confirmation where the sign reverses.
 
 ## RISK-ALLOCATION CONCLUSION
 
-Gradual score-based risk scaling was compared with 100% global, static 75/25, matched average exposure, matched volatility and matched drawdown. A lower drawdown caused merely by lower average exposure was not treated as timing value.
+Gradual score-based risk scaling was compared with 100% global, static 75/25, matched average exposure, matched volatility and matched drawdown. A lower drawdown caused merely by lower average exposure was not treated as timing value. No dynamic risk policy passed. The selected static blend is return-oriented rather than a capital-protection success: MDD {selected_metrics['maximum_drawdown']:.2%} versus SWDA {global_full['maximum_drawdown']:.2%}, Ulcer {selected_metrics['ulcer_index']:.2%} versus {global_full['ulcer_index']:.2%}, and maximum underwater time {selected_metrics['maximum_time_underwater_calendar_days']:.0f} versus {global_full['maximum_time_underwater_calendar_days']:.0f} days.
 
 ## BEST AVAILABLE WHOLE-SIPP STRATEGY
 
-`{selected_id}` using `{selected_switch}`. Target averages over the common history were SWDA {selected_alloc['global_weight']:.1%}, M2 {selected_alloc['m2_weight']:.1%}, cash {selected_alloc['cash_weight']:.1%}. Exact state allocations are in the state-machine JSON and table below.
+The selected **research/shadow whole-SIPP architecture** is `{selected_id}` using `{selected_switch}`: SWDA {selected_alloc['global_weight']:.1%}, M2 {selected_alloc['m2_weight']:.1%}, cash {selected_alloc['cash_weight']:.1%}. Exact state allocations are in the state-machine JSON and table below. It is not authorised for live deployment at this evidence grade. The currently usable capital-protection fallback remains the explicit static **75% SWDA / 25% GBP cash** core, reviewed monthly; it is not misrepresented as having an active M2 edge.
 
 ## REGIME STATE MACHINE
 
@@ -1569,7 +1937,7 @@ Gradual score-based risk scaling was compared with 100% global, static 75/25, ma
 
 ## EXPECTED OPERATING CHARACTERISTICS
 
-Historical common-window references—not forecasts—were net CAGR {selected_metrics['net_cagr']:.2%}, maximum drawdown {selected_metrics['maximum_drawdown']:.2%}, Ulcer {selected_metrics['ulcer_index']:.2%}, annual turnover {selected_metrics['annual_turnover_traded_notional']:.2f}x. A conservative governance range is 4%–10% nominal net CAGR, -15% to -30% maximum drawdown, cash broadly 0%–75% if dynamic (fixed {selected_alloc['cash_weight']:.0%} if static), and M2 0%–25% if dynamic (fixed {selected_alloc['m2_weight']:.0%} if static). Likely underperformance includes rapid rebounds, persistent broad-market rallies when defensive, weak thematic breadth, and M2 right-tail droughts.
+Historical common-window references—not forecasts—were net CAGR {selected_metrics['net_cagr']:.2%}, maximum drawdown {selected_metrics['maximum_drawdown']:.2%}, Ulcer {selected_metrics['ulcer_index']:.2%}, annual turnover {selected_metrics['annual_turnover_traded_notional']:.2f}x, {selected_annual_rebalances:.1f} ordinary rebalance events per year and **zero regime-strategy switches** for the selected static rule. A conservative governance range is 4%–10% nominal net CAGR, -15% to -30% maximum drawdown and roughly 2x–4x annual traded-notional turnover. Its strategic weights are fixed at cash {selected_alloc['cash_weight']:.0%} and M2 {selected_alloc['m2_weight']:.0%}; implementation/data blocks may create temporary cash. Likely underperformance includes broad-market rallies led outside selected themes, weak thematic breadth, right-tail droughts and reversals in major M2 leaders.
 
 ## CURRENT EVIDENCE GRADE
 
@@ -1578,6 +1946,8 @@ Historical common-window references—not forecasts—were net CAGR {selected_me
 ## DEPLOYMENT TIER
 
 `{deployment_tier}`
+
+This means shadow observation only for the selected 50/50 research architecture. It does not supersede the static 75/25 operational core fallback and authorises no broker order.
 
 ## MONTHLY OPERATING RULE
 
@@ -1597,7 +1967,7 @@ No untouched historical holdout, no A4F prospective decisions, limited crisis di
 """
     write_text("UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md",report)
     write_text("UKACTIVE_A4F_SIPP_MONTHLY_RUNBOOK.md",report[report.index("## MONTHLY OPERATING RULE"):report.index("## FAILURE MODES")]+"\n\nOperational instrument rule: SWDA is the confirmed core; M2 uses only the preverified current implementation map; unavailable slots stay in GBP cash. No live order is generated.\n")
-    write_text("UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",f"# UKACTIVE-A4F-SIPP executive handoff\n\n- Selected whole-SIPP strategy: **{selected_id}** (`{selected_switch}`).\n- Selection class: **{selection_class}**.\n- Deployment tier: **{deployment_tier}**.\n- Historical cutoff: **2026-08-21**; evidence **E2 developmental**.\n- Common-window net CAGR {selected_metrics['net_cagr']:.2%}; MDD {selected_metrics['maximum_drawdown']:.2%}; Ulcer {selected_metrics['ulcer_index']:.2%}.\n- No broker execution is authorised.\n")
+    write_text("UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",f"# UKACTIVE-A4F-SIPP executive handoff\n\n- Selected research/shadow whole-SIPP architecture: **{selected_id}** (`{selected_switch}`).\n- Selection class: **{selection_class}**.\n- Deployment tier: **{deployment_tier}**.\n- Historical cutoff: **2026-08-21**; evidence **E2 developmental**.\n- Common-window net CAGR {selected_metrics['net_cagr']:.2%}; MDD {selected_metrics['maximum_drawdown']:.2%}; Ulcer {selected_metrics['ulcer_index']:.2%}.\n- The selected architecture has no demonstrated risk edge; its ex-2025/doubled-cost M2 margin is thin and top-three family removal reverses incremental return.\n- Current operational static-core fallback: **75% SWDA / 25% GBP cash**, monthly.\n- No broker execution is authorised.\n")
     write_text("UKACTIVE_A4F_SIPP_PROVENANCE.md",f"# UKACTIVE-A4F-SIPP provenance\n\nParent A4E manifest commit `ce6136f52ca646698a56e4ff4bbb8577214a684d`; tag `ukactive-a4e-sipp-v1-20260824`. Protocol commit `db439c0eac811e08580ed3054faecb3c6842ab57`; audit-schema repairs `ab55550` and `{PROTOCOL_COMMIT}`. Source hashes are frozen in the preregistration. The common executable window starts 2017-03-01; the longer core-only window starts 2010-01-08. Prior artefacts were not modified.\n")
     write_text("UKACTIVE_A4F_SIPP_DATA_CUTOFF_AUDIT.md",f"# UKACTIVE-A4F-SIPP data-cutoff audit\n\n- Accepted calendar maximum: `{data.base.research.calendar.max():%Y-%m-%d}`.\n- Regime ledger maximum: `{ledger_all.decision_date.max():%Y-%m-%d}`.\n- Latest executable event within evidence boundary: `{policy_decisions.execution_date.dropna().max():%Y-%m-%d}`.\n- The 2026-08-21 month-end state has no post-cutoff execution and earns no A4F return.\n- Every expanding threshold excludes the current observation.\n- No post-2026-08-21 row entered model selection.\n")
 
@@ -1605,8 +1975,96 @@ No untouched historical holdout, no A4F prospective decisions, limited crisis di
     if selected_id not in year_strategies:
         year_score=pd.concat([year_score,annual_score(selected_id,selected_result,global_result,pool_benchmark,selected_alloc,regime_changes_by_year)],ignore_index=True)
         attribution=pd.concat([attribution,daily_accounting_attribution(selected_id,selected_result,data)],ignore_index=True)
-    create_charts(ledger_all,year_score,selected_id,selected_result,static_results,global_result,policy_results,matched,exclusions,attribution,transitions)
+    create_charts(ledger_all,year_score,selected_id,selected_result,static_results,global_result,policy_results,matched,exclusions,attribution,transitions,selected_switch)
 
+    dated_output_ok = True
+    latest_output_date = pd.Timestamp.min
+    for csv_path in OUT.glob("*.csv"):
+        frame = pd.read_csv(csv_path)
+        date_columns = [
+            column
+            for column in frame.columns
+            if column == "date" or column.endswith("_date")
+        ]
+        for column in date_columns:
+            parsed = pd.to_datetime(frame[column], errors="coerce").dropna()
+            if len(parsed):
+                latest_output_date = max(latest_output_date, pd.Timestamp(parsed.max()))
+                dated_output_ok &= bool(parsed.le(CUTOFF).all())
+    selected_static_family_gate = True
+    if selected_alloc["m2_weight"] > 1e-12 and selected_switch == "STATIC_MONTHLY":
+        selected_status = direct_m2.loc[
+            direct_m2.candidate_id.eq(selected_id), "family_exclusion_status"
+        ]
+        selected_static_family_gate = bool(
+            len(selected_status)
+            and selected_status.eq("STATIC_FAMILY_GATE_PASS").all()
+        )
+    state_machine_valid = bool(
+        len(state_rows) == 8
+        and all(
+            min(row["swda_allocation"], row["m2_allocation"], row["cash_allocation"]) >= -1e-12
+            and abs(row["swda_allocation"] + row["m2_allocation"] + row["cash_allocation"] - 1.0) <= 1e-12
+            and row["regime"] == core.classify_regime(row["risk_score"], row["leadership_state"])
+            for row in state_rows
+        )
+        and (
+            selected_switch != "STATIC_MONTHLY"
+            or all(
+                abs(row["swda_allocation"] - selected_alloc["global_weight"]) <= 1e-12
+                and abs(row["m2_allocation"] - selected_alloc["m2_weight"]) <= 1e-12
+                and abs(row["cash_allocation"] - selected_alloc["cash_weight"]) <= 1e-12
+                for row in state_rows
+            )
+        )
+    )
+    global_year_return_ok = True
+    global_curve_common = curve(global_result).loc[lambda frame: frame.date.between(COMMON_START, CUTOFF)]
+    for year, part in global_curve_common.groupby(global_curve_common.date.dt.year):
+        expected_return = float(np.prod(1.0 + part.net_return.astype(float)) - 1.0)
+        reported = year_score.loc[
+            year_score.strategy_id.eq("GLOBAL_100") & year_score.year.eq(int(year)),
+            "net_return",
+        ]
+        global_year_return_ok &= bool(len(reported) == 1 and abs(float(reported.iloc[0]) - expected_return) <= 1e-12)
+    dynamic_year_weights_ok = bool(
+        year_score.loc[
+            year_score.strategy_id.eq("POLICY_1_RISK_TIMING_ONLY"),
+            "average_cash_weight",
+        ].round(8).nunique() > 1
+        and year_score.loc[
+            year_score.strategy_id.eq("GLOBAL_100"), "average_swda_weight"
+        ].sub(1.0).abs().max() <= 1e-12
+    )
+    selected_exclusion_rows = exclusions.loc[
+        exclusions.policy_id.eq(selected_id) & exclusions.switch_mode.eq(selected_switch)
+    ]
+    selected_exclusions_complete = bool(
+        selected_switch != "STATIC_MONTHLY"
+        or selected_alloc["m2_weight"] <= 1e-12
+        or (
+            len(selected_exclusion_rows) == 13
+            and {"EXCLUDE_2025", "EXCLUDE_2020", "EXCLUDE_2020_AND_2025"}.issubset(
+                set(selected_exclusion_rows.excluded_period)
+            )
+            and sum(str(value).startswith("LEAVE_") for value in selected_exclusion_rows.excluded_period) == 10
+        )
+    )
+    static_switch_attribution = switch_attr.loc[
+        switch_attr.policy_id.eq("POLICY_0_STATIC_DEFENSIVE_CONTROL")
+    ]
+    switch_event_scope_ok = bool(
+        static_switch_attribution.switch_event_count.eq(0).all()
+        and static_switch_attribution.switching_gain.abs().le(1e-12).all()
+        and switch_attr.counterfactual_scope.eq(
+            "ONE_MONTH_AFTER_ACTUAL_ALLOCATION_SWITCH_VS_STATIC_MATCHED_CONTROL;NOT_DRAWDOWN_ATTRIBUTION"
+        ).all()
+    )
+    execution_endpoint_ok = True
+    for row in policy_decisions.loc[policy_decisions.execution_date.notna()].itertuples(index=False):
+        target = json.loads(row.target_weights_json or "{}")
+        endpoints = json.loads(row.execution_total_return_endpoints_gbp_json or "{}")
+        execution_endpoint_ok &= set(target).issubset(endpoints)
     tests=[
         ("A4E_REPRODUCTION",reconciliation.status.eq("PASS").all(),f"{len(reconciliation)} cells"),
         ("CUTOFF",ledger_all.decision_date.max()<=CUTOFF,"No post-cutoff state"),
@@ -1620,6 +2078,15 @@ No untouched historical holdout, no A4F prospective decisions, limited crisis di
         ("INVESTABLE_ATTRIBUTION_HAS_NO_RESIDUAL",bool(attribution.loc[~attribution.strategy_id.eq("EQUAL_WEIGHT_OPPORTUNITY_POOL"),"other_market_contribution"].abs().max()<1e-9),"Aggregate-series residual is confined to the equal-pool comparator"),
         ("DIAGNOSTIC_POLICY_NOT_PROMOTED",bool(dynamic.loc[dynamic.policy_id.eq("POLICY_5_HIGHER_ALPHA_DIAGNOSTIC"),"promotion_status"].eq("NOT_ELIGIBLE_HIGHER_ALPHA_DIAGNOSTIC").all()),"ALPHA_50 remains a diagnostic and cannot pass a selection gate"),
         ("STATIC_M2_FAMILY_GATE_RESOLVED",bool(not serious_static or all(strategy_id in static_family_ok for strategy_id in serious_static)),f"{len(static_family_ok)} serious static M2 candidate(s) completed family removal"),
+        ("SELECTED_STATIC_M2_FAMILY_GATE",selected_static_family_gate,"Selected static M2 strategy must pass every leave-one-family-out gate"),
+        ("STATE_MACHINE_RECONCILES",state_machine_valid,"Eight score/leadership rows reconcile to selected strategy and sum to 100%"),
+        ("ALL_OUTPUT_DATES_WITHIN_CUTOFF",dated_output_ok,f"Latest parsed scientific output date {latest_output_date:%Y-%m-%d}"),
+        ("HOLDING_SPELL_AUDIT_COMPLETE",bool(len(holding_spells)>0 and set(holding_spells.winner_class)=={"WINNER","FALSE_OR_LOSING_LEADER"}),f"{len(holding_spells)} complete M2 holding spells"),
+        ("ANNUAL_RETURN_BOUNDARIES_RECONCILE",global_year_return_ok,"Calendar-year return includes every in-window daily return; 2017/2026 remain labelled partial"),
+        ("ANNUAL_DYNAMIC_WEIGHTS_ARE_YEAR_SPECIFIC",dynamic_year_weights_ok,"Dynamic annual weights vary by realised causal state; GLOBAL_100 remains 100% SWDA"),
+        ("SELECTED_STATIC_YEAR_EXCLUSIONS_COMPLETE",selected_exclusions_complete,f"{len(selected_exclusion_rows)} selected-strategy exclusion rows"),
+        ("SWITCH_COUNTERFACTUALS_USE_ACTUAL_EVENTS",switch_event_scope_ok,"Static Policy 0 has zero allocation-switch events and event diagnostics are scoped to one-month matched-control effects"),
+        ("EXECUTION_ENDPOINT_EVIDENCE_COMPLETE",execution_endpoint_ok,"Every executable target has an accepted GBP total-return endpoint value"),
         ("MACRO_FAIL_CLOSED",True,"MACRO_REGIME_DATA_INSUFFICIENT"),
         ("NO_BROKER_CONNECTOR",True,"Research runner has no broker import or call"),
     ]
