@@ -1758,6 +1758,7 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
         "instruments":{"global":"SWDA|IE00B4L5Y983","m2":"25_OF_25_USER_CONFIRMED_CURRENT_II_LINES;ECONOMIC_FAMILY_SELECTION","cash":"II_SIPP_GBP_BROKER_CASH_OPERATIONALLY;ACCEPTED_GBP_CASH_SERIES_RESEARCH"},
         "operating_characteristics":{"annual_strategy_switches":selected_annual_strategy_changes,"annual_rebalance_events":selected_annual_rebalances,"annual_turnover_traded_notional":selected_metrics.get("annual_turnover_traded_notional")},
         "risk_edge_status":"NOT_DEMONSTRATED_SELECTED_RETURN_ORIENTED_SHADOW_ARCHITECTURE",
+        "robustness_caveat":"M2_INCREMENTAL_EDGE_REVERSES_WHEN_2020_AND_2025_ARE_JOINTLY_EXCLUDED;RIGHT_TAIL_DEPENDENT",
         "current_operational_fallback":{"strategy_id":"GLOBAL_75_CASH25","swda_weight":0.75,"cash_weight":0.25,"review":"MONTHLY","status":"STATIC_CORE_FALLBACK_NOT_A4F_ACTIVE_DEPLOYMENT"},
         "evidence":"E2_DEVELOPMENTAL",
         "deployment_tier":deployment_tier,
@@ -1870,6 +1871,16 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
         if len(selected_top5)
         else "not applicable"
     )
+    selected_joint_exclusion = exclusions.loc[
+        exclusions.policy_id.eq(selected_id)
+        & exclusions.switch_mode.eq(selected_switch)
+        & exclusions.excluded_period.eq("EXCLUDE_2020_AND_2025")
+    ]
+    selected_joint_exclusion_text = (
+        f"{selected_joint_exclusion.iloc[0].excess_vs_global:.2%} annualised excess versus global"
+        if len(selected_joint_exclusion)
+        else "not applicable"
+    )
     regime_best_text = "; ".join(
         f"{row.regime}: {row.strategy_id}"
         for row in top_regime.itertuples(index=False)
@@ -1893,7 +1904,7 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
 15. **False-defensive opportunity cost:** at actual Policy 3 defensive-switch intervals, the summed negative next-month policy-minus-matched-control effect was {p3_false_cost:.2%} return units.
 16. **Successful-defence value:** at actual defensive-switch intervals, the summed positive next-month effect was {p3_defence_value:.2%}; full-chain MDD improved by {p3_mdd_benefit:.2%} versus its matched control. These are counterfactual diagnostics, not a claim that the entire MDD difference was caused by those individual switches.
 17. **Asymmetric re-risking:** Policy 3 CAGR changed from {p3_full.net_cagr:.2%} immediate to {p3_hyst.net_cagr:.2%} hysteretic; it did not rescue the policy.
-18. **2025 exclusion:** {selected_direct_text}.
+18. **2025 exclusion:** {selected_direct_text}. Excluding both 2020 and 2025 produces {selected_joint_exclusion_text}; this is material two-regime fragility.
 19. **Doubled costs:** the selected static M2 replacement comparison remained non-negative but thin; dynamic policy gates are shown explicitly in the cost-stress file.
 20. **Major contributors:** the selected static blend passed every leave-one-family-out gate, but its incremental CAGR reversed to {selected_top3_text} and {selected_top5_text}. This is material right-tail fragility even though no single family alone explains the full result.
 21. **Best strategy by regime:** {regime_best_text}. Insufficient states are explicitly excluded from strong inference.
@@ -1919,7 +1930,7 @@ Best adequately sampled static strategy by state: {regime_text}. Regime claims w
 
 ## ALPHA-ALLOCATION CONCLUSION
 
-The M2 sleeve was tested directly against replacement by SWDA, under full history, 2025 exclusion, doubled costs and family/spell removals. Dynamic M2 addition was promoted only if matched-risk and multi-episode gates passed. Result: {selection_reason} For an M2 selection, the top-three removal result is {selected_top3_text}. This is not robust alpha confirmation where the sign reverses.
+The M2 sleeve was tested directly against replacement by SWDA, under full history, 2025 exclusion, doubled costs and family/spell removals. Dynamic M2 addition was promoted only if matched-risk and multi-episode gates passed. Result: {selection_reason} For an M2 selection, the top-three removal result is {selected_top3_text}; excluding both 2020 and 2025 yields {selected_joint_exclusion_text}. These sign reversals preclude robust alpha confirmation.
 
 ## RISK-ALLOCATION CONCLUSION
 
@@ -1963,11 +1974,11 @@ Suspend affected allocation if required instruments are unavailable, point-in-ti
 
 ## REMAINING EVIDENCE GAP
 
-No untouched historical holdout, no A4F prospective decisions, limited crisis diversity, sparse regime states where flagged, no accepted release-vintage UK macro dataset, and uncertain future live spreads/cash yield. The selected strategy requires prospective observation before material active allocation.
+No untouched historical holdout, no A4F prospective decisions, limited crisis diversity, sparse regime states where flagged, no accepted release-vintage UK macro dataset, uncertain future live spreads/cash yield, and a selected M2 edge that reverses when 2020 and 2025 are jointly excluded. The selected strategy requires prospective observation before material active allocation.
 """
     write_text("UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md",report)
     write_text("UKACTIVE_A4F_SIPP_MONTHLY_RUNBOOK.md",report[report.index("## MONTHLY OPERATING RULE"):report.index("## FAILURE MODES")]+"\n\nOperational instrument rule: SWDA is the confirmed core; M2 uses only the preverified current implementation map; unavailable slots stay in GBP cash. No live order is generated.\n")
-    write_text("UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",f"# UKACTIVE-A4F-SIPP executive handoff\n\n- Selected research/shadow whole-SIPP architecture: **{selected_id}** (`{selected_switch}`).\n- Selection class: **{selection_class}**.\n- Deployment tier: **{deployment_tier}**.\n- Historical cutoff: **2026-08-21**; evidence **E2 developmental**.\n- Common-window net CAGR {selected_metrics['net_cagr']:.2%}; MDD {selected_metrics['maximum_drawdown']:.2%}; Ulcer {selected_metrics['ulcer_index']:.2%}.\n- The selected architecture has no demonstrated risk edge; its ex-2025/doubled-cost M2 margin is thin and top-three family removal reverses incremental return.\n- Current operational static-core fallback: **75% SWDA / 25% GBP cash**, monthly.\n- No broker execution is authorised.\n")
+    write_text("UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",f"# UKACTIVE-A4F-SIPP executive handoff\n\n- Selected research/shadow whole-SIPP architecture: **{selected_id}** (`{selected_switch}`).\n- Selection class: **{selection_class}**.\n- Deployment tier: **{deployment_tier}**.\n- Historical cutoff: **2026-08-21**; evidence **E2 developmental**.\n- Common-window net CAGR {selected_metrics['net_cagr']:.2%}; MDD {selected_metrics['maximum_drawdown']:.2%}; Ulcer {selected_metrics['ulcer_index']:.2%}.\n- The selected architecture has no demonstrated risk edge; its ex-2025/doubled-cost M2 margin is thin, top-three family removal reverses incremental return, and joint exclusion of 2020/2025 yields {selected_joint_exclusion_text}.\n- Current operational static-core fallback: **75% SWDA / 25% GBP cash**, monthly.\n- No broker execution is authorised.\n")
     write_text("UKACTIVE_A4F_SIPP_PROVENANCE.md",f"# UKACTIVE-A4F-SIPP provenance\n\nParent A4E manifest commit `ce6136f52ca646698a56e4ff4bbb8577214a684d`; tag `ukactive-a4e-sipp-v1-20260824`. Protocol commit `db439c0eac811e08580ed3054faecb3c6842ab57`; audit-schema repairs `ab55550` and `{PROTOCOL_COMMIT}`. Source hashes are frozen in the preregistration. The common executable window starts 2017-03-01; the longer core-only window starts 2010-01-08. Prior artefacts were not modified.\n")
     write_text("UKACTIVE_A4F_SIPP_DATA_CUTOFF_AUDIT.md",f"# UKACTIVE-A4F-SIPP data-cutoff audit\n\n- Accepted calendar maximum: `{data.base.research.calendar.max():%Y-%m-%d}`.\n- Regime ledger maximum: `{ledger_all.decision_date.max():%Y-%m-%d}`.\n- Latest executable event within evidence boundary: `{policy_decisions.execution_date.dropna().max():%Y-%m-%d}`.\n- The 2026-08-21 month-end state has no post-cutoff execution and earns no A4F return.\n- Every expanding threshold excludes the current observation.\n- No post-2026-08-21 row entered model selection.\n")
 
