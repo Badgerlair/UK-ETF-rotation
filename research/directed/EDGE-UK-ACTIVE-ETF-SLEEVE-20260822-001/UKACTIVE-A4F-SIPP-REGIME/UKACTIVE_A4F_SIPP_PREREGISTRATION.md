@@ -63,6 +63,10 @@ Weights drift between monthly executions and rebalance at execution. Cash earns 
 
 Risk timing is measured against an alpha-zero counterfactual, M2 selection against the same risk path with alpha zero, interaction as the combined linked-P&L residual, cash yield from opening cash weight times cash return, and costs from actual execution legs. Switching value is measured against a static monthly portfolio with matched average weights. All attribution must reconcile to linked portfolio P&L within numerical tolerance.
 
+### Pre-results audit-schema repair
+
+The regime-input ledger is supplemented by a policy decision ledger keyed by policy, switch mode and decision date. It retains raw, previous and applied sleeve allocations, confirmation counts, switch reason, next-session execution evidence, post-execution holdings, traded notional, legs and costs. A separate episode ledger retains episode-specific returns and drawdowns. This is a schema-completeness repair made before any outcome calculation; no formula, threshold, policy, gate or timing rule changed.
+
 ## Robustness, controls and noncausal ceilings
 
 The fixed candidate is evaluated over full common history, pre-/post-2020, latest five and three years, excluding 2025, excluding 2020, excluding both, leave-one-year-out, baseline and doubled costs, leave-one-family-out, top-family and top-three-family removal, and both switch modes. Volatility sensitivity is restricted to 70/75/80 percentiles; leadership sensitivity to 40/50/60 percentiles.

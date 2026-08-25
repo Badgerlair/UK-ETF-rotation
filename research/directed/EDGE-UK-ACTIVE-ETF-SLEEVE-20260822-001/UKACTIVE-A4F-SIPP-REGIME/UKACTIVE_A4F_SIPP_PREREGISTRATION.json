@@ -118,6 +118,14 @@
     "no_leverage": true,
     "no_shorting": true
   },
+  "immutable_decision_audit": {
+    "regime_input_ledger": "UKACTIVE_A4F_SIPP_MONTHLY_REGIME_LEDGER.csv",
+    "policy_decision_ledger": "UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv",
+    "regime_episode_ledger": "UKACTIVE_A4F_SIPP_REGIME_EPISODE_LEDGER.csv",
+    "policy_decision_key": ["policy_id", "switch_mode", "decision_date"],
+    "required_execution_fields": ["execution_date", "execution_lag_xlon_sessions", "execution_status", "execution_price_evidence", "target_weights_json", "post_execution_holdings", "traded_notional_fraction", "trade_legs", "transaction_cost_rate", "transaction_cost_value"],
+    "amendment_reason": "PRE_RESULTS_SCHEMA_COMPLETENESS_REPAIR;NO_FORMULA_THRESHOLD_POLICY_OR_GATE_CHANGED"
+  },
   "attribution": {
     "risk_timing_contribution": "POLICY_WITH_ITS_RISK_MAP_AND_ALPHA0_MINUS_STATIC_100_GLOBAL_COUNTERFACTUAL_ON_IDENTICAL_DAILY_CHAIN",
     "m2_selection_contribution": "POLICY_WITH_OBSERVED_ALPHA_MAP_MINUS_SAME_RISK_MAP_WITH_ALPHA0",
