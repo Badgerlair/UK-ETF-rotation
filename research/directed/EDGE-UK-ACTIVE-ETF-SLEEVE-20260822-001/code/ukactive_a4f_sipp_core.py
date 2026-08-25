@@ -269,8 +269,14 @@ def _monthly_schedule(data: a4d.A4DData) -> pd.DatetimeIndex:
 
 def _daily_trailing_volatility(data: a4d.A4DData) -> pd.Series:
     returns = data.base.research.daily_returns[GLOBAL_FAMILY].reindex(data.base.research.calendar).astype(float)
-    # Current month-end close is observable when the subsequent target is formed.
-    return returns.rolling(63, min_periods=63).std(ddof=1) * math.sqrt(252.0)
+    # The A2R2 validity contract defines lookbacks by valid observations, not by
+    # gap-free master-calendar rows.  Compute volatility over the last 63 valid
+    # global return observations, then make that causal endpoint available for
+    # at most the frozen three-session endpoint tolerance.  A longer gap fails
+    # closed instead of carrying volatility indefinitely.
+    valid = returns.dropna()
+    valid_volatility = valid.rolling(63, min_periods=63).std(ddof=1) * math.sqrt(252.0)
+    return valid_volatility.reindex(data.base.research.calendar, method="ffill", limit=3)
 
 
 def _same_month_rank_persistence(current: pd.DataFrame, previous: pd.DataFrame | None) -> tuple[float, int]:

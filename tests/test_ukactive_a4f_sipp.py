@@ -429,6 +429,25 @@ def test_monthly_ledger_uses_current_point_in_time_top7_and_valid_execution() ->
                     assert _parse_family_list(row.top7_families) == expected
 
 
+def test_common_window_has_complete_valid_observation_regime_coverage() -> None:
+    ledger = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_MONTHLY_REGIME_LEDGER.csv",
+        parse_dates=["decision_date"],
+    )
+    # 2017-02-28 is the formation decision whose next-session execution starts
+    # the common executable portfolio chain on 2017-03-01.
+    common = ledger.loc[ledger["decision_date"].ge(pd.Timestamp("2017-02-28"))]
+    assert len(common) > 0
+    assert common["global_vol_63"].notna().all()
+    assert common["risk_score"].notna().all()
+    assert common["regime"].ne("REGIME_UNAVAILABLE").all()
+
+    decisions = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv")
+    counts = decisions.groupby(["policy_id", "switch_mode"]).size()
+    assert len(counts) == 12
+    assert counts.eq(len(common)).all()
+
+
 def test_all_required_34_outputs_and_16_charts_exist() -> None:
     names = {path.name for path in STAGE_ROOT.iterdir() if path.is_file()}
     assert len(REQUIRED_OUTPUTS) == 34
@@ -492,6 +511,32 @@ def test_serious_static_m2_candidate_family_gate_is_complete() -> None:
         rows = influence.loc[influence["policy_id"].eq(strategy_id)]
         assert rows["exclusion_type"].eq("LEAVE_ONE_FAMILY_OUT").any()
         assert rows["exclusion_type"].eq("EXCLUDE_TOP_5_FAMILY_CONTRIBUTORS").any()
+
+
+def test_strategy_switch_counts_and_matched_gate_labels_are_resolved() -> None:
+    dynamic = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv")
+    fixed = dynamic.loc[
+        dynamic["policy_id"].eq("POLICY_0_STATIC_DEFENSIVE_CONTROL")
+        & dynamic["window_id"].eq("FULL_COMMON_HISTORY")
+        & dynamic["cost_scenario"].eq("BASE")
+    ]
+    assert len(fixed) == 2
+    assert fixed["annual_strategy_changes"].eq(0.0).all()
+    assert fixed["annual_rebalance_events"].gt(0.0).all()
+
+    matched = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv")
+    assert not matched["matched_risk_gate_status"].str.contains("PENDING", na=False).any()
+    primary = matched.loc[matched["control_type"].eq("MATCHED_AVERAGE_EXPOSURE")]
+    assert primary["matched_risk_gate_status"].isin(
+        {"MATCHED_RISK_GATE_PASS", "MATCHED_RISK_GATE_FAIL"}
+    ).all()
+
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    if selected["switch_mode"] == "STATIC_MONTHLY":
+        runbook = (STAGE_ROOT / "UKACTIVE_A4F_SIPP_MONTHLY_RUNBOOK.md").read_text(
+            encoding="utf-8"
+        )
+        assert "Regime fields are recorded as telemetry only" in runbook
 
 
 def test_manifest_hashes_reproduce_all_listed_outputs() -> None:

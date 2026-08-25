@@ -138,6 +138,32 @@ def average_allocations(data: Any, targets: Mapping[pd.Timestamp, Mapping[str, f
     return core.target_allocation_summary(data, targets)
 
 
+def aggregate_allocation_change_count(
+    data: Any, targets: Mapping[pd.Timestamp, Mapping[str, float]]
+) -> int:
+    """Count strategy-allocation changes, excluding ordinary M2 replacements."""
+
+    members = set(data.members)
+    rows = []
+    for date, target in sorted(targets.items()):
+        global_weight = float(target.get(core.GLOBAL_FAMILY, 0.0))
+        m2_weight = float(sum(weight for family, weight in target.items() if family in members))
+        rows.append(
+            {
+                "date": pd.Timestamp(date),
+                "global_weight": global_weight,
+                "m2_weight": m2_weight,
+                "cash_weight": max(0.0, 1.0 - global_weight - m2_weight),
+            }
+        )
+    if len(rows) <= 1:
+        return 0
+    allocation = pd.DataFrame(rows).set_index("date")
+    changed = allocation.diff().abs().gt(1e-12).any(axis=1)
+    changed.iloc[0] = False
+    return int(changed.sum())
+
+
 def annual_score(strategy_id: str, result: Any, global_result: Any, pool_result: Any, allocation: Mapping[str, float] | None = None, regime_changes: Mapping[int, int] | None = None) -> pd.DataFrame:
     frame = curve(result).loc[lambda x: x["date"].between(COMMON_START, CUTOFF)].copy()
     g = curve(global_result).set_index("date")["portfolio_value"].astype(float)
@@ -522,7 +548,8 @@ def dynamic_result_rows(
     for (policy_id, switch_mode, cost), result in simulations.items():
         allocation = average_allocations(data, target_maps[(policy_id, switch_mode)])
         trades = as_sim(result).trades
-        changes = int(trades.get("traded_notional_fraction", pd.Series(dtype=float)).gt(1e-12).sum())
+        rebalance_events = int(trades.get("traded_notional_fraction", pd.Series(dtype=float)).gt(1e-12).sum())
+        strategy_changes = aggregate_allocation_change_count(data, target_maps[(policy_id, switch_mode)])
         years = max((CUTOFF - COMMON_START).days / 365.2425, 1e-9)
         for window_id in WINDOWS:
             row = metric_row(policy_id, result, window_id, cost)
@@ -546,7 +573,8 @@ def dynamic_result_rows(
                 "average_global_weight": allocation["global_weight"],
                 "average_m2_weight": allocation["m2_weight"],
                 "average_cash_weight": allocation["cash_weight"],
-                "annual_strategy_changes": changes / years,
+                "annual_strategy_changes": strategy_changes / years,
+                "annual_rebalance_events": rebalance_events / years,
                 "return_retention": row.get("net_cagr", np.nan) / gm.get("net_cagr", np.nan) if gm.get("net_cagr", 0) > 0 else np.nan,
                 "promotion_status": "PENDING_FULL_GATE_AUDIT",
             })
@@ -1340,6 +1368,23 @@ Adequately sampled regimes: {', '.join(sorted(regime_summary.loc[regime_summary.
         default="FAILS_ONE_OR_MORE_MANDATORY_GATES",
     )
     write_csv("UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv",dynamic)
+    matched_gate_lookup = {
+        (row.policy_id, row.switch_mode): bool(row.matched_risk_gate)
+        for row in gates.itertuples(index=False)
+    }
+    matched["matched_risk_gate_status"] = [
+        (
+            (
+                "MATCHED_RISK_GATE_PASS"
+                if matched_gate_lookup.get((row.policy_id, row.switch_mode), False)
+                else "MATCHED_RISK_GATE_FAIL"
+            )
+            if row.control_type == "MATCHED_AVERAGE_EXPOSURE"
+            else "DIAGNOSTIC_CONTROL_NOT_PRIMARY_GATE"
+        )
+        for row in matched.itertuples(index=False)
+    ]
+    write_csv("UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv", matched)
     costs=cost_stress_rows(dynamic)
     doubled_gate_lookup = {
         (row.policy_id, row.switch_mode): bool(row.double_cost_gate)
@@ -1474,6 +1519,22 @@ The programme contains accepted, point-in-time GBP cash data derived from BoE SO
     annual_text="; ".join(f"{int(r.year)}: {r.net_return:.1%}" for r in selected_years.itertuples(index=False))
     top_regime=regime_rankings.loc[regime_rankings.sample_status.eq("REGIME_SAMPLE_SUFFICIENT")].sort_values(["regime","rank_by_balanced_score"]).groupby("regime").head(1)
     regime_text="; ".join(f"{r.regime}: {r.strategy_id}" for r in top_regime.itertuples(index=False)) or "No state met the strong-sample standard"
+    if selected_switch == "STATIC_MONTHLY":
+        operating_rule = (
+            f"After the final valid XLON close, validate the A2R2 inputs and calculate the frozen M2_BASE TOP7 ranking. "
+            f"Target SWDA {selected_alloc['global_weight']:.0%}, the seven equal-weight M2 families in aggregate {selected_alloc['m2_weight']:.0%}, "
+            f"and GBP cash {selected_alloc['cash_weight']:.0%}. Regime fields are recorded as telemetry only and never change these strategic weights. "
+            "Record the decision before the next-session close; execute at the first valid following XLON session within three sessions; "
+            "charge 20 bp and £3.99 per leg; if a verified M2 implementation is unavailable its affected allocation remains GBP cash; "
+            "reconcile holdings, costs and hashes. No automatic broker execution."
+        )
+    else:
+        operating_rule = (
+            "After the final valid XLON close, validate A2R2 inputs; calculate G126/G252 excess and vol63; update the prior-only vol75 threshold; "
+            "calculate M2 TOP7 spread, rank persistence and absolute support; classify risk score, leadership and regime; apply the frozen state-machine allocation; "
+            "apply asymmetric confirmation only where selected; record before the next-session close; execute at the first valid following XLON session within three sessions; "
+            "charge 20 bp and £3.99 per leg; unavailable preferred/alternate exposure becomes GBP cash; reconcile holdings, costs and hashes. No automatic broker execution."
+        )
     report=f"""# UKACTIVE-A4F-SIPP — final decision report
 
 Historical cutoff: **2026-08-21**. Evidence: **E2 developmental**. Audit: **PASS**.
@@ -1520,7 +1581,7 @@ Historical common-window references—not forecasts—were net CAGR {selected_me
 
 ## MONTHLY OPERATING RULE
 
-After the final valid XLON close: validate A2R2 inputs; calculate G126/G252 excess and vol63; update prior-only vol75; calculate M2 TOP7 spread, rank persistence and absolute support; classify risk score, leadership and regime; apply the frozen policy/state-machine allocation; apply asymmetric confirmation only if selected; record before next-session close; execute at the first valid following XLON session within three sessions; charge 20 bp and £3.99/leg; unavailable preferred/alternate exposure becomes GBP cash; reconcile holdings, costs and hashes. No automatic broker execution.
+{operating_rule}
 
 ## FAILURE MODES
 
@@ -1551,6 +1612,8 @@ No untouched historical holdout, no A4F prospective decisions, limited crisis di
         ("CUTOFF",ledger_all.decision_date.max()<=CUTOFF,"No post-cutoff state"),
         ("PRIOR_ONLY_VOL",bool((ledger_all.loc[ledger_all.volatility_threshold.notna(),"volatility_prior_observation_count"]>=36).all()),"36 prior months"),
         ("PRIOR_ONLY_LEADERSHIP",bool((ledger_all.loc[ledger_all.leadership_spread_threshold.notna(),"spread_prior_observation_count"]>=24).all()),"24 prior diagnostics"),
+        ("COMMON_WINDOW_REGIME_COVERAGE",bool(common_ledger["risk_score"].notna().all() and common_ledger["regime"].ne("REGIME_UNAVAILABLE").all()),f"{int(common_ledger['risk_score'].notna().sum())}/{len(common_ledger)} common month-ends classified"),
+        ("POLICY_DECISION_COVERAGE",bool(policy_decisions.groupby(["policy_id","switch_mode"]).size().eq(len(common_ledger)).all()),f"Every policy/switch has {len(common_ledger)} monthly decisions"),
         ("NO_SAME_CLOSE",not bool(policy_decisions.execution_date.notna().any() and (pd.to_datetime(policy_decisions.execution_date.dropna()).to_numpy()<=pd.to_datetime(policy_decisions.loc[policy_decisions.execution_date.notna(),"decision_date"]).to_numpy()).any()),"Executions after decisions"),
         ("NO_LEVERAGE",bool((policy_decisions[["applied_global_weight","applied_m2_weight","applied_cash_weight"]].sum(axis=1)<=1+1e-10).all()),"Allocations <=100%"),
         ("ATTRIBUTION_RECONCILES",bool(attribution.reconciliation_error.abs().max()<1e-9),f"max {attribution.reconciliation_error.abs().max():.3g}"),
