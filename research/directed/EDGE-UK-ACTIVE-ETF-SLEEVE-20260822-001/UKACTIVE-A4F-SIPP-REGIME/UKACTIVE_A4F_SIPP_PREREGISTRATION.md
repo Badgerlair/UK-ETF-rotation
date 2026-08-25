@@ -81,6 +81,10 @@ The builder must fail if any signal, return or selected input exceeds 2026-08-21
 
 A selectable dynamic policy must pass correctness; retain at least 90% of global CAGR or beat global; meet the drawdown/Ulcer gate; beat a matched-risk control by one preregistered economic threshold; show positive contribution from at least two regimes and three episodes without one switch explaining most benefit; retain positive incremental value excluding 2025; remain viable at doubled costs; avoid one-family dependence; show coherent neighbouring-threshold results; and survive asymmetric hysteresis. Prefer fewer than six strategy changes annually.
 
+Operationally, regime rankings differ only when two adequately sampled regimes have different top static candidates or opposite M2-minus-global signs. Positive regime/episode value is measured against the primary matched-average-exposure control. No one switch may provide 50% or more of all positive switch gains. Doubled-cost incremental CAGR must remain non-negative. Every leave-one-family incremental CAGR must remain non-negative. The canonical threshold result must be positive and cannot turn negative at both adjacent volatility settings or both adjacent leadership settings. Hysteresis must retain 95% of immediate CAGR or independently pass the return, drawdown and matched-risk gates.
+
+Within the highest qualifying hierarchy, select a Pareto-efficient candidate by: most preferred SIPP target hits, lowest Ulcer, less-severe drawdown, lower turnover, higher CAGR, then lexical policy ID. A static M2 blend requires positive full-common incremental CAGR, non-negative ex-2025 and doubled-cost increments, and no leave-one-family sign reversal. If that fails, choose the highest global/cash global weight with drawdown no worse than -20% and at least 90% global CAGR retention; otherwise choose the lowest-drawdown positive-return control.
+
 Selection follows: regime strategy with return and risk edge; regime strategy with strong risk edge; static global/M2/cash blend; then static global/cash core. One exact whole-SIPP strategy must be selected, but no active edge will be manufactured.
 
 ## Evidence and deployment
