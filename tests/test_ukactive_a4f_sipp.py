@@ -68,6 +68,8 @@ REQUIRED_OUTPUTS = {
     "UKACTIVE_A4F_SIPP_REGIME_TRANSITIONS.csv",
     "UKACTIVE_A4F_SIPP_REGIME_INFERENCE.md",
     "UKACTIVE_A4F_SIPP_MACRO_REGIME_ATTRIBUTION.md",
+    "UKACTIVE_A4F_SIPP_SECONDARY_REGIME_DIAGNOSTICS.csv",
+    "UKACTIVE_A4F_SIPP_REGIME_EPISODE_LEDGER.csv",
     # Static frontier (3)
     "UKACTIVE_A4F_SIPP_STATIC_FRONTIER.csv",
     "UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv",
@@ -78,11 +80,19 @@ REQUIRED_OUTPUTS = {
     "UKACTIVE_A4F_SIPP_HYSTERESIS_RESULTS.csv",
     "UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv",
     "UKACTIVE_A4F_SIPP_ORACLE_DIAGNOSTICS.csv",
+    "UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv",
     # Robustness (4)
     "UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv",
     "UKACTIVE_A4F_SIPP_FAMILY_INFLUENCE.csv",
     "UKACTIVE_A4F_SIPP_THRESHOLD_SENSITIVITY.csv",
     "UKACTIVE_A4F_SIPP_COST_STRESS.csv",
+    "UKACTIVE_A4F_SIPP_RANDOM_SELECTION_CONTROL.csv",
+    "UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv",
+    "UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",
+    "UKACTIVE_A4F_SIPP_WINNER_FALSE_LEADER_COMPARISON.csv",
+    "UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv",
+    "UKACTIVE_A4F_SIPP_POLICY_INFERENCE.csv",
+    "UKACTIVE_A4F_SIPP_CORRECTNESS_TESTS.json",
     # Final strategy (6)
     "UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md",
     "UKACTIVE_A4F_SIPP_DECISION.json",
@@ -450,7 +460,7 @@ def test_common_window_has_complete_valid_observation_regime_coverage() -> None:
 
 def test_all_required_34_outputs_and_16_charts_exist() -> None:
     names = {path.name for path in STAGE_ROOT.iterdir() if path.is_file()}
-    assert len(REQUIRED_OUTPUTS) == 34
+    assert len(REQUIRED_OUTPUTS) == 44
     assert len(REQUIRED_CHARTS) == 16
     assert REQUIRED_OUTPUTS.issubset(names), sorted(REQUIRED_OUTPUTS - names)
     assert REQUIRED_CHARTS.issubset(names), sorted(REQUIRED_CHARTS - names)
@@ -601,7 +611,7 @@ def test_holding_spell_and_long_core_audits_are_complete() -> None:
         f"SPELL-{index:04d}" for index in range(1, len(spells) + 1)
     ]
     expected_order = spells.sort_values(
-        ["gross_market_pnl_return_units", "entry_date", "family", "exit_date"],
+        ["normalised_arithmetic_return_contribution", "signal_date", "family", "execution_exit_date"],
         ascending=[False, True, True, True],
         kind="mergesort",
         na_position="last",
@@ -614,6 +624,9 @@ def test_holding_spell_and_long_core_audits_are_complete() -> None:
     ).all()
     assert set(spells["winner_class"]) == {"WINNER", "FALSE_OR_LOSING_LEADER"}
     assert set(comparison["winner_class"]) == set(spells["winner_class"])
+    assert comparison["scientific_ranking_basis"].eq(
+        "NORMALISED_ARITHMETIC_RETURN_CONTRIBUTION"
+    ).all()
     assert len(long_core) == 8
     assert set(long_core["cost_scenario"]) == {"BASE", "DOUBLE"}
     assert long_core["comparison_status"].eq(
@@ -634,7 +647,13 @@ def test_strategy_switch_counts_and_matched_gate_labels_are_resolved() -> None:
 
     matched = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv")
     assert not matched["matched_risk_gate_status"].str.contains("PENDING", na=False).any()
-    primary = matched.loc[matched["control_type"].eq("MATCHED_AVERAGE_EXPOSURE")]
+    primary = matched.loc[
+        matched["control_type"].eq("MATCHED_AVERAGE_EXPOSURE")
+        & matched["switch_mode"].isin(
+            {"SWITCH_IMMEDIATE_MONTHLY", "SWITCH_ASYMMETRIC_HYSTERESIS"}
+        )
+        & ~matched["policy_id"].eq("POLICY_5_HIGHER_ALPHA_DIAGNOSTIC")
+    ]
     assert primary["matched_risk_gate_status"].isin(
         {"MATCHED_RISK_GATE_PASS", "MATCHED_RISK_GATE_FAIL"}
     ).all()
@@ -693,7 +712,10 @@ def test_year_scorecard_has_true_sleeve_weights_and_selected_exclusions() -> Non
     assert global_rows["average_swda_weight"].eq(1.0).all()
     assert global_rows["average_m2_weight"].eq(0.0).all()
     assert global_rows["average_cash_weight"].eq(0.0).all()
-    risk_rows = score.loc[score["strategy_id"].eq("POLICY_1_RISK_TIMING_ONLY")]
+    risk_rows = score.loc[
+        score["policy_id"].eq("POLICY_1_RISK_TIMING_ONLY")
+        & score["switch_mode"].eq("SWITCH_IMMEDIATE_MONTHLY")
+    ]
     assert risk_rows["average_cash_weight"].round(8).nunique() > 1
 
     selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
@@ -737,3 +759,220 @@ def test_manifest_hashes_reproduce_all_listed_outputs() -> None:
         assert path.is_file(), path
         assert int(item["size_bytes"]) == path.stat().st_size
         assert item["sha256"] == _sha256(path)
+
+
+def test_complete_annual_policy_switch_matrix_and_state_attribution() -> None:
+    score = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv")
+    attribution = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_ATTRIBUTION.csv"
+    )
+    dynamic = score.loc[score["policy_id"].str.startswith("POLICY_", na=False)]
+    assert len(dynamic) == 6 * 2 * 10
+    assert not dynamic.duplicated(["policy_id", "switch_mode", "year"]).any()
+    assert set(dynamic["year"]) == set(range(2017, 2027))
+    state_columns = [
+        *[f"months_risk_score_{score_id}" for score_id in range(4)],
+        "months_R1_BROAD_RISK_ON",
+        "months_R2_LEADERSHIP_RISK_ON",
+        "months_R3_ISOLATED_LEADERSHIP",
+        "months_R4_CAPITAL_PRESERVATION",
+    ]
+    assert dynamic[state_columns].notna().all().all()
+    dynamic_attr = attribution.loc[
+        attribution["policy_id"].str.startswith("POLICY_", na=False)
+    ]
+    assert len(dynamic_attr) == len(dynamic)
+    assert dynamic_attr[state_columns + ["strategy_switches"]].notna().all().all()
+    assert dynamic_attr[
+        [
+            "risk_timing_contribution",
+            "m2_selection_contribution",
+            "interaction_contribution",
+            "cash_yield_contribution",
+            "cost_contribution",
+        ]
+    ].notna().all().all()
+
+
+def test_exact_risk_score_substates_and_differentials_are_complete() -> None:
+    summary = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv")
+    rankings = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_REGIME_STRATEGY_RANKINGS.csv"
+    )
+    risk = summary.loc[summary["summary_level"].eq("EXACT_RISK_SCORE_SUBSTATE")]
+    assert set(risk["risk_score_substate"].astype(int)) == {0, 1, 2, 3}
+    strategy_count = summary.loc[
+        summary["summary_level"].eq("FOUR_STATE_REGIME"), "strategy_id"
+    ].nunique()
+    assert len(risk) == strategy_count * 4
+    assert risk[["m2_minus_global", "cash_minus_risky"]].notna().all().all()
+    risk_rankings = rankings.loc[
+        rankings["summary_level"].eq("EXACT_RISK_SCORE_SUBSTATE")
+    ]
+    assert len(risk_rankings) == len(risk)
+
+
+def test_cash0_falsification_is_reproducible_and_has_no_cash1_filter() -> None:
+    random = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_RANDOM_SELECTION_CONTROL.csv"
+    )
+    assert set(random["control_id"]) == {
+        "RANDOM_SELECTION_SAME_RISKY_COUNT",
+        "MONTHLY_RANK_SHUFFLE",
+    }
+    assert dict(zip(random["control_id"], random["seed"])) == {
+        "RANDOM_SELECTION_SAME_RISKY_COUNT": 20260824,
+        "MONTHLY_RANK_SHUFFLE": 20260825,
+    }
+    assert random["simulation_count"].eq(10_000).all()
+    assert random["candidate_id"].eq("M2_TOP7_CASH0_100").all()
+    assert random["eligibility_rule"].eq(
+        "ALL_POINT_IN_TIME_SIGNAL_ELIGIBLE_FAMILIES;NO_ABOVE_CASH_FILTER"
+    ).all()
+
+
+def test_all_static_m2_family_and_direct_incremental_audits_are_complete() -> None:
+    direct = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv")
+    influence = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_FAMILY_INFLUENCE.csv")
+    assert direct["candidate_id"].nunique() == 9
+    assert len(direct) == 9 * 5
+    assert direct[
+        [
+            "exclude_2025_incremental_cagr",
+            "double_cost_incremental_cagr",
+            "leave_one_family_minimum_incremental_cagr",
+            "exclude_top_1_family_incremental_cagr",
+            "exclude_top_3_family_incremental_cagr",
+            "exclude_top_5_family_incremental_cagr",
+        ]
+    ].notna().all().all()
+    for strategy_id in direct["candidate_id"].unique():
+        rows = influence.loc[
+            influence["policy_id"].eq(strategy_id)
+            & influence["switch_mode"].eq("STATIC_MONTHLY")
+        ]
+        assert rows["exclusion_type"].eq("LEAVE_ONE_FAMILY_OUT").sum() > 0
+        assert {
+            "EXCLUDE_TOP_1_FAMILY_CONTRIBUTORS",
+            "EXCLUDE_TOP_3_FAMILY_CONTRIBUTORS",
+            "EXCLUDE_TOP_5_FAMILY_CONTRIBUTORS",
+        }.issubset(set(rows["exclusion_type"]))
+
+
+def test_holding_spell_influence_covers_raw_selected_and_p3_both_modes() -> None:
+    influence = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv"
+    )
+    expected = {
+        ("M2_TOP7_CASH0_100", "STATIC_MONTHLY"),
+        ("GLOBAL_50_M2_50", "STATIC_MONTHLY"),
+        ("POLICY_3_BALANCED_REGIME_STRATEGY", "SWITCH_IMMEDIATE_MONTHLY"),
+        (
+            "POLICY_3_BALANCED_REGIME_STRATEGY",
+            "SWITCH_ASYMMETRIC_HYSTERESIS",
+        ),
+    }
+    assert set(zip(influence["policy_id"], influence["switch_mode"])) == expected
+    assert influence.groupby(["policy_id", "switch_mode"])["exclusion_count"].apply(
+        lambda values: set(values) == {1, 3, 5}
+    ).all()
+    assert influence["exclusion_ranking_field"].eq(
+        "normalised_arithmetic_return_contribution"
+    ).all()
+
+
+def test_matched_control_matrix_includes_p5_and_static_m2_diagnostic() -> None:
+    matched = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv")
+    dynamic = matched.loc[matched["policy_id"].str.startswith("POLICY_", na=False)]
+    assert len(dynamic) == 6 * 2 * 4 * 5
+    assert not dynamic.duplicated(
+        ["policy_id", "switch_mode", "control_type", "window_id"]
+    ).any()
+    p5 = dynamic.loc[dynamic["policy_id"].eq("POLICY_5_HIGHER_ALPHA_DIAGNOSTIC")]
+    assert len(p5) == 2 * 4 * 5
+    assert p5["matched_risk_gate_status"].eq(
+        "DIAGNOSTIC_NOT_ELIGIBLE_FOR_SELECTION"
+    ).all()
+    static_m2 = matched.loc[
+        matched["policy_id"].eq("M2_TOP7_CASH0_100")
+        & matched["switch_mode"].eq("STATIC_MONTHLY")
+    ]
+    assert len(static_m2) == 4 * 5
+    assert static_m2["matched_risk_gate_status"].eq(
+        "STATIC_M2_DIAGNOSTIC_NOT_DYNAMIC_PROMOTION_GATE"
+    ).all()
+
+
+def test_secondary_diagnostics_oracle_and_cost_outputs_are_complete() -> None:
+    secondary = pd.read_csv(
+        STAGE_ROOT / "UKACTIVE_A4F_SIPP_SECONDARY_REGIME_DIAGNOSTICS.csv"
+    )
+    assert len(secondary) == 10
+    assert secondary["threshold_rule"].eq(
+        "PRIOR_ONLY_EXPANDING_MEDIAN;CURRENT_EXCLUDED"
+    ).all()
+    assert secondary["evidence_class"].eq(
+        "E1_SECONDARY_DESCRIPTIVE_NOT_POLICY_INPUT"
+    ).all()
+    oracle = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_ORACLE_DIAGNOSTICS.csv")
+    monthly_oracle = oracle.loc[oracle["oracle_type"].eq("MONTHLY_ORACLE")]
+    assert monthly_oracle.iloc[0]["period_id"] == "2017-03"
+    costs = pd.read_csv(STAGE_ROOT / "UKACTIVE_A4F_SIPP_COST_STRESS.csv")
+    assert len(costs) == 6 * 2 * 5 * 2
+    assert costs[["gross_cagr", "net_cagr", "cost_drag"]].notna().all().all()
+
+
+def test_selected_state_machine_is_self_contained_and_capital_status_unambiguous() -> None:
+    selected = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json")
+    decision = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_DECISION.json")
+    state = _json(STAGE_ROOT / "UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json")
+    assert selected["research_selection"]["status"] == "SHADOW_ONLY"
+    assert selected["capital_authorised_for_research_selection"] is False
+    assert selected["current_operational_whole_sipp"] == {
+        "strategy_id": "GLOBAL_75_CASH25",
+        "status": "CURRENT_OPERATING_RULE_WHILE_RESEARCH_SELECTION_IS_SHADOW_ONLY",
+        "swda_weight": 0.75,
+        "m2_weight": 0.0,
+        "cash_weight": 0.25,
+        "review": "MONTHLY",
+    }
+    assert decision["research_selection"]["capital_authorised"] is False
+    for key in (
+        "risk_state_definition",
+        "leadership_state_definition",
+        "regime_map",
+        "decision_timestamp",
+        "execution_contract",
+        "instrument_map",
+        "costs",
+        "suspension_rules",
+    ):
+        assert key in state
+    assert len(state["suspension_rules"]) >= 7
+
+
+def test_final_report_contains_all_mandated_sections_and_direct_answers() -> None:
+    report = (STAGE_ROOT / "UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md").read_text(
+        encoding="utf-8"
+    )
+    for heading in (
+        "## YEAR-BY-YEAR CONCLUSION",
+        "## REGIME CONCLUSION",
+        "## ALPHA-ALLOCATION CONCLUSION",
+        "## RISK-ALLOCATION CONCLUSION",
+        "## BEST AVAILABLE WHOLE-SIPP STRATEGY",
+        "## REGIME STATE MACHINE",
+        "## EXPECTED OPERATING CHARACTERISTICS",
+        "## CURRENT EVIDENCE GRADE",
+        "## DEPLOYMENT TIER",
+        "## MONTHLY OPERATING RULE",
+        "## FAILURE MODES",
+        "## SUSPENSION RULES",
+        "## REMAINING EVIDENCE GAP",
+    ):
+        assert heading in report
+    for number in range(1, 26):
+        assert f"{number}. **" in report
+    assert "GLOBAL_50_M2_50" in report
+    assert "75% SWDA / 25% GBP cash" in report
+    assert "no pension capital is authorised" in report

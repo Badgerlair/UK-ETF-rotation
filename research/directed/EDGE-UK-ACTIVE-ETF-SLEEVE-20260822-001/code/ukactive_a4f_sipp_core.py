@@ -302,8 +302,35 @@ def _secondary_diagnostics(
 
     scores = frame["M2_INTERMEDIATE_5H"].dropna().astype(float)
     score_iqr = float(scores.quantile(0.75) - scores.quantile(0.25)) if len(scores) else np.nan
-    rs63 = frame["RS_63"].dropna().astype(float)
-    rs126 = frame["RS_126"].dropna().astype(float)
+    absolute_return_63: list[float] = []
+    absolute_return_126: list[float] = []
+    for family in sorted(frame["economic_exposure_family_id"].astype(str).unique()):
+        family_frame = pd.DataFrame(
+            {
+                "wealth": data.base.research.wealth[family],
+                "valid": data.base.research.valid[family],
+                "segment": data.base.research.segment[family],
+            }
+        ).loc[:pd.Timestamp(date)]
+        family_frame = family_frame.loc[
+            family_frame["valid"].fillna(False).astype(bool)
+            & family_frame["wealth"].notna()
+            & family_frame["segment"].notna()
+        ]
+        if family_frame.empty:
+            continue
+        current_segment = family_frame.iloc[-1]["segment"]
+        same_segment = family_frame.loc[family_frame["segment"].eq(current_segment)]
+        if len(same_segment) >= 64:
+            absolute_return_63.append(
+                float(same_segment.iloc[-1]["wealth"] / same_segment.iloc[-64]["wealth"] - 1.0)
+            )
+        if len(same_segment) >= 127:
+            absolute_return_126.append(
+                float(same_segment.iloc[-1]["wealth"] / same_segment.iloc[-127]["wealth"] - 1.0)
+            )
+    asset63 = pd.Series(absolute_return_63, dtype=float)
+    asset126 = pd.Series(absolute_return_126, dtype=float)
     retention = (
         len(selected_families & prior_selected_families) / float(ROTATION_BREADTH)
         if prior_selected_families is not None
@@ -343,8 +370,8 @@ def _secondary_diagnostics(
     return {
         "m2_score_cross_section_std": float(scores.std(ddof=0)) if len(scores) else np.nan,
         "m2_score_cross_section_iqr": score_iqr,
-        "family_return_63_iqr": float(rs63.quantile(0.75) - rs63.quantile(0.25)) if len(rs63) else np.nan,
-        "family_return_126_iqr": float(rs126.quantile(0.75) - rs126.quantile(0.25)) if len(rs126) else np.nan,
+        "family_return_63_iqr": float(asset63.quantile(0.75) - asset63.quantile(0.25)) if len(asset63) else np.nan,
+        "family_return_126_iqr": float(asset126.quantile(0.75) - asset126.quantile(0.25)) if len(asset126) else np.nan,
         "average_pairwise_126_return_correlation": average_pairwise,
         "first_principal_component_variance_share": pc1_share,
         "percentage_families_above_cash": float(frame["ABOVE_CASH_252"].dropna().mean()) if frame["ABOVE_CASH_252"].notna().any() else np.nan,
