@@ -1,0 +1,18 @@
+{
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "run_id": "UKACTIVE-A4F-SIPP-20260825-001",
+  "title": "Regime-Aware Strategy Selection, Year-by-Year Attribution and Capital Protection",
+  "parent_stage": "UKACTIVE-A4E-SIPP",
+  "parent_branch": "research/ukactive-a4e-sipp",
+  "parent_preregistration_commit": "d49ee4748020bce8911244ba98430fe3b25c3366",
+  "parent_results_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
+  "parent_manifest_commit": "ce6136f52ca646698a56e4ff4bbb8577214a684d",
+  "parent_tag": "ukactive-a4e-sipp-v1-20260824",
+  "branch": "research/ukactive-a4f-sipp-regime",
+  "registered_date": "2026-08-25",
+  "authoritative_cutoff": "2026-08-21",
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "prospective_data_prohibited": true,
+  "automatic_broker_execution_authorised": false,
+  "completed_parent_artifacts_are_immutable": true
+}

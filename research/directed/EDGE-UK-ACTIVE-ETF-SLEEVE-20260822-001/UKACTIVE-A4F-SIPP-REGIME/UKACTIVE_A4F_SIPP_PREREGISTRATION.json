@@ -1,0 +1,189 @@
+{
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "run_id": "UKACTIVE-A4F-SIPP-20260825-001",
+  "registered_before_new_results": true,
+  "authoritative_cutoff": "2026-08-21",
+  "evidence_ceiling": "E2_DEVELOPMENTAL",
+  "parent": {
+    "branch": "research/ukactive-a4e-sipp",
+    "preregistration_commit": "d49ee4748020bce8911244ba98430fe3b25c3366",
+    "results_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
+    "manifest_commit": "ce6136f52ca646698a56e4ff4bbb8577214a684d",
+    "tag": "ukactive-a4e-sipp-v1-20260824"
+  },
+  "immutable_contract": {
+    "universe": "INDUSTRY_PLUS_THEME_27_FAMILY_POINT_IN_TIME",
+    "ranking_identity": "economic_exposure_family_id",
+    "rotation_signal": "M2_BASE_RS21_10_RS42_15_RS63_25_RS126_30_RS252_20",
+    "rotation_portfolio": "TOP7_MONTHLY_CASH0_ALWAYS_INVESTED_EQUAL_WEIGHT",
+    "global_benchmark": "GLOBAL_DEVELOPED_WORLD",
+    "live_global_instrument": "SWDA_IE00B4L5Y983",
+    "pool_benchmark": "CONTEMPORANEOUS_EQUAL_WEIGHT_INDUSTRY_PLUS_THEME",
+    "cash": "ACCEPTED_ACTUAL_GBP_CASH_SERIES",
+    "calendar": "DETERMINISTIC_XLON",
+    "execution": "FIRST_COMMON_VALID_ENDPOINT_1_TO_3_XLON_SESSIONS_AFTER_SIGNAL",
+    "same_close": false,
+    "common_causal_chain_start": "2017-02-03",
+    "first_month_end_review": "2017-02-28",
+    "first_executable_monthly_portfolio_date": "2017-03-01",
+    "last_permitted_observation": "2026-08-21"
+  },
+  "threshold_history": {
+    "global_seed_start": "2010-01-08",
+    "m2_diagnostic_seed_start": "2014-01-31",
+    "volatility_minimum_prior_months": 36,
+    "volatility_current_observation_excluded": true,
+    "leadership_valid_prior_diagnostics_permitted": true,
+    "canonical_top7_seed_observations_before_2017": 37,
+    "leadership_selected_set": "TOP_MINIMUM_OF_7_AND_CURRENT_M2_VALID_COUNT_WITH_MINIMUM_VALID_COUNT_3_MATCHING_A4D",
+    "leadership_threshold_seed_rule": "USE_ALL_PRIOR_CAUSALLY_VALID_CANONICAL_TOP7_OBSERVATIONS;_24_PRIOR_OBSERVATIONS_REACHED_2016_01_29",
+    "leadership_default_when_no_valid_prior_threshold": "LEADERSHIP_WEAK",
+    "all_expanding_thresholds_are_prior_only": true
+  },
+  "risk_state": {
+    "global_126_excess": "GLOBAL_TOTAL_RETURN_126_MINUS_GBP_CASH_TOTAL_RETURN_126",
+    "global_252_excess": "GLOBAL_TOTAL_RETURN_252_MINUS_GBP_CASH_TOTAL_RETURN_252",
+    "global_vol_63": "STDDEV_OF_PRIOR_63_VALID_DAILY_GLOBAL_RETURNS_TIMES_SQRT_252",
+    "high_vol_threshold": "PRIOR_ONLY_EXPANDING_75TH_PERCENTILE_OF_MONTH_END_GLOBAL_VOL_63",
+    "risk_score": "I(GLOBAL_126_EXCESS_LE_0)+I(GLOBAL_252_EXCESS_LE_0)+I(GLOBAL_VOL_63_GT_PRIOR_VOL75)",
+    "candidate_volatility_percentile": 0.75,
+    "sensitivity_volatility_percentiles": [0.70, 0.75, 0.80]
+  },
+  "leadership_state": {
+    "leadership_spread": "MEAN_M2_SCORE_OF_CURRENT_TOP7_MINUS_MEDIAN_M2_SCORE_OF_ALL_CURRENT_ELIGIBLE_FAMILIES",
+    "rank_persistence": "SPEARMAN_CORRELATION_OF_CURRENT_AND_PREVIOUS_MONTH_M2_RANKS_AMONG_COMMON_ELIGIBLE_FAMILIES",
+    "absolute_support": "COUNT_CURRENT_TOP7_WITH_ASSET_TOTAL_RETURN_252_GT_CONTEMPORANEOUS_GBP_CASH_RETURN_252",
+    "spread_high": "LEADERSHIP_SPREAD_GT_PRIOR_ONLY_EXPANDING_MEDIAN",
+    "persistence_high": "RANK_PERSISTENCE_GT_PRIOR_ONLY_EXPANDING_MEDIAN",
+    "absolute_support_high": "COUNT_GE_5",
+    "leadership_strong": "AT_LEAST_TWO_OF_SPREAD_HIGH_PERSISTENCE_HIGH_ABSOLUTE_SUPPORT_HIGH",
+    "candidate_expanding_quantile": 0.50,
+    "sensitivity_expanding_quantiles": [0.40, 0.50, 0.60],
+    "minimum_common_families_for_spearman": 3,
+    "ties": "AVERAGE_RANKS",
+    "unavailable_rule": "IF_FEWER_THAN_3_CURRENT_M2_VALID_FAMILIES_OR_A_REQUIRED_PRIOR_THRESHOLD_IS_UNAVAILABLE_THEN_LEADERSHIP_WEAK_AND_THRESHOLD_HISTORY_STATUS_RECORDS_REASON"
+  },
+  "regime_map": {
+    "R1_BROAD_RISK_ON": "RISK_SCORE_IN_0_1_AND_LEADERSHIP_WEAK",
+    "R2_LEADERSHIP_RISK_ON": "RISK_SCORE_IN_0_1_AND_LEADERSHIP_STRONG",
+    "R3_ISOLATED_LEADERSHIP": "RISK_SCORE_IN_2_3_AND_LEADERSHIP_STRONG",
+    "R4_CAPITAL_PRESERVATION": "RISK_SCORE_IN_2_3_AND_LEADERSHIP_WEAK",
+    "minimum_months_for_strong_regime_claim": 18,
+    "minimum_episodes_for_strong_regime_claim": 3,
+    "episode_definition": "MAXIMAL_CONSECUTIVE_RUN_OF_IDENTICAL_FOUR_STATE_REGIME_AT_MONTH_END"
+  },
+  "static_candidates": {
+    "global_cash": [[0.25, 0.75], [0.50, 0.50], [0.75, 0.25], [1.00, 0.00]],
+    "m2_cash": [[0.25, 0.75], [0.50, 0.50], [0.75, 0.25], [1.00, 0.00]],
+    "global_m2": [[1.00, 0.00], [0.90, 0.10], [0.75, 0.25], [0.50, 0.50], [0.00, 1.00]],
+    "three_way": [[0.50, 0.25, 0.25], [0.75, 0.10, 0.15]],
+    "rebalance": "MONTHLY_NEXT_SESSION"
+  },
+  "risk_allocation_rules": {
+    "RISK_FIXED_75": [0.75, 0.75, 0.75, 0.75],
+    "RISK_SCORE_25": [1.00, 0.75, 0.50, 0.25],
+    "RISK_SCORE_33": [1.00, 0.67, 0.33, 0.00]
+  },
+  "alpha_allocation_rules": {
+    "ALPHA_0": {"weak_m2_fraction_of_risky": 0.00, "strong_m2_fraction_of_risky": 0.00},
+    "ALPHA_25": {"weak_m2_fraction_of_risky": 0.00, "strong_m2_fraction_of_risky": 0.25},
+    "ALPHA_50_DIAGNOSTIC": {"weak_m2_fraction_of_risky": 0.00, "strong_m2_fraction_of_risky": 0.50}
+  },
+  "policies": {
+    "POLICY_0_STATIC_DEFENSIVE_CONTROL": ["RISK_FIXED_75", "ALPHA_0"],
+    "POLICY_1_RISK_TIMING_ONLY": ["RISK_SCORE_25", "ALPHA_0"],
+    "POLICY_2_ALPHA_TIMING_ONLY": ["RISK_ALWAYS_100", "ALPHA_25"],
+    "POLICY_3_BALANCED_REGIME_STRATEGY": ["RISK_SCORE_25", "ALPHA_25"],
+    "POLICY_4_DEFENSIVE_REGIME_STRATEGY": ["RISK_SCORE_33", "ALPHA_25"],
+    "POLICY_5_HIGHER_ALPHA_DIAGNOSTIC": ["RISK_SCORE_25", "ALPHA_50_DIAGNOSTIC"]
+  },
+  "switching": {
+    "SWITCH_IMMEDIATE_MONTHLY": "ALL_NEW_TARGETS_EXECUTE_NEXT_ELIGIBLE_SESSION",
+    "SWITCH_ASYMMETRIC_HYSTERESIS": {
+      "risk_reduction": "IMMEDIATE_NEXT_SESSION",
+      "risk_increase": "REQUIRE_TWO_CONSECUTIVE_MONTH_ENDS_AT_SAME_OR_LESS_DEFENSIVE_TARGET",
+      "m2_removal": "IMMEDIATE_NEXT_SESSION",
+      "m2_addition": "REQUIRE_TWO_CONSECUTIVE_LEADERSHIP_STRONG_MONTH_ENDS"
+    }
+  },
+  "accounting": {
+    "starting_notional_gbp": 250000.0,
+    "baseline_cost": {"one_way_bps": 20.0, "fixed_fee_per_leg_gbp": 3.99},
+    "doubled_cost": {"one_way_bps": 40.0, "fixed_fee_per_leg_gbp": 7.98},
+    "fractional_notional": true,
+    "cash_accrual": "ACCEPTED_GBP_CASH_TOTAL_RETURN",
+    "monthly_weights": "TARGETS_DRIFT_BETWEEN_EXECUTIONS_AND_REBALANCE_AT_NEXT_MONTHLY_EXECUTION",
+    "m2_sleeve": "FROZEN_M2_TOP7_CASH0_EQUAL_WEIGHT_WITH_INTERNAL_MONTHLY_REBALANCING",
+    "distribution_and_fx": "ALREADY_EMBEDDED_ONCE_IN_ACCEPTED_GBP_TOTAL_RETURN_PANEL",
+    "no_leverage": true,
+    "no_shorting": true
+  },
+  "attribution": {
+    "risk_timing_contribution": "POLICY_WITH_ITS_RISK_MAP_AND_ALPHA0_MINUS_STATIC_100_GLOBAL_COUNTERFACTUAL_ON_IDENTICAL_DAILY_CHAIN",
+    "m2_selection_contribution": "POLICY_WITH_OBSERVED_ALPHA_MAP_MINUS_SAME_RISK_MAP_WITH_ALPHA0",
+    "interaction_contribution": "COMBINED_POLICY_EXCESS_MINUS_RISK_ONLY_EXCESS_MINUS_ALPHA_ONLY_EXCESS_USING_LINKED_ARITHMETIC_DAILY_PNL",
+    "cash_yield_contribution": "DAILY_OPENING_CASH_WEIGHT_TIMES_ACCEPTED_CASH_RETURN",
+    "cost_contribution": "NEGATIVE_EXPLICIT_FRICTION_AND_FIXED_FEES_BOOKED_AT_EXECUTION",
+    "switching_contribution": "DYNAMIC_POLICY_MINUS_STATIC_MONTHLY_PORTFOLIO_WITH_MATCHED_AVERAGE_WEIGHTS"
+  },
+  "forward_diagnostics": {
+    "one_month": "NEXT_MONTHLY_EXECUTION_TO_FOLLOWING_MONTHLY_EXECUTION",
+    "three_month": "PRODUCT_OF_NEXT_THREE_COMPLETE_EXECUTION_INTERVALS",
+    "six_month": "PRODUCT_OF_NEXT_SIX_COMPLETE_EXECUTION_INTERVALS",
+    "never_used_in_state_construction": true
+  },
+  "robustness": {
+    "windows": ["FULL_COMMON_HISTORY", "PRE_2020", "POST_2020", "LATEST_FIVE_YEARS", "LATEST_THREE_YEARS"],
+    "calendar_exclusions": ["EXCLUDE_2025", "EXCLUDE_2020", "EXCLUDE_2020_AND_2025", "LEAVE_ONE_YEAR_OUT"],
+    "family_exclusions": ["LEAVE_ONE_FAMILY_OUT", "EXCLUDE_TOP_FAMILY", "EXCLUDE_TOP_THREE_FAMILIES"],
+    "costs": ["BASELINE", "DOUBLE"],
+    "switches": ["IMMEDIATE", "ASYMMETRIC_HYSTERESIS"]
+  },
+  "oracle_candidates": "ALL_PREREGISTERED_STATIC_FRONTIER_CANDIDATES",
+  "oracle_status": "NONCAUSAL_DIAGNOSTIC_ONLY",
+  "macro_policy": "DESCRIPTIVE_RELEASE_LAGGED_OFFICIAL_DATA_ONLY_OTHERWISE_MACRO_REGIME_DATA_INSUFFICIENT",
+  "statistical_procedures": {
+    "economic_gates_are_primary": true,
+    "monthly_paired_difference_inference": "OLS_INTERCEPT_ON_MONTHLY_CANDIDATE_MINUS_CONTROL_RETURN_WITH_NEWEY_WEST_HAC_LAG_3",
+    "block_bootstrap": "MOVING_BLOCK_BOOTSTRAP_OF_PAIRED_MONTHLY_RETURN_ROWS",
+    "block_length_months": 6,
+    "bootstrap_replications": 10000,
+    "bootstrap_seed": 20260825,
+    "confidence_level": 0.95,
+    "multiple_testing_context": "BENJAMINI_HOCHBERG_FDR_OVER_TEN_SELECTABLE_POLICY_BY_SWITCH_INCREMENTAL_RETURN_TESTS;DIAGNOSTIC_ONLY",
+    "regime_claim_gate": "NO_STRONG_CLAIM_UNLESS_AT_LEAST_18_MONTHS_AND_3_EPISODES",
+    "oracle_inference_prohibited": true
+  },
+  "data_cutoff_enforcement": {
+    "maximum_allowed_input_date": "2026-08-21",
+    "assert_every_signal_date_lte_cutoff": true,
+    "assert_every_return_date_lte_cutoff": true,
+    "assert_every_threshold_source_date_lt_decision_date": true,
+    "post_cutoff_rows_cause_failure": true
+  },
+  "matched_controls": ["MATCHED_AVERAGE_EXPOSURE", "MATCHED_M2_EXPOSURE", "MATCHED_VOLATILITY", "MATCHED_MDD_FRONTIER"],
+  "promotion_gates": {
+    "return_retention": "CAGR_GE_90_PERCENT_GLOBAL_OR_CAGR_GT_GLOBAL",
+    "drawdown": "MDD_GE_MINUS_20_PERCENT_OR_MDD_BENEFIT_GE_5PP_OR_ULCER_REDUCTION_GE_20_PERCENT",
+    "matched_risk": "CAGR_PLUS_75BP_OR_TERMINAL_WEALTH_PLUS_5_PERCENT_OR_MDD_PLUS_2PP_WITHOUT_LOWER_CAGR_OR_ULCER_MINUS_15_PERCENT_WITH_95_PERCENT_RETURN_RETENTION",
+    "regime": "MEANINGFUL_RANKING_DIFFERENCE_AND_TWO_POSITIVE_REGIMES_AND_THREE_EPISODES_AND_NO_SINGLE_SWITCH_MAJORITY",
+    "robustness": "POSITIVE_EX_2025_DOUBLE_COST_VIABLE_NO_SINGLE_FAMILY_NEIGHBOUR_THRESHOLDS_COHERENT_HYSTERESIS_NOT_DESTRUCTIVE",
+    "preferred_max_strategy_changes_per_year": 6.0
+  },
+  "selection_hierarchy": ["REGIME_RETURN_AND_RISK_EDGE", "REGIME_STRONG_RISK_EDGE", "STATIC_GLOBAL_M2_CASH_BLEND", "STATIC_GLOBAL_CASH_CORE"],
+  "source_hashes": {
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_PREREGISTRATION.json": "9722a1e7f952f87d4c11b2031b885a1cb1d14cb567601d03b86f7c4e582e2875",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_MANIFEST.json": "a9c853d1bd38840975e5bd4a472890a7954ced7d853366ade6eb7fd681ff2bc5",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_SELECTED_STRATEGY.json": "c2b819002b8e265d0f0fa612c479b493572e025d31825e7f939cb63db9d7c6b3",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_WHOLE_SIPP_SCORECARD.csv": "1f569e93ab8400255365b27c1637441dfcac695c99ceb514a3beae7aae35537f",
+    "UKACTIVE_A4D_MANIFEST.json": "a9770b7fca361fffd225df2f287efaef0e1019c4bdf516966192c5c134d04b0f",
+    "UKACTIVE_A4D_PRIMARY_ECONOMIC_SCORECARD.csv": "386e6732fc9ddd55d690849f3d07c9110daf6b127e414df91acb30fc807d328c",
+    "UKACTIVE_A4D_CASH_DEFENCE_RESULTS.csv": "7f79e100d233d2722be54283e4dfe18e7b38271646cf75a71147dd743c4f8e3a",
+    "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+    "UKACTIVE_A2_CASH_SERIES.parquet": "491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a"
+  },
+  "prohibited": ["POST_CUTOFF_MODEL_SELECTION", "FULL_SAMPLE_THRESHOLDS", "HINDSIGHT_REGIME_RULES", "UNREGISTERED_POLICIES", "NEW_M2_WEIGHTS", "NEW_M2_BREADTH", "DAILY_RANKING", "LEVERAGE", "SHORTS", "INVERSE_ETFS", "DISCRETIONARY_SWITCHES", "MACRO_FEATURE_MINING", "MAXIMUM_CAGR_SELECTION", "BROKER_EXECUTION"],
+  "broker_execution_authorised": false
+}

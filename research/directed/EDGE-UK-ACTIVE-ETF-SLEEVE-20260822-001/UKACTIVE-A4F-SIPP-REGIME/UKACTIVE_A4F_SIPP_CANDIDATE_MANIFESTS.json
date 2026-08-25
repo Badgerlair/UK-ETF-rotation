@@ -1,0 +1,39 @@
+{
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "rotation_sleeve": {
+    "id": "M2_TOP7_CASH0_100",
+    "signal": "M2_BASE",
+    "weights": {"RS21": 0.10, "RS42": 0.15, "RS63": 0.25, "RS126": 0.30, "RS252": 0.20},
+    "breadth": 7,
+    "frequency": "MONTHLY",
+    "cash_architecture": "CASH0_ALWAYS_INVESTED",
+    "weighting": "EQUAL",
+    "selection_identity": "ECONOMIC_EXPOSURE_FAMILY",
+    "duplicate_suppression": "FROZEN_A4D"
+  },
+  "static_frontier": [
+    {"id": "GLOBAL_25_CASH75", "global": 0.25, "m2": 0.00, "cash": 0.75},
+    {"id": "GLOBAL_50_CASH50", "global": 0.50, "m2": 0.00, "cash": 0.50},
+    {"id": "GLOBAL_75_CASH25", "global": 0.75, "m2": 0.00, "cash": 0.25},
+    {"id": "GLOBAL_100", "global": 1.00, "m2": 0.00, "cash": 0.00},
+    {"id": "M2_25_CASH75", "global": 0.00, "m2": 0.25, "cash": 0.75},
+    {"id": "M2_50_CASH50", "global": 0.00, "m2": 0.50, "cash": 0.50},
+    {"id": "M2_75_CASH25", "global": 0.00, "m2": 0.75, "cash": 0.25},
+    {"id": "M2_100", "global": 0.00, "m2": 1.00, "cash": 0.00},
+    {"id": "GLOBAL_90_M2_10", "global": 0.90, "m2": 0.10, "cash": 0.00},
+    {"id": "GLOBAL_75_M2_25", "global": 0.75, "m2": 0.25, "cash": 0.00},
+    {"id": "GLOBAL_50_M2_50", "global": 0.50, "m2": 0.50, "cash": 0.00},
+    {"id": "GLOBAL_50_M2_25_CASH25", "global": 0.50, "m2": 0.25, "cash": 0.25},
+    {"id": "GLOBAL_75_M2_10_CASH15", "global": 0.75, "m2": 0.10, "cash": 0.15}
+  ],
+  "policies": [
+    {"id": "POLICY_0_STATIC_DEFENSIVE_CONTROL", "risk": "RISK_FIXED_75", "alpha": "ALPHA_0", "eligible_for_selection": true},
+    {"id": "POLICY_1_RISK_TIMING_ONLY", "risk": "RISK_SCORE_25", "alpha": "ALPHA_0", "eligible_for_selection": true},
+    {"id": "POLICY_2_ALPHA_TIMING_ONLY", "risk": "RISK_ALWAYS_100", "alpha": "ALPHA_25", "eligible_for_selection": true},
+    {"id": "POLICY_3_BALANCED_REGIME_STRATEGY", "risk": "RISK_SCORE_25", "alpha": "ALPHA_25", "eligible_for_selection": true},
+    {"id": "POLICY_4_DEFENSIVE_REGIME_STRATEGY", "risk": "RISK_SCORE_33", "alpha": "ALPHA_25", "eligible_for_selection": true},
+    {"id": "POLICY_5_HIGHER_ALPHA_DIAGNOSTIC", "risk": "RISK_SCORE_25", "alpha": "ALPHA_50_DIAGNOSTIC", "eligible_for_selection": false}
+  ],
+  "switch_modes": ["SWITCH_IMMEDIATE_MONTHLY", "SWITCH_ASYMMETRIC_HYSTERESIS"],
+  "prospective_comparators_if_frozen": ["SELECTED_REGIME_STRATEGY", "GLOBAL_100", "GLOBAL_75_CASH25", "STATIC_MATCHED_M2_BLEND", "M2_TOP7_CASH0_100", "EQUAL_WEIGHT_OPPORTUNITY_POOL"]
+}
