@@ -1,0 +1,124 @@
+{
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "summary": {
+    "FAIL": 0,
+    "PASS": 23
+  },
+  "tests": [
+    {
+      "detail": "302 cells",
+      "status": "PASS",
+      "test_id": "A4E_REPRODUCTION"
+    },
+    {
+      "detail": "No post-cutoff state",
+      "status": "PASS",
+      "test_id": "CUTOFF"
+    },
+    {
+      "detail": "36 prior months",
+      "status": "PASS",
+      "test_id": "PRIOR_ONLY_VOL"
+    },
+    {
+      "detail": "24 prior diagnostics",
+      "status": "PASS",
+      "test_id": "PRIOR_ONLY_LEADERSHIP"
+    },
+    {
+      "detail": "115/115 common month-ends classified",
+      "status": "PASS",
+      "test_id": "COMMON_WINDOW_REGIME_COVERAGE"
+    },
+    {
+      "detail": "Every policy/switch has 115 monthly decisions",
+      "status": "PASS",
+      "test_id": "POLICY_DECISION_COVERAGE"
+    },
+    {
+      "detail": "Executions after decisions",
+      "status": "PASS",
+      "test_id": "NO_SAME_CLOSE"
+    },
+    {
+      "detail": "Allocations <=100%",
+      "status": "PASS",
+      "test_id": "NO_LEVERAGE"
+    },
+    {
+      "detail": "max 2.78e-17",
+      "status": "PASS",
+      "test_id": "ATTRIBUTION_RECONCILES"
+    },
+    {
+      "detail": "Aggregate-series residual is confined to the equal-pool comparator",
+      "status": "PASS",
+      "test_id": "INVESTABLE_ATTRIBUTION_HAS_NO_RESIDUAL"
+    },
+    {
+      "detail": "ALPHA_50 remains a diagnostic and cannot pass a selection gate",
+      "status": "PASS",
+      "test_id": "DIAGNOSTIC_POLICY_NOT_PROMOTED"
+    },
+    {
+      "detail": "9 of 9 permitted static M2 candidates completed family removal",
+      "status": "PASS",
+      "test_id": "STATIC_M2_FAMILY_GATE_RESOLVED"
+    },
+    {
+      "detail": "Selected static M2 strategy must pass every leave-one-family-out gate",
+      "status": "PASS",
+      "test_id": "SELECTED_STATIC_M2_FAMILY_GATE"
+    },
+    {
+      "detail": "Eight score/leadership rows reconcile to selected strategy and sum to 100%",
+      "status": "PASS",
+      "test_id": "STATE_MACHINE_RECONCILES"
+    },
+    {
+      "detail": "Latest parsed scientific output date 2026-08-21",
+      "status": "PASS",
+      "test_id": "ALL_OUTPUT_DATES_WITHIN_CUTOFF"
+    },
+    {
+      "detail": "180 complete M2 holding spells",
+      "status": "PASS",
+      "test_id": "HOLDING_SPELL_AUDIT_COMPLETE"
+    },
+    {
+      "detail": "Calendar-year return includes every in-window daily return; 2017/2026 remain labelled partial",
+      "status": "PASS",
+      "test_id": "ANNUAL_RETURN_BOUNDARIES_RECONCILE"
+    },
+    {
+      "detail": "Dynamic annual weights vary by realised causal state; GLOBAL_100 remains 100% SWDA",
+      "status": "PASS",
+      "test_id": "ANNUAL_DYNAMIC_WEIGHTS_ARE_YEAR_SPECIFIC"
+    },
+    {
+      "detail": "13 selected-strategy exclusion rows",
+      "status": "PASS",
+      "test_id": "SELECTED_STATIC_YEAR_EXCLUSIONS_COMPLETE"
+    },
+    {
+      "detail": "Static Policy 0 has zero allocation-switch events and event diagnostics are scoped to one-month matched-control effects",
+      "status": "PASS",
+      "test_id": "SWITCH_COUNTERFACTUALS_USE_ACTUAL_EVENTS"
+    },
+    {
+      "detail": "Every executable target has an accepted GBP total-return endpoint value",
+      "status": "PASS",
+      "test_id": "EXECUTION_ENDPOINT_EVIDENCE_COMPLETE"
+    },
+    {
+      "detail": "MACRO_REGIME_DATA_INSUFFICIENT",
+      "status": "PASS",
+      "test_id": "MACRO_FAIL_CLOSED"
+    },
+    {
+      "detail": "Research runner has no broker import or call",
+      "status": "PASS",
+      "test_id": "NO_BROKER_CONNECTOR"
+    }
+  ]
+}

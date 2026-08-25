@@ -1,0 +1,76 @@
+{
+  "audit": "PASS",
+  "broker_execution": false,
+  "current_operational_whole_sipp": {
+    "cash_weight": 0.25,
+    "m2_weight": 0.0,
+    "strategy_id": "GLOBAL_75_CASH25",
+    "swda_weight": 0.75
+  },
+  "decision": "UKACTIVE_A4F_SIPP_STRATEGY_SELECTED",
+  "deployment_tier": "REGIME_STRATEGY_SHADOW_ONLY",
+  "dynamic_policies_passing_all_gates": [],
+  "evidence": "E2_DEVELOPMENTAL",
+  "historical_cutoff": "2026-08-21",
+  "operational_static_core_fallback": "GLOBAL_75_CASH25",
+  "reason": "No dynamic policy passed all gates; the selected static blend retained positive preregistered M2 incremental value.",
+  "research_selection": {
+    "capital_authorised": false,
+    "status": "SHADOW_ONLY",
+    "strategy_id": "GLOBAL_50_M2_50"
+  },
+  "risk_edge_status": "NOT_DEMONSTRATED",
+  "selected_metrics": {
+    "annual_turnover_traded_notional": 2.8916440962229357,
+    "calmar_mar": 0.525279468402756,
+    "maximum_drawdown": -0.23615256304303933,
+    "maximum_time_underwater_calendar_days": 763,
+    "net_cagr": 0.12404609277719603,
+    "ulcer_index": 0.05890806125051354
+  },
+  "selected_strategy": "GLOBAL_50_M2_50",
+  "selection_class": "STATIC_GLOBAL_M2_CASH_BLEND",
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "suspension_rules": [
+    {
+      "action": "Create no decision and do not backfill; affected allocation remains GBP cash until a fully valid month-end",
+      "rule_id": "DATA_VALIDATION_SUSPENSION",
+      "trigger": "Required price, total-return, cash, XLON-calendar, hash, or point-in-time-universe validation fails"
+    },
+    {
+      "action": "Allocate the M2 sleeve to GBP cash; require one subsequent fully valid monthly decision before restoration",
+      "rule_id": "M2_REPRODUCIBILITY_SUSPENSION",
+      "trigger": "The eligible INDUSTRY_PLUS_THEME universe or M2 ranks cannot be reproduced"
+    },
+    {
+      "action": "Affected exposure remains GBP cash; no discretionary substitute",
+      "rule_id": "INSTRUMENT_AVAILABILITY_SUSPENSION",
+      "trigger": "Both the frozen preferred and predeclared alternate implementation for an exposure are unavailable"
+    },
+    {
+      "action": "Entire SWDA allocation remains GBP cash pending governance review",
+      "rule_id": "CORE_AVAILABILITY_SUSPENSION",
+      "trigger": "SWDA and its predeclared verified alternate are unavailable"
+    },
+    {
+      "action": "Do not chase price; affected allocation remains GBP cash and append an operational exception",
+      "rule_id": "EXECUTION_TIMING_SUSPENSION",
+      "trigger": "The first valid following XLON execution cannot be obtained within three valid sessions"
+    },
+    {
+      "action": "Suspend new allocation changes and perform a documented cost review",
+      "rule_id": "COST_SUSPENSION",
+      "trigger": "Estimated one-way implementation friction exceeds the frozen doubled-cost stress of 40 bp or fixed dealing cost exceeds GBP7.98 per leg at GBP250,000"
+    },
+    {
+      "action": "Freeze interpretation and open a separately governed repair stage",
+      "rule_id": "RESEARCH_INVALIDATION",
+      "trigger": "A historical data, eligibility, lookahead, or accounting defect would have changed a material decision or conclusion"
+    },
+    {
+      "action": "No automatic suspension; any prospective performance invalidation criterion must be separately preregistered",
+      "rule_id": "NO_PERFORMANCE_ONLY_STOP",
+      "trigger": "Short-term underperformance alone"
+    }
+  ]
+}

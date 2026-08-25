@@ -1,0 +1,171 @@
+{
+  "costs": {
+    "double_cost_stress": {
+      "fixed_fee_gbp": 7.98,
+      "one_way_bps": 40
+    },
+    "fixed_fee_gbp": 3.99,
+    "notional_gbp": 250000,
+    "one_way_bps": 20
+  },
+  "decision_timestamp": "AFTER_FINAL_VALID_XLON_CLOSE_OF_CALENDAR_MONTH",
+  "execution_contract": "FIRST_VALID_FOLLOWING_XLON_SESSION_WITHIN_THREE_VALID_SESSIONS;NO_SAME_CLOSE_RETURN",
+  "historical_cutoff": "2026-08-21",
+  "instrument_map": {
+    "cash": "ACCEPTED_GBP_CASH_SERIES_FOR_RESEARCH;BROKER_GBP_CASH_OPERATIONAL",
+    "global": "SWDA|IE00B4L5Y983",
+    "m2": "FROZEN_25_OF_25_CURRENT_IMPLEMENTATION_MAP_BY_ECONOMIC_FAMILY"
+  },
+  "leadership_state_definition": {
+    "absolute_support": "COUNT_TOP7_WITH_252_SESSION_TOTAL_RETURN_ABOVE_CONTEMPORANEOUS_GBP_CASH_RETURN",
+    "breadth": 7,
+    "m2_signal": "0.10*RS21_RANK+0.15*RS42_RANK+0.25*RS63_RANK+0.30*RS126_RANK+0.20*RS252_RANK",
+    "persistence": "SPEARMAN_CORRELATION_CURRENT_VS_PREVIOUS_MONTH_M2_RANKS_AMONG_COMMON_ELIGIBLE_FAMILIES",
+    "spread": "MEAN_TOP7_M2_SCORE_MINUS_MEDIAN_ALL_ELIGIBLE_M2_SCORE",
+    "strong": "AT_LEAST_TWO_OF_SPREAD_HIGH,PERSISTENCE_HIGH,ABSOLUTE_SUPPORT_HIGH;OTHERWISE_WEAK;INSUFFICIENT_HISTORY_DEFAULTS_WEAK",
+    "thresholds": "SPREAD_AND_PERSISTENCE_ABOVE_CURRENT_EXCLUDED_PRIOR_EXPANDING_MEDIAN;MINIMUM_24_PRIOR_MONTHS;SUPPORT_HIGH_AT_LEAST_5_OF_7"
+  },
+  "no_broker_execution": true,
+  "regime_map": {
+    "R1_BROAD_RISK_ON": "RISK_SCORE_0_OR_1_AND_LEADERSHIP_WEAK",
+    "R2_LEADERSHIP_RISK_ON": "RISK_SCORE_0_OR_1_AND_LEADERSHIP_STRONG",
+    "R3_ISOLATED_LEADERSHIP": "RISK_SCORE_2_OR_3_AND_LEADERSHIP_STRONG",
+    "R4_CAPITAL_PRESERVATION": "RISK_SCORE_2_OR_3_AND_LEADERSHIP_WEAK"
+  },
+  "risk_state_definition": {
+    "global_126_excess": "GLOBAL_126_SESSION_TOTAL_RETURN_MINUS_CONTEMPORANEOUS_GBP_CASH_126_SESSION_TOTAL_RETURN",
+    "global_252_excess": "GLOBAL_252_SESSION_TOTAL_RETURN_MINUS_CONTEMPORANEOUS_GBP_CASH_252_SESSION_TOTAL_RETURN",
+    "global_vol_63": "ANNUALISED_STANDARD_DEVIATION_OF_PRIOR_63_VALID_GLOBAL_DAILY_RETURNS",
+    "high_vol_threshold": "75TH_PERCENTILE_OF_PRIOR_MONTH_END_VOL63;CURRENT_EXCLUDED;MINIMUM_36_PRIOR_MONTHS",
+    "risk_score": "I(G126<=0)+I(G252<=0)+I(VOL63>PRIOR_VOL75)"
+  },
+  "rows": [
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_WEAK",
+      "m2_allocation": 0.5,
+      "regime": "R1_BROAD_RISK_ON",
+      "risk_score": 0,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_STRONG",
+      "m2_allocation": 0.5,
+      "regime": "R2_LEADERSHIP_RISK_ON",
+      "risk_score": 0,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_WEAK",
+      "m2_allocation": 0.5,
+      "regime": "R1_BROAD_RISK_ON",
+      "risk_score": 1,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_STRONG",
+      "m2_allocation": 0.5,
+      "regime": "R2_LEADERSHIP_RISK_ON",
+      "risk_score": 1,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_WEAK",
+      "m2_allocation": 0.5,
+      "regime": "R4_CAPITAL_PRESERVATION",
+      "risk_score": 2,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_STRONG",
+      "m2_allocation": 0.5,
+      "regime": "R3_ISOLATED_LEADERSHIP",
+      "risk_score": 2,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_WEAK",
+      "m2_allocation": 0.5,
+      "regime": "R4_CAPITAL_PRESERVATION",
+      "risk_score": 3,
+      "swda_allocation": 0.5
+    },
+    {
+      "cash_allocation": 0.0,
+      "confirmation_requirement": "Regime telemetry only; static allocation unchanged",
+      "execution_timing": "First valid following XLON session within 3 sessions; never same close",
+      "leadership_state": "LEADERSHIP_STRONG",
+      "m2_allocation": 0.5,
+      "regime": "R3_ISOLATED_LEADERSHIP",
+      "risk_score": 3,
+      "swda_allocation": 0.5
+    }
+  ],
+  "selected_rule_status": "STATIC_RESEARCH_SHADOW;REGIME_FIELDS_ARE_TELEMETRY_ONLY",
+  "selected_strategy": "GLOBAL_50_M2_50",
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "suspension_rules": [
+    {
+      "action": "Create no decision and do not backfill; affected allocation remains GBP cash until a fully valid month-end",
+      "rule_id": "DATA_VALIDATION_SUSPENSION",
+      "trigger": "Required price, total-return, cash, XLON-calendar, hash, or point-in-time-universe validation fails"
+    },
+    {
+      "action": "Allocate the M2 sleeve to GBP cash; require one subsequent fully valid monthly decision before restoration",
+      "rule_id": "M2_REPRODUCIBILITY_SUSPENSION",
+      "trigger": "The eligible INDUSTRY_PLUS_THEME universe or M2 ranks cannot be reproduced"
+    },
+    {
+      "action": "Affected exposure remains GBP cash; no discretionary substitute",
+      "rule_id": "INSTRUMENT_AVAILABILITY_SUSPENSION",
+      "trigger": "Both the frozen preferred and predeclared alternate implementation for an exposure are unavailable"
+    },
+    {
+      "action": "Entire SWDA allocation remains GBP cash pending governance review",
+      "rule_id": "CORE_AVAILABILITY_SUSPENSION",
+      "trigger": "SWDA and its predeclared verified alternate are unavailable"
+    },
+    {
+      "action": "Do not chase price; affected allocation remains GBP cash and append an operational exception",
+      "rule_id": "EXECUTION_TIMING_SUSPENSION",
+      "trigger": "The first valid following XLON execution cannot be obtained within three valid sessions"
+    },
+    {
+      "action": "Suspend new allocation changes and perform a documented cost review",
+      "rule_id": "COST_SUSPENSION",
+      "trigger": "Estimated one-way implementation friction exceeds the frozen doubled-cost stress of 40 bp or fixed dealing cost exceeds GBP7.98 per leg at GBP250,000"
+    },
+    {
+      "action": "Freeze interpretation and open a separately governed repair stage",
+      "rule_id": "RESEARCH_INVALIDATION",
+      "trigger": "A historical data, eligibility, lookahead, or accounting defect would have changed a material decision or conclusion"
+    },
+    {
+      "action": "No automatic suspension; any prospective performance invalidation criterion must be separately preregistered",
+      "rule_id": "NO_PERFORMANCE_ONLY_STOP",
+      "trigger": "Short-term underperformance alone"
+    }
+  ],
+  "switch_mode": "STATIC_MONTHLY",
+  "unavailable_instrument_rule": "Preferred verified implementation unavailable -> affected allocation remains GBP cash; no discretionary substitute"
+}

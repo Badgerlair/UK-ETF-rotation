@@ -1,0 +1,579 @@
+{
+  "authoritative_cutoff": "2026-08-21",
+  "branch": "research/ukactive-a4f-sipp-regime",
+  "correctness": {
+    "FAIL": 0,
+    "PASS": 23
+  },
+  "decision": {
+    "audit": "PASS",
+    "broker_execution": false,
+    "current_operational_whole_sipp": {
+      "cash_weight": 0.25,
+      "m2_weight": 0.0,
+      "strategy_id": "GLOBAL_75_CASH25",
+      "swda_weight": 0.75
+    },
+    "decision": "UKACTIVE_A4F_SIPP_STRATEGY_SELECTED",
+    "deployment_tier": "REGIME_STRATEGY_SHADOW_ONLY",
+    "dynamic_policies_passing_all_gates": [],
+    "evidence": "E2_DEVELOPMENTAL",
+    "historical_cutoff": "2026-08-21",
+    "operational_static_core_fallback": "GLOBAL_75_CASH25",
+    "reason": "No dynamic policy passed all gates; the selected static blend retained positive preregistered M2 incremental value.",
+    "research_selection": {
+      "capital_authorised": false,
+      "status": "SHADOW_ONLY",
+      "strategy_id": "GLOBAL_50_M2_50"
+    },
+    "risk_edge_status": "NOT_DEMONSTRATED",
+    "selected_metrics": {
+      "annual_turnover_traded_notional": 2.8916440962229357,
+      "calmar_mar": 0.525279468402756,
+      "maximum_drawdown": -0.23615256304303933,
+      "maximum_time_underwater_calendar_days": 763,
+      "net_cagr": 0.12404609277719603,
+      "ulcer_index": 0.05890806125051354
+    },
+    "selected_strategy": "GLOBAL_50_M2_50",
+    "selection_class": "STATIC_GLOBAL_M2_CASH_BLEND",
+    "stage_id": "UKACTIVE-A4F-SIPP",
+    "suspension_rules": [
+      {
+        "action": "Create no decision and do not backfill; affected allocation remains GBP cash until a fully valid month-end",
+        "rule_id": "DATA_VALIDATION_SUSPENSION",
+        "trigger": "Required price, total-return, cash, XLON-calendar, hash, or point-in-time-universe validation fails"
+      },
+      {
+        "action": "Allocate the M2 sleeve to GBP cash; require one subsequent fully valid monthly decision before restoration",
+        "rule_id": "M2_REPRODUCIBILITY_SUSPENSION",
+        "trigger": "The eligible INDUSTRY_PLUS_THEME universe or M2 ranks cannot be reproduced"
+      },
+      {
+        "action": "Affected exposure remains GBP cash; no discretionary substitute",
+        "rule_id": "INSTRUMENT_AVAILABILITY_SUSPENSION",
+        "trigger": "Both the frozen preferred and predeclared alternate implementation for an exposure are unavailable"
+      },
+      {
+        "action": "Entire SWDA allocation remains GBP cash pending governance review",
+        "rule_id": "CORE_AVAILABILITY_SUSPENSION",
+        "trigger": "SWDA and its predeclared verified alternate are unavailable"
+      },
+      {
+        "action": "Do not chase price; affected allocation remains GBP cash and append an operational exception",
+        "rule_id": "EXECUTION_TIMING_SUSPENSION",
+        "trigger": "The first valid following XLON execution cannot be obtained within three valid sessions"
+      },
+      {
+        "action": "Suspend new allocation changes and perform a documented cost review",
+        "rule_id": "COST_SUSPENSION",
+        "trigger": "Estimated one-way implementation friction exceeds the frozen doubled-cost stress of 40 bp or fixed dealing cost exceeds GBP7.98 per leg at GBP250,000"
+      },
+      {
+        "action": "Freeze interpretation and open a separately governed repair stage",
+        "rule_id": "RESEARCH_INVALIDATION",
+        "trigger": "A historical data, eligibility, lookahead, or accounting defect would have changed a material decision or conclusion"
+      },
+      {
+        "action": "No automatic suspension; any prospective performance invalidation criterion must be separately preregistered",
+        "rule_id": "NO_PERFORMANCE_ONLY_STOP",
+        "trigger": "Short-term underperformance alone"
+      }
+    ]
+  },
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "outputs": [
+    {
+      "path": "UKACTIVE_A4F_SIPP_2025_INCLUDED_EXCLUDED.png",
+      "sha256": "ccaf13eb4d92a087d63dd3e07e9790f12b25bc1137a1a95689325a01e67c07d3",
+      "size_bytes": 49639
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ALLOCATION_TIMELINE.png",
+      "sha256": "284b6e3fc7221cedc6bb1041f7e88071b7e216bbe7f00631c21dcd729cb7ea50",
+      "size_bytes": 26463
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ANNUAL_EXCESS.png",
+      "sha256": "3b9fbd7c4292500bdcb1971387061c97ab0576399d46a673f6dd543a2f6e2f75",
+      "size_bytes": 44754
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ANNUAL_MAXIMUM_DRAWDOWN.png",
+      "sha256": "bcabf1c5c4ba5df49fd87ebb13395dab241877e60a203c3bcf8124f8d61c59cd",
+      "size_bytes": 47629
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ANNUAL_RETURNS.png",
+      "sha256": "eb3294f587d760d7df6acba8272cd2024afa488d62d43baa3a0e938c5dd23e15",
+      "size_bytes": 46909
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CANDIDATE_MANIFESTS.json",
+      "sha256": "0625d2b79ad5a42f865e14b645849fd4d26deee3e1445b47c920bc400a53a40e",
+      "size_bytes": 2442
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_COMMON_WINDOW_RECONCILIATION.csv",
+      "sha256": "5ef174013e009c929f3df11231c32ae3edcd231a7de2fd6ec71c0d2484d92f99",
+      "size_bytes": 54443
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_COMPLETENESS_REPAIR_20260825.md",
+      "sha256": "a3754d404d86741b017c9716182251d1bd47ebb8bddfb6a4aa3ed91dffe0a251",
+      "size_bytes": 2334
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_REGIME.png",
+      "sha256": "4ec2ffcb391c7c11fda2362f0c2ac27fc8e5312cf5dafeaa52c97fc088474cd4",
+      "size_bytes": 44098
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CONTRIBUTION_BY_YEAR.png",
+      "sha256": "84e0cfffe3ba42256cd84a8715f6b4f272425e00f6a9314825e52a187da0d292",
+      "size_bytes": 38638
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CORRECTNESS_REPAIR_20260825.md",
+      "sha256": "83e7e222096005fb005dc0ca6bcb41e4e4ab2f0d34dd36505ab1049ecbbc9aeb",
+      "size_bytes": 1793
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CORRECTNESS_REPAIR_VALID_OBSERVATION_VOLATILITY_20260825.md",
+      "sha256": "ed147dc506c0b33fdede6dd0e38109c1b38e95afbb344a14eb784dd2bedc457b",
+      "size_bytes": 2267
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_CORRECTNESS_TESTS.json",
+      "sha256": "a0db4237f8ed9f8c81e68ec66aa551eb6e0333884d9210fa58995e5fa5fc8d19",
+      "size_bytes": 3677
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_COST_STRESS.csv",
+      "sha256": "ba4dccec9e566a7eecaa1cd9e7c1139c28b1f078921ee09a8b98845b4987167c",
+      "size_bytes": 28548
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_DATA_CUTOFF_AUDIT.md",
+      "sha256": "3aff6a7d6c2c7ab8493bc32858c1881eaec874f19fdff6506350e12db0357eb7",
+      "size_bytes": 394
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_DECISION.json",
+      "sha256": "c790b7ce967b61923487035d564cf2649b5b075585c29aae05e3d833275bb1a7",
+      "size_bytes": 3498
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv",
+      "sha256": "d4d707ec4c19cea1d8e04f85a7b11b0b07fd9a719c30a59e5779fdcbff6da797",
+      "size_bytes": 62650
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_DYNAMIC_VS_STATIC_DRAWDOWN_CURVES.png",
+      "sha256": "a5768fe7a6dae6a3841ed1d83b103aae944d1c2dedc4ef32bb064c39350b3063",
+      "size_bytes": 247914
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_DYNAMIC_VS_STATIC_EQUITY_CURVES.png",
+      "sha256": "9092254c39f6a72ad5bac1c305fc4f73465b03406a14e7bb7b0f59920b310389",
+      "size_bytes": 170579
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_EXECUTIVE_HANDOFF.md",
+      "sha256": "bdf50dd78d7c0b6a896fa1382e7cf48045905dc65d5109153c5939fd9400b1ad",
+      "size_bytes": 728
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_FAMILY_INFLUENCE.csv",
+      "sha256": "11d78ba727c8da120b11d40034fc977fa170dca5e75796adf970d54df5d09bd6",
+      "size_bytes": 119816
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_FINAL_DECISION_REPORT.md",
+      "sha256": "66dd79e1f03ec99742a132d37c4fed510646b9977893e709f7007d99e9c9677a",
+      "size_bytes": 14427
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",
+      "sha256": "977a249f89b1a8250230408752cb7b50ef7d0077659e690894ef1f56a9fda733",
+      "size_bytes": 6254
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv",
+      "sha256": "44c0fb95479982ec02cd14c727c706533a46e73cb130bd5b9a0402b90feba536",
+      "size_bytes": 91818
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_HYSTERESIS_RESULTS.csv",
+      "sha256": "28efc5ef27739d8eac4abd62850e66ac4a3060a8fa8b8cbf9ba63e23ff1aef1d",
+      "size_bytes": 16042
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_IDEMPOTENCE_REPAIR_20260825.md",
+      "sha256": "ef4bb26292567de1670f8d1027d20299a92c95bd941cb2081d8388e81ff95a30",
+      "size_bytes": 1157
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_LEADERSHIP_STATE_TIMELINE.png",
+      "sha256": "98088f55d9186f3e6f6f6cd1a37bd596f537ee8a0dd1210235613d39640a1e96",
+      "size_bytes": 19213
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv",
+      "sha256": "6df372e66c521e318581e318faddb0a77a5664ca4a786153c12b3d6bd50428e6",
+      "size_bytes": 2657
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_M2_INCREMENTAL_VALUE.csv",
+      "sha256": "0f98849f29ef47cb8a7c8215bccbad828ebda22b936deaff4b8a8aabc7f14097",
+      "size_bytes": 15452
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MACRO_REGIME_ATTRIBUTION.md",
+      "sha256": "c07bae397da89986759d27e9daad4cafe3fbd1f82bf471dd0c3697a6792794a3",
+      "size_bytes": 716
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MANDATE_COVERAGE_REPAIR_20260825.md",
+      "sha256": "5027ab924f3abd163b3ec8b5f9cc628858704d975857ce8c66a6ff63daf76262",
+      "size_bytes": 1550
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MATCHED_RISK_CONTROLS.csv",
+      "sha256": "23a06ad792b31b79ef7c96be796e3b4934ed67babd4d82918f952bf70d8c7286",
+      "size_bytes": 122958
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MATCHED_RISK_FRONTIER.png",
+      "sha256": "45588e19c96f3dbabf430fe46e8205a80b0bee9bbed94f917e1c6713a5bc5932",
+      "size_bytes": 47388
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_METADATA_SCHEMA_REPAIR_20260825.md",
+      "sha256": "9b75d6df21ecf359c9a3fd23d6981cbbdb66e3602e130cb23e0604fabd62b539",
+      "size_bytes": 665
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MONTHLY_REGIME_LEDGER.csv",
+      "sha256": "6d52f35bbe4f4f08dd8654657ebf3e690f1efac0fff41daa09ad360dfe2bc3b3",
+      "size_bytes": 147498
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_MONTHLY_RUNBOOK.md",
+      "sha256": "72f42f2ec1a59f03cc0988651b9538f1b2cfa9ab418ddb4a45d67c3aa02c209d",
+      "size_bytes": 3688
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ORACLE_DIAGNOSTICS.csv",
+      "sha256": "adff3ad9f9474b0872527993aa813b605bd40fcc76012cdca1ea7f98de3a31c4",
+      "size_bytes": 15568
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_OUTPUT_SCHEMAS.json",
+      "sha256": "ccf25300a94fa252fcacab0e3af83fc1c2658a077967bed822d5ebaad231ba76",
+      "size_bytes": 7876
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_PARETO_FRONTIER.csv",
+      "sha256": "45ab72fcb40e5fc17e93d0d1c762341efb0c4d87258c180ff77f96d1d63adc8d",
+      "size_bytes": 2125
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_POLICY_DECISION_LEDGER.csv",
+      "sha256": "450432bca3d469ebd2940c66f841185423885bfed93af4e12a57656ada114c4b",
+      "size_bytes": 1455089
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_POLICY_INFERENCE.csv",
+      "sha256": "17973efc4fcf6d04878c34b535caa0658aa5846f5b9ee9373391f1d3f556a843",
+      "size_bytes": 3059
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_PREREGISTRATION.json",
+      "sha256": "dae6c94d13eac60526f7d72dfea4e71c090489c9159a0f25bce7d047932df477",
+      "size_bytes": 13999
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_PREREGISTRATION.md",
+      "sha256": "90c4363af89d7c7ffc4afccef592233c01e6c1235157056d926a199dcb673b1f",
+      "size_bytes": 11033
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_PROVENANCE.md",
+      "sha256": "39f810e3db0dc7be1335ba5a5e4920e41191664499ed1d605aa870fd82337e01",
+      "size_bytes": 428
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_RANDOM_SELECTION_CONTROL.csv",
+      "sha256": "d4ec14d9ad512a2394396c986d7bd8a09f875fdc4c0d64afc1c92dfc88048b64",
+      "size_bytes": 1651
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_EPISODE_LEDGER.csv",
+      "sha256": "036bf5b3c5f3d70910af41a9256e270e5618cc4742eabca4262200a25f16b90c",
+      "size_bytes": 143067
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_INFERENCE.md",
+      "sha256": "ae74cc99ac4c2048fbd39e6a873dc3400b6b1cb9ad16933916433c02566a481b",
+      "size_bytes": 1076
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",
+      "sha256": "97075f9b27f7ea63b083b461b47c83df5070dc9d9f02e8148813b50a888e95d6",
+      "size_bytes": 8136
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_STRATEGY_RANKINGS.csv",
+      "sha256": "17a9e18def9e594b7870a12d7367d009970fcda14e7bed0cf09ba6268b846163",
+      "size_bytes": 25876
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv",
+      "sha256": "2c71864a24ff94c4f69c699dc6f35f18eed1606e7333f58e1d474c0a468d6a1a",
+      "size_bytes": 75223
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_TIMELINE.png",
+      "sha256": "d6d50c3b860f501ed625236335518885b8793f92d3dfb2d1c44672b02a89dd05",
+      "size_bytes": 35826
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_TRANSITION_DIAGRAM.png",
+      "sha256": "157370ff769959e4fe5422adc1b8d7789b52cf147ab5fd509fb44da9dd15b7a9",
+      "size_bytes": 26415
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REGIME_TRANSITIONS.csv",
+      "sha256": "43c0f62817e760f56cc8863f47d2502dfada512ed0e71e911679ad363e6c6b41",
+      "size_bytes": 28467
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REPORT_SCHEMA_REPAIR_20260825.md",
+      "sha256": "08d8a0a63a1b273d145a945a550733aeefcfba9ef65c7fd691c48264b3317abc",
+      "size_bytes": 621
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_REPRODUCTION_AUDIT.md",
+      "sha256": "cf3965cac0311f2b59602694a07ccd6ac22a51116867e91c912ee4e68fc20a97",
+      "size_bytes": 953
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_RISK_SCORE_TIMELINE.png",
+      "sha256": "a30ecbd66e08188eeaeb253c366184382b48d645ffc69b83df7d2707d1eeec33",
+      "size_bytes": 19280
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_ROLLING_EXCESS.png",
+      "sha256": "565a5b49c74146f2ff930eb4b5e8bde36d2644ae6fcb821179901cb9b0e55681",
+      "size_bytes": 144850
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_SECONDARY_REGIME_DIAGNOSTICS.csv",
+      "sha256": "a3da9b17e857308f221e2314f8bbbc08f3b55b5d8278ede5a0c13bd05b05d88b",
+      "size_bytes": 4298
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_SELECTED_STRATEGY.json",
+      "sha256": "9099374eb6ac32f470a92e5a34dede60116ff96cd80ba62e3ab774772bcc1dbe",
+      "size_bytes": 5155
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_STAGE_REGISTRATION.json",
+      "sha256": "bdad60ef3c723c3cf3324acd53263c13c7414b9d6917d397c8b13d342eef09a3",
+      "size_bytes": 845
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_STATIC_FRONTIER.csv",
+      "sha256": "7c844a6f209913c56fbb5b096054b08714a4a5610fa0168d77baa4b0f3f39414",
+      "size_bytes": 29096
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_SWITCH_ATTRIBUTION.csv",
+      "sha256": "5259933bf28f84ea791cfd92f0d525719b62230d4be575d3f6099b29d032d856",
+      "size_bytes": 25913
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_SWITCHING_GAIN_OPPORTUNITY_COST.png",
+      "sha256": "85fd5414cfed4d9a526373c0dc889cbd84264d5b6ecaf42c962068d09cec5e73",
+      "size_bytes": 32333
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_THRESHOLD_SENSITIVITY.csv",
+      "sha256": "cb8dd24694242ba6f2b4ad3ab93684a0345a4768046d3d145654d22f7c942c50",
+      "size_bytes": 11680
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_TWO_REGIME_DISCLOSURE_REPAIR_20260825.md",
+      "sha256": "e5ce219b8ba095fc63ae43e7bd427f2d69a029013d9ed75b2c9846577bedfd0f",
+      "size_bytes": 706
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_WINNER_FALSE_LEADER_COMPARISON.csv",
+      "sha256": "21f6e2e21a4e59a2c5facceca7ea83d249511ed78c699394e5106dce4a9339dc",
+      "size_bytes": 1266
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_ATTRIBUTION.csv",
+      "sha256": "20960e6a0eb1a064e5f82480db5d473793101658b50ab6637dba30590ca6d69c",
+      "size_bytes": 91749
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_REVIEW.md",
+      "sha256": "c30c43dac490aef8f4d682e2b893711be16c32ee462cbd2a028dbcc36b1730ec",
+      "size_bytes": 16996
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv",
+      "sha256": "6c42642a3e6703b62bf4fc1eab7e328d909596e9cc26315d50b105bb05bda53f",
+      "size_bytes": 83749
+    },
+    {
+      "path": "UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv",
+      "sha256": "c2de29f0b16f72eb0a6fefc7d446fd91ba46160c0ae4f5d80a81611c4ef54283",
+      "size_bytes": 42894
+    }
+  ],
+  "parent_manifest_commit": "ce6136f52ca646698a56e4ff4bbb8577214a684d",
+  "protocol_commit": "15f6e63",
+  "run_id": "UKACTIVE-A4F-SIPP-20260825-001",
+  "selected_strategy": {
+    "allocations": {
+      "cash_weight": 0.0,
+      "global_weight": 0.5,
+      "m2_weight": 0.5,
+      "risky_weight": 1.0
+    },
+    "automatic_broker_execution": false,
+    "capital_authorised_for_research_selection": false,
+    "costs": "20_BP_ONE_WAY_PLUS_3.99_GBP_PER_LEG_AT_250K",
+    "current_operational_fallback": {
+      "cash_weight": 0.25,
+      "m2_weight": 0.0,
+      "review": "MONTHLY",
+      "status": "STATIC_CORE_FALLBACK_NOT_A4F_ACTIVE_DEPLOYMENT",
+      "strategy_id": "GLOBAL_75_CASH25",
+      "swda_weight": 0.75
+    },
+    "current_operational_whole_sipp": {
+      "cash_weight": 0.25,
+      "m2_weight": 0.0,
+      "review": "MONTHLY",
+      "status": "CURRENT_OPERATING_RULE_WHILE_RESEARCH_SELECTION_IS_SHADOW_ONLY",
+      "strategy_id": "GLOBAL_75_CASH25",
+      "swda_weight": 0.75
+    },
+    "deployment_tier": "REGIME_STRATEGY_SHADOW_ONLY",
+    "evidence": "E2_DEVELOPMENTAL",
+    "execution": "MONTH_END_SIGNAL_NEXT_VALID_XLON_SESSION_WITHIN_3",
+    "instruments": {
+      "cash": "II_SIPP_GBP_BROKER_CASH_OPERATIONALLY;ACCEPTED_GBP_CASH_SERIES_RESEARCH",
+      "global": "SWDA|IE00B4L5Y983",
+      "m2": "25_OF_25_USER_CONFIRMED_CURRENT_II_LINES;ECONOMIC_FAMILY_SELECTION"
+    },
+    "m2_specification": {
+      "breadth": 7,
+      "cash_rule": "CASH0_ALWAYS_INVESTED_EXCEPT_IMPLEMENTATION_OR_DATA_BLOCK",
+      "current_implementation_map": "25_OF_25_USER_CONFIRMED_2026-08-23;CURRENT_ONLY_NOT_BACK_PROJECTED",
+      "point_in_time_universe": "AUTHORITATIVE_A2R2_A3R2_DYNAMIC_POINT_IN_TIME_SIGNAL_READY_INDUSTRY_THEME_UNIVERSE",
+      "pool": "INDUSTRY_PLUS_THEME",
+      "relative_strength_weights": {
+        "RS126": 0.3,
+        "RS21": 0.1,
+        "RS252": 0.2,
+        "RS42": 0.15,
+        "RS63": 0.25
+      },
+      "replacement_rule": "AT_EACH_MONTH_END_REPLACE_NON_TOP7_FAMILIES_WITH_CURRENT_POINT_IN_TIME_TOP7;ECONOMIC_FAMILY_DUPLICATE_SUPPRESSION",
+      "review": "FINAL_VALID_XLON_SESSION_OF_CALENDAR_MONTH",
+      "signal_id": "M2_BASE",
+      "within_sleeve_weighting": "EQUAL_WEIGHT"
+    },
+    "operating_characteristics": {
+      "annual_rebalance_events": 11.928440028901734,
+      "annual_strategy_switches": 0.0,
+      "annual_turnover_traded_notional": 2.8916440962229357
+    },
+    "regime_state_machine": "UKACTIVE_A4F_SIPP_REGIME_STATE_MACHINE.json",
+    "research_selection": {
+      "allocations": {
+        "cash_weight": 0.0,
+        "global_weight": 0.5,
+        "m2_weight": 0.5,
+        "risky_weight": 1.0
+      },
+      "capital_authorised": false,
+      "status": "SHADOW_ONLY",
+      "strategy_id": "GLOBAL_50_M2_50"
+    },
+    "risk_edge_status": "NOT_DEMONSTRATED_SELECTED_RETURN_ORIENTED_SHADOW_ARCHITECTURE",
+    "robustness_caveat": "M2_INCREMENTAL_EDGE_REVERSES_WHEN_2020_AND_2025_ARE_JOINTLY_EXCLUDED;RIGHT_TAIL_DEPENDENT",
+    "selection_class": "STATIC_GLOBAL_M2_CASH_BLEND",
+    "stage_id": "UKACTIVE-A4F-SIPP",
+    "strategy_id": "GLOBAL_50_M2_50",
+    "suspension_rules": [
+      {
+        "action": "Create no decision and do not backfill; affected allocation remains GBP cash until a fully valid month-end",
+        "rule_id": "DATA_VALIDATION_SUSPENSION",
+        "trigger": "Required price, total-return, cash, XLON-calendar, hash, or point-in-time-universe validation fails"
+      },
+      {
+        "action": "Allocate the M2 sleeve to GBP cash; require one subsequent fully valid monthly decision before restoration",
+        "rule_id": "M2_REPRODUCIBILITY_SUSPENSION",
+        "trigger": "The eligible INDUSTRY_PLUS_THEME universe or M2 ranks cannot be reproduced"
+      },
+      {
+        "action": "Affected exposure remains GBP cash; no discretionary substitute",
+        "rule_id": "INSTRUMENT_AVAILABILITY_SUSPENSION",
+        "trigger": "Both the frozen preferred and predeclared alternate implementation for an exposure are unavailable"
+      },
+      {
+        "action": "Entire SWDA allocation remains GBP cash pending governance review",
+        "rule_id": "CORE_AVAILABILITY_SUSPENSION",
+        "trigger": "SWDA and its predeclared verified alternate are unavailable"
+      },
+      {
+        "action": "Do not chase price; affected allocation remains GBP cash and append an operational exception",
+        "rule_id": "EXECUTION_TIMING_SUSPENSION",
+        "trigger": "The first valid following XLON execution cannot be obtained within three valid sessions"
+      },
+      {
+        "action": "Suspend new allocation changes and perform a documented cost review",
+        "rule_id": "COST_SUSPENSION",
+        "trigger": "Estimated one-way implementation friction exceeds the frozen doubled-cost stress of 40 bp or fixed dealing cost exceeds GBP7.98 per leg at GBP250,000"
+      },
+      {
+        "action": "Freeze interpretation and open a separately governed repair stage",
+        "rule_id": "RESEARCH_INVALIDATION",
+        "trigger": "A historical data, eligibility, lookahead, or accounting defect would have changed a material decision or conclusion"
+      },
+      {
+        "action": "No automatic suspension; any prospective performance invalidation criterion must be separately preregistered",
+        "rule_id": "NO_PERFORMANCE_ONLY_STOP",
+        "trigger": "Short-term underperformance alone"
+      }
+    ],
+    "switch_mode": "STATIC_MONTHLY"
+  },
+  "source_hashes": {
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_MANIFEST.json": "a9c853d1bd38840975e5bd4a472890a7954ced7d853366ade6eb7fd681ff2bc5",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_PREREGISTRATION.json": "9722a1e7f952f87d4c11b2031b885a1cb1d14cb567601d03b86f7c4e582e2875",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_SELECTED_STRATEGY.json": "c2b819002b8e265d0f0fa612c479b493572e025d31825e7f939cb63db9d7c6b3",
+    "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_WHOLE_SIPP_SCORECARD.csv": "1f569e93ab8400255365b27c1637441dfcac695c99ceb514a3beae7aae35537f",
+    "UKACTIVE_A2R2_CORRECTED_SIGNAL_ELIGIBILITY.parquet": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "UKACTIVE_A2R2_CORRECTED_TOTAL_RETURN_PANEL_GBP.parquet": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "UKACTIVE_A2R2_SIGNAL_ENDPOINT_HISTORY.parquet": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+    "UKACTIVE_A2_CASH_SERIES.parquet": "491561335773f64c2b81f2e8e64f54d5b086b7083e8510d7de5228ab1444ae7a",
+    "UKACTIVE_A4D_CASH_DEFENCE_RESULTS.csv": "7f79e100d233d2722be54283e4dfe18e7b38271646cf75a71147dd743c4f8e3a",
+    "UKACTIVE_A4D_MANIFEST.json": "a9770b7fca361fffd225df2f287efaef0e1019c4bdf516966192c5c134d04b0f",
+    "UKACTIVE_A4D_PRIMARY_ECONOMIC_SCORECARD.csv": "386e6732fc9ddd55d690849f3d07c9110daf6b127e414df91acb30fc807d328c"
+  },
+  "stage_id": "UKACTIVE-A4F-SIPP",
+  "warning": "E2 DEVELOPMENTAL; A4F THRESHOLDS ARE PRIOR-ONLY; NO E3 CONFIRMATION"
+}
