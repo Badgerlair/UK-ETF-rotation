@@ -1,0 +1,2 @@
+plan_id,sequence,instrument,ticker,isin,side,current_value_gbp,target_value_gbp,trade_value_gbp,estimated_20bp_friction_gbp,estimated_broker_fee_gbp,trade_status,notes
+FIRST_PROSPECTIVE_MONTH_END,0,NO_TRADE_GENERATED,,,NONE,,,,,,NOT_DUE_NO_PROSPECTIVE_SIGNAL_CREATED,"Await 2026-08-28 validated close, then create a decision before the 2026-09-01 eligible execution close. Not an order."

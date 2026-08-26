@@ -1,0 +1,3 @@
+plan_id,sequence,instrument,ticker,isin,side,current_value_gbp,target_value_gbp,trade_value_gbp,estimated_20bp_friction_gbp,estimated_broker_fee_gbp,trade_status,notes
+STRICT_MODEL_PLAN,0,NO_TRADE_GENERATED,,,NONE,,,,,,BLOCKED_AWAITING_CURRENT_HOLDINGS_INPUT_AND_FIRST_PROSPECTIVE_TOP7,"This is an audit sentinel, not an order or trade instruction."
+LOW_TURNOVER_TRANSITION_PLAN,0,NO_TRADE_GENERATED,,,NONE,,,,,,BLOCKED_AWAITING_CURRENT_HOLDINGS_INPUT_AND_FIRST_PROSPECTIVE_TOP7,Maximum three monthly decision points after inputs; non-frozen holdings remain explicitly noncompliant.

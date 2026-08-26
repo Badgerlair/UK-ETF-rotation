@@ -1,0 +1,12 @@
+account_date,instrument,ticker,isin,quantity,market_value,trading_currency,classification,unrealised_gain_loss,dealing_restriction,notes
+,RLON,RLON,,,,,DEFENSIVE_STRATEGIC,,,Exact Royal London fund/share class and ISIN required
+,CSH2,CSH2,,,,,DEFENSIVE_TACTICAL,,,Canonical reference ISIN LU1230136894; current holding identity/value still required
+,Artemis Global Income,,,,,,DISCRETIONARY_ACTIVE,,,Active fund; exact share class and value required
+,Artemis European Select,,,,,,DISCRETIONARY_ACTIVE,,,Active regional fund; exact share class and value required
+,VWRL,VWRL,,,,,LEGACY_TRANSITION,,,Broad global equity overlap but frozen core implementation is SWDA
+,QQQA,QQQA,,,,,DISCRETIONARY_ACTIVE,,,Concentrated active/thematic exposure included in 25% cap
+,COPG,COPG,,,,,M2_ECONOMIC_OVERLAP_BUT_NONCOMPLIANT,,,Economic overlap only; exact ticker/ISIN is not a frozen M2 preferred line
+,LITG,LITG,,,,,M2_ECONOMIC_OVERLAP_BUT_NONCOMPLIANT,,,Economic overlap only; exact ticker/ISIN is not a frozen M2 preferred line
+,SILG,SILG,,,,,M2_ECONOMIC_OVERLAP_BUT_NONCOMPLIANT,,,"Ticker matches a frozen line, but current held ISIN must be supplied before exact-compliance classification"
+,ENGE,ENGE,,,,,M2_ECONOMIC_OVERLAP_BUT_NONCOMPLIANT,,,Economic overlap only; exact ticker/ISIN is not a frozen M2 preferred line
+,GDGB,GDGB,,,,,M2_ECONOMIC_OVERLAP_BUT_NONCOMPLIANT,,,Economic overlap only; exact ticker/ISIN is not a frozen M2 preferred line

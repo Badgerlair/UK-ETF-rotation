@@ -1,0 +1,28 @@
+{
+  "blocking_inputs": [
+    "DATED_EXACT_CURRENT_SIPP_HOLDINGS_EXPORT",
+    "EXACT_RLON_SHARE_CLASS_ISIN_AND_DEALING_TERMS",
+    "CURRENT_II_PLAN",
+    "CSH2_CURRENT_SIPP_CONFIRMATION"
+  ],
+  "broker_orders_created": 0,
+  "current_readiness": "AWAITING_CURRENT_HOLDINGS_INPUT",
+  "decision": "UKACTIVE_A5C_SIPP_FROZEN_PROSPECTIVE_SETUP_COMPLETE",
+  "evidence": "E2_DEVELOPMENTAL",
+  "first_expected_execution_date": "2026-09-01",
+  "first_expected_signal_date": "2026-08-28",
+  "freeze_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+  "frozen_model": "M2_BASE|TOP7|MONTHLY|CASH0_ALWAYS_INVESTED|EQUAL",
+  "historical_model_development": "CLOSED",
+  "maximum_total_active_thematic": 0.25,
+  "next_user_action": "Provide one dated current ii SIPP holdings export including exact instrument names, tickers, ISINs, quantities, market values, trading currencies, dealing restrictions, the exact RLON share class/dealing terms, CSH2 holding details, and current ii plan.",
+  "non_claim": "A controlled 10% pilot is a risk-budgeted implementation decision, not proof of independently confirmed alpha.",
+  "pilot_operationally_ready": false,
+  "pilot_target": {
+    "defensive": 0.25,
+    "m2": 0.1,
+    "swda": 0.65
+  },
+  "prospective_events_created": 0,
+  "stage_id": "UKACTIVE-A5C-SIPP"
+}

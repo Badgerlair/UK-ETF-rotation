@@ -1,0 +1,175 @@
+{
+  "a5c_identifier_collision": false,
+  "branch": "research/ukactive-a5c-sipp-frozen-prospective",
+  "broker_order_count": 0,
+  "build_date": "2026-08-26",
+  "correctness": {
+    "FAIL": 0,
+    "PASS": 26
+  },
+  "decision": {
+    "blocking_inputs": [
+      "DATED_EXACT_CURRENT_SIPP_HOLDINGS_EXPORT",
+      "EXACT_RLON_SHARE_CLASS_ISIN_AND_DEALING_TERMS",
+      "CURRENT_II_PLAN",
+      "CSH2_CURRENT_SIPP_CONFIRMATION"
+    ],
+    "broker_orders_created": 0,
+    "current_readiness": "AWAITING_CURRENT_HOLDINGS_INPUT",
+    "decision": "UKACTIVE_A5C_SIPP_FROZEN_PROSPECTIVE_SETUP_COMPLETE",
+    "evidence": "E2_DEVELOPMENTAL",
+    "first_expected_execution_date": "2026-09-01",
+    "first_expected_signal_date": "2026-08-28",
+    "freeze_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+    "frozen_model": "M2_BASE|TOP7|MONTHLY|CASH0_ALWAYS_INVESTED|EQUAL",
+    "historical_model_development": "CLOSED",
+    "maximum_total_active_thematic": 0.25,
+    "next_user_action": "Provide one dated current ii SIPP holdings export including exact instrument names, tickers, ISINs, quantities, market values, trading currencies, dealing restrictions, the exact RLON share class/dealing terms, CSH2 holding details, and current ii plan.",
+    "non_claim": "A controlled 10% pilot is a risk-budgeted implementation decision, not proof of independently confirmed alpha.",
+    "pilot_operationally_ready": false,
+    "pilot_target": {
+      "defensive": 0.25,
+      "m2": 0.1,
+      "swda": 0.65
+    },
+    "prospective_events_created": 0,
+    "stage_id": "UKACTIVE-A5C-SIPP"
+  },
+  "evidence": "E2_DEVELOPMENTAL",
+  "files": [
+    {
+      "file": "UKACTIVE_A5C_CURRENT_SIPP_HOLDINGS_INPUT.csv",
+      "sha256": "431adc57bad747f2549f56249a69318d36966414de483b4e878fe13ca1e215cc",
+      "size_bytes": 1440
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_10_15_25_PERCENT_COMPARISON.csv",
+      "sha256": "1e22ae43554fadee1370d03dfa025820add391a823e36d9800eb418d41b14106",
+      "size_bytes": 9753
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_CORRECTNESS_TESTS.csv",
+      "sha256": "2efb1576313947ecf5b3da540cb6b0edaebff953eaa1036336c7abba501e50b9",
+      "size_bytes": 1266
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_COST_RESTATEMENT.csv",
+      "sha256": "72ef73a132965b35127a00e63c23b866b574fd45916dde62e7b1c16df7015edb",
+      "size_bytes": 32067
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_CURRENT_HOLDINGS_CLASSIFICATION.csv",
+      "sha256": "199f7a2b8ad3af85e79141e64ea3e61bee25691bb43023618291b9ed03a4111e",
+      "size_bytes": 2469
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_DATA_CUTOFF_AUDIT.md",
+      "sha256": "1beb4349e7d7c71cf5f506ed7d095b3920e683e300098b829407da8639a0a80c",
+      "size_bytes": 1692
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_DECISION.json",
+      "sha256": "d7e053e3267c3f7b9c2046b6ae42ba09b4291efe358bc41bb779b1f0fa775d66",
+      "size_bytes": 1320
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_DEFENSIVE_IMPLEMENTATION.md",
+      "sha256": "e654a05e3cea01e2c0d7ae030720dd64259da6f6d0e4efd06a05676d67c41d17",
+      "size_bytes": 1333
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_FINAL_HANDOFF.md",
+      "sha256": "ab23ea130c4673587fde5f8248eba07dde0982131c9374c2f5d46732de375c5f",
+      "size_bytes": 3477
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_FIRST_MONTH_END_PACK.md",
+      "sha256": "30afc24748e81e00d766ba6de89fa394a7a8332a6af83834eef3e86389508c07",
+      "size_bytes": 1131
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_FIRST_MONTH_END_TRADES.csv",
+      "sha256": "59654ecd593175340a2a755cb3371311508473405cc9cd950f29db0c86d3341c",
+      "size_bytes": 388
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_FREEZE_DECLARATION.md",
+      "sha256": "6154bf4c67a6efe8ce1b1fb10904a83ed39258548bba2a8b8effff9c89c01bd8",
+      "size_bytes": 3814
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_FROZEN_SPEC.json",
+      "sha256": "821f21d9f52d13265ea17b5fbc09042f252179e847ab1b7441010bba887aebd7",
+      "size_bytes": 3528
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_II_PLAN_COST_COMPARISON.csv",
+      "sha256": "883d203c7d07f50e13d00934525b923a9fadc1254c4fda30091c1c0db262defb",
+      "size_bytes": 9337
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_LIVE_INSTRUMENT_MAP_V2.csv",
+      "sha256": "f447a1a338b733142f6107e062db66d4b36e7f59f6abd763276d8ded74195e4f",
+      "size_bytes": 40398
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_MODEL_DEVELOPMENT_CLOSED.json",
+      "sha256": "0ad75845f2fdef829698c288f46748df6b16d829e898839061807cdf8f2f0bb1",
+      "size_bytes": 553
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_MONTHLY_RUNBOOK.md",
+      "sha256": "7e42089aed42a2800fbb594931320b482a3fc0361bd5f58b13baf1e89cc4114b",
+      "size_bytes": 2276
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_PROSPECTIVE_LEDGER.csv",
+      "sha256": "f0f1e81115e93d0da3008893e206cdd2c4afd700038635f1159cd3a580ffba0c",
+      "size_bytes": 724
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_PROSPECTIVE_SPEC.json",
+      "sha256": "12f31b1ebac64513acc7b627a9199a70f9465118a58f1f7e4543add80a07f804",
+      "size_bytes": 961
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_PROVENANCE.md",
+      "sha256": "7484f8aabc95132b0a6d7f617d973679bdcaac957a52c39ef6c51c3d03f83086",
+      "size_bytes": 1670
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_RELATIVE_REGRET.csv",
+      "sha256": "186504d55f12ade5550b05c9866af8072bfcbfbfa03fb5c8a7a5790005e55c30",
+      "size_bytes": 344447
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_TRANSITION_PLAN.md",
+      "sha256": "d9d86f6dc44eda5d9591d18d323c20e08261cc9be6a0ccb151a09d9b51de20eb",
+      "size_bytes": 1973
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_TRANSITION_TRADES.csv",
+      "sha256": "fd76641de52e8ab936cd9a505b30eb9cb0d2fae1237c523b4bb8f7f34deac60d",
+      "size_bytes": 583
+    },
+    {
+      "file": "UKACTIVE_A5C_SIPP_WHOLE_PORTFOLIO_DRAG.csv",
+      "sha256": "4a1f4c66253ef3e9642722b4af0d23b8ea9386d6c428acf3288373fe3d95333d",
+      "size_bytes": 239829
+    }
+  ],
+  "freeze_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+  "historical_cutoff": "2026-08-21",
+  "prospective_event_count": 0,
+  "results_commit": "PENDING_RESULTS_COMMIT",
+  "source_hashes": {
+    "A2R2_ENDPOINT_HISTORY": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
+    "A2R2_SIGNAL_ELIGIBILITY": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",
+    "A2R2_TOTAL_RETURN_PANEL": "76cf0dc9c2fc1644954e7628d9d82f50ee0c4792896565c9ad48ee2fad5086a3",
+    "A3R2U_DYNAMIC_UNIVERSE": "6b9a500a41dc1fe7b7c8bedb5d9a2c9087b53855d5e8f32a1790a340f0768044",
+    "A4E_LIVE_INSTRUMENT_MAP": "066bfa7e838bfaf5fb8be69fe225fb369f444e23c937a6aec45d486877fdf510",
+    "A4F_MANIFEST": "0e54cd1bf80fd8a3ca8fe72fd0e94e7479d7ff3135bd9f266bac4e4064940d3d",
+    "A4F_SELECTED_STRATEGY": "9099374eb6ac32f470a92e5a34dede60116ff96cd80ba62e3ab774772bcc1dbe"
+  },
+  "stage_id": "UKACTIVE-A5C-SIPP"
+}
