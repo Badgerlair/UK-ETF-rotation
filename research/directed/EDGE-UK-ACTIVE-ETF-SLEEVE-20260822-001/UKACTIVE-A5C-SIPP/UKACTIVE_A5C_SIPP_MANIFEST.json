@@ -161,7 +161,7 @@
   "freeze_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
   "historical_cutoff": "2026-08-21",
   "prospective_event_count": 0,
-  "results_commit": "PENDING_RESULTS_COMMIT",
+  "results_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
   "source_hashes": {
     "A2R2_ENDPOINT_HISTORY": "af2beafded2c190700360dbc2f3615f0c2c98759e920bf232b213f20e7df31bf",
     "A2R2_SIGNAL_ELIGIBILITY": "335661815c1102b5985802a6ed37db359257148db9159b3759691aac92ae8bff",

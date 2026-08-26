@@ -22,6 +22,7 @@ OUT = core.STAGE_ROOT
 A4E = ROOT / "UKACTIVE-A4E-SIPP"
 A4F = ROOT / "UKACTIVE-A4F-SIPP-REGIME"
 FREEZE_COMMIT = "a8008f7709af3000a889bb234a86f8c520c4ed73"
+RESULTS_COMMIT = "beb8d49828b9819aa167d2e07ffdc2b92581b36b"
 BUILD_DATE = "2026-08-26"
 
 
@@ -841,7 +842,7 @@ No broker order was generated, prepared for transmission or transmitted.
         "build_date": BUILD_DATE,
         "historical_cutoff": "2026-08-21",
         "freeze_commit": FREEZE_COMMIT,
-        "results_commit": "PENDING_RESULTS_COMMIT",
+        "results_commit": RESULTS_COMMIT,
         "a5c_identifier_collision": False,
         "evidence": "E2_DEVELOPMENTAL",
         "decision": decision,
