@@ -1,0 +1,82 @@
+{
+  "stage_id": "UKACTIVE-A5C-SIPP",
+  "prospective_lineage_id": "UKACTIVE-A5C-M2-FROZEN-PROSPECTIVE",
+  "evidence_grade": "E2_DEVELOPMENTAL",
+  "historical_cutoff": "2026-08-21",
+  "model_development_status": "M2_HISTORICAL_MODEL_DEVELOPMENT_CLOSED",
+  "automatic_broker_execution": false,
+  "m2": {
+    "pool": "INDUSTRY_PLUS_THEME",
+    "point_in_time_family_count": 27,
+    "duplicate_suppression": "EXISTING_ECONOMIC_FAMILY_DUPLICATE_SUPPRESSION",
+    "signal_id": "M2_BASE",
+    "relative_strength_weights": {
+      "RS21": 0.1,
+      "RS42": 0.15,
+      "RS63": 0.25,
+      "RS126": 0.3,
+      "RS252": 0.2
+    },
+    "breadth": 7,
+    "weighting": "EQUAL",
+    "family_weight_within_m2": 0.14285714285714285,
+    "cash_rule": "CASH0_ALWAYS_INVESTED_EXCEPT_SUSPENDED_SLOTS",
+    "review": "FINAL_VALID_XLON_SESSION_OF_CALENDAR_MONTH",
+    "execution": "FIRST_VALID_FOLLOWING_XLON_SESSION_WITHIN_3_VALID_SESSIONS",
+    "same_close_execution": false,
+    "leverage": false,
+    "shorting": false,
+    "regime_telemetry_changes_allocation": false
+  },
+  "whole_sipp_states": {
+    "capital_continuity_control": {
+      "strategy_id": "GLOBAL_75_DEFENSIVE_25",
+      "swda": 0.75,
+      "m2": 0.0,
+      "defensive": 0.25
+    },
+    "initial_pilot_target": {
+      "strategy_id": "GLOBAL_65_M2_10_DEFENSIVE_25",
+      "swda": 0.65,
+      "m2": 0.1,
+      "defensive": 0.25,
+      "whole_sipp_weight_per_m2_family": 0.014285714285714287
+    },
+    "prospective_comparators": [
+      {"strategy_id": "GLOBAL_60_M2_15_DEFENSIVE_25", "swda": 0.6, "m2": 0.15, "defensive": 0.25},
+      {"strategy_id": "GLOBAL_50_M2_25_DEFENSIVE_25", "swda": 0.5, "m2": 0.25, "defensive": 0.25},
+      {"strategy_id": "GLOBAL_100", "swda": 1.0, "m2": 0.0, "defensive": 0.0},
+      {"strategy_id": "M2_100_DIAGNOSTIC", "swda": 0.0, "m2": 1.0, "defensive": 0.0},
+      {"strategy_id": "EQUAL_POOL_DIAGNOSTIC", "swda": 0.0, "m2": 0.0, "defensive": 0.0}
+    ]
+  },
+  "maximum_total_active_and_thematic_allocation": 0.25,
+  "maximum_live_m2_allocation": 0.1,
+  "costs": {
+    "execution_price": "MARKET_PRICE",
+    "one_way_friction_bps": 20.0,
+    "broker_fx_fee_preferred_gbp_lines": 0.0,
+    "ii_plus": {"fee_per_paid_etf_leg_gbp": 3.99, "monthly_free_trade_credits": 1, "monthly_subscription_gbp": 14.99, "credits_carry_forward": false},
+    "ii_premium": {"fee_per_paid_etf_leg_gbp": 2.99, "monthly_free_trade_credits": 2, "monthly_subscription_gbp": 39.99, "credits_carry_forward": false},
+    "ter_double_deduction": false
+  },
+  "preferred_instrument_rule": {
+    "preferred": "FROZEN_PREFERRED_GBP_OR_GBX_LINE",
+    "alternate": "ONLY_FROZEN_SAME_FAMILY_GBP_OR_GBX_ALTERNATE_CONFIRMED_IN_SIPP",
+    "unavailable_slot": "CSH2",
+    "discretionary_substitution": false,
+    "swda": {"ticker": "SWDA", "isin": "IE00B4L5Y983", "usd_line_auto_substitution": false}
+  },
+  "defensive_implementation": {
+    "historical_return_series": "ACCEPTED_CAUSAL_GBP_CASH_SERIES_UNCHANGED",
+    "strategic_live": "RLON_EXACT_HELD_SHARE_CLASS_PENDING_INPUT",
+    "tactical_live": {"ticker": "CSH2", "isin": "LU1230136894"},
+    "broker_cash": "SETTLEMENT_FEES_AND_RESIDUALS_ONLY"
+  },
+  "prohibited_changes": [
+    "NEW_MOMENTUM_HORIZONS", "NEW_SIGNAL_WEIGHTS", "TOP_N_RETESTING", "DAILY_OR_WEEKLY_RANKING",
+    "NEW_RANK_WEIGHTING", "VOLATILITY_TARGETING", "NEW_TREND_FILTERS", "NEW_REGIME_RULES",
+    "NEW_CASH_QUALIFICATION", "MOMENTUM_AGE_RULES", "DETERIORATION_EXITS", "STOP_LOSS_RULES",
+    "OPTIMISING_M2_ALLOCATION", "POST_CUTOFF_MODEL_SELECTION"
+  ]
+}

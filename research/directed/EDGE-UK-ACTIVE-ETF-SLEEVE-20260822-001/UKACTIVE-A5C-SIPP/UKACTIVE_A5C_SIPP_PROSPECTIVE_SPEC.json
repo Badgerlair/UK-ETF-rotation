@@ -1,0 +1,24 @@
+{
+  "lineage_id": "UKACTIVE-A5C-M2-FROZEN-PROSPECTIVE",
+  "status": "NOT_STARTED",
+  "historical_cutoff": "2026-08-21",
+  "first_permitted_signal": "NEXT_VALID_MONTH_END_STRICTLY_AFTER_FREEZE_COMMIT",
+  "backfill_permitted": false,
+  "append_only": true,
+  "model_spec_reference": "UKACTIVE_A5C_SIPP_FROZEN_SPEC.json",
+  "official_decision_validity": "RECORDED_AFTER_MONTH_END_DATA_VALIDATION_AND_BEFORE_FIRST_ELIGIBLE_EXECUTION_SESSION_CLOSE_IS_KNOWN",
+  "execution": "FIRST_VALID_FOLLOWING_XLON_SESSION_WITHIN_3_VALID_SESSIONS",
+  "manual_execution_only": true,
+  "broker_order_generation": false,
+  "pilot_target": {"swda": 0.65, "m2": 0.1, "defensive": 0.25},
+  "comparators": [
+    "GLOBAL_75_DEFENSIVE_25",
+    "GLOBAL_60_M2_15_DEFENSIVE_25",
+    "GLOBAL_50_M2_25_DEFENSIVE_25",
+    "GLOBAL_100",
+    "M2_100_DIAGNOSTIC",
+    "EQUAL_POOL_DIAGNOSTIC"
+  ],
+  "suspension_destination": "CSH2",
+  "prospective_evidence_claim": "NO_E3_CONFIRMATION_AT_SETUP"
+}

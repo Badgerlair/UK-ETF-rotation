@@ -1,0 +1,12 @@
+{
+  "stage_id": "UKACTIVE-A5C-SIPP",
+  "status": "M2_HISTORICAL_MODEL_DEVELOPMENT_CLOSED",
+  "effective_historical_cutoff": "2026-08-21",
+  "closed_dimensions": [
+    "universe", "signal_horizons", "signal_weights", "breadth", "weighting", "review_frequency",
+    "execution_timing", "cash_filter", "deterioration_rule", "regime_rule", "volatility_target", "live_pilot_weight"
+  ],
+  "future_change_rule": "ANY_CHANGE_REQUIRES_A_NEW_SEPARATELY_PREREGISTERED_RESEARCH_LINEAGE",
+  "post_cutoff_observations_are": "PROSPECTIVE_ONLY",
+  "e3_claim": false
+}
