@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-08-27",
+  "docx_renderer": "Microsoft Word for Microsoft 365",
+  "pdf_rasterizer": "Poppler pdftoppm",
+  "pdf_pages": 56,
+  "pages_visually_inspected": 56,
+  "figures_expected": 16,
+  "figures_present": 16,
+  "checks": {
+    "cover_and_non_deployment_statement": true,
+    "two_page_contents": true,
+    "mixed_page_orientation": true,
+    "wide_table_captions_co_located": true,
+    "code_span_pipes_preserved_in_table_cells": true,
+    "no_clipped_body_text": true,
+    "no_clipped_figures": true,
+    "no_malformed_glyphs_observed": true,
+    "final_classification_present": true
+  },
+  "reproducibility_control": "All 56 pages had identical 72-dpi raster hashes across the two formal build passes.",
+  "note": "The standard LibreOffice-based render_docx helper was attempted but unavailable; the installed Microsoft Word engine was used, followed by Poppler rasterization and complete visual inspection."
+}

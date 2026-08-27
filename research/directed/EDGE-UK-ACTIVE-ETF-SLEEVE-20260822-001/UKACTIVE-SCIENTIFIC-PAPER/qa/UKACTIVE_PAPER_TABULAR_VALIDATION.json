@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "tool": "@oai/artifact-tool Workbook.fromCSV + inspect",
+  "validated_files": 25,
+  "files": [
+    {
+      "file": "tables/TABLE_01_RESEARCH_LINEAGE.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 15,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_02_UNIVERSE_FUNNEL.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 11,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_03_ASSUMPTIONS.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 14,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_04_SIGNAL_COMPARISON.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 4,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_05_BREADTH_FRONTIER.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 9,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_06_FREQUENCY_COMPARISON.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 4,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_07_CASH_ARCHITECTURES.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 6,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_08_WEIGHTING_COMPARISON.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 4,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_09_COMMON_WINDOW_ECONOMICS.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 9,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_10_CALENDAR_RETURNS.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 11,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_11_REGIME_SUMMARY.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 5,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_12_DYNAMIC_POLICIES.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 13,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_13_RANDOMISATION.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 3,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_14_FAMILY_CONTRIBUTION.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 25,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_15_RANK_CONTRIBUTION.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 6,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_16_HOLDING_SPELL_LEDGER.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 181,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_17_HOLDING_SPELL_INFLUENCE.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 4,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_18_INFLUENCE_SUMMARY.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 8,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_19_STATISTICAL_UNCERTAINTY.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 3,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_20_ROBUSTNESS.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 11,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_21_WHOLE_SIPP_COMPARISON.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 25,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_22_LIVE_IMPLEMENTATION_MAP.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 32,
+      "inspection_returned": true
+    },
+    {
+      "file": "tables/TABLE_23_RELATIVE_REGRET_SUMMARY.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 9,
+      "inspection_returned": true
+    },
+    {
+      "file": "UKACTIVE_PAPER_FIGURE_MANIFEST.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 17,
+      "inspection_returned": true
+    },
+    {
+      "file": "UKACTIVE_PAPER_SOURCE_EVIDENCE_MATRIX.csv",
+      "status": "PASS",
+      "artifact_tool_imported": true,
+      "nonempty_csv_lines": 183,
+      "inspection_returned": true
+    }
+  ]
+}

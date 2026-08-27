@@ -1,0 +1,11 @@
+funnel_step,count,definition,source_stage
+Raw LSE discovery lines,4359,Listings observed in the current discovery census; not a historical investable universe,A0/A1
+Distinct raw ISINs,2821,Raw current identifiers before curation,A0/A1
+Curated share classes,296,Canonical share-class records,A0/A1
+Curated listings,478,Exchange lines linked to share classes,A0/A1
+Economic-exposure families,99,Research units before role/pool restrictions,A0/A1
+Usable historical families,90,At least one accepted causal history in A2,A2
+A3-ready families,86,Met the then-current signal-readiness rule,A2
+Frozen structural M2 families,27,Industry-and-theme economic families in A5C,A5C
+Signal-ready at cutoff,25,Five-horizon score available at 2026-08-21,A5C
+Warm-up/not signal-ready at cutoff,2,Structurally admitted but lacking complete formation history,A5C

@@ -1,0 +1,802 @@
+{
+  "authoritative_source": {
+    "branch": "research/ukactive-a5c-sipp-frozen-prospective",
+    "final_manifest_commit": "df30c9be430c4a746a6e3ec0d97690612badd4fa",
+    "freeze_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+    "results_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b"
+  },
+  "counts": {
+    "derived_table_csvs": 23,
+    "evidence_claims": 182,
+    "executive_summary_words": 1314,
+    "figures": 16,
+    "main_paper_words": 15615,
+    "metric_glossary_words": 2133,
+    "numbered_main_tables": 22,
+    "pdf_pages": 56,
+    "supplement_words": 5048
+  },
+  "documentation_branch": "docs/ukactive-frozen-strategy-scientific-paper",
+  "documentation_parent_commit": "df30c9be430c4a746a6e3ec0d97690612badd4fa",
+  "frozen_strategy": "INDUSTRY_PLUS_THEME | M2_BASE | TOP7 | MONTHLY | CASH0_ALWAYS_INVESTED | EQUAL",
+  "generated_files": [
+    {
+      "bytes": 174592,
+      "category": "figure",
+      "path": "figures/FIGURE_01_RESEARCH_LINEAGE.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "34720e7c640a4327198a2c6bde59260d3248e6aecb665440ea9c93961c304085"
+    },
+    {
+      "bytes": 164074,
+      "category": "figure",
+      "path": "figures/FIGURE_02_DATA_CAUSAL_TIMELINE.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "60ac91b54d09fa9dbb1c5f2bb51ee2949ba3337a33249754320d3cfb0f043823"
+    },
+    {
+      "bytes": 190004,
+      "category": "figure",
+      "path": "figures/FIGURE_03_BREADTH_FRONTIER.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "3f08a19cd1f2d7fe5f04453dd9c6c0d2ca2d2cf62e86717f6140d4921972bcc1"
+    },
+    {
+      "bytes": 135404,
+      "category": "figure",
+      "path": "figures/FIGURE_04_FREQUENCY_TURNOVER_COST.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "f825062549de2c398e4cd4da39d6653a7e593bb94fc83b3fce070bd32175f6d9"
+    },
+    {
+      "bytes": 238049,
+      "category": "figure",
+      "path": "figures/FIGURE_05_EQUITY_CURVES.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "5f1572b5f6fcf764f5244123c154f019565394763b3f73ba77dc2adc3cded716"
+    },
+    {
+      "bytes": 351743,
+      "category": "figure",
+      "path": "figures/FIGURE_06_DRAWDOWN_CURVES.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "3dcd1a5831e3ea36bdef93e10032c421c4732a565569fe7da6ba3e704aa4e00e"
+    },
+    {
+      "bytes": 85451,
+      "category": "figure",
+      "path": "figures/FIGURE_07_CALENDAR_YEAR_RETURNS.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "51be34a61eb91826b2771ab26ad8f33526606c35c5c5e4cfee330cee582ed3f7"
+    },
+    {
+      "bytes": 356410,
+      "category": "figure",
+      "path": "figures/FIGURE_08_ROLLING_EXCESS.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "8eab758dcd0827feba0402a7a6a8fea18450d3850e34a77cd85a617573cbf599"
+    },
+    {
+      "bytes": 136100,
+      "category": "figure",
+      "path": "figures/FIGURE_09_CONTRIBUTION_BY_FAMILY.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "2e52453b88ad21074f163f31888aaaf8ba1f720c99ec8bbbb40077cdb6b651c6"
+    },
+    {
+      "bytes": 89389,
+      "category": "figure",
+      "path": "figures/FIGURE_10_CONTRIBUTION_BY_RANK.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "d74adcfcc2d61491512dfb85aed79310e36e5b66c5b2151dadcaa0823c08c42e"
+    },
+    {
+      "bytes": 139354,
+      "category": "figure",
+      "path": "figures/FIGURE_11_RANDOM_SELECTION_DISTRIBUTION.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "4b0d455bb39d230a5bb3ff6828f6b84aff69ba0b5325becc89bffe5c6b3c735b"
+    },
+    {
+      "bytes": 207510,
+      "category": "figure",
+      "path": "figures/FIGURE_12_HOLDING_SPELL_CONCENTRATION.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "3625623a45de5d467e9d2784cb269db929374ef930f4695994495f761a229eb7"
+    },
+    {
+      "bytes": 112488,
+      "category": "figure",
+      "path": "figures/FIGURE_13_REGIME_TIMELINE.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "27be8045642d6842bc2071506aa63b9c665dc92b6aa8134623fd77712240162b"
+    },
+    {
+      "bytes": 121284,
+      "category": "figure",
+      "path": "figures/FIGURE_14_DYNAMIC_VS_STATIC.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "e5dfabfae33ad30076b160439236521bd443cdcd00f37d3e2f2ba3ca4fddd533"
+    },
+    {
+      "bytes": 166455,
+      "category": "figure",
+      "path": "figures/FIGURE_15_WHOLE_SIPP_FRONTIER.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "392215264e2939891f70ac2f37c71c2df4a141b1faa852bb90446117ff0fccc3"
+    },
+    {
+      "bytes": 246858,
+      "category": "figure",
+      "path": "figures/FIGURE_16_RELATIVE_REGRET.png",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "d553266524e54afefa090db02a985edb9eeaca14c7b348ef8a781a89f592fa3a"
+    },
+    {
+      "bytes": 653,
+      "category": "quality_assurance",
+      "path": "qa/UKACTIVE_PAPER_ASSET_BUILD_CHECKS.json",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "6935c245b055bf75f9e928b3aed32faf444a453c3ddcd2d4aa132ac1684c0a99"
+    },
+    {
+      "bytes": 73253,
+      "category": "quality_assurance",
+      "path": "qa/UKACTIVE_PAPER_CANONICAL_SOURCE_AUDIT.json",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "40e92c5fa2dcc77e0932eae4edc7b21cb5d32614f3336bc96c0bf0985c4f3916"
+    },
+    {
+      "bytes": 955,
+      "category": "quality_assurance",
+      "path": "qa/UKACTIVE_PAPER_RENDER_VALIDATION.json",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "f4e5e71f64a6ad27e55c977a8e93aad27e2c9943ac5a8b814c031b6ae2144d7b"
+    },
+    {
+      "bytes": 5034,
+      "category": "quality_assurance",
+      "path": "qa/UKACTIVE_PAPER_TABULAR_VALIDATION.json",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "8f99ef22245e09388ac9f109b8246ee9f4f3172dad8a1c5c86ecec9232d4f72e"
+    },
+    {
+      "bytes": 3357,
+      "category": "reproduction_script",
+      "path": "scripts/audit_canonical_inputs.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "933e7b692fe5ad1e7c60ce981f4df0ce15ed750f0e55295bc2555424dfc6a972"
+    },
+    {
+      "bytes": 2766,
+      "category": "reproduction_script",
+      "path": "scripts/build_all.ps1",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "9fb69ea8d305f2441b8e5ad4139d1d4e959244eaf61206063810402050670b13"
+    },
+    {
+      "bytes": 23166,
+      "category": "reproduction_script",
+      "path": "scripts/build_docx.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "cac14bd75f2b543c1bba934959b175819ef0822724f50f96ef12b388e75e3da4"
+    },
+    {
+      "bytes": 2851,
+      "category": "reproduction_script",
+      "path": "scripts/convert_docx_to_pdf.ps1",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "e71d09342880d5ba46f6c5cb1fc47ddbbe1de51cc7977d55f131855b99fdb82a"
+    },
+    {
+      "bytes": 8925,
+      "category": "reproduction_script",
+      "path": "scripts/finalize_manifest.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "d9a2e569429ac6704540256a1845124e0e6a86319ef6fbcf075d5cca6cfbc399"
+    },
+    {
+      "bytes": 108193,
+      "category": "reproduction_script",
+      "path": "scripts/generate_paper_assets.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "ae3d8406efcd4e2f5335c5b505bb260f11f64e0d028d4d7844371196706738ea"
+    },
+    {
+      "bytes": 3000,
+      "category": "reproduction_script",
+      "path": "scripts/make_contact_sheets.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "f9aa6407fe0bb52649080c3afbd6c0ba44ae551f1ff410f82f04f221398dfd37"
+    },
+    {
+      "bytes": 2080,
+      "category": "reproduction_script",
+      "path": "scripts/normalize_pdf.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "8a9b53718cae6d926d28b08a3834ff0a804efbbbe948910f57fce96c448a262a"
+    },
+    {
+      "bytes": 2289,
+      "category": "reproduction_script",
+      "path": "scripts/validate_tabular_outputs.mjs",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "b5bd3e41934a6ae83ffb67fb7028d5cbcd03bed226c056e788bb4ee0f78e8503"
+    },
+    {
+      "bytes": 7364,
+      "category": "reproduction_script",
+      "path": "scripts/verify_reproducibility.py",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "3d42fedff9112bab97a87a75ece6d71d0ab2f2b57cabdf53ce9b00a3669f7ce8"
+    },
+    {
+      "bytes": 3180,
+      "category": "derived_table",
+      "path": "tables/TABLE_01_RESEARCH_LINEAGE.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "43fb4593e5843514ed8974d9cbb3e271f365b748e3fe56332fa8cf203d474cd9"
+    },
+    {
+      "bytes": 843,
+      "category": "derived_table",
+      "path": "tables/TABLE_02_UNIVERSE_FUNNEL.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "e813ddc4dc49cbbeeb7bd91814cc6d1191cdfa4395e5d78f809d1abdba4c40e2"
+    },
+    {
+      "bytes": 3263,
+      "category": "derived_table",
+      "path": "tables/TABLE_03_ASSUMPTIONS.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "cf53c13de727ca8cd936c96fc18c9e0d71f89a66a5df47c4ba5e58c5185be402"
+    },
+    {
+      "bytes": 729,
+      "category": "derived_table",
+      "path": "tables/TABLE_04_SIGNAL_COMPARISON.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "f9d3e784dcbde6bb31330b65146ca0e7cdad820e66d40b78fe6e87ade9b1d1a7"
+    },
+    {
+      "bytes": 2374,
+      "category": "derived_table",
+      "path": "tables/TABLE_05_BREADTH_FRONTIER.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "aafb28a684468e7988b5efcecb0917594ef08946f080c3489603e3a320f39fd3"
+    },
+    {
+      "bytes": 1885,
+      "category": "derived_table",
+      "path": "tables/TABLE_06_FREQUENCY_COMPARISON.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "75dc7d40a9c0b5bc322573198093e81f79b8da988604707a9271de4a9c971bee"
+    },
+    {
+      "bytes": 1916,
+      "category": "derived_table",
+      "path": "tables/TABLE_07_CASH_ARCHITECTURES.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "176ed80f18664d25a1f4d5a1f3e0c49071d50f7be5bebf1e3920e37895bd86c8"
+    },
+    {
+      "bytes": 808,
+      "category": "derived_table",
+      "path": "tables/TABLE_08_WEIGHTING_COMPARISON.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "c0297b8819167aa482abfae7f265bec561317698bb9c364b353f9f7505e6d09f"
+    },
+    {
+      "bytes": 1929,
+      "category": "derived_table",
+      "path": "tables/TABLE_09_COMMON_WINDOW_ECONOMICS.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "eff7a5b52643950efd3dccb2a3cf8d820f75bf0ecec5a9e01700434f16d81b54"
+    },
+    {
+      "bytes": 1372,
+      "category": "derived_table",
+      "path": "tables/TABLE_10_CALENDAR_RETURNS.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "b6bccd661649027c88a78a8cbb929c726ce9312fa6136d12c424078e63853983"
+    },
+    {
+      "bytes": 771,
+      "category": "derived_table",
+      "path": "tables/TABLE_11_REGIME_SUMMARY.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "a6abd7d98e080a8a8fa8be74ed93ccd33b79b8c9ba0f26c2b04ef4463c18bbc7"
+    },
+    {
+      "bytes": 3244,
+      "category": "derived_table",
+      "path": "tables/TABLE_12_DYNAMIC_POLICIES.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "e4eaf23eabba1fc06bea8d391ab04cf7887d3cb252d5b6085c75104fb2cd2bd2"
+    },
+    {
+      "bytes": 1564,
+      "category": "derived_table",
+      "path": "tables/TABLE_13_RANDOMISATION.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "932c226407f6729308f5037afb04e83b09fd514f7d217e15be49a1fb00de2fab"
+    },
+    {
+      "bytes": 3348,
+      "category": "derived_table",
+      "path": "tables/TABLE_14_FAMILY_CONTRIBUTION.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "86bcbf4e83e040a07a89a3eac62842e639447753679ddc74cb1caacb7a6eb75d"
+    },
+    {
+      "bytes": 744,
+      "category": "derived_table",
+      "path": "tables/TABLE_15_RANK_CONTRIBUTION.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "4b556110e2f808ea0ef8b46d8a2ece5a515e7415f8bc3cb0b69c070a3bccb7d3"
+    },
+    {
+      "bytes": 83889,
+      "category": "derived_table",
+      "path": "tables/TABLE_16_HOLDING_SPELL_LEDGER.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "0e8e9e25ad34202b49235c92ce18842a31fb32faa4d6be5705174175a48a6ee5"
+    },
+    {
+      "bytes": 1526,
+      "category": "derived_table",
+      "path": "tables/TABLE_17_HOLDING_SPELL_INFLUENCE.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "f6c8d9f12dea761a12a12d9475b018fb4f0ef88047917ad783c3cebb8bc8fcf5"
+    },
+    {
+      "bytes": 1503,
+      "category": "derived_table",
+      "path": "tables/TABLE_18_INFLUENCE_SUMMARY.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "8655e61268596e29f2b2d706337f637a1adf3d1d23ebae6363b51edf7b92b401"
+    },
+    {
+      "bytes": 490,
+      "category": "derived_table",
+      "path": "tables/TABLE_19_STATISTICAL_UNCERTAINTY.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "400ccee9d5e6df5cc427ba680c2f64cde7c3001d8e94de1e8e6176f51b3e10bb"
+    },
+    {
+      "bytes": 1136,
+      "category": "derived_table",
+      "path": "tables/TABLE_20_ROBUSTNESS.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "7ffcf2ab04bb9b2adc8542c2eb91a93d088e42e9b09d79e0980b639be28c1f4a"
+    },
+    {
+      "bytes": 5841,
+      "category": "derived_table",
+      "path": "tables/TABLE_21_WHOLE_SIPP_COMPARISON.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "631734e18e68d7ab8798a5f03975f2003c83e22ef9893a1f104f245814a2d541"
+    },
+    {
+      "bytes": 7171,
+      "category": "derived_table",
+      "path": "tables/TABLE_22_LIVE_IMPLEMENTATION_MAP.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "5644e0300cd054410f3c4a80fbaf43b4f3052526b657d20a86fbaa3f0dca4f34"
+    },
+    {
+      "bytes": 1035,
+      "category": "derived_table",
+      "path": "tables/TABLE_23_RELATIVE_REGRET_SUMMARY.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "1bece4929c14a03bfbfd675bd8607da52fc8ccd29a53b2d732cfc0c998e93ad0"
+    },
+    {
+      "bytes": 9244,
+      "category": "narrative_or_documentation",
+      "path": "UKACTIVE_ETF_ROTATION_EXECUTIVE_SUMMARY.md",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "b6105f10fb5cfc111ad4c2196018d96ae31d4183c2b31ad111d7401a66ae38b9"
+    },
+    {
+      "bytes": 5470,
+      "category": "bibliography",
+      "path": "UKACTIVE_ETF_ROTATION_REFERENCES.bib",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "ffba33037e1042bcdcc89112a393401558d989d5bf7ba21e7d769c5991aa826b"
+    },
+    {
+      "bytes": 2767194,
+      "category": "rendered_paper",
+      "path": "UKACTIVE_ETF_ROTATION_SCIENTIFIC_PAPER.docx",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "990ac11561579444d112ff03a833de3629842657e552c3ef9038a5c755cdf64b"
+    },
+    {
+      "bytes": 108920,
+      "category": "narrative_or_documentation",
+      "path": "UKACTIVE_ETF_ROTATION_SCIENTIFIC_PAPER.md",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "0b59559778c28b0e664be28a8c67e4bd0e5cf4fcd3e40273fd4eecc8916c7f81"
+    },
+    {
+      "bytes": 2910067,
+      "category": "rendered_paper",
+      "path": "UKACTIVE_ETF_ROTATION_SCIENTIFIC_PAPER.pdf",
+      "raw_byte_reproducibility": "DOCUMENTED_WORD_PDF_EXCEPTION",
+      "sha256": "cd7be5816dab48726d1af260a70f7ad0961615c9c47213c080f96b0390fdbaaf"
+    },
+    {
+      "bytes": 32886,
+      "category": "narrative_or_documentation",
+      "path": "UKACTIVE_ETF_ROTATION_SUPPLEMENT.md",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "2b64974404f9b54adae1c8cb805825ddf485af71cf732c71a5a7eea758118994"
+    },
+    {
+      "bytes": 5529,
+      "category": "evidence_or_figure_manifest",
+      "path": "UKACTIVE_PAPER_FIGURE_MANIFEST.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "551ef675f0981beb603890bfb0d0feaa1b68bbc6547884fbffd2c2d14931faeb"
+    },
+    {
+      "bytes": 15828,
+      "category": "narrative_or_documentation",
+      "path": "UKACTIVE_PAPER_METRIC_GLOSSARY.md",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "cae379baa4f4647543339b4157207dff1435103dcaa21727b4c6b597c372f5e5"
+    },
+    {
+      "bytes": 7158,
+      "category": "reproducibility_or_manifest_support",
+      "path": "UKACTIVE_PAPER_REPRODUCTION_CHECKS.json",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "462f77a77eecbb7de8b9bf9048ce8f8c32dfede51d6d65b30d39ab1d7be2723d"
+    },
+    {
+      "bytes": 8640,
+      "category": "narrative_or_documentation",
+      "path": "UKACTIVE_PAPER_SCIENTIFIC_QA.md",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "ef689e1715e716e21e7e84e7a6785708cebe005f60a70de2d8e9a140e215e1f7"
+    },
+    {
+      "bytes": 69678,
+      "category": "evidence_or_figure_manifest",
+      "path": "UKACTIVE_PAPER_SOURCE_EVIDENCE_MATRIX.csv",
+      "raw_byte_reproducibility": "DETERMINISTIC_OR_AUTHORED_INPUT",
+      "sha256": "a099c8baff243b41802cb77957229fc92c2c5f634ad42be8ae95f78d7fe8ca28"
+    }
+  ],
+  "generation_date": "2026-08-27",
+  "generation_timestamp_utc": "2026-08-27T21:29:58+00:00",
+  "historical_cutoff": "2026-08-21",
+  "historical_model_development": "CLOSED / M2_HISTORICAL_MODEL_DEVELOPMENT_CLOSED",
+  "live_implementation_status": {
+    "permitted_use": "Controlled 10% pilot after operational readiness and explicit user approval",
+    "pilot_operationally_ready": false,
+    "status": "AWAITING_CURRENT_HOLDINGS_INPUT"
+  },
+  "manifest_self_hash_policy": "UKACTIVE_PAPER_MANIFEST.json is excluded from its own generated_files hash inventory.",
+  "model_status": "FROZEN",
+  "paper_version": "1.0.0",
+  "quality_assurance": {
+    "asset_build": "PASS",
+    "pdf_reproduction_exception": "Raw Word PDF bytes differ between builds; all 56 independently rasterised page hashes are identical.",
+    "render_validation": "PASS",
+    "scientific_qa": "PASS_WITH_DISCLOSED_SOURCE_CONFLICT",
+    "tabular_validation": "PASS",
+    "two_pass_reproduction": "PASS",
+    "unresolved_source_conflicts": [
+      "LONG-CORE-CONFLICT"
+    ]
+  },
+  "runtime_versions": {
+    "artifact_tool": "2.8.52",
+    "asset_runtime": {
+      "matplotlib": "3.11.1",
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "pyarrow": "24.0.0",
+      "python": "3.12.10"
+    },
+    "document_runtime": {
+      "pillow": "12.3.0",
+      "pypdf": "6.10.0",
+      "python": "3.12.13",
+      "python_docx": "1.2.0"
+    },
+    "host": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "timezone": "Europe/London"
+    },
+    "node": "v24.19.0",
+    "pdf_rasterizer": "pdftoppm version 26.05.0",
+    "word_renderer": "Microsoft Word for Microsoft 365"
+  },
+  "schema": "UKACTIVE_PAPER_MANIFEST.v1",
+  "scientific_classification": "E2_DEVELOPMENTAL",
+  "source_files": [
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A0A1_DECISION.json",
+      "source_stage": "A0/A1"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A0A1_MANIFEST.json",
+      "source_stage": "A0/A1"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2_CASH_MODEL.md",
+      "source_stage": "A2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2_DECISION.json",
+      "source_stage": "A2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2_FAMILY_COVERAGE_AND_READINESS.csv",
+      "source_stage": "A2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2_MANIFEST.json",
+      "source_stage": "A2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2_STALE_AND_MISSING_DATA_REPORT.csv",
+      "source_stage": "A2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2R_DECISION.json",
+      "source_stage": "A2R"
+    },
+    {
+      "source_commit": "0a5d32896e777c806dd3485650da1cd4d7660832",
+      "source_file": "UKACTIVE_A2R2_DECISION.json",
+      "source_stage": "A2R2"
+    },
+    {
+      "source_commit": "0a5d32896e777c806dd3485650da1cd4d7660832",
+      "source_file": "UKACTIVE_A2R2_GAP_AND_STALENESS_POLICY.md",
+      "source_stage": "A2R2"
+    },
+    {
+      "source_commit": "0a5d32896e777c806dd3485650da1cd4d7660832",
+      "source_file": "UKACTIVE_A2R2_HORIZON_COVERAGE_BY_YEAR.csv",
+      "source_stage": "A2R2"
+    },
+    {
+      "source_commit": "0a5d32896e777c806dd3485650da1cd4d7660832",
+      "source_file": "UKACTIVE_A2R2_ROOT_CAUSE_REPORT.md",
+      "source_stage": "A2R2"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A3R0_DECISION.json",
+      "source_stage": "A3R0"
+    },
+    {
+      "source_commit": "2c26ad3639e4e025477d9415f4f7b707e9856b55",
+      "source_file": "UKACTIVE_A2R_BEFORE_AFTER_HISTORY_AUDIT.csv",
+      "source_stage": "A3R0/A2R"
+    },
+    {
+      "source_commit": "fc5d2b1e31d6a335f20c5d68bea7787a0911e982",
+      "source_file": "UKACTIVE_A3R1_DECISION.json",
+      "source_stage": "A3R1"
+    },
+    {
+      "source_commit": "c30de89d0ceee74ea024708e7c95270bae38d150",
+      "source_file": "UKACTIVE_A3R1R1_DECISION.json",
+      "source_stage": "A3R1R1"
+    },
+    {
+      "source_commit": "88c0ba161a3bb2556187948b556737403c04ccf1",
+      "source_file": "UKACTIVE_A3R1R1_MULTIPLE_TESTING_LEDGER.csv",
+      "source_stage": "A3R1R1"
+    },
+    {
+      "source_commit": "d41a7f6744c613484894d7dd4da5e1d66718fd21",
+      "source_file": "UKACTIVE_A3R2_MULTIPLE_TESTING_LEDGER.csv",
+      "source_stage": "A3R2"
+    },
+    {
+      "source_commit": "32e6388a02689fd932b348aa20695f93c6199d5e",
+      "source_file": "UKACTIVE_A3R2_DECISION.json",
+      "source_stage": "A3R2/U/S/W/Q"
+    },
+    {
+      "source_commit": "29c2d14a347f4bc323119fe13ca4a3fb9ddc6fd7",
+      "source_file": "UKACTIVE_A4_DECISION.json",
+      "source_stage": "A4"
+    },
+    {
+      "source_commit": "1802820f9a4201847b13c7526b5170e27309983a",
+      "source_file": "UKACTIVE_A4C_DECISION.json",
+      "source_stage": "A4B/A4C"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_BREADTH_RESULTS.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_CASH_DEFENCE_RESULTS.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_CONTRIBUTION_BY_FAMILY.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_CONTRIBUTION_BY_RANK.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_DECISION.json",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_FREQUENCY_RESULTS.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_REPRESENTATIVE_BLOCK_BOOTSTRAP.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_ROBUSTNESS_RESULTS.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_SIGNAL_HAC_INFERENCE.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_WEIGHTING_RESULTS.csv",
+      "source_stage": "A4D"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_STATIC_FRONTIER.csv",
+      "source_stage": "A4D/A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_YEAR_EXCLUSION_RESULTS.csv",
+      "source_stage": "A4D/A4F"
+    },
+    {
+      "source_commit": "48cb69ffbaae25eb0dccc3226f47f5a7491e8bd7",
+      "source_file": "UKACTIVE_A4D_EQUITY_CURVES.parquet",
+      "source_stage": "A4D/A4F"
+    },
+    {
+      "source_commit": "f411e0d169640a5120decee6940dc8a5769c3b5e",
+      "source_file": "UKACTIVE_A4D_PRIMARY_ECONOMIC_SCORECARD.csv",
+      "source_stage": "A4D/A4F"
+    },
+    {
+      "source_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
+      "source_file": "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_CORE_RESULTS.csv",
+      "source_stage": "A4E-SIPP"
+    },
+    {
+      "source_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
+      "source_file": "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_DECISION.json",
+      "source_stage": "A4E-SIPP"
+    },
+    {
+      "source_commit": "6eef0e413a2ee269bd5748cb244ce4f19577723a",
+      "source_file": "UKACTIVE-A4E-SIPP/UKACTIVE_A4E_SIPP_MATCHED_EXPOSURE_CONTROLS.csv",
+      "source_stage": "A4E-SIPP"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_DYNAMIC_POLICY_RESULTS.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_FAMILY_INFLUENCE.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_HOLDING_SPELL_INFLUENCE.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_HOLDING_SPELL_LEDGER.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_LONGER_CORE_ONLY_RESULTS.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_RANDOM_SELECTION_CONTROL.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_REGIME_SUMMARY.csv",
+      "source_stage": "A4F"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_DECISION.json",
+      "source_stage": "A4F-SIPP"
+    },
+    {
+      "source_commit": "6dba072dce65da56284a8c02f9f380301048d492",
+      "source_file": "UKACTIVE-A4F-SIPP-REGIME/UKACTIVE_A4F_SIPP_YEAR_BY_YEAR_SCORECARD.csv",
+      "source_stage": "A4F/A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_CORRECTNESS_TESTS.csv",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_COST_RESTATEMENT.csv",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_DECISION.json",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_FROZEN_SPEC.json",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_LIVE_INSTRUMENT_MAP_V2.csv",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_MONTHLY_RUNBOOK.md",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "a8008f7709af3000a889bb234a86f8c520c4ed73",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_PROSPECTIVE_LEDGER.csv",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_RELATIVE_REGRET.csv",
+      "source_stage": "A5C"
+    },
+    {
+      "source_commit": "beb8d49828b9819aa167d2e07ffdc2b92581b36b",
+      "source_file": "UKACTIVE-A5C-SIPP/UKACTIVE_A5C_SIPP_DECISION.json",
+      "source_stage": "A5C-SIPP"
+    }
+  ]
+}

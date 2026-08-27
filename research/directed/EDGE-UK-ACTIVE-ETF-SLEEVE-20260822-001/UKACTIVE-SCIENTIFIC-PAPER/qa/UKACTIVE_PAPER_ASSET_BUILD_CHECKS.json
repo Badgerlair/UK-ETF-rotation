@@ -1,0 +1,21 @@
+{
+  "all_figure_files_exist": true,
+  "all_table_files_exist": true,
+  "branch": "docs/ukactive-frozen-strategy-scientific-paper",
+  "evidence_claim_count": 182,
+  "figure_count": 16,
+  "head": "df30c9be430c4a746a6e3ec0d97690612badd4fa",
+  "historical_cutoff": "2026-08-21",
+  "manifest_commit_is_ancestor": true,
+  "prohibited_actions": {
+    "canonical_artifact_modification": false,
+    "new_model_search": false,
+    "post_cutoff_data": false
+  },
+  "randomisation_exact_reproduction": true,
+  "status": "PASS",
+  "table_count": 23,
+  "unresolved_source_conflicts": [
+    "A4F_LONGER_CORE_ONLY_RESULTS_WINDOW_AND_METRICS"
+  ]
+}

@@ -1,0 +1,4 @@
+signal_id,description,positive_ic_horizons,positive_top_quintile_horizons,stage_a_gate,full_net_cagr,full_pool_excess_cagr,full_mdd,latest5_net_cagr,latest5_pool_excess_cagr,latest5_mdd,full_turnover
+M1_EQUAL_5H,M1: equal five-horizon composite,3,0,False,0.125231387684,0.00991170207736,-0.249517679631,0.110693392037,0.000793749252798,-0.249517679631,6.42982467683
+M2_INTERMEDIATE_5H,M2: intermediate-weighted five-horizon composite,3,2,True,0.131376260915,0.0160565753079,-0.235308335654,0.13620163503,0.0263019922455,-0.22335553365,5.52306084467
+M3_STRUCTURAL_DETERIORATION,M3: M2 with deterioration penalty,3,2,True,0.11769498373,0.00237529812264,-0.235311365105,0.113363029289,0.00346338650493,-0.223365487997,5.95931086365
